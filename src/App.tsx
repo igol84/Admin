@@ -1,10 +1,14 @@
 import {ColorModeContext, useMode} from "./theme";
-import {CssBaseline, ThemeProvider} from "@mui/material";
-import TopBar from "./scenes/global/TopBar";
+import {CssBaseline, ThemeProvider, useTheme} from "@mui/material";
 import {Route, Routes} from "react-router-dom";
-import Dashboard from "./scenes/dashboard";
-import Sidebar from "./scenes/global/Sidebar";
 import {ProSidebarProvider} from "react-pro-sidebar";
+
+import SidebarMenu from "./layout/Sidebar";
+import TopBar from "./layout/topBar";
+
+import Auth from "./pages/auth";
+import Dashboard from "./pages/dashboard";
+
 
 
 function App() {
@@ -16,10 +20,11 @@ function App() {
         <ProSidebarProvider>
           <CssBaseline/>
           <div className='app'>
-            <Sidebar/>
+            <SidebarMenu/>
             <main className='content'>
               <TopBar/>
               <Routes>
+                <Route path='/auth' element={<Auth/>}/>
                 <Route path='/' element={<Dashboard/>}/>
                 <Route path='/team' element={<Dashboard/>}/>
               </Routes>

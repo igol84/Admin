@@ -1,5 +1,5 @@
 import {menuClasses, MenuItemStyles, useProSidebar} from "react-pro-sidebar";
-import {PaletteMode, tokens} from "../../theme";
+import {tokens} from "../../theme";
 import {useTheme} from "@mui/material";
 
 export const hexToRgba = (hex: string, alpha: number) => {
