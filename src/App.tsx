@@ -1,5 +1,5 @@
 import {ColorModeContext, useMode} from "./theme";
-import {CssBaseline, ThemeProvider, useTheme} from "@mui/material";
+import {CssBaseline, ThemeProvider} from "@mui/material";
 import {Route, Routes} from "react-router-dom";
 import {ProSidebarProvider} from "react-pro-sidebar";
 
@@ -10,10 +10,8 @@ import Auth from "./pages/auth";
 import Dashboard from "./pages/dashboard";
 
 
-
 function App() {
   const [theme, colorMode] = useMode()
-
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>

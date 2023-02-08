@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box, IconButton, Typography, useTheme} from "@mui/material";
+import {Avatar, Box, IconButton, Typography, useTheme} from "@mui/material";
 import {Menu, MenuItem, Sidebar, useProSidebar} from "react-pro-sidebar";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
@@ -8,6 +8,7 @@ import {tokens} from "../../theme";
 import {menuItemStyles} from "./Sidebar.theme";
 import {useLocation} from "react-router-dom";
 import {Item} from "./Item";
+import {useAppSelector} from "../../hooks/redux";
 
 
 const SidebarMenu = () => {
@@ -18,6 +19,8 @@ const SidebarMenu = () => {
   const style = {
     display: 'flex', height: '100%', minHeight: '400px'
   } as const;
+  const userName = useAppSelector(state => state.authReducer.username)
+  const isAuthenticated = useAppSelector(state => state.authReducer.isAuthenticated)
   return (
     <Box sx={style}>
       <Sidebar
@@ -40,7 +43,12 @@ const SidebarMenu = () => {
                 ml="15px"
               >
                 <Typography variant='h3' color={colors.grey[100]}>
-                  ADMINS
+                  {
+                    userName ?
+                      <Avatar sx={{backgroundColor: colors.greenAccent[500]}}>{userName[0].toUpperCase()}</Avatar>
+                      :
+                      'ADMINS'
+                  }
                 </Typography>
                 <IconButton>
                   <MenuOutlinedIcon/>
@@ -51,7 +59,10 @@ const SidebarMenu = () => {
 
 
           {/*  Menu Items*/}
-          <Box paddingLeft={collapsed ? undefined : '10%'}>
+          <Box
+            paddingLeft={collapsed ? undefined : '10%'}
+            hidden={!isAuthenticated}
+          >
             <Item
               title="Dashboard"
               to='/'
@@ -73,6 +84,7 @@ const SidebarMenu = () => {
               location={location.pathname}
             />
           </Box>
+
         </Menu>
       </Sidebar>
     </Box>

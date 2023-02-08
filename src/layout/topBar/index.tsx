@@ -8,7 +8,6 @@ import {useLocation} from "react-router-dom";
 import {ButtonLink} from "./ButtonLink";
 
 
-
 const TopBar = () => {
   const location = useLocation()
   const theme = useTheme()
