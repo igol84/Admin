@@ -16,6 +16,7 @@ const AuthForm = () => {
   const errorDate = useAppSelector(state => state.authReducer.errorDate)
   const isAuthenticated = useAppSelector(state => state.authReducer.isAuthenticated)
 
+  const [firstTimeHere, setFirstTimeHere] = useState(true)
   const [errorTextNetwork, setErrorTextNetwork] = useState('')
   const [errorTextUserName, setErrorTextUserName] = useState('')
   const [errorTextPassword, setErrorTextPassword] = useState('')
@@ -31,13 +32,13 @@ const AuthForm = () => {
       setErrorTextNetwork(errorText)
       setOpenAlertSnackbar(true)
     }
-  }, [errorText, errorDate])
+  }, [errorText, errorDate, dispatch])
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && !firstTimeHere) {
       setOpenSuccessSnackbar(true)
     }
-  }, [isAuthenticated])
+  }, [isAuthenticated, dispatch])
 
   // Snackbars
   const [openAlertSnackbar, setOpenAlertSnackbar] = React.useState(false);
@@ -64,10 +65,12 @@ const AuthForm = () => {
   const onSubmit = async (values: initialValuesType, actions: FormikHelpers<initialValuesType>) => {
     await dispatch(login(values))
     actions.setSubmitting(false)
+    setFirstTimeHere(false)
     navigate('/')
   }
   const onLogout = () => {
     dispatch(authSlice.actions.logout())
+    setFirstTimeHere(false)
   }
 
   return (
