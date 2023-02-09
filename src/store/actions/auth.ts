@@ -1,8 +1,8 @@
-import axiosc from "../../axios"
+import axios from "../../axios"
 
 import {AppDispatch} from "../index";
 import {authSlice} from "../slices/authSlice";
-import axios, {AxiosError} from "axios";
+import Axios, {AxiosError} from "axios";
 
 export interface IAuth {
   username: string
@@ -18,7 +18,7 @@ export interface IAuthResponse {
 export const login = (data: IAuth) => {
   return async (dispatch: AppDispatch) => {
     try {
-      const response = await axiosc.post<IAuthResponse>(
+      const response = await axios.post<IAuthResponse>(
         '/login',
         data,
         {
@@ -34,10 +34,8 @@ export const login = (data: IAuth) => {
       }))
     } catch (err) {
       const errors = err as Error | AxiosError;
-      if (!axios.isAxiosError(errors)) {
-        console.log('Error Login', errors.name)
-      } else {
-        const errorText = errors.response?.data.detail
+      if (Axios.isAxiosError(errors)) {
+        const errorText = errors.response?.data.detail || errors.message
         if (errorText) {
           dispatch(authSlice.actions.loginFail({
             errorText

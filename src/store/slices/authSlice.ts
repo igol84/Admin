@@ -4,8 +4,9 @@ interface AuthState {
   isAuthenticated: boolean
   access_token: string
   username: string
-  store_id: number | null
+  store_id: null | number
   errorText: string
+  errorDate: null | number
 }
 
 const ACCESS_KEY = 'token'
@@ -23,6 +24,7 @@ function getInitialState(): AuthState {
       username: '',
       store_id: null,
       errorText: '',
+      errorDate: null,
     }
   }
   return {
@@ -31,6 +33,7 @@ function getInitialState(): AuthState {
     username: localStorage.getItem(USERNAME_KEY) ?? '',
     store_id: Number(localStorage.getItem(STORE_KEY)) ?? null,
     errorText: '',
+    errorDate: null,
   }
 }
 
@@ -74,6 +77,7 @@ export const authSlice = createSlice({
       localStorage.setItem(STORE_KEY, action.payload.store_id.toString())
       localStorage.setItem(EXPIRES_KEY, tokenExpires.toString())
       state.errorText = ''
+      state.errorDate = null
     },
     loginFail(state, action: PayloadAction<ErrorPayload>) {
       state.access_token = ''
@@ -81,6 +85,7 @@ export const authSlice = createSlice({
       state.username = ''
       state.isAuthenticated = false
       state.errorText = action.payload.errorText
+      state.errorDate = new Date().getMilliseconds()
 
       localStorage.removeItem(ACCESS_KEY)
       localStorage.removeItem(USERNAME_KEY)
