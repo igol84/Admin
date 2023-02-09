@@ -1,30 +1,24 @@
 import React, {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../hooks/redux";
 import {Formik, FormikHelpers} from "formik";
 import {login} from "../store/actions/auth";
 import {authSlice} from "../store/slices/authSlice";
-import {Alert, Box, Button, Snackbar} from "@mui/material";
+import {Alert, Box, Button, colors, Snackbar} from "@mui/material";
 import * as Yup from "yup";
 import {FormTextInput} from "./Form";
 
 
 const AuthForm = () => {
   const dispatch = useAppDispatch()
-  const [errorTextNetwork, setErrorTextNetwork] = useState('')
-  const [errorTextUserName, setErrorTextUserName] = useState('')
-  const [errorTextPassword, setErrorTextPassword] = useState('')
-
-  const [openAlertSnackbar, setOpenAlertSnackbar] = React.useState(false);
-  const handleCloseAlertSnackbar = (event?: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setOpenAlertSnackbar(false);
-  };
-
+  const navigate = useNavigate()
   const errorText = useAppSelector(state => state.authReducer.errorText)
   const errorDate = useAppSelector(state => state.authReducer.errorDate)
   const isAuthenticated = useAppSelector(state => state.authReducer.isAuthenticated)
+
+  const [errorTextNetwork, setErrorTextNetwork] = useState('')
+  const [errorTextUserName, setErrorTextUserName] = useState('')
+  const [errorTextPassword, setErrorTextPassword] = useState('')
 
   useEffect(() => {
     setErrorTextUserName('')
@@ -36,11 +30,27 @@ const AuthForm = () => {
     } else if (errorText === 'Network Error') {
       setErrorTextNetwork(errorText)
       setOpenAlertSnackbar(true)
-
     }
-    console.log(errorText)
   }, [errorText, errorDate])
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      setOpenSuccessSnackbar(true)
+    }
+  }, [isAuthenticated])
+
+  // Snackbars
+  const [openAlertSnackbar, setOpenAlertSnackbar] = React.useState(false);
+  const [openSuccessSnackbar, setOpenSuccessSnackbar] = React.useState(false);
+  const handleCloseAlertSnackbarCreator = (setOpenState: (value: boolean) => void) =>
+    (event?: React.SyntheticEvent | Event, reason?: string) => {
+      if (reason === 'clickaway') {
+        return;
+      }
+      setOpenState(false)
+    }
+  const handleCloseAlertSnackbar = handleCloseAlertSnackbarCreator(setOpenAlertSnackbar)
+  const handleSuccessSnackbar = handleCloseAlertSnackbarCreator(setOpenSuccessSnackbar)
 
   interface initialValuesType {
     username: string
@@ -54,6 +64,7 @@ const AuthForm = () => {
   const onSubmit = async (values: initialValuesType, actions: FormikHelpers<initialValuesType>) => {
     await dispatch(login(values))
     actions.setSubmitting(false)
+    navigate('/')
   }
   const onLogout = () => {
     dispatch(authSlice.actions.logout())
@@ -98,6 +109,11 @@ const AuthForm = () => {
             <Snackbar open={openAlertSnackbar} autoHideDuration={6000} onClose={handleCloseAlertSnackbar}>
               <Alert variant="filled" onClose={handleCloseAlertSnackbar} severity="error">
                 {errorTextNetwork}
+              </Alert>
+            </Snackbar>
+            <Snackbar open={openSuccessSnackbar} autoHideDuration={6000} onClose={handleSuccessSnackbar}>
+              <Alert variant="filled" onClose={handleSuccessSnackbar} severity="success" sx={{color: colors.grey[100]}}>
+                Successful login
               </Alert>
             </Snackbar>
             <Box

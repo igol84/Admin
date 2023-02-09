@@ -53,7 +53,6 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     logout(state) {
-      console.log('state.access_token')
       state.isAuthenticated = false
       state.access_token = ''
       state.username = ''
