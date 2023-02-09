@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {Avatar, Box, IconButton, Typography, useTheme} from "@mui/material";
 import {Menu, MenuItem, Sidebar, useProSidebar} from "react-pro-sidebar";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
@@ -9,9 +9,12 @@ import {menuItemStyles} from "./Sidebar.theme";
 import {useLocation} from "react-router-dom";
 import {Item} from "./Item";
 import {useAppSelector} from "../../hooks/redux";
+import {LanguageModeContext} from "../../language";
 
 
 const SidebarMenu = () => {
+  const {dictionary} = useContext(LanguageModeContext)
+  const d = dictionary['sidebar']
   const location = useLocation()
   const theme = useTheme()
   const colors = tokens(theme.palette.mode)
@@ -47,7 +50,7 @@ const SidebarMenu = () => {
                     userName ?
                       <Avatar sx={{backgroundColor: colors.greenAccent[500]}}>{userName[0].toUpperCase()}</Avatar>
                       :
-                      'ADMINS'
+                      d['Admin']
                   }
                 </Typography>
                 <IconButton>
@@ -64,7 +67,7 @@ const SidebarMenu = () => {
             hidden={!isAuthenticated}
           >
             <Item
-              title="Dashboard"
+              title={d['Dashboard']}
               to='/'
               icon={<HomeOutlinedIcon/>}
               location={location.pathname}
@@ -75,16 +78,15 @@ const SidebarMenu = () => {
               color={colors.grey[200]}
               sx={{m: '10px 0 5px 20px'}}
             >
-              Data
+              {d['Data']}
             </Typography>
             <Item
-              title="Manage Team"
+              title={d["Manage Team"]}
               to='/team'
               icon={<PeopleOutlinedIcon/>}
               location={location.pathname}
             />
           </Box>
-
         </Menu>
       </Sidebar>
     </Box>

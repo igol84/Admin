@@ -1,0 +1,24 @@
+{
+  "sidebar": {
+    "Admin": "Адмін",
+    "Dashboard": "Панель приладів",
+    "Manage Team": "Керувати командою",
+    "Data": "Дані"
+  },
+  "auth": {
+    "title": "Авторизація",
+    "subTitle": "Ласкаво просимо",
+    "loginField": "Логін",
+    "passwordField": "Пароль",
+    "buttonSubmit": "Війти",
+    "buttonLogout": "Вийти",
+    "required": "Обов'язково",
+    "userIsNot": "Користувач недоступний",
+    "passIsNot": "Невірний пароль",
+    "networkError": "Помилка мережі"
+  },
+  "dash": {
+    "title": "Панель приладів",
+    "subTitle": "Ласкаво просимо на вашу інформаційну панель"
+  }
+}

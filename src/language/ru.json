@@ -1,0 +1,24 @@
+{
+  "sidebar": {
+    "Admin": "Админ",
+    "Dashboard": "Панель приборов",
+    "Manage Team": "Управление командой",
+    "Data": "Данные"
+  },
+  "auth": {
+    "title": "Авторизация",
+    "subTitle": "Добро пожаловать",
+    "loginField": "Логин",
+    "passwordField": "Пароль",
+    "buttonSubmit": "Увійти",
+    "buttonLogout": "Выйти",
+    "required": "Обязательно",
+    "userIsNot": "Пользователь недоступен",
+    "passIsNot": "Неверный пароль",
+    "networkError": "Ошибка сети"
+  },
+  "dash": {
+    "title": "Панель приборов",
+    "subTitle": "Добро пожаловать в вашу панель управления"
+  }
+}

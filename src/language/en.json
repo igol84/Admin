@@ -1,0 +1,24 @@
+{
+  "sidebar": {
+    "Admin": "Admin",
+    "Dashboard": "Dashboard",
+    "Manage Team": "Manage Team",
+    "Data": "Data"
+  },
+  "auth": {
+    "title": "Authorization",
+    "subTitle": "Welcome",
+    "loginField": "Login",
+    "passwordField": "Password",
+    "buttonSubmit": "Submit",
+    "buttonLogout": "Logout",
+    "required": "Required",
+    "userIsNot": "User is not available",
+    "passIsNot": "Incorrect password",
+    "networkError": "Network Error"
+  },
+  "dash": {
+    "title": "Dashboard",
+    "subTitle": "Welcome to you dashboard"
+  }
+}

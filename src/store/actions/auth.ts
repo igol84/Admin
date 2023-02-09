@@ -32,6 +32,7 @@ export const login = (data: IAuth) => {
         access_token: response.data.access_token,
         username: data.username
       }))
+      console.log(response.data.access_token)
     } catch (err) {
       const errors = err as Error | AxiosError;
       if (Axios.isAxiosError(errors)) {

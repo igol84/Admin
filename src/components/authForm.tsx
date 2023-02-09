@@ -1,5 +1,4 @@
-import React, {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import React, {useContext, useEffect, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../hooks/redux";
 import {Formik, FormikHelpers} from "formik";
 import {login} from "../store/actions/auth";
@@ -7,11 +6,13 @@ import {authSlice} from "../store/slices/authSlice";
 import {Alert, Box, Button, colors, Snackbar} from "@mui/material";
 import * as Yup from "yup";
 import {FormTextInput} from "./Form";
+import {LanguageModeContext} from "../language";
 
 
 const AuthForm = () => {
+  const {dictionary} = useContext(LanguageModeContext)
+  const d=dictionary['auth']
   const dispatch = useAppDispatch()
-  const navigate = useNavigate()
   const errorText = useAppSelector(state => state.authReducer.errorText)
   const errorDate = useAppSelector(state => state.authReducer.errorDate)
   const isAuthenticated = useAppSelector(state => state.authReducer.isAuthenticated)
@@ -25,14 +26,14 @@ const AuthForm = () => {
     setErrorTextUserName('')
     setErrorTextPassword('')
     if (errorText.startsWith('User with the email')) {
-      setErrorTextUserName(errorText)
+      setErrorTextUserName(d['userIsNot'])
     } else if (errorText === 'Incorrect password') {
-      setErrorTextPassword(errorText)
+      setErrorTextPassword(d['passIsNot'])
     } else if (errorText === 'Network Error') {
-      setErrorTextNetwork(errorText)
+      setErrorTextNetwork(d['networkError'])
       setOpenAlertSnackbar(true)
     }
-  }, [errorText, errorDate, dispatch])
+  }, [errorText, errorDate, dispatch, dictionary])
 
   useEffect(() => {
     if (isAuthenticated && !firstTimeHere) {
@@ -66,8 +67,8 @@ const AuthForm = () => {
     await dispatch(login(values))
     actions.setSubmitting(false)
     setFirstTimeHere(false)
-    navigate('/')
   }
+
   const onLogout = () => {
     dispatch(authSlice.actions.logout())
     setFirstTimeHere(false)
@@ -78,9 +79,9 @@ const AuthForm = () => {
       initialValues={initialValues}
       validationSchema={Yup.object({
         username: Yup.string()
-          .required('Required'),
+          .required(d['required']),
         password: Yup.string()
-          .required('Required'),
+          .required(d['required']),
       })}
       onSubmit={onSubmit}
     >
@@ -97,13 +98,13 @@ const AuthForm = () => {
           }}>
 
             <FormTextInput
-              label="Login"
+              label={d['loginField']}
               disabled={isAuthenticated}
               name='username'
               textLabel={errorTextUserName}
             />
             <FormTextInput
-              label="Password"
+              label={d['passwordField']}
               disabled={isAuthenticated}
               name='password'
               type='password'
@@ -132,7 +133,7 @@ const AuthForm = () => {
                   isSubmitting || isAuthenticated
                 }
               >
-                Submit
+                {d['buttonSubmit']}
               </Button>
 
               <Button
@@ -144,7 +145,7 @@ const AuthForm = () => {
                   isSubmitting || !isAuthenticated
                 }
               >
-                Logout
+                {d['buttonLogout']}
               </Button>
             </Box>
           </Box>
