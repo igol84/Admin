@@ -10,6 +10,7 @@ import Auth from "./pages/auth";
 import Dashboard from "./pages/dashboard";
 import React from "react";
 import {LanguageModeContext, useLanguageMode} from "./language";
+import Sellers from "./pages/sellers";
 
 function App() {
   const [theme, colorMode] = useThemeMode()
@@ -28,7 +29,7 @@ function App() {
                 <Routes>
                   <Route path='/' element={<Dashboard/>}/>
                   <Route path='/auth' element={<Auth/>}/>
-                  <Route path='/team' element={<Dashboard/>}/>
+                  <Route path='/sellers' element={<Sellers/>}/>
                 </Routes>
               </main>
             </div>

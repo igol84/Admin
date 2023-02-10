@@ -81,8 +81,8 @@ const SidebarMenu = () => {
               {d['Data']}
             </Typography>
             <Item
-              title={d["Manage Team"]}
-              to='/team'
+              title='Sellers'
+              to='/sellers'
               icon={<PeopleOutlinedIcon/>}
               location={location.pathname}
             />

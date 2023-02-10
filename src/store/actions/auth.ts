@@ -1,8 +1,9 @@
-import axios from "../../axios"
+import Axios, {AxiosError} from "axios";
 
+import axios from "../../axios"
 import {AppDispatch} from "../index";
 import {authSlice} from "../slices/authSlice";
-import Axios, {AxiosError} from "axios";
+
 
 export interface IAuth {
   username: string
@@ -32,7 +33,6 @@ export const login = (data: IAuth) => {
         access_token: response.data.access_token,
         username: data.username
       }))
-      console.log(response.data.access_token)
     } catch (err) {
       const errors = err as Error | AxiosError;
       if (Axios.isAxiosError(errors)) {
