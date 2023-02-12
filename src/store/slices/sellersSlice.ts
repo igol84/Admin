@@ -4,14 +4,14 @@ import {SellerResponse} from "../actions/sellers";
 interface SellerState {
   sellers: SellerResponse[]
   count: number
-  loading: boolean
+  isLoading: boolean
   error: string
 }
 
 const initialState: SellerState = {
   sellers: [],
   count: 0,
-  loading: false,
+  isLoading: false,
   error: ''
 }
 
@@ -24,16 +24,16 @@ export const sellersSlice = createSlice({
   initialState,
   reducers: {
     sellersFetching(state) {
-      state.loading = true
+      state.isLoading = true
     },
     sellersFetchingSuccess(state, action: PayloadAction<SellersPayload>) {
       state.sellers = action.payload.sellers
       state.count = 1
-      state.loading = false
+      state.isLoading = false
       state.error = ''
     },
     sellersFetchingError(state, action: PayloadAction<Error>) {
-      state.loading = false
+      state.isLoading = false
       state.error = action.payload.message
     },
 
