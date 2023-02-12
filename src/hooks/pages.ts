@@ -25,7 +25,7 @@ export const useIsLoadingDisplay = (loading: Boolean) => {
     } else {
       setShowLoading(false)
     }
-  }, [])
+  }, [loading])
 
   return showLoading
 }
