@@ -10,13 +10,14 @@ export interface SellerResponse {
   id: number
 }
 
-export const fetchSellers = (access_token: string) => {
+export const fetchSellers = (access_token: string, {storeId}: any = null) => {
   const secureApi = secureApiCreate(access_token)
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(sellersSlice.actions.sellersFetching())
       const response: SellerResponse[] = await secureApi.get('seller').json()
-      dispatch(sellersSlice.actions.sellersFetchingSuccess({sellers: response}))
+      const sellers = response.filter(seller => seller.store_id===storeId)
+      dispatch(sellersSlice.actions.sellersFetchingSuccess({sellers}))
     } catch (err) {
       dispatch(sellersSlice.actions.sellersFetchingError(err as Error))
     }

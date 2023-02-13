@@ -4,13 +4,13 @@ import {useAppDispatch, useAppSelector} from "./redux";
 import {invokeIf} from "../utilite";
 import {authSlice} from "../store/slices/authSlice";
 
-export const useAccess = (fetchFn: any) => {
+export const useAccess = (fetchFn: any, arg: any=null) => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const errorText = useAppSelector(state => state.sellersReducer.error)
   const isAuthenticated = useAppSelector(state => state.authReducer.isAuthenticated)
   const access_token = useAppSelector(state => state.authReducer.access_token)
-  const dispatchFetchFnAccess = useCallback(() => dispatch(fetchFn(access_token)), [])
+  const dispatchFetchFnAccess = useCallback(() => dispatch(fetchFn(access_token, arg)), [])
   useEffect(() => {
     if (errorText) {
       dispatch(authSlice.actions.logout())
@@ -35,3 +35,4 @@ export const useIsLoadingDisplay = (loading: Boolean) => {
 
   return showLoading
 }
+
