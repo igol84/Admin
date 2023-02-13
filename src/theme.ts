@@ -62,6 +62,10 @@ export const tokens = (mode: PaletteMode) => ({
         800: "#2a2d64",
         900: "#151632",
       },
+      black: {
+        100: "#fff",
+        900: "#000",
+      },
     }
     : {
       grey: {
@@ -119,6 +123,10 @@ export const tokens = (mode: PaletteMode) => ({
         800: "#c3c6fd",
         900: "#e1e2fe",
       },
+      black: {
+        100: "#000",
+        900: "#fff",
+      },
     }),
 });
 
@@ -164,7 +172,7 @@ export const themeSettings = (mode: PaletteMode) => {
     },
     typography: {
       fontFamily: ['Source Sans Pro', 'sans-serif'].join(","),
-      fontSize: 12,
+      fontSize: 16,
       h1: {
         fontFamily: ['Source Sans Pro', 'sans-serif'].join(","),
         fontSize: 40,

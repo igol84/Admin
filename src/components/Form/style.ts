@@ -6,7 +6,7 @@ export const useBoxTableStyle = () => {
   const theme = useTheme()
   const colors = tokens(theme.palette.mode)
   return {
-    mt: '40px',
+    mt: '8px',
     '& .MuiDataGrid-root': {
       border: 'none'
     },
@@ -26,6 +26,13 @@ export const useBoxTableStyle = () => {
     '& .MuiDataGrid-footerContainer': {
       borderTop: 'none',
       backgroundColor: colors.blueAccent[700]
+    },
+    '& .MuiDataGrid-cell--editing': {
+      backgroundColor: `${colors.greenAccent[300]} !important`,
+      color: `${colors.blueAccent[600]} !important`
+    },
+    '& .MuiDataGrid-editInputCell': {
+      color: colors.black[900],
     },
   }
 }

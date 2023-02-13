@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from "../../components/Header";
-import {Box, Button, useTheme} from "@mui/material";
+import {Box, Button} from "@mui/material";
 import {useAppSelector, useStoreId} from "../../hooks/redux";
 import {fetchSellers} from "../../store/actions/sellers";
 import LoadingCircular from "../../components/LoadingCircular";
@@ -17,11 +17,11 @@ const Sellers = () => {
 
   const columns: GridColumns = [
     {field: 'name', headerName: 'Name', width: 180, editable: true},
-    {field: 'active', headerName: 'Active', width: 180, editable: true},
+    {field: 'active', headerName: 'Active', width: 180, editable: true, type: "boolean"},
   ]
   const boxTableStyle = useBoxTableStyle()
   return (
-    <Box m='20px' sx={boxTableStyle}>
+    <Box m='8px'>
       <Box display='flex' justifyContent='space-around' alignItems='center'>
         <Header title='Sellers' subTitle='Sellers page'/>
       </Box>
@@ -29,7 +29,7 @@ const Sellers = () => {
       <Button color='secondary' variant="contained" onClick={onClick}>
         Update
       </Button>
-      <Box height="75vh" >
+      <Box height="70vh"  sx={boxTableStyle}>
         <DataGrid
           columns={columns}
           rows={sellers}

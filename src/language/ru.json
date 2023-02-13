@@ -10,7 +10,7 @@
     "subTitle": "Добро пожаловать",
     "loginField": "Логин",
     "passwordField": "Пароль",
-    "buttonSubmit": "Увійти",
+    "buttonSubmit": "Войти",
     "buttonLogout": "Выйти",
     "required": "Обязательно",
     "userIsNot": "Пользователь недоступен",
