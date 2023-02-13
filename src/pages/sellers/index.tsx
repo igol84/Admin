@@ -11,7 +11,6 @@ const Sellers = () => {
   const {isLoading, sellers} = useAppSelector(state => state.sellersReducer)
   const showLoading = useIsLoadingDisplay(isLoading)
   const onClick = ()=>fetchAccessSellers()
-  console.log(isLoading, showLoading)
   return (
     <Box m='20px'>
       <Box display='flex' justifyContent='space-around' alignItems='center'>

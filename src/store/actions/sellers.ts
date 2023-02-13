@@ -19,7 +19,6 @@ export const fetchSellers = (access_token: string) => {
       dispatch(sellersSlice.actions.sellersFetchingSuccess({sellers: response}))
     } catch (err) {
       dispatch(sellersSlice.actions.sellersFetchingError(err as Error))
-
     }
   }
 }
