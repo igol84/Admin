@@ -1,12 +1,14 @@
 import React from 'react';
+import equal from 'fast-deep-equal';
 import Header from "../../components/Header";
-import {Alert, AlertProps, Box, Button, Snackbar} from "@mui/material";
+import {Box, Button} from "@mui/material";
 import {useAppDispatch, useAppSelector, useStoreId} from "../../hooks/redux";
-import {fetchSellers, updateSeller} from "../../store/actions/sellers";
+import {fetchSellers, SellerResponse, updateSeller} from "../../store/actions/sellers";
 import LoadingCircular from "../../components/LoadingCircular";
 import {useAccess, useDictionary, useIsLoadingDisplay} from "../../hooks/pages";
 import {DataGrid, GridColumns, GridRenderCellParams} from "@mui/x-data-grid";
 import {useBoxTableStyle} from "../../components/Form/style";
+import {trimmedRow} from "../../hooks/form-data";
 
 
 const Sellers = () => {
@@ -35,15 +37,21 @@ const Sellers = () => {
     },
   ]
   const boxTableStyle = useBoxTableStyle()
-  const handleCloseSnackbar = () => setSnackbar(null);
-  const [snackbar, setSnackbar] = React.useState<Pick<AlertProps, 'children' | 'severity'> | null>(null);
-  const handleProcessRowUpdateError = React.useCallback((error: Error) => {
-    setSnackbar({children: error.message, severity: 'error'});
-  }, []);
+
   const dispatch = useAppDispatch()
   const access_token = useAppSelector(state => state.authReducer.access_token)
+
+  const headerEditeSeller = React.useCallback(
+    (newRow: SellerResponse, oldRow: SellerResponse) => {
+      const sellerWithTrimmedName = trimmedRow('name')(newRow)
+      if (!equal(sellerWithTrimmedName, oldRow)) {
+        return dispatch(updateSeller(access_token, sellerWithTrimmedName))
+      }
+      return oldRow
+    }, [dispatch]
+  )
   return (
-    <Box m='8px'>
+    <Box m={1}>
       <Box display='flex' justifyContent='space-around' alignItems='center'>
         <Header title={d['title']}/>
       </Box>
@@ -53,22 +61,12 @@ const Sellers = () => {
       </Button>
       <Box height="75vh" sx={boxTableStyle}>
         <DataGrid
-          processRowUpdate={(newRow: any) => dispatch(updateSeller(access_token, newRow))}
-          onProcessRowUpdateError={handleProcessRowUpdateError}
+          processRowUpdate={(newRow, oldRow) => headerEditeSeller(newRow, oldRow)}
+          onProcessRowUpdateError={(error) => console.log(error.message)}
           columns={columns}
           rows={sellers}
           experimentalFeatures={{newEditingApi: true}}
         />
-        {!!snackbar && (
-          <Snackbar
-            open
-            anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}
-            onClose={handleCloseSnackbar}
-            autoHideDuration={6000}
-          >
-            <Alert {...snackbar} onClose={handleCloseSnackbar}/>
-          </Snackbar>
-        )}
       </Box>
     </Box>
   );

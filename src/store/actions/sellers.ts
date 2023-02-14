@@ -2,7 +2,6 @@ import {AppDispatch} from "../index";
 import {secureApiCreate} from "../../ky";
 import {sellersSlice} from "../slices/sellersSlice";
 import {authSlice} from "../slices/authSlice";
-import {AxiosError} from "axios/index";
 
 
 export interface SellerResponse {
@@ -35,7 +34,7 @@ export const updateSeller = (access_token: string, seller: SellerResponse) => {
       dispatch(sellersSlice.actions.updateSeller({changedSeller: seller}))
       return seller
     } catch (err) {
-      const errors = err as Error | AxiosError;
+      const errors = err as Error;
       const errorText = errors.message
       if (errorText) {
         dispatch(authSlice.actions.loginFail({errorText}))
