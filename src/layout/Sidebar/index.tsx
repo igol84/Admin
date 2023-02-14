@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {Avatar, Box, IconButton, Typography, useTheme} from "@mui/material";
 import {Menu, MenuItem, Sidebar, useProSidebar} from "react-pro-sidebar";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
@@ -9,18 +9,17 @@ import {menuItemStyles} from "./Sidebar.theme";
 import {useLocation} from "react-router-dom";
 import {Item} from "./Item";
 import {useAppSelector} from "../../hooks/redux";
-import {LanguageModeContext} from "../../language";
+import {useDictionary} from "../../hooks/pages";
 
 
 const SidebarMenu = () => {
-  const {dictionary} = useContext(LanguageModeContext)
-  const d = dictionary['sidebar']
+  const d = useDictionary('sidebar')
   const location = useLocation()
   const theme = useTheme()
   const colors = tokens(theme.palette.mode)
   const {collapsed, collapseSidebar} = useProSidebar();
   const style = {
-    display: 'flex', height: '100%', minHeight: '400px'
+    display: 'flex', minHeight: '400px'
   } as const;
   const userName = useAppSelector(state => state.authReducer.username)
   const isAuthenticated = useAppSelector(state => state.authReducer.isAuthenticated)
@@ -50,7 +49,7 @@ const SidebarMenu = () => {
                     userName ?
                       <Avatar sx={{backgroundColor: colors.greenAccent[500]}}>{userName[0].toUpperCase()}</Avatar>
                       :
-                      d['Admin']
+                      d['admin']
                   }
                 </Typography>
                 <IconButton>
@@ -67,7 +66,7 @@ const SidebarMenu = () => {
             hidden={!isAuthenticated}
           >
             <Item
-              title={d['Dashboard']}
+              title={d['dashboard']}
               to='/'
               icon={<HomeOutlinedIcon/>}
               location={location.pathname}
@@ -78,10 +77,10 @@ const SidebarMenu = () => {
               color={colors.grey[200]}
               sx={{m: '10px 0 5px 20px'}}
             >
-              {d['Data']}
+              {d['data']}
             </Typography>
             <Item
-              title='Sellers'
+              title={d['sellers']}
               to='/sellers'
               icon={<PeopleOutlinedIcon/>}
               location={location.pathname}

@@ -38,9 +38,7 @@ export const login = (data: IAuth) => {
       if (Axios.isAxiosError(errors)) {
         const errorText = errors.response?.data.detail || errors.message
         if (errorText) {
-          dispatch(authSlice.actions.loginFail({
-            errorText
-          }))
+          dispatch(authSlice.actions.loginFail({errorText}))
         }
       }
     }

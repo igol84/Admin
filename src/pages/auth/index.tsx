@@ -1,15 +1,14 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import _ from "lodash";
 import {Box} from "@mui/material";
 
 import Header from "../../components/Header";
 import AuthForm from "../../components/authForm";
 import {useAppSelector} from "../../hooks/redux";
-import {LanguageModeContext} from "../../language";
+import {useDictionary} from "../../hooks/pages";
 
 const Auth = () => {
-  const {dictionary} = useContext(LanguageModeContext)
-  const d = dictionary['auth']
+  const d = useDictionary('auth')
   const userName: string = useAppSelector(state => state.authReducer.username)
   const welcomeText = userName ? `${d['subTitle']} ${_.capitalize(userName)}` : ''
   return (

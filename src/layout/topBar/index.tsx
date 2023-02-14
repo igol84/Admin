@@ -25,22 +25,24 @@ const TopBar = () => {
     setAnchorLanguageMenu(null);
   }
 
-  const MenuItemLangCreator = (language: LanguageType) => () => {
+  const MenuItemLangCreator = (language: LanguageType, currentLanguage: LanguageType) => () => {
     const onClick = () => {
       setAnchorLanguageMenu(null);
       setLanguageMode(language)
     }
+    const isSelected = language === currentLanguage
+    const fullLanguageName = languageOptions[language]
     return (
-      <MenuItem onClick={onClick}>{languageOptions[language]}</MenuItem>
+      <MenuItem onClick={onClick} disabled={isSelected}>{fullLanguageName}</MenuItem>
     )
   };
 
-  const MenuItemUa = MenuItemLangCreator('ua')
-  const MenuItemRu = MenuItemLangCreator('ru')
-  const MenuItemEn = MenuItemLangCreator('en')
+  const MenuItemUa = MenuItemLangCreator('ua', language)
+  const MenuItemRu = MenuItemLangCreator('ru', language)
+  const MenuItemEn = MenuItemLangCreator('en', language)
 
   return (
-    <Box sx={{display: 'flex', justifyContent: 'flex-end'}} p={2}>
+    <Box sx={{display: 'flex', justifyContent: 'flex-end'}} pt={2} px={2}>
 
       {/*ICONS*/}
       <Box sx={{display: 'flex'}}>

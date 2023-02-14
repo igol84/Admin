@@ -1,9 +1,9 @@
 {
   "sidebar": {
-    "Admin": "Admin",
-    "Dashboard": "Dashboard",
-    "Manage Team": "Manage Team",
-    "Data": "Data"
+    "admin": "Admin",
+    "dashboard": "Dashboard",
+    "sellers": "Sellers",
+    "data": "Data"
   },
   "auth": {
     "title": "Authorization",
@@ -20,5 +20,8 @@
   "dash": {
     "title": "Dashboard",
     "subTitle": "Welcome to you dashboard"
+  },
+  "sellers": {
+    "title": "Sellers"
   }
 }

@@ -1,17 +1,16 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import Header from "../../components/Header";
 import {Box, Button} from "@mui/material";
-import {LanguageModeContext} from "../../language";
 import {useAppDispatch, useAppSelector, useStoreId} from "../../hooks/redux";
 import {useNavigate} from "react-router-dom";
 import {fetchSellers} from "../../store/actions/sellers";
 import {invokeIf} from "../../utilite";
+import {useDictionary} from "../../hooks/pages";
 
 
 const Dashboard = () => {
+  const d = useDictionary('dash')
   const storeId = useStoreId()
-  const {dictionary} = useContext(LanguageModeContext)
-  const d = dictionary['dash']
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const isAuthenticated = useAppSelector(state => state.authReducer.isAuthenticated)
@@ -25,7 +24,7 @@ const Dashboard = () => {
     fetchF()
   }
   return (
-    <Box m='20px'>
+    <Box m={1}>
       <Box display='flex' justifyContent='space-between' alignItems='center'>
         <Header title={d['title']} subTitle={d['subTitle']}/>
       </Box>

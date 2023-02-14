@@ -19,6 +19,10 @@ interface SellersPayload {
   sellers: SellerResponse[]
 }
 
+interface changedSellerPayload {
+  changedSeller: SellerResponse
+}
+
 export const sellersSlice = createSlice({
   name: 'sellers',
   initialState,
@@ -36,6 +40,13 @@ export const sellersSlice = createSlice({
       state.isLoading = false
       state.error = action.payload.message
     },
+    updateSeller(state, {payload: {changedSeller}}: PayloadAction<changedSellerPayload>) {
+      state.isLoading = false
+      state.sellers = state.sellers.map(seller => {
+        return seller.id == changedSeller.id ? changedSeller : seller
+      })
+      state.error = ''
+    }
 
   }
 })

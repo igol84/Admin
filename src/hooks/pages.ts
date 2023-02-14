@@ -1,13 +1,14 @@
-import {useCallback, useEffect, useState} from "react";
+import {useCallback, useContext, useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "./redux";
 import {invokeIf} from "../utilite";
 import {authSlice} from "../store/slices/authSlice";
+import {LanguageModeContext} from "../language";
 
-export const useAccess = (fetchFn: any, arg: any=null) => {
+export const useAccess = (fetchFn: any, arg: any = null) => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const errorText = useAppSelector(state => state.sellersReducer.error)
+  const errorText = useAppSelector(state => state.authReducer.errorText)
   const isAuthenticated = useAppSelector(state => state.authReducer.isAuthenticated)
   const access_token = useAppSelector(state => state.authReducer.access_token)
   const dispatchFetchFnAccess = useCallback(() => dispatch(fetchFn(access_token, arg)), [])
@@ -36,3 +37,7 @@ export const useIsLoadingDisplay = (loading: Boolean) => {
   return showLoading
 }
 
+export const useDictionary = (page: string) => {
+  const {dictionary} = useContext(LanguageModeContext)
+  return dictionary[page]
+}

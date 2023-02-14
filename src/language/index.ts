@@ -15,29 +15,30 @@ const languageOptions = {
   en: 'English',
   ru: 'Руский'
 };
+const defaultLanguage = 'en'
 export type LanguageType = keyof typeof languageOptions
 
-const defaultLanguage: LanguageType = localStorage.getItem(LANGUAGE_KEY) === 'ua' ? 'ua' :
-  localStorage.getItem(LANGUAGE_KEY) === 'ru' ? 'ru': 'en'
+const language: LanguageType = localStorage.getItem(LANGUAGE_KEY) === 'ua' ? 'ua' :
+  localStorage.getItem(LANGUAGE_KEY) === 'ru' ? 'ru': defaultLanguage
 
 interface LanguageModeType {
   dictionary: any,
-  language: string,
+  language: LanguageType,
   languageOptions: typeof languageOptions,
   setLanguageMode: (value: LanguageType) => void
 }
 
 export const LanguageModeContext = createContext<LanguageModeType>({
-  dictionary: dictionaryList[defaultLanguage],
-  language: defaultLanguage,
-  languageOptions: languageOptions,
+  dictionary: dictionaryList[language],
+  language,
+  languageOptions,
   setLanguageMode: (value: LanguageType) => {
     console.log(value)
   }
 })
 
 export const useLanguageMode = (): [LanguageModeType] => {
-  const [mode, setMode] = useState<LanguageType>(defaultLanguage)
+  const [mode, setMode] = useState<LanguageType>(language)
   const languageMode = useMemo(
     () => {
       return ({
