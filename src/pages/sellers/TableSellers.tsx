@@ -1,20 +1,31 @@
 import React from 'react';
 import {DataGrid, GridColumns, GridRenderCellParams} from "@mui/x-data-grid";
-import {Box, Button} from "@mui/material";
+import {Alert, AlertProps, Box, Button, Snackbar} from "@mui/material";
 import {useBoxTableStyle} from "../../components/Form/style";
 import {SellerResponse, updateSeller} from "../../store/actions/sellers";
 import {SellersPayload} from "../../store/slices/sellersSlice";
 import {trimmedRow} from "../../hooks/form-data";
 import equal from "fast-deep-equal";
-import {useEditAccess} from "../../hooks/pages";
+import {useDictionary, useEditAccess} from "../../hooks/pages";
+
 
 const TableSellers = ({sellers}: SellersPayload) => {
+  const d = useDictionary('sellers')
+  const handleCloseSnackbar = () => setSnackbar(null);
+  const [snackbar, setSnackbar] = React.useState<Pick<AlertProps, 'children' | 'severity'> | null>(null);
+
+  const isValid = (seller: SellerResponse) => {
+    setSnackbar({children: d['fieldNameError'], severity: 'error'});
+    return seller.name != ''
+  }
+
   const boxTableStyle = useBoxTableStyle()
   const editAccess = useEditAccess(updateSeller)
   const headerEditeSeller = React.useCallback(
     (newRow: SellerResponse, oldRow: SellerResponse) => {
       const sellerWithTrimmedName = trimmedRow('name')(newRow)
-      if (!equal(sellerWithTrimmedName, oldRow)) {
+      if (!equal(sellerWithTrimmedName, oldRow) && isValid(sellerWithTrimmedName)) {
+        setSnackbar({children: d['sellerSuccessfulSaved'], severity: 'success'});
         return editAccess(newRow)
       }
       return oldRow
@@ -48,6 +59,16 @@ const TableSellers = ({sellers}: SellersPayload) => {
         rows={sellers}
         experimentalFeatures={{newEditingApi: true}}
       />
+
+      <Snackbar
+        open={!!snackbar}
+        anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}
+        onClose={handleCloseSnackbar}
+        autoHideDuration={6000}
+      >
+        <Alert {...snackbar} onClose={handleCloseSnackbar}/>
+      </Snackbar>
+
     </Box>
   );
 };

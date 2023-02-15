@@ -22,6 +22,8 @@
     "subTitle": "Welcome to you dashboard"
   },
   "sellers": {
-    "title": "Sellers"
+    "title": "Sellers",
+    "fieldNameError": "Error while saving seller: name can't be empty.",
+    "sellerSuccessfulSaved": "Seller successfully saved"
   }
 }
