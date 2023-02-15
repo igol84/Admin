@@ -23,6 +23,13 @@ export const useAccess = (fetchFn: any, arg: any = null) => {
   return dispatchFetchFnAccess
 }
 
+export const useEditAccess = (fetchFn: any) => {
+  const dispatch = useAppDispatch()
+  const access_token = useAppSelector(state => state.authReducer.access_token)
+  return (newRow: any) => dispatch(fetchFn(access_token, newRow))
+}
+
+
 export const useIsLoadingDisplay = (loading: Boolean) => {
   const [showLoading, setShowLoading] = useState(false)
   useEffect(() => {

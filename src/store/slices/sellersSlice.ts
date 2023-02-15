@@ -15,7 +15,7 @@ const initialState: SellerState = {
   error: ''
 }
 
-interface SellersPayload {
+export interface SellersPayload {
   sellers: SellerResponse[]
 }
 
