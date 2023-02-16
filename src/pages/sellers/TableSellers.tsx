@@ -15,22 +15,29 @@ const TableSellers = ({sellers}: SellersPayload) => {
   const [snackbar, setSnackbar] = React.useState<Pick<AlertProps, 'children' | 'severity'> | null>(null);
 
   const isValid = (seller: SellerResponse) => {
-    setSnackbar({children: d['fieldNameError'], severity: 'error'});
     return seller.name != ''
   }
 
   const boxTableStyle = useBoxTableStyle()
   const editAccess = useEditAccess(updateSeller)
-  const headerEditeSeller = React.useCallback(
-    (newRow: SellerResponse, oldRow: SellerResponse) => {
+
+  const processRowUpdate = React.useCallback(
+    async (newRow: SellerResponse, oldRow: SellerResponse) => {
       const sellerWithTrimmedName = trimmedRow('name')(newRow)
       if (!equal(sellerWithTrimmedName, oldRow) && isValid(sellerWithTrimmedName)) {
+        const fetchedRow = await editAccess(newRow)
         setSnackbar({children: d['sellerSuccessfulSaved'], severity: 'success'});
-        return editAccess(newRow)
+        return fetchedRow
       }
+      setSnackbar({children: d['fieldNameError'], severity: 'error'});
       return oldRow
-    }, []
-  )
+    },
+    [editAccess],
+  );
+
+  const handleProcessRowUpdateError = React.useCallback((error: Error) => {
+    setSnackbar({ children: error.message, severity: 'error' });
+  }, []);
 
   const DeleteButton = ({value}: { value: string }) => {
     const onClick = () => {
@@ -53,8 +60,8 @@ const TableSellers = ({sellers}: SellersPayload) => {
   return (
     <Box height="75vh" sx={boxTableStyle}>
       <DataGrid
-        processRowUpdate={(newRow, oldRow) => headerEditeSeller(newRow, oldRow)}
-        onProcessRowUpdateError={(error) => console.log(error.message)}
+        processRowUpdate={processRowUpdate}
+        onProcessRowUpdateError={handleProcessRowUpdateError}
         columns={columns}
         rows={sellers}
         experimentalFeatures={{newEditingApi: true}}
