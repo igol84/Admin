@@ -4,7 +4,7 @@ import {Alert, AlertProps, Box, Button, Snackbar} from "@mui/material";
 import {useBoxTableStyle} from "../../components/Form/style";
 import {SellerResponse, updateSeller} from "../../store/actions/sellers";
 import {SellersPayload} from "../../store/slices/sellersSlice";
-import {trimmedRow} from "../../hooks/form-data";
+import {toTrimTheRow} from "../../hooks/form-data";
 import equal from "fast-deep-equal";
 import {useDictionary, useEditAccess} from "../../hooks/pages";
 
@@ -18,22 +18,34 @@ const TableSellers = ({sellers}: SellersPayload) => {
     return seller.name != ''
   }
 
+  function computeMutation(newRow: SellerResponse, oldRow: SellerResponse) {
+    const trimmedRow = toTrimTheRow('name')(newRow)
+    if (equal(trimmedRow, oldRow)) {
+      return null
+    } else if(!isValid(trimmedRow)) {
+      setSnackbar({children: d['fieldNameError'], severity: 'error'})
+      return null
+    }
+    return trimmedRow
+  }
+
   const boxTableStyle = useBoxTableStyle()
   const editAccess = useEditAccess(updateSeller)
 
   const processRowUpdate = React.useCallback(
-    async (newRow: SellerResponse, oldRow: SellerResponse) => {
-      const sellerWithTrimmedName = trimmedRow('name')(newRow)
-      if (!equal(sellerWithTrimmedName, oldRow) && isValid(sellerWithTrimmedName)) {
-        const fetchedRow = await editAccess(newRow)
-        setSnackbar({children: d['sellerSuccessfulSaved'], severity: 'success'});
-        return fetchedRow
-      }
-      setSnackbar({children: d['fieldNameError'], severity: 'error'});
-      return oldRow
-    },
+    async (newRow: SellerResponse, oldRow: SellerResponse) =>{
+        const mutation = computeMutation(newRow, oldRow);
+        if (mutation) {
+          // Save the arguments to resolve or reject the promise later
+          const fetchedRow = await editAccess(mutation)
+          setSnackbar({children: d['sellerSuccessfulSaved'], severity: 'success'});
+          return fetchedRow
+        } else {
+          return oldRow // Nothing was changed
+        }
+      },
     [editAccess],
-  );
+  )
 
   const handleProcessRowUpdateError = React.useCallback((error: Error) => {
     setSnackbar({ children: error.message, severity: 'error' });
