@@ -1,29 +1,29 @@
 import React from 'react';
+import * as yup from 'yup'
 import {DataGrid, GridColumns, GridRenderCellParams} from "@mui/x-data-grid";
 import {Alert, AlertProps, Box, Button, Snackbar} from "@mui/material";
 import {useBoxTableStyle} from "../../components/Form/style";
-import {SellerResponse, updateSeller} from "../../store/actions/sellers";
+import {updateSeller} from "../../store/actions/sellers";
 import {SellersPayload} from "../../store/slices/sellersSlice";
 import {toTrimTheRow} from "../../hooks/form-data";
 import equal from "fast-deep-equal";
 import {useDictionary, useEditAccess} from "../../hooks/pages";
 
 
+
 const TableSellers = ({sellers}: SellersPayload) => {
   const d = useDictionary('sellers')
-  const handleCloseSnackbar = () => setSnackbar(null);
-  const [snackbar, setSnackbar] = React.useState<Pick<AlertProps, 'children' | 'severity'> | null>(null);
 
-  const isValid = (seller: SellerResponse) => {
-    return seller.name != ''
-  }
-
-  function computeMutation(newRow: SellerResponse, oldRow: SellerResponse) {
+  let sellerSchema = yup.object({
+    id: yup.number().required().integer(),
+    store_id: yup.number().required().integer(),
+    name: yup.string().required(d['fieldNameError']),
+    active: yup.boolean().required(),
+  })
+  type Seller = yup.InferType<typeof sellerSchema>
+  function computeMutation(newRow: Seller, oldRow: Seller) {
     const trimmedRow = toTrimTheRow('name')(newRow)
     if (equal(trimmedRow, oldRow)) {
-      return null
-    } else if(!isValid(trimmedRow)) {
-      setSnackbar({children: d['fieldNameError'], severity: 'error'})
       return null
     }
     return trimmedRow
@@ -31,13 +31,15 @@ const TableSellers = ({sellers}: SellersPayload) => {
 
   const boxTableStyle = useBoxTableStyle()
   const editAccess = useEditAccess(updateSeller)
+  const handleCloseSnackbar = () => setSnackbar(null);
+  const [snackbar, setSnackbar] = React.useState<Pick<AlertProps, 'children' | 'severity'> | null>(null);
 
   const processRowUpdate = React.useCallback(
-    async (newRow: SellerResponse, oldRow: SellerResponse) =>{
+    async (newRow: Seller, oldRow: Seller) =>{
         const mutation = computeMutation(newRow, oldRow);
         if (mutation) {
-          // Save the arguments to resolve or reject the promise later
-          const fetchedRow = await editAccess(mutation)
+          const validRow = await sellerSchema.validate(mutation)
+          const fetchedRow = await editAccess(validRow)
           setSnackbar({children: d['sellerSuccessfulSaved'], severity: 'success'});
           return fetchedRow
         } else {
