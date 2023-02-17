@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Box, Button} from "@mui/material";
 import {Formik, FormikHelpers} from "formik";
 import * as Yup from "yup";
@@ -10,8 +10,6 @@ const AddNewSellerForm = () => {
   const dispatch = useAppDispatch()
   const access_token = useAppSelector(state => state.authReducer.access_token)
   const storeId = useStoreId()
-
-  const [errorName, setErrorName] = useState('')
 
   interface initialValuesType {
     name: string
@@ -25,6 +23,7 @@ const AddNewSellerForm = () => {
     const newSeller: NewSellerResponse = {name: value.name, active: true, store_id: storeId}
     await dispatch(addNewSeller(access_token, newSeller))
     actions.setSubmitting(false)
+    actions.resetForm()
   }
   return (
     <Formik
@@ -45,7 +44,7 @@ const AddNewSellerForm = () => {
               disabled={false}
               label='Name'
               name='name'
-              textLabel={errorName}
+              textLabel=''
             />
             <Button
               type='submit'
