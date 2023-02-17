@@ -12,7 +12,7 @@ import AddNewSellerForm from "../../components/sellers/AddNewSellerForm";
 
 function EditToolbar() {
   return (
-    <Box>
+    <Box sx={{my:1}}>
       <AddNewSellerForm/>
     </Box>
   );
@@ -102,7 +102,6 @@ const TableSellers = ({sellers}: SellersPayload) => {
       >
         <Alert {...snackbar} onClose={handleCloseSnackbar}/>
       </Snackbar>
-
     </Box>
   );
 };

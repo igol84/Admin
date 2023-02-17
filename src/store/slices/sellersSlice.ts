@@ -19,7 +19,11 @@ export interface SellersPayload {
   sellers: SellerResponse[]
 }
 
-interface changedSellerPayload {
+interface SellerPayload {
+  newSeller: SellerResponse
+}
+
+interface ChangedSellerPayload {
   changedSeller: SellerResponse
 }
 
@@ -31,7 +35,7 @@ export const sellersSlice = createSlice({
       state.isLoading = true
     },
     sellersFetchingSuccess(state, action: PayloadAction<SellersPayload>) {
-      state.sellers = action.payload.sellers
+      state.sellers = action.payload.sellers.reverse()
       state.count = 1
       state.isLoading = false
       state.error = ''
@@ -40,7 +44,12 @@ export const sellersSlice = createSlice({
       state.isLoading = false
       state.error = action.payload.message
     },
-    updateSeller(state, {payload: {changedSeller}}: PayloadAction<changedSellerPayload>) {
+    addNewSeller(state, {payload: {newSeller}}: PayloadAction<SellerPayload>) {
+      state.isLoading = false
+      state.sellers.unshift(newSeller)
+      state.error = ''
+    },
+    updateSeller(state, {payload: {changedSeller}}: PayloadAction<ChangedSellerPayload>) {
       state.isLoading = false
       state.sellers = state.sellers.map(seller => {
         return seller.id == changedSeller.id ? changedSeller : seller

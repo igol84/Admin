@@ -11,6 +11,8 @@ export interface SellerResponse {
   id: number
 }
 
+export type NewSellerResponse = Omit<SellerResponse, 'id'>
+
 export const fetchSellers = (access_token: string, {storeId}: any = null) => {
   const secureApi = secureApiCreate(access_token)
   return async (dispatch: AppDispatch) => {
@@ -21,6 +23,24 @@ export const fetchSellers = (access_token: string, {storeId}: any = null) => {
       dispatch(sellersSlice.actions.sellersFetchingSuccess({sellers}))
     } catch (err) {
       dispatch(sellersSlice.actions.sellersFetchingError(err as Error))
+    }
+  }
+}
+
+export const addNewSeller = (access_token: string, seller: NewSellerResponse) => {
+  const secureApi = secureApiCreate(access_token)
+  return async (dispatch: AppDispatch) => {
+    try {
+      dispatch(sellersSlice.actions.sellersFetching())
+      const newSeller: SellerResponse = await secureApi.post('seller', {json: seller}).json()
+      dispatch(sellersSlice.actions.addNewSeller({newSeller}))
+      return newSeller
+    } catch (err) {
+      const errors = err as Error;
+      const errorText = errors.message
+      if (errorText) {
+        dispatch(authSlice.actions.loginFail({errorText}))
+      }
     }
   }
 }
