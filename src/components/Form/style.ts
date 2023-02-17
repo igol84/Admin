@@ -34,5 +34,9 @@ export const useBoxTableStyle = () => {
     '& .MuiDataGrid-editInputCell': {
       color: colors.black[900],
     },
+    '& .Mui-selected': {
+      backgroundColor: `${colors.primary[200]} !important`,
+      borderColor: `${colors.primary[200]} !important`
+    },
   }
 }

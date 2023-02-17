@@ -48,3 +48,8 @@ export const useDictionary = (page: string) => {
   const {dictionary} = useContext(LanguageModeContext)
   return dictionary[page]
 }
+
+export const useMuiLanguage = () => {
+  const {muiLanguage, language} = useContext(LanguageModeContext)
+  return muiLanguage[language]
+}

@@ -7,12 +7,20 @@ import {updateSeller} from "../../store/actions/sellers";
 import {SellersPayload} from "../../store/slices/sellersSlice";
 import {toTrimTheRow} from "../../hooks/form-data";
 import equal from "fast-deep-equal";
-import {useDictionary, useEditAccess} from "../../hooks/pages";
+import {useDictionary, useEditAccess, useMuiLanguage} from "../../hooks/pages";
+import AddNewSellerForm from "../../components/sellers/AddNewSellerForm";
 
-
+function EditToolbar() {
+  return (
+    <Box>
+      <AddNewSellerForm/>
+    </Box>
+  );
+}
 
 const TableSellers = ({sellers}: SellersPayload) => {
   const d = useDictionary('sellers')
+  const muiLanguage = useMuiLanguage()
 
   let sellerSchema = yup.object({
     id: yup.number().required().integer(),
@@ -21,6 +29,7 @@ const TableSellers = ({sellers}: SellersPayload) => {
     active: yup.boolean().required(),
   })
   type Seller = yup.InferType<typeof sellerSchema>
+
   function computeMutation(newRow: Seller, oldRow: Seller) {
     const trimmedRow = toTrimTheRow('name')(newRow)
     if (equal(trimmedRow, oldRow)) {
@@ -35,22 +44,22 @@ const TableSellers = ({sellers}: SellersPayload) => {
   const [snackbar, setSnackbar] = React.useState<Pick<AlertProps, 'children' | 'severity'> | null>(null);
 
   const processRowUpdate = React.useCallback(
-    async (newRow: Seller, oldRow: Seller) =>{
-        const mutation = computeMutation(newRow, oldRow);
-        if (mutation) {
-          const validRow = await sellerSchema.validate(mutation)
-          const fetchedRow = await editAccess(validRow)
-          setSnackbar({children: d['sellerSuccessfulSaved'], severity: 'success'});
-          return fetchedRow
-        } else {
-          return oldRow // Nothing was changed
-        }
-      },
+    async (newRow: Seller, oldRow: Seller) => {
+      const mutation = computeMutation(newRow, oldRow);
+      if (mutation) {
+        const validRow = await sellerSchema.validate(mutation)
+        const fetchedRow = await editAccess(validRow)
+        setSnackbar({children: d['sellerSuccessfulSaved'], severity: 'success'});
+        return fetchedRow
+      } else {
+        return oldRow // Nothing was changed
+      }
+    },
     [editAccess],
   )
 
   const handleProcessRowUpdateError = React.useCallback((error: Error) => {
-    setSnackbar({ children: error.message, severity: 'error' });
+    setSnackbar({children: error.message, severity: 'error'});
   }, []);
 
   const DeleteButton = ({value}: { value: string }) => {
@@ -79,6 +88,10 @@ const TableSellers = ({sellers}: SellersPayload) => {
         columns={columns}
         rows={sellers}
         experimentalFeatures={{newEditingApi: true}}
+        components={{
+          Toolbar: EditToolbar,
+        }}
+        localeText={muiLanguage.components.MuiDataGrid.defaultProps.localeText}
       />
 
       <Snackbar

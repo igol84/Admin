@@ -4,6 +4,7 @@ import {createContext, useMemo, useState} from "react";
 import ua from './ua.json';
 import en from './en.json';
 import ru from './ru.json';
+import {enUS, ruRU, ukUA} from "@mui/x-data-grid";
 
 // context for language mode
 const LANGUAGE_KEY = 'language'
@@ -15,6 +16,11 @@ const languageOptions = {
   en: 'English',
   ru: 'Руский'
 };
+const muiLanguage = {
+  ua: ukUA,
+  en: enUS,
+  ru: ruRU
+};
 const defaultLanguage = 'en'
 export type LanguageType = keyof typeof languageOptions
 
@@ -24,6 +30,7 @@ const language: LanguageType = localStorage.getItem(LANGUAGE_KEY) === 'ua' ? 'ua
 interface LanguageModeType {
   dictionary: any,
   language: LanguageType,
+  muiLanguage: typeof muiLanguage,
   languageOptions: typeof languageOptions,
   setLanguageMode: (value: LanguageType) => void
 }
@@ -32,6 +39,7 @@ export const LanguageModeContext = createContext<LanguageModeType>({
   dictionary: dictionaryList[language],
   language,
   languageOptions,
+  muiLanguage,
   setLanguageMode: (value: LanguageType) => {
     console.log(value)
   }
@@ -44,6 +52,7 @@ export const useLanguageMode = (): [LanguageModeType] => {
       return ({
         dictionary: dictionaryList[mode],
         language: mode,
+        muiLanguage,
         languageOptions: languageOptions,
         setLanguageMode: (value: LanguageType) => {
           setMode(value)
