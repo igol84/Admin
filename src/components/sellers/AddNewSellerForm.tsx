@@ -5,8 +5,10 @@ import * as Yup from "yup";
 import {FormTextInput} from "../Form";
 import {addNewSeller, NewSellerResponse} from "../../store/actions/sellers";
 import {useAppDispatch, useAppSelector, useStoreId} from "../../hooks/redux";
+import {useDictionary} from "../../hooks/pages";
 
 const AddNewSellerForm = () => {
+  const d = useDictionary('sellers')
   const dispatch = useAppDispatch()
   const access_token = useAppSelector(state => state.authReducer.access_token)
   const storeId = useStoreId()
@@ -30,7 +32,7 @@ const AddNewSellerForm = () => {
       initialValues={initialValues}
       validationSchema={Yup.object({
         name: Yup.string()
-          .required('required'),
+          .required(d['required']),
       })}
       onSubmit={onSubmit}
     >
@@ -42,7 +44,7 @@ const AddNewSellerForm = () => {
           }}>
             <FormTextInput
               disabled={false}
-              label='Name'
+              label={d['name']}
               name='name'
               textLabel=''
             />
@@ -50,10 +52,10 @@ const AddNewSellerForm = () => {
               type='submit'
               color='secondary'
               variant="contained"
-              sx={{ml: 1, width: '200px', height: '43px'}}
+              sx={{ml: 1, width: '230px', height: '43px'}}
               disabled={isSubmitting}
             >
-              Add new seller
+              {d['add_button']}
             </Button>
           </Box>
         </form>

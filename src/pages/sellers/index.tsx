@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from "../../components/Header";
-import {Box, Button} from "@mui/material";
+import {Box} from "@mui/material";
 import {useAppSelector, useStoreId} from "../../hooks/redux";
 import {fetchSellers} from "../../store/actions/sellers";
 import LoadingCircular from "../../components/LoadingCircular";
@@ -15,7 +15,6 @@ const Sellers = () => {
 
   const {isLoading, sellers} = useAppSelector(state => state.sellersReducer)
   const showLoading = useIsLoadingDisplay(isLoading)
-  const onClickUpdate = () => fetchAccessSellers()
 
 
   return (
@@ -23,11 +22,8 @@ const Sellers = () => {
       <Box display='flex' justifyContent='space-around' alignItems='center'>
         <Header title={d['title']}/>
       </Box>
-      <LoadingCircular show={showLoading}/>
-      <Button color='secondary' variant="contained" onClick={onClickUpdate}>
-        Update
-      </Button>
       <TableSellers sellers={sellers}/>
+      <LoadingCircular show={showLoading}/>
     </Box>
   );
 };

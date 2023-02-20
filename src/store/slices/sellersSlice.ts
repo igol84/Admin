@@ -55,6 +55,13 @@ export const sellersSlice = createSlice({
         return seller.id == changedSeller.id ? changedSeller : seller
       })
       state.error = ''
+    },
+    delSeller(state, {payload: delId}: PayloadAction<number>) {
+      state.isLoading = false
+      state.sellers = state.sellers.filter(seller => {
+        return seller.id !== delId
+      })
+      state.error = ''
     }
 
   }

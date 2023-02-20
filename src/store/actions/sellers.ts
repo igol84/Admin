@@ -62,3 +62,20 @@ export const updateSeller = (access_token: string, seller: SellerResponse) => {
     }
   }
 }
+
+export const delSeller = (access_token: string, id: number) => {
+  const secureApi = secureApiCreate(access_token)
+  return async (dispatch: AppDispatch) => {
+    try {
+      dispatch(sellersSlice.actions.sellersFetching())
+      await secureApi.delete(`seller/${id}`)
+      dispatch(sellersSlice.actions.delSeller(id))
+    } catch (err) {
+      const errors = err as Error;
+      const errorText = errors.message
+      if (errorText) {
+        dispatch(authSlice.actions.loginFail({errorText}))
+      }
+    }
+  }
+}

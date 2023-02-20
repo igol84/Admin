@@ -38,5 +38,11 @@ export const useBoxTableStyle = () => {
       backgroundColor: `${colors.primary[200]} !important`,
       borderColor: `${colors.primary[200]} !important`
     },
+    '& .MuiDataGrid-cell:focus': {
+      outline: 'none !important',
+    },
+    '& .MuiDataGrid-columnHeader:focus': {
+      outline: 'none !important',
+    },
   }
 }

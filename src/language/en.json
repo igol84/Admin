@@ -24,6 +24,11 @@
   "sellers": {
     "title": "Sellers",
     "fieldNameError": "Error while saving seller: name can't be empty.",
-    "sellerSuccessfulSaved": "Seller successfully saved"
+    "sellerSuccessfulSaved": "Seller successfully saved",
+    "name": "Name",
+    "active": "Active",
+    "delete": "Delete",
+    "add_button": "Add new seller",
+    "required": "Required"
   }
 }

@@ -24,6 +24,11 @@
   "sellers": {
     "title": "Продавцы",
     "fieldNameError": "Ошибка при сохранении продавца: имя не может быть пустым.",
-    "sellerSuccessfulSaved": "Продавец успешно сохранен"
+    "sellerSuccessfulSaved": "Продавец успешно сохранен",
+    "name": "Имя",
+    "active": "Активный",
+    "delete": "Удалить",
+    "add_button": "Добавить продавца",
+    "required": "Обязательно"
   }
 }

@@ -1,26 +1,53 @@
 import React from 'react';
 import * as yup from 'yup'
-import {DataGrid, GridColumns, GridRenderCellParams} from "@mui/x-data-grid";
-import {Alert, AlertProps, Box, Button, Snackbar} from "@mui/material";
+import {DataGrid, GridActionsCellItem, GridColumns, GridRenderCellParams, GridRowId} from "@mui/x-data-grid";
+import DeleteIcon from '@mui/icons-material/DeleteOutlined';
+import {Alert, AlertProps, Box, Snackbar} from "@mui/material";
 import {useBoxTableStyle} from "../../components/Form/style";
-import {updateSeller} from "../../store/actions/sellers";
+import {delSeller, updateSeller} from "../../store/actions/sellers";
 import {SellersPayload} from "../../store/slices/sellersSlice";
 import {toTrimTheRow} from "../../hooks/form-data";
 import equal from "fast-deep-equal";
 import {useDictionary, useEditAccess, useMuiLanguage} from "../../hooks/pages";
 import AddNewSellerForm from "../../components/sellers/AddNewSellerForm";
+import {useAppDispatch, useAppSelector} from "../../hooks/redux";
 
 function EditToolbar() {
   return (
-    <Box sx={{my:1}}>
+    <Box sx={{my: 1}}>
       <AddNewSellerForm/>
     </Box>
   );
 }
 
+interface DeleteButtonType {
+  value: number
+  selected: boolean
+}
+
+const DeleteButton = (props: DeleteButtonType) => {
+  const dispatch = useAppDispatch()
+  const access_token = useAppSelector(state => state.authReducer.access_token)
+  const {value, selected} = props
+  const onClick = async () => {
+    await dispatch(delSeller(access_token, value))
+  }
+  return (
+    <Box hidden={!selected}>
+      <GridActionsCellItem
+        icon={<DeleteIcon/>}
+        label="Delete"
+        onClick={onClick}
+        color="inherit"
+      />
+    </Box>
+  )
+}
+
 const TableSellers = ({sellers}: SellersPayload) => {
   const d = useDictionary('sellers')
   const muiLanguage = useMuiLanguage()
+  const [selectedRow, setSelectedRow] = React.useState<GridRowId | null>(null)
 
   let sellerSchema = yup.object({
     id: yup.number().required().integer(),
@@ -62,23 +89,28 @@ const TableSellers = ({sellers}: SellersPayload) => {
     setSnackbar({children: error.message, severity: 'error'});
   }, []);
 
-  const DeleteButton = ({value}: { value: string }) => {
-    const onClick = () => {
-      console.log('delete by id:', value)
-    }
-    return <Button color='secondary' variant="contained" onClick={onClick}>{value}</Button>
-  }
+
   const columns: GridColumns = [
-    {field: 'name', headerName: 'Name', width: 180, editable: true,},
-    {field: 'active', headerName: 'Active', width: 180, editable: true, type: "boolean"},
+    {field: 'name', headerName: d['name'], width: 180, editable: true,},
+    {field: 'active', headerName: d['active'], width: 180, editable: true, disableColumnMenu: true, type: "boolean"},
+    {field: 'empty', headerName: '', flex: 1, sortable: false, disableColumnMenu: true},
     {
       field: 'buttons',
-      headerName: 'Delete',
-      width: 180,
-      renderCell: (params: GridRenderCellParams) => <DeleteButton value={params.row.id}/>
+      headerName: d['delete'],
+      sortable: false,
+      disableColumnMenu: true,
+      renderCell: (params: GridRenderCellParams) =>
+        <DeleteButton value={params.row.id} selected={selectedRow == params.row.id}/>
     },
   ]
 
+
+  const handleRowFocus = React.useCallback(
+    (event: React.FocusEvent<HTMLDivElement>) => {
+      const row = event.currentTarget
+      const id = row!.dataset.id!
+      setSelectedRow(id)
+    }, [])
 
   return (
     <Box height="75vh" sx={boxTableStyle}>
@@ -92,6 +124,11 @@ const TableSellers = ({sellers}: SellersPayload) => {
           Toolbar: EditToolbar,
         }}
         localeText={muiLanguage.components.MuiDataGrid.defaultProps.localeText}
+        componentsProps={{
+          row: {
+            onFocus: handleRowFocus,
+          },
+        }}
       />
 
       <Snackbar
