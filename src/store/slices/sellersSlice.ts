@@ -36,7 +36,6 @@ export const sellersSlice = createSlice({
     },
     sellersFetchingSuccess(state, action: PayloadAction<SellersPayload>) {
       state.sellers = action.payload.sellers.reverse()
-      state.count = 1
       state.isLoading = false
       state.error = ''
     },

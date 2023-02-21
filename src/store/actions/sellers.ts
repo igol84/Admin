@@ -2,23 +2,24 @@ import {AppDispatch} from "../index";
 import {secureApiCreate} from "../../ky";
 import {sellersSlice} from "../slices/sellersSlice";
 import {authSlice} from "../slices/authSlice";
+import _ from "lodash";
 
 
 export interface SellerResponse {
+  id: number
   store_id: number
   name: string
   active: boolean
-  id: number
+  email?: string
+  role?: string
 }
-
-export type NewSellerResponse = Omit<SellerResponse, 'id'>
 
 export const fetchSellers = (access_token: string, {storeId}: any = null) => {
   const secureApi = secureApiCreate(access_token)
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(sellersSlice.actions.sellersFetching())
-      const response: SellerResponse[] = await secureApi.get('seller').json()
+      const response: SellerResponse[] = await secureApi.get(`seller/deletable?store_id=${storeId}`).json()
       const sellers = response.filter(seller => seller.store_id === storeId)
       dispatch(sellersSlice.actions.sellersFetchingSuccess({sellers}))
     } catch (err) {
@@ -27,7 +28,7 @@ export const fetchSellers = (access_token: string, {storeId}: any = null) => {
   }
 }
 
-export const addNewSeller = (access_token: string, seller: NewSellerResponse) => {
+export const addNewSeller = (access_token: string, seller: SellerResponse) => {
   const secureApi = secureApiCreate(access_token)
   return async (dispatch: AppDispatch) => {
     try {
@@ -46,11 +47,12 @@ export const addNewSeller = (access_token: string, seller: NewSellerResponse) =>
 }
 
 export const updateSeller = (access_token: string, seller: SellerResponse) => {
+  const updateSeller = _.pick(seller, ['id', 'store_id', 'name', 'active'])
   const secureApi = secureApiCreate(access_token)
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(sellersSlice.actions.sellersFetching())
-      await secureApi.put('seller', {json: seller})
+      await secureApi.put('seller', {json: updateSeller})
       dispatch(sellersSlice.actions.updateSeller({changedSeller: seller}))
       return seller
     } catch (err) {

@@ -21,20 +21,23 @@ function EditToolbar() {
 
 interface DeleteButtonType {
   sellerID: number
-  selected: boolean
+  hidden: boolean
+  disable: boolean
 }
 
 const DeleteButton = (props: DeleteButtonType) => {
-  const {sellerID, selected} = props
+  const d = useDictionary('sellers')
+  const {sellerID, hidden, disable} = props
   const deleteSellerAccess = useFetchAccess(delSeller)
   const onClick = async () => {
     await deleteSellerAccess(sellerID)
   }
   return (
-    <Box hidden={!selected}>
+    <Box hidden={hidden}>
       <GridActionsCellItem
+        disabled={disable}
         icon={<DeleteIcon/>}
-        label="Delete"
+        label={d['delete']}
         onClick={onClick}
         color="inherit"
       />
@@ -49,13 +52,12 @@ const TableSellers = ({sellers}: SellersPayload) => {
 
   const [selectedRow, setSelectedRow] = React.useState<GridRowId | null>(null)
   let sellerSchema = yup.object({
-    id: yup.number().required().integer(),
-    store_id: yup.number().required().integer(),
     name: yup.string().required(d['fieldNameError']),
     active: yup.boolean().required(),
   })
 
   type Seller = yup.InferType<typeof sellerSchema>
+
   function computeMutation(newRow: Seller, oldRow: Seller) {
     const trimmedRow = toTrimTheRow('name')(newRow)
     if (equal(trimmedRow, oldRow)) {
@@ -64,6 +66,7 @@ const TableSellers = ({sellers}: SellersPayload) => {
     return trimmedRow
 
   }
+
   const boxTableStyle = useBoxTableStyle()
   const handleCloseSnackbar = () => setSnackbar(null);
   const [snackbar, setSnackbar] = React.useState<Pick<AlertProps, 'children' | 'severity'> | null>(null);
@@ -98,7 +101,7 @@ const TableSellers = ({sellers}: SellersPayload) => {
       sortable: false,
       disableColumnMenu: true,
       renderCell: (params: GridRenderCellParams) =>
-        <DeleteButton sellerID={params.row.id} selected={selectedRow == params.row.id}/>
+        <DeleteButton sellerID={params.row.id} hidden={selectedRow != params.row.id} disable={!!params.row.role}/>
     },
   ]
 
