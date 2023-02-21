@@ -1,4 +1,19 @@
 {
+  "sellers": {
+    "title": "Sellers",
+    "fieldNameError": "Error while saving seller: name can't be empty.",
+    "sellerSuccessfulSaved": "Seller successfully saved",
+    "name": "Name",
+    "active": "Active",
+    "delete": "Delete",
+    "add_button": "Add new seller",
+    "required": "Required",
+    "orders": "orders"
+  },
+  "dash": {
+    "title": "Dashboard",
+    "subTitle": "Welcome to you dashboard"
+  },
   "sidebar": {
     "admin": "Admin",
     "dashboard": "Dashboard",
@@ -16,19 +31,5 @@
     "userIsNot": "User is not available",
     "passIsNot": "Incorrect password",
     "networkError": "Network Error"
-  },
-  "dash": {
-    "title": "Dashboard",
-    "subTitle": "Welcome to you dashboard"
-  },
-  "sellers": {
-    "title": "Sellers",
-    "fieldNameError": "Error while saving seller: name can't be empty.",
-    "sellerSuccessfulSaved": "Seller successfully saved",
-    "name": "Name",
-    "active": "Active",
-    "delete": "Delete",
-    "add_button": "Add new seller",
-    "required": "Required"
   }
 }

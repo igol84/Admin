@@ -1,5 +1,6 @@
 import React from 'react';
 import * as yup from 'yup'
+import _ from "lodash";
 import {DataGrid, GridActionsCellItem, GridColumns, GridRenderCellParams, GridRowId} from "@mui/x-data-grid";
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import {Alert, AlertProps, Box, Snackbar} from "@mui/material";
@@ -11,6 +12,7 @@ import equal from "fast-deep-equal";
 import {useDictionary, useFetchAccess, useMuiLanguage} from "../../hooks/pages";
 import AddNewSellerForm from "../../components/sellers/AddNewSellerForm";
 
+
 function EditToolbar() {
   return (
     <Box sx={{my: 1}}>
@@ -19,15 +21,32 @@ function EditToolbar() {
   );
 }
 
+interface SellerDetailType {
+  role: string | null
+  sales: number
+}
+
+const SellerDetail = (props: SellerDetailType) => {
+  const d = useDictionary('sellers')
+  const {role, sales} = props
+  const textDetails = _.compact([role, sales ? `${d['orders']}: ${sales} ` : null]).join(', ')
+  return (
+    <Box>
+      {textDetails}
+    </Box>
+  )
+}
+
+
 interface DeleteButtonType {
   sellerID: number
   hidden: boolean
-  disable: boolean
+  deletable: boolean
 }
 
 const DeleteButton = (props: DeleteButtonType) => {
   const d = useDictionary('sellers')
-  const {sellerID, hidden, disable} = props
+  const {sellerID, hidden, deletable} = props
   const deleteSellerAccess = useFetchAccess(delSeller)
   const onClick = async () => {
     await deleteSellerAccess(sellerID)
@@ -35,7 +54,7 @@ const DeleteButton = (props: DeleteButtonType) => {
   return (
     <Box hidden={hidden}>
       <GridActionsCellItem
-        disabled={disable}
+        disabled={!deletable}
         icon={<DeleteIcon/>}
         label={d['delete']}
         onClick={onClick}
@@ -64,7 +83,6 @@ const TableSellers = ({sellers}: SellersPayload) => {
       return null
     }
     return trimmedRow
-
   }
 
   const boxTableStyle = useBoxTableStyle()
@@ -86,22 +104,34 @@ const TableSellers = ({sellers}: SellersPayload) => {
     [editSellerAccess],
   )
 
+
   const handleProcessRowUpdateError = React.useCallback((error: Error) => {
     setSnackbar({children: error.message, severity: 'error'});
   }, []);
 
-
+  const deletable = (role: string, sales: number) => {
+    if (!!role) return false
+    else if (sales) return false
+    return true
+  }
   const columns: GridColumns = [
     {field: 'name', headerName: d['name'], width: 180, editable: true,},
     {field: 'active', headerName: d['active'], width: 180, editable: true, disableColumnMenu: true, type: "boolean"},
-    {field: 'empty', headerName: '', flex: 1, sortable: false, disableColumnMenu: true},
+    {
+      field: 'empty', headerName: '', flex: 1, sortable: false, disableColumnMenu: true,
+      renderCell: (params: GridRenderCellParams) =>
+        <SellerDetail role={params.row.role} sales={params.row.sales}/>
+    },
     {
       field: 'buttons',
       headerName: d['delete'],
       sortable: false,
       disableColumnMenu: true,
       renderCell: (params: GridRenderCellParams) =>
-        <DeleteButton sellerID={params.row.id} hidden={selectedRow != params.row.id} disable={!!params.row.role}/>
+        <DeleteButton sellerID={params.row.id}
+                      hidden={selectedRow != params.row.id}
+                      deletable={deletable(params.row.role, params.row.sales)}
+        />
     },
   ]
 

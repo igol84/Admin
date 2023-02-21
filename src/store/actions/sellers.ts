@@ -4,7 +4,6 @@ import {sellersSlice} from "../slices/sellersSlice";
 import {authSlice} from "../slices/authSlice";
 import _ from "lodash";
 
-
 export interface SellerResponse {
   id: number
   store_id: number
@@ -12,7 +11,10 @@ export interface SellerResponse {
   active: boolean
   email?: string
   role?: string
+  sales: number
 }
+
+export type NewSellerResponse = Pick<SellerResponse, "store_id" | "name" | "active">
 
 export const fetchSellers = (access_token: string, {storeId}: any = null) => {
   const secureApi = secureApiCreate(access_token)
