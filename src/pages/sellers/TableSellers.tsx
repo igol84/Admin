@@ -8,9 +8,8 @@ import {delSeller, updateSeller} from "../../store/actions/sellers";
 import {SellersPayload} from "../../store/slices/sellersSlice";
 import {toTrimTheRow} from "../../hooks/form-data";
 import equal from "fast-deep-equal";
-import {useDictionary, useEditAccess, useMuiLanguage} from "../../hooks/pages";
+import {useDictionary, useFetchAccess, useMuiLanguage} from "../../hooks/pages";
 import AddNewSellerForm from "../../components/sellers/AddNewSellerForm";
-import {useAppDispatch, useAppSelector} from "../../hooks/redux";
 
 function EditToolbar() {
   return (
@@ -21,16 +20,15 @@ function EditToolbar() {
 }
 
 interface DeleteButtonType {
-  value: number
+  sellerID: number
   selected: boolean
 }
 
 const DeleteButton = (props: DeleteButtonType) => {
-  const dispatch = useAppDispatch()
-  const access_token = useAppSelector(state => state.authReducer.access_token)
-  const {value, selected} = props
+  const {sellerID, selected} = props
+  const deleteSellerAccess = useFetchAccess(delSeller)
   const onClick = async () => {
-    await dispatch(delSeller(access_token, value))
+    await deleteSellerAccess(sellerID)
   }
   return (
     <Box hidden={!selected}>
@@ -46,27 +44,27 @@ const DeleteButton = (props: DeleteButtonType) => {
 
 const TableSellers = ({sellers}: SellersPayload) => {
   const d = useDictionary('sellers')
+  const editSellerAccess = useFetchAccess(updateSeller)
   const muiLanguage = useMuiLanguage()
-  const [selectedRow, setSelectedRow] = React.useState<GridRowId | null>(null)
 
+  const [selectedRow, setSelectedRow] = React.useState<GridRowId | null>(null)
   let sellerSchema = yup.object({
     id: yup.number().required().integer(),
     store_id: yup.number().required().integer(),
     name: yup.string().required(d['fieldNameError']),
     active: yup.boolean().required(),
   })
-  type Seller = yup.InferType<typeof sellerSchema>
 
+  type Seller = yup.InferType<typeof sellerSchema>
   function computeMutation(newRow: Seller, oldRow: Seller) {
     const trimmedRow = toTrimTheRow('name')(newRow)
     if (equal(trimmedRow, oldRow)) {
       return null
     }
     return trimmedRow
-  }
 
+  }
   const boxTableStyle = useBoxTableStyle()
-  const editAccess = useEditAccess(updateSeller)
   const handleCloseSnackbar = () => setSnackbar(null);
   const [snackbar, setSnackbar] = React.useState<Pick<AlertProps, 'children' | 'severity'> | null>(null);
 
@@ -75,14 +73,14 @@ const TableSellers = ({sellers}: SellersPayload) => {
       const mutation = computeMutation(newRow, oldRow);
       if (mutation) {
         const validRow = await sellerSchema.validate(mutation)
-        const fetchedRow = await editAccess(validRow)
+        const fetchedRow = await editSellerAccess(validRow)
         setSnackbar({children: d['sellerSuccessfulSaved'], severity: 'success'});
         return fetchedRow
       } else {
         return oldRow // Nothing was changed
       }
     },
-    [editAccess],
+    [editSellerAccess],
   )
 
   const handleProcessRowUpdateError = React.useCallback((error: Error) => {
@@ -100,7 +98,7 @@ const TableSellers = ({sellers}: SellersPayload) => {
       sortable: false,
       disableColumnMenu: true,
       renderCell: (params: GridRenderCellParams) =>
-        <DeleteButton value={params.row.id} selected={selectedRow == params.row.id}/>
+        <DeleteButton sellerID={params.row.id} selected={selectedRow == params.row.id}/>
     },
   ]
 

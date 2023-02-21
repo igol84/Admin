@@ -4,13 +4,12 @@ import {Formik, FormikHelpers} from "formik";
 import * as Yup from "yup";
 import {FormTextInput} from "../Form";
 import {addNewSeller, NewSellerResponse} from "../../store/actions/sellers";
-import {useAppDispatch, useAppSelector, useStoreId} from "../../hooks/redux";
-import {useDictionary} from "../../hooks/pages";
+import {useStoreId} from "../../hooks/redux";
+import {useDictionary, useFetchAccess} from "../../hooks/pages";
 
 const AddNewSellerForm = () => {
   const d = useDictionary('sellers')
-  const dispatch = useAppDispatch()
-  const access_token = useAppSelector(state => state.authReducer.access_token)
+  const addSellerAccess = useFetchAccess(addNewSeller)
   const storeId = useStoreId()
 
   interface initialValuesType {
@@ -23,7 +22,7 @@ const AddNewSellerForm = () => {
   const onSubmit = async (value: initialValuesType, actions: FormikHelpers<initialValuesType>) => {
     if (!storeId) return false
     const newSeller: NewSellerResponse = {name: value.name, active: true, store_id: storeId}
-    await dispatch(addNewSeller(access_token, newSeller))
+    await addSellerAccess(newSeller)
     actions.setSubmitting(false)
     actions.resetForm()
   }

@@ -23,10 +23,10 @@ export const useAccess = (fetchFn: any, arg: any = null) => {
   return dispatchFetchFnAccess
 }
 
-export const useEditAccess = (fetchFn: any) => {
+export const useFetchAccess = (fetchFn: any) => {
   const dispatch = useAppDispatch()
   const access_token = useAppSelector(state => state.authReducer.access_token)
-  return (newRow: any) => dispatch(fetchFn(access_token, newRow))
+  return (value: any) => dispatch(fetchFn(access_token, value))
 }
 
 
