@@ -1,68 +1,17 @@
 import React from 'react';
 import * as yup from 'yup'
-import _ from "lodash";
-import {DataGrid, GridActionsCellItem, GridColumns, GridRenderCellParams, GridRowId} from "@mui/x-data-grid";
-import DeleteIcon from '@mui/icons-material/DeleteOutlined';
+import {DataGrid, GridColumns, GridRenderCellParams, GridRowId} from "@mui/x-data-grid";
 import {Alert, AlertProps, Box, Snackbar} from "@mui/material";
 import {useBoxTableStyle} from "../../components/Form/style";
-import {delSeller, updateSeller} from "../../store/actions/sellers";
+import {updateSeller} from "../../store/actions/sellers";
 import {SellersPayload} from "../../store/slices/sellersSlice";
 import {toTrimTheRow} from "../../hooks/form-data";
 import equal from "fast-deep-equal";
 import {useDictionary, useFetchAccess, useMuiLanguage} from "../../hooks/pages";
-import AddNewSellerForm from "../../components/sellers/AddNewSellerForm";
+import DeleteButton from "./DeleteButton";
+import EditToolbar from "./EditToolbar";
+import SellerDetail from "./SellerDetail";
 
-
-function EditToolbar() {
-  return (
-    <Box sx={{my: 1}}>
-      <AddNewSellerForm/>
-    </Box>
-  );
-}
-
-interface SellerDetailType {
-  role: string | null
-  sales: number
-}
-
-const SellerDetail = (props: SellerDetailType) => {
-  const d = useDictionary('sellers')
-  const {role, sales} = props
-  const textDetails = _.compact([role, sales ? `${d['orders']}: ${sales} ` : null]).join(', ')
-  return (
-    <Box>
-      {textDetails}
-    </Box>
-  )
-}
-
-
-interface DeleteButtonType {
-  sellerID: number
-  hidden: boolean
-  deletable: boolean
-}
-
-const DeleteButton = (props: DeleteButtonType) => {
-  const d = useDictionary('sellers')
-  const {sellerID, hidden, deletable} = props
-  const deleteSellerAccess = useFetchAccess(delSeller)
-  const onClick = async () => {
-    await deleteSellerAccess(sellerID)
-  }
-  return (
-    <Box hidden={hidden}>
-      <GridActionsCellItem
-        disabled={!deletable}
-        icon={<DeleteIcon/>}
-        label={d['delete']}
-        onClick={onClick}
-        color="inherit"
-      />
-    </Box>
-  )
-}
 
 const TableSellers = ({sellers}: SellersPayload) => {
   const d = useDictionary('sellers')
@@ -128,9 +77,10 @@ const TableSellers = ({sellers}: SellersPayload) => {
       sortable: false,
       disableColumnMenu: true,
       renderCell: (params: GridRenderCellParams) =>
-        <DeleteButton sellerID={params.row.id}
-                      hidden={selectedRow != params.row.id}
-                      deletable={deletable(params.row.role, params.row.sales)}
+        <DeleteButton
+          sellerID={params.row.id}
+          hidden={selectedRow != params.row.id}
+          deletable={deletable(params.row.role, params.row.sales)}
         />
     },
   ]
@@ -158,6 +108,11 @@ const TableSellers = ({sellers}: SellersPayload) => {
         componentsProps={{
           row: {
             onFocus: handleRowFocus,
+          },
+        }}
+        initialState={{
+          sorting: {
+            sortModel: [{ field: 'active', sort: 'desc' }],
           },
         }}
       />
