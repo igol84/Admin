@@ -2,18 +2,18 @@ import React from 'react';
 import Header from "../../components/Header";
 import {Box} from "@mui/material";
 import {useAppSelector, useStoreId} from "../../hooks/redux";
-import {fetchSellers} from "../../store/actions/sellers";
+import {fetchPlaces} from "../../store/actions/places";
 import LoadingCircular from "../../components/LoadingCircular";
 import {useDictionary, useIsLoadingDisplay, useLoaderAccess} from "../../hooks/pages";
-import TableSellers from "../../components/sellers/TableSellers";
+import TablePlaces from "../../components/places/TablePlaces";
 
 
-const Sellers = () => {
-  const d = useDictionary('sellers')
+const Places = () => {
+  const d = useDictionary('places')
   const storeId = useStoreId()
-  useLoaderAccess(fetchSellers, {storeId})
+  useLoaderAccess(fetchPlaces, {storeId})
 
-  const {isLoading, sellers} = useAppSelector(state => state.sellersReducer)
+  const {isLoading, places} = useAppSelector(state => state.placesReducer)
   const showLoading = useIsLoadingDisplay(isLoading)
 
 
@@ -22,10 +22,10 @@ const Sellers = () => {
       <Box display='flex' justifyContent='space-around' alignItems='center'>
         <Header title={d['title']}/>
       </Box>
-      <TableSellers sellers={sellers}/>
+      <TablePlaces places={places}/>
       <LoadingCircular show={showLoading}/>
     </Box>
   );
 };
 
-export default Sellers;
+export default Places;

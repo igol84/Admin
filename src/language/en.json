@@ -1,4 +1,16 @@
 {
+  "places": {
+    "title": "Places",
+    "fieldNameError": "Error while saving place: name can't be empty.",
+    "placeSuccessfulSaved": "Place successfully saved",
+    "name": "Name",
+    "active": "Active",
+    "delete": "Delete",
+    "add_button": "Add new place",
+    "required": "Required",
+    "orders": "orders",
+    "expenses": "expenses"
+  },
   "sellers": {
     "title": "Sellers",
     "fieldNameError": "Error while saving seller: name can't be empty.",
@@ -17,8 +29,9 @@
   "sidebar": {
     "admin": "Admin",
     "dashboard": "Dashboard",
+    "data": "Data",
     "sellers": "Sellers",
-    "data": "Data"
+    "places": "places"
   },
   "auth": {
     "title": "Authorization",

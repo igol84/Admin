@@ -5,13 +5,19 @@ import {invokeIf} from "../utilite";
 import {authSlice} from "../store/slices/authSlice";
 import {LanguageModeContext} from "../language";
 
-export const useAccess = (fetchFn: any, arg: any = null) => {
+export const useFetchAccess = (fetchFn: any) => {
+  const dispatch = useAppDispatch()
+  const access_token = useAppSelector(state => state.authReducer.access_token)
+  return (value: any) => dispatch(fetchFn(access_token, value))
+}
+
+export const useLoaderAccess = (fetchFn: any, arg: any = null) => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const errorText = useAppSelector(state => state.authReducer.errorText)
   const isAuthenticated = useAppSelector(state => state.authReducer.isAuthenticated)
-  const access_token = useAppSelector(state => state.authReducer.access_token)
-  const dispatchFetchFnAccess = useCallback(() => dispatch(fetchFn(access_token, arg)), [])
+  const fetchAccess = useFetchAccess(fetchFn)
+  const dispatchFetchFnAccess = useCallback(() => fetchAccess(arg), [])
   useEffect(() => {
     if (errorText) {
       dispatch(authSlice.actions.logout())
@@ -20,15 +26,7 @@ export const useAccess = (fetchFn: any, arg: any = null) => {
       invokeIf(isAuthenticated, dispatchFetchFnAccess, () => navigate('/auth'))
     }
   }, [errorText])
-  return dispatchFetchFnAccess
 }
-
-export const useFetchAccess = (fetchFn: any) => {
-  const dispatch = useAppDispatch()
-  const access_token = useAppSelector(state => state.authReducer.access_token)
-  return (value: any) => dispatch(fetchFn(access_token, value))
-}
-
 
 export const useIsLoadingDisplay = (loading: Boolean) => {
   const [showLoading, setShowLoading] = useState(false)

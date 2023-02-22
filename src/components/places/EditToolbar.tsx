@@ -1,11 +1,11 @@
 import {Box} from "@mui/material";
-import AddNewSellerForm from "../../components/sellers/AddNewSellerForm";
+import AddNewPlaceForm from "./AddNewPlaceForm";
 import React from "react";
 
 function EditToolbar() {
   return (
     <Box sx={{my: 1}}>
-      <AddNewSellerForm/>
+      <AddNewPlaceForm/>
     </Box>
   );
 }

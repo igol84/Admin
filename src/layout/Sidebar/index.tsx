@@ -2,8 +2,9 @@ import React from 'react';
 import {Avatar, Box, IconButton, Typography, useTheme} from "@mui/material";
 import {Menu, MenuItem, Sidebar, useProSidebar} from "react-pro-sidebar";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
+import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
+import StorefrontOutlinedIcon from '@mui/icons-material/StorefrontOutlined';
 import {tokens} from "../../theme";
 import {menuItemStyles} from "./Sidebar.theme";
 import {useLocation} from "react-router-dom";
@@ -83,6 +84,12 @@ const SidebarMenu = () => {
               title={d['sellers']}
               to='/sellers'
               icon={<PeopleOutlinedIcon/>}
+              location={location.pathname}
+            />
+            <Item
+              title={d['places']}
+              to='/places'
+              icon={<StorefrontOutlinedIcon/>}
               location={location.pathname}
             />
           </Box>

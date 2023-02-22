@@ -11,7 +11,7 @@ interface SellerDetailType {
 const SellerDetail = (props: SellerDetailType) => {
   const d = useDictionary('sellers')
   const {role, sales} = props
-  const textDetails = _.compact([role, sales ? `${d['orders']}: ${sales} ` : null]).join(', ')
+  const textDetails = _.compact([role, sales ? `${d['orders']}: ${sales}` : null]).join(', ')
   return (
     <Box>
       {textDetails}

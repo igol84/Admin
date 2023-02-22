@@ -35,7 +35,7 @@ export const sellersSlice = createSlice({
       state.isLoading = true
     },
     sellersFetchingSuccess(state, action: PayloadAction<SellersPayload>) {
-      state.sellers = action.payload.sellers.reverse()
+      state.sellers = action.payload.sellers
       state.isLoading = false
       state.error = ''
     },

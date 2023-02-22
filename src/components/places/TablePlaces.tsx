@@ -2,31 +2,31 @@ import React from 'react';
 import * as yup from 'yup'
 import {DataGrid, GridColumns, GridRenderCellParams, GridRowId} from "@mui/x-data-grid";
 import {Alert, AlertProps, Box, Snackbar} from "@mui/material";
-import {useBoxTableStyle} from "../../components/Form/style";
-import {updateSeller} from "../../store/actions/sellers";
-import {SellersPayload} from "../../store/slices/sellersSlice";
+import {useBoxTableStyle} from "../Form/style";
+import {updatePlace} from "../../store/actions/places";
+import {PlacesPayload} from "../../store/slices/placesSlice";
 import {toTrimTheRow} from "../../hooks/form-data";
 import equal from "fast-deep-equal";
 import {useDictionary, useFetchAccess, useMuiLanguage} from "../../hooks/pages";
 import DeleteButton from "./DeleteButton";
 import EditToolbar from "./EditToolbar";
-import SellerDetail from "./SellerDetail";
+import PlaceDetail from "./PlaceDetail";
 
 
-const TableSellers = ({sellers}: SellersPayload) => {
-  const d = useDictionary('sellers')
-  const editSellerAccess = useFetchAccess(updateSeller)
+const TablePlaces = ({places}: PlacesPayload) => {
+  const d = useDictionary('places')
+  const editPlaceAccess = useFetchAccess(updatePlace)
   const muiLanguage = useMuiLanguage()
 
   const [selectedRow, setSelectedRow] = React.useState<GridRowId | null>(null)
-  let sellerSchema = yup.object({
+  let placeSchema = yup.object({
     name: yup.string().required(d['fieldNameError']),
     active: yup.boolean().required(),
   })
 
-  type Seller = yup.InferType<typeof sellerSchema>
+  type Place = yup.InferType<typeof placeSchema>
 
-  function computeMutation(newRow: Seller, oldRow: Seller) {
+  function computeMutation(newRow: Place, oldRow: Place) {
     const trimmedRow = toTrimTheRow('name')(newRow)
     if (equal(trimmedRow, oldRow)) {
       return null
@@ -39,18 +39,18 @@ const TableSellers = ({sellers}: SellersPayload) => {
   const [snackbar, setSnackbar] = React.useState<Pick<AlertProps, 'children' | 'severity'> | null>(null);
 
   const processRowUpdate = React.useCallback(
-    async (newRow: Seller, oldRow: Seller) => {
+    async (newRow: Place, oldRow: Place) => {
       const mutation = computeMutation(newRow, oldRow);
       if (mutation) {
-        const validRow = await sellerSchema.validate(mutation)
-        const fetchedRow = await editSellerAccess(validRow)
-        setSnackbar({children: d['sellerSuccessfulSaved'], severity: 'success'});
+        const validRow = await placeSchema.validate(mutation)
+        const fetchedRow = await editPlaceAccess(validRow)
+        setSnackbar({children: d['placeSuccessfulSaved'], severity: 'success'});
         return fetchedRow
       } else {
         return oldRow // Nothing was changed
       }
     },
-    [editSellerAccess],
+    [editPlaceAccess],
   )
 
 
@@ -58,18 +58,15 @@ const TableSellers = ({sellers}: SellersPayload) => {
     setSnackbar({children: error.message, severity: 'error'});
   }, []);
 
-  const deletable = (role: string, sales: number) => {
-    if (!!role) return false
-    else if (sales) return false
-    return true
-  }
+
   const columns: GridColumns = [
+    {field: 'id', headerName: 'id', width: 80, editable: false,},
     {field: 'name', headerName: d['name'], width: 180, editable: true,},
     {field: 'active', headerName: d['active'], width: 180, editable: true, disableColumnMenu: true, type: "boolean"},
     {
       field: 'empty', headerName: '', flex: 1, sortable: false, disableColumnMenu: true,
       renderCell: (params: GridRenderCellParams) =>
-        <SellerDetail role={params.row.role} sales={params.row.sales}/>
+        <PlaceDetail role={params.row.role} sales={params.row.sales} expenses={params.row.expenses}/>
     },
     {
       field: 'buttons',
@@ -78,9 +75,9 @@ const TableSellers = ({sellers}: SellersPayload) => {
       disableColumnMenu: true,
       renderCell: (params: GridRenderCellParams) =>
         <DeleteButton
-          sellerID={params.row.id}
+          placeID={params.row.id}
           hidden={selectedRow != params.row.id}
-          deletable={deletable(params.row.role, params.row.sales)}
+          deletable={!(params.row.sales || params.row.expenses)}
         />
     },
   ]
@@ -99,7 +96,7 @@ const TableSellers = ({sellers}: SellersPayload) => {
         processRowUpdate={processRowUpdate}
         onProcessRowUpdateError={handleProcessRowUpdateError}
         columns={columns}
-        rows={sellers}
+        rows={places}
         experimentalFeatures={{newEditingApi: true}}
         components={{
           Toolbar: EditToolbar,
@@ -112,7 +109,7 @@ const TableSellers = ({sellers}: SellersPayload) => {
         }}
         initialState={{
           sorting: {
-            sortModel: [{ field: 'active', sort: 'desc' }],
+            sortModel: [{field: 'active', sort: 'desc'}],
           },
         }}
       />
@@ -129,4 +126,4 @@ const TableSellers = ({sellers}: SellersPayload) => {
   );
 };
 
-export default TableSellers;
+export default TablePlaces;
