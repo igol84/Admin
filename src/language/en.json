@@ -43,6 +43,6 @@
     "required": "Required",
     "userIsNot": "User is not available",
     "passIsNot": "Incorrect password",
-    "networkError": "Network Error"
+    "networkError": "Connection Error"
   }
 }

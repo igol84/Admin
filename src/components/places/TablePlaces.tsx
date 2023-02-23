@@ -8,6 +8,7 @@ import {toTrimTheRow} from "../../hooks/form-data";
 import equal from "fast-deep-equal";
 import {
   useDictionary,
+  useErrorMessage,
   useFetchAccess,
   useIsLoadingDisplay,
   useLoaderAccess,
@@ -108,6 +109,9 @@ const TablePlaces = () => {
   const defaultLocalSortModel: GridSortModel = [{field: 'active', sort: 'desc'}]
   const [sortModel, onSortModelChange] = useSortModel(defaultLocalSortModel, SORT_MODEL)
 
+  const errorText = useAppSelector(state => state.placesReducer.error)
+  const [openAlertSnackbar, handleCloseAlertSnackbar, errorTextNetwork] = useErrorMessage(errorText)
+
   return (
     <Box height="75vh" sx={boxTableStyle}>
       <DataGrid
@@ -138,6 +142,11 @@ const TablePlaces = () => {
         <Alert {...snackbar} onClose={handleCloseSnackbar}/>
       </Snackbar>
       <LoadingCircular show={showLoading}/>
+      <Snackbar open={openAlertSnackbar} autoHideDuration={6000} onClose={handleCloseAlertSnackbar}>
+        <Alert variant="filled" onClose={handleCloseAlertSnackbar} severity="error">
+          {errorTextNetwork}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

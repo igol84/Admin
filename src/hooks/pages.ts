@@ -59,8 +59,8 @@ interface UseSortModel {
     localName: string
   ):
     [
-      GridSortModel,
-      (newSortModel: GridSortModel) => void
+      sortModel: GridSortModel,
+      onSortModelChange: (newSortModel: GridSortModel) => void
     ]
 }
 
@@ -75,4 +75,43 @@ export const useSortModel: UseSortModel = (defaultLocalSortModel, localName) => 
     localStorage.setItem(localName, JSON.stringify(newSortModel))
   }
   return [sortModel, onSortModelChange]
+}
+
+
+
+interface UseErrorMessage{
+  (errorText: string)
+    :
+    [
+      openAlertSnackbar:boolean,
+      handleCloseAlertSnackbar:  (event?: (React.SyntheticEvent | Event), reason?: string) => void,
+      errorTextNetwork: string
+    ]
+}
+
+export const useErrorMessage: UseErrorMessage = (errorText) => {
+  const d = useDictionary('auth')
+  const [errorTextNetwork, setErrorTextNetwork] = useState('')
+  useEffect(() => {
+    if (errorText === 'Failed to fetch') {
+      setErrorTextNetwork(d['networkError'])
+      setOpenAlertSnackbar(true)
+    }
+    else {
+      setErrorTextNetwork('')
+      setOpenAlertSnackbar(false)
+    }
+  }, [errorText])
+
+
+  const [openAlertSnackbar, setOpenAlertSnackbar] = React.useState(false);
+  const handleCloseAlertSnackbarCreator = (setOpenState: (value: boolean) => void) =>
+    (event?: React.SyntheticEvent | Event, reason?: string) => {
+      if (reason === 'clickaway') {
+        return;
+      }
+      setOpenState(false)
+    }
+  const handleCloseAlertSnackbar = handleCloseAlertSnackbarCreator(setOpenAlertSnackbar)
+  return [openAlertSnackbar, handleCloseAlertSnackbar, errorTextNetwork]
 }

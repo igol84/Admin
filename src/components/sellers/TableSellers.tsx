@@ -8,6 +8,7 @@ import {toTrimTheRow} from "../../hooks/form-data";
 import equal from "fast-deep-equal";
 import {
   useDictionary,
+  useErrorMessage,
   useFetchAccess,
   useIsLoadingDisplay,
   useLoaderAccess,
@@ -22,6 +23,7 @@ import LoadingCircular from "../LoadingCircular";
 
 
 const SORT_MODEL = 'sellers-sort-model'
+
 
 const TableSellers = () => {
   const d = useDictionary('sellers')
@@ -112,6 +114,9 @@ const TableSellers = () => {
   const defaultLocalSortModel: GridSortModel = [{field: 'active', sort: 'desc'}]
   const [sortModel, onSortModelChange] = useSortModel(defaultLocalSortModel, SORT_MODEL)
 
+  const errorText = useAppSelector(state => state.sellersReducer.error)
+  const [openAlertSnackbar, handleCloseAlertSnackbar, errorTextNetwork] = useErrorMessage(errorText)
+
   return (
     <Box height="75vh" sx={boxTableStyle}>
       <DataGrid
@@ -142,6 +147,12 @@ const TableSellers = () => {
         <Alert {...snackbar} onClose={handleCloseSnackbar}/>
       </Snackbar>
       <LoadingCircular show={showLoading}/>
+
+      <Snackbar open={openAlertSnackbar} autoHideDuration={6000} onClose={handleCloseAlertSnackbar}>
+        <Alert variant="filled" onClose={handleCloseAlertSnackbar} severity="error">
+          {errorTextNetwork}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
