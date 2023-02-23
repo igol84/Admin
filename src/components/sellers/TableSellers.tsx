@@ -3,20 +3,33 @@ import * as yup from 'yup'
 import {DataGrid, GridColumns, GridRenderCellParams, GridRowId, GridSortModel} from "@mui/x-data-grid";
 import {Alert, AlertProps, Box, Snackbar} from "@mui/material";
 import {useBoxTableStyle} from "../Form/style";
-import {updateSeller} from "../../store/actions/sellers";
-import {SellersPayload} from "../../store/slices/sellersSlice";
+import {fetchSellers, updateSeller} from "../../store/actions/sellers";
 import {toTrimTheRow} from "../../hooks/form-data";
 import equal from "fast-deep-equal";
-import {useDictionary, useFetchAccess, useMuiLanguage, useSortModel} from "../../hooks/pages";
+import {
+  useDictionary,
+  useFetchAccess,
+  useIsLoadingDisplay,
+  useLoaderAccess,
+  useMuiLanguage,
+  useSortModel
+} from "../../hooks/pages";
 import DeleteButton from "./DeleteButton";
 import EditToolbar from "./EditToolbar";
 import SellerDetail from "./SellerDetail";
+import {useAppSelector, useStoreId} from "../../hooks/redux";
+import LoadingCircular from "../LoadingCircular";
 
 
 const SORT_MODEL = 'sellers-sort-model'
 
-const TableSellers = ({sellers}: SellersPayload) => {
+const TableSellers = () => {
   const d = useDictionary('sellers')
+  const storeId = useStoreId()
+  useLoaderAccess(fetchSellers, {storeId})
+
+  const {isLoading, sellers} = useAppSelector(state => state.sellersReducer)
+  const showLoading = useIsLoadingDisplay(isLoading)
   const editSellerAccess = useFetchAccess(updateSeller)
   const muiLanguage = useMuiLanguage()
 
@@ -96,7 +109,7 @@ const TableSellers = ({sellers}: SellersPayload) => {
       setSelectedRow(id)
     }, [])
 
-  const defaultLocalSortModel: GridSortModel = [{field: 'active',sort: 'desc'}]
+  const defaultLocalSortModel: GridSortModel = [{field: 'active', sort: 'desc'}]
   const [sortModel, onSortModelChange] = useSortModel(defaultLocalSortModel, SORT_MODEL)
 
   return (
@@ -128,6 +141,7 @@ const TableSellers = ({sellers}: SellersPayload) => {
       >
         <Alert {...snackbar} onClose={handleCloseSnackbar}/>
       </Snackbar>
+      <LoadingCircular show={showLoading}/>
     </Box>
   );
 };

@@ -3,14 +3,12 @@ import {SellerResponse} from "../actions/sellers";
 
 interface SellerState {
   sellers: SellerResponse[]
-  count: number
   isLoading: boolean
   error: string
 }
 
 const initialState: SellerState = {
   sellers: [],
-  count: 0,
   isLoading: false,
   error: ''
 }
