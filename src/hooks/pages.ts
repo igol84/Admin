@@ -1,9 +1,10 @@
-import {useCallback, useContext, useEffect, useState} from "react";
+import React, {useCallback, useContext, useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "./redux";
 import {invokeIf} from "../utilite";
 import {authSlice} from "../store/slices/authSlice";
 import {LanguageModeContext} from "../language";
+import {GridSortModel} from "@mui/x-data-grid";
 
 export const useFetchAccess = (fetchFn: any) => {
   const dispatch = useAppDispatch()
@@ -50,4 +51,28 @@ export const useDictionary = (page: string) => {
 export const useMuiLanguage = () => {
   const {muiLanguage, language} = useContext(LanguageModeContext)
   return muiLanguage[language]
+}
+
+interface UseSortModel {
+  (
+    defaultLocalSortModel: GridSortModel,
+    localName: string
+  ):
+    [
+      GridSortModel,
+      (newSortModel: GridSortModel) => void
+    ]
+}
+
+export const useSortModel: UseSortModel = (defaultLocalSortModel, localName) => {
+  const localSortModel: GridSortModel = (typeof localStorage.getItem(localName) === 'string') ?
+    JSON.parse(localStorage.getItem(localName) || '') :
+    defaultLocalSortModel
+  const [sortModel, setSortModel] = React.useState<GridSortModel>(localSortModel)
+
+  const onSortModelChange = (newSortModel: GridSortModel) => {
+    setSortModel(newSortModel)
+    localStorage.setItem(localName, JSON.stringify(newSortModel))
+  }
+  return [sortModel, onSortModelChange]
 }

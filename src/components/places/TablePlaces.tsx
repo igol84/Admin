@@ -1,17 +1,19 @@
 import React from 'react';
 import * as yup from 'yup'
-import {DataGrid, GridColumns, GridRenderCellParams, GridRowId} from "@mui/x-data-grid";
+import {DataGrid, GridColumns, GridRenderCellParams, GridRowId, GridSortModel} from "@mui/x-data-grid";
 import {Alert, AlertProps, Box, Snackbar} from "@mui/material";
 import {useBoxTableStyle} from "../Form/style";
 import {updatePlace} from "../../store/actions/places";
 import {PlacesPayload} from "../../store/slices/placesSlice";
 import {toTrimTheRow} from "../../hooks/form-data";
 import equal from "fast-deep-equal";
-import {useDictionary, useFetchAccess, useMuiLanguage} from "../../hooks/pages";
+import {useDictionary, useFetchAccess, useMuiLanguage, useSortModel} from "../../hooks/pages";
 import DeleteButton from "./DeleteButton";
 import EditToolbar from "./EditToolbar";
 import PlaceDetail from "./PlaceDetail";
 
+
+const SORT_MODEL = 'places-sort-model'
 
 const TablePlaces = ({places}: PlacesPayload) => {
   const d = useDictionary('places')
@@ -90,6 +92,9 @@ const TablePlaces = ({places}: PlacesPayload) => {
       setSelectedRow(id)
     }, [])
 
+  const defaultLocalSortModel: GridSortModel = [{field: 'active',sort: 'desc'}]
+  const [sortModel, onSortModelChange] = useSortModel(defaultLocalSortModel, SORT_MODEL)
+
   return (
     <Box height="75vh" sx={boxTableStyle}>
       <DataGrid
@@ -107,11 +112,8 @@ const TablePlaces = ({places}: PlacesPayload) => {
             onFocus: handleRowFocus,
           },
         }}
-        initialState={{
-          sorting: {
-            sortModel: [{field: 'active', sort: 'desc'}],
-          },
-        }}
+        sortModel={sortModel}
+        onSortModelChange={onSortModelChange}
       />
 
       <Snackbar
