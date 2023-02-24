@@ -25,7 +25,7 @@ const defaultLanguage = 'en'
 export type LanguageType = keyof typeof languageOptions
 
 const language: LanguageType = localStorage.getItem(LANGUAGE_KEY) === 'ua' ? 'ua' :
-  localStorage.getItem(LANGUAGE_KEY) === 'ru' ? 'ru': defaultLanguage
+  localStorage.getItem(LANGUAGE_KEY) === 'ru' ? 'ru' : defaultLanguage
 
 interface LanguageModeType {
   dictionary: any,

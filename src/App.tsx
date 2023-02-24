@@ -9,16 +9,15 @@ import TopBar from "./layout/topBar";
 import Auth from "./pages/auth";
 import Dashboard from "./pages/dashboard";
 import React from "react";
-import {LanguageModeContext, useLanguageMode} from "./language";
 import Sellers from "./pages/sellers";
 import Places from "./pages/places";
+import LanguageProvider from "./language/LanguageProvider";
 
 function App() {
   const [theme, colorMode] = useThemeMode()
-  const [LanguageMode] = useLanguageMode()
 
   return (
-    <LanguageModeContext.Provider value={LanguageMode}>
+    <LanguageProvider>
       <ColorModeContext.Provider value={colorMode}>
         <ThemeProvider theme={theme}>
           <ProSidebarProvider>
@@ -38,7 +37,7 @@ function App() {
           </ProSidebarProvider>
         </ThemeProvider>
       </ColorModeContext.Provider>
-    </LanguageModeContext.Provider>
+    </LanguageProvider>
   )
 }
 
