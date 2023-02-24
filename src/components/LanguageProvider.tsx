@@ -1,4 +1,4 @@
-import {LanguageModeContext, useLanguageMode} from "./index";
+import {LanguageModeContext, useLanguageMode} from "../language";
 
 interface Props {
   children: JSX.Element
