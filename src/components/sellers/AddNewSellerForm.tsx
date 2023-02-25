@@ -46,6 +46,7 @@ const AddNewSellerForm = () => {
               label={d['name']}
               name='name'
               textLabel=''
+              withOutBlur={true}
             />
             <Button
               type='submit'
