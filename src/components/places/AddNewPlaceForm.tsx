@@ -3,9 +3,10 @@ import {Box, Button} from "@mui/material";
 import {Formik, FormikHelpers} from "formik";
 import * as Yup from "yup";
 import {FormTextInput} from "../Form";
-import {addNewPlace, NewPlaceResponse} from "../../store/actions/places";
+import {addNewPlace} from "../../store/actions/places";
 import {useStoreId} from "../../hooks/redux";
 import {useDictionary, useFetchAccess} from "../../hooks/pages";
+import {CreatePlace} from "../../achemas/place";
 
 const AddNewPlaceForm = () => {
   const d = useDictionary('places')
@@ -21,7 +22,7 @@ const AddNewPlaceForm = () => {
   }
   const onSubmit = async (value: initialValuesType, actions: FormikHelpers<initialValuesType>) => {
     if (!storeId) return false
-    const newPlace: NewPlaceResponse = {name: value.name, active: true, store_id: storeId}
+    const newPlace: CreatePlace = {name: value.name, active: true, store_id: storeId}
     await addPlaceAccess(newPlace)
     actions.setSubmitting(false)
     actions.resetForm()

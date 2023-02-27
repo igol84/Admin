@@ -3,25 +3,14 @@ import {secureApiCreate} from "../../ky";
 import {placesSlice} from "../slices/placesSlice";
 import {authSlice} from "../slices/authSlice";
 import _ from "lodash";
-
-export interface PlaceResponse {
-  id: number
-  store_id: number
-  name: string
-  active: boolean
-  sales: number
-  expenses: number
-}
-
-export type NewPlaceResponse = Pick<PlaceResponse, "store_id" | "name" | "active">
+import {CreatePlace, Place, PlaceWithDetails} from "../../achemas/place";
 
 export const fetchPlaces = (access_token: string, {storeId}: any = null) => {
   const secureApi = secureApiCreate(access_token)
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(placesSlice.actions.placesFetching())
-      const response: PlaceResponse[] = await secureApi.get(`place/deletable?store_id=${storeId}`).json()
-      const places = response.filter(place => place.store_id === storeId)
+      const places: PlaceWithDetails[] = await secureApi.get(`place/deletable?store_id=${storeId}`).json()
       dispatch(placesSlice.actions.placesFetchingSuccess({places}))
     } catch (err) {
       dispatch(placesSlice.actions.placesFetchingError(err as Error))
@@ -29,13 +18,14 @@ export const fetchPlaces = (access_token: string, {storeId}: any = null) => {
   }
 }
 
-export const addNewPlace = (access_token: string, place: PlaceResponse) => {
+export const addNewPlace = (access_token: string, place: CreatePlace) => {
   const secureApi = secureApiCreate(access_token)
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(placesSlice.actions.placesFetching())
-      const newPlace: PlaceResponse = await secureApi.post('place', {json: place}).json()
-      dispatch(placesSlice.actions.addNewPlace({newPlace}))
+      const newPlace: Place = await secureApi.post('place', {json: place}).json()
+      const newPlaceWithDetails: PlaceWithDetails = {...newPlace, sales: 0, expenses: 0}
+      dispatch(placesSlice.actions.addNewPlace({newPlace: newPlaceWithDetails}))
       return newPlace
     } catch (err) {
       const errors = err as Error;
@@ -47,14 +37,14 @@ export const addNewPlace = (access_token: string, place: PlaceResponse) => {
   }
 }
 
-export const updatePlace = (access_token: string, place: PlaceResponse) => {
+export const updatePlace = (access_token: string, place: PlaceWithDetails) => {
   const updatePlace = _.pick(place, ['id', 'store_id', 'name', 'active'])
   const secureApi = secureApiCreate(access_token)
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(placesSlice.actions.placesFetching())
-      await secureApi.put('place', {json: updatePlace})
-      dispatch(placesSlice.actions.updatePlace({changedPlace: place}))
+      const updatedPlace: Place = await secureApi.put('place', {json: updatePlace}).json()
+      dispatch(placesSlice.actions.updatePlace({changedPlace: {...place, ...updatedPlace}}))
       return place
     } catch (err) {
       const errors = err as Error;

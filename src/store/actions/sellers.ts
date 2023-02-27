@@ -3,26 +3,15 @@ import {secureApiCreate} from "../../ky";
 import {sellersSlice} from "../slices/sellersSlice";
 import {authSlice} from "../slices/authSlice";
 import _ from "lodash";
+import {Seller, SellerWithDetails, UpdateSeller} from "../../achemas/seller";
 
-export interface SellerResponse {
-  id: number
-  store_id: number
-  name: string
-  active: boolean
-  email?: string
-  role?: string
-  sales: number
-}
-
-export type NewSellerResponse = Pick<SellerResponse, "store_id" | "name" | "active">
 
 export const fetchSellers = (access_token: string, {storeId}: any = null) => {
   const secureApi = secureApiCreate(access_token)
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(sellersSlice.actions.sellersFetching())
-      const response: SellerResponse[] = await secureApi.get(`seller/deletable?store_id=${storeId}`).json()
-      const sellers = response.filter(seller => seller.store_id === storeId)
+      const sellers: SellerWithDetails[] = await secureApi.get(`seller/deletable?store_id=${storeId}`).json()
       dispatch(sellersSlice.actions.sellersFetchingSuccess({sellers}))
     } catch (err) {
       dispatch(sellersSlice.actions.sellersFetchingError(err as Error))
@@ -30,13 +19,16 @@ export const fetchSellers = (access_token: string, {storeId}: any = null) => {
   }
 }
 
-export const addNewSeller = (access_token: string, seller: SellerResponse) => {
+export const addNewSeller = (access_token: string, seller: UpdateSeller) => {
   const secureApi = secureApiCreate(access_token)
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(sellersSlice.actions.sellersFetching())
-      const newSeller: SellerResponse = await secureApi.post('seller', {json: seller}).json()
-      dispatch(sellersSlice.actions.addNewSeller({newSeller}))
+      const newSeller: Seller = await secureApi.post('seller', {json: seller}).json()
+
+      const newSellerWithDetails: SellerWithDetails = {...newSeller, role: '', sales: 0}
+
+      dispatch(sellersSlice.actions.addNewSeller({newSeller: newSellerWithDetails}))
       return newSeller
     } catch (err) {
       const errors = err as Error;
@@ -48,14 +40,14 @@ export const addNewSeller = (access_token: string, seller: SellerResponse) => {
   }
 }
 
-export const updateSeller = (access_token: string, seller: SellerResponse) => {
+export const updateSeller = (access_token: string, seller: SellerWithDetails) => {
   const updateSeller = _.pick(seller, ['id', 'store_id', 'name', 'active'])
   const secureApi = secureApiCreate(access_token)
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(sellersSlice.actions.sellersFetching())
-      await secureApi.put('seller', {json: updateSeller})
-      dispatch(sellersSlice.actions.updateSeller({changedSeller: seller}))
+      const updatedSeller: Seller = await secureApi.put('seller', {json: updateSeller}).json()
+      dispatch(sellersSlice.actions.updateSeller({changedSeller: {...seller, ...updatedSeller}}))
       return seller
     } catch (err) {
       const errors = err as Error;

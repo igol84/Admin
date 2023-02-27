@@ -3,9 +3,10 @@ import {Box, Button} from "@mui/material";
 import {Formik, FormikHelpers} from "formik";
 import * as Yup from "yup";
 import {FormTextInput} from "../Form";
-import {addNewSeller, NewSellerResponse} from "../../store/actions/sellers";
+import {addNewSeller} from "../../store/actions/sellers";
 import {useStoreId} from "../../hooks/redux";
 import {useDictionary, useFetchAccess} from "../../hooks/pages";
+import {CreateSeller} from "../../achemas/seller";
 
 const AddNewSellerForm = () => {
   const d = useDictionary('sellers')
@@ -21,7 +22,7 @@ const AddNewSellerForm = () => {
   }
   const onSubmit = async (value: initialValuesType, actions: FormikHelpers<initialValuesType>) => {
     if (!storeId) return false
-    const newSeller: NewSellerResponse = {name: value.name, active: true, store_id: storeId}
+    const newSeller: CreateSeller = {name: value.name, active: true, store_id: storeId}
     await addSellerAccess(newSeller)
     actions.setSubmitting(false)
     actions.resetForm()

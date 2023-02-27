@@ -1,8 +1,9 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {SellerResponse} from "../actions/sellers";
+import {SellerWithDetails} from "../../achemas/seller";
+
 
 interface SellerState {
-  sellers: SellerResponse[]
+  sellers: SellerWithDetails[]
   isLoading: boolean
   error: string
 }
@@ -14,15 +15,15 @@ const initialState: SellerState = {
 }
 
 export interface SellersPayload {
-  sellers: SellerResponse[]
+  sellers: SellerWithDetails[]
 }
 
 interface SellerPayload {
-  newSeller: SellerResponse
+  newSeller: SellerWithDetails
 }
 
 interface ChangedSellerPayload {
-  changedSeller: SellerResponse
+  changedSeller: SellerWithDetails
 }
 
 export const sellersSlice = createSlice({

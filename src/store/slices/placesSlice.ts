@@ -1,8 +1,8 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {PlaceResponse} from "../actions/places";
+import {PlaceWithDetails} from "../../achemas/place";
 
 interface PlaceState {
-  places: PlaceResponse[]
+  places: PlaceWithDetails[]
   isLoading: boolean
   error: string
 }
@@ -14,15 +14,15 @@ const initialState: PlaceState = {
 }
 
 export interface PlacesPayload {
-  places: PlaceResponse[]
+  places: PlaceWithDetails[]
 }
 
 interface PlacePayload {
-  newPlace: PlaceResponse
+  newPlace: PlaceWithDetails
 }
 
 interface ChangedPlacePayload {
-  changedPlace: PlaceResponse
+  changedPlace: PlaceWithDetails
 }
 
 export const placesSlice = createSlice({

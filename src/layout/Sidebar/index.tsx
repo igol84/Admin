@@ -5,6 +5,7 @@ import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import StorefrontOutlinedIcon from '@mui/icons-material/StorefrontOutlined';
+import CardTravelOutlinedIcon from '@mui/icons-material/CardTravelOutlined';
 import {tokens} from "../../theme";
 import {menuItemStyles} from "./Sidebar.theme";
 import {useLocation} from "react-router-dom";
@@ -90,6 +91,12 @@ const SidebarMenu = () => {
               title={d['places']}
               to='/places'
               icon={<StorefrontOutlinedIcon/>}
+              location={location.pathname}
+            />
+            <Item
+              title={d['expenses']}
+              to='/expenses'
+              icon={<CardTravelOutlinedIcon/>}
               location={location.pathname}
             />
           </Box>

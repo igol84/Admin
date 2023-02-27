@@ -7,6 +7,7 @@ import Auth from "./pages/auth";
 import Dashboard from "./pages/dashboard";
 import Sellers from "./pages/sellers";
 import Places from "./pages/places";
+import Expenses from "./pages/expenses";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path='/auth' element={<Auth/>}/>
           <Route path='/sellers' element={<Sellers/>}/>
           <Route path='/places' element={<Places/>}/>
+          <Route path='/expenses' element={<Expenses/>}/>
         </Routes>
       </main>
     </div>

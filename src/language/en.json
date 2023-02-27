@@ -1,4 +1,7 @@
 {
+  "expense": {
+    "title": "Expenses"
+  },
   "places": {
     "title": "Places",
     "fieldNameError": "Error while saving place: name can't be empty.",
@@ -8,8 +11,8 @@
     "delete": "Delete",
     "add_button": "Add new place",
     "required": "Required",
-    "orders": "orders",
-    "expenses": "expenses"
+    "orders": "Orders",
+    "expenses": "Expenses"
   },
   "sellers": {
     "title": "Sellers",
@@ -20,7 +23,7 @@
     "delete": "Delete",
     "add_button": "Add new seller",
     "required": "Required",
-    "orders": "orders"
+    "orders": "Orders"
   },
   "dash": {
     "title": "Dashboard",
@@ -31,7 +34,8 @@
     "dashboard": "Dashboard",
     "data": "Data",
     "sellers": "Sellers",
-    "places": "places"
+    "places": "Places",
+    "expenses": "Expenses"
   },
   "auth": {
     "title": "Authorization",
