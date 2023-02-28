@@ -12,7 +12,7 @@ const Expenses = () => {
       <Box display='flex' justifyContent='space-around' alignItems='center'>
         <Header title={d['title']}/>
       </Box>
-
+      <TableExpense/>
     </Box>
   );
 };

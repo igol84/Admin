@@ -7,13 +7,13 @@ import React from "react";
 
 interface DeleteButtonType {
   expenseID: number
-  hidden: boolean
-  deletable: boolean
+  hidden?: boolean
+  deletable?: boolean
 }
 
 const DeleteButton = (props: DeleteButtonType) => {
   const d = useDictionary('expenses')
-  const {expenseID, hidden, deletable} = props
+  const {expenseID, hidden=false, deletable=true} = props
   const deleteExpenseAccess = useFetchAccess(delExpense)
   const onClick = async () => {
     await deleteExpenseAccess(expenseID)

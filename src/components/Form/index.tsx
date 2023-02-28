@@ -1,9 +1,9 @@
 import {FieldInputProps, useField} from "formik";
 import _ from "lodash";
-import {TextField} from "@mui/material";
+import {FormControl, InputLabel, Select, TextField} from "@mui/material";
 import React from "react";
 
-interface MyTextInputProps {
+interface TextInputProps {
   label: string
   name: string
   type?: string
@@ -12,7 +12,7 @@ interface MyTextInputProps {
   withOutBlur?: boolean
 }
 
-export const FormTextInput = (props: MyTextInputProps) => {
+export const FormTextInput = (props: TextInputProps) => {
   const {textLabel = '', withOutBlur=false} = props
   const [field, meta] = useField(props)
   const filteredProps = _.omit(props, ['textLabel', 'withOutBlur'])
@@ -40,3 +40,29 @@ export const FormTextInput = (props: MyTextInputProps) => {
   )
 }
 
+interface FormSelectProps {
+  label: string
+  name: string
+  disabled?: boolean
+  textLabel?: string
+  withOutBlur?: boolean
+  children: any[]
+
+}
+
+export const FormSelect = (props: FormSelectProps) => {
+  const {label} = props;
+  const [field, meta] = useField(props);
+  return (
+    <FormControl fullWidth>
+      <InputLabel color='secondary'>{label}</InputLabel>
+      <Select
+        color='secondary'
+        size='small'
+        error={meta.touched && !!meta.error}
+        sx={{width: "100%"}}
+        {...field} {...props}
+      />
+    </FormControl>
+  )
+}

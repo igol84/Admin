@@ -6,7 +6,7 @@ import {FormTextInput} from "../Form";
 import {addNewSeller} from "../../store/actions/sellers";
 import {useStoreId} from "../../hooks/redux";
 import {useDictionary, useFetchAccess} from "../../hooks/pages";
-import {CreateSeller} from "../../achemas/seller";
+import {CreateSeller} from "../../schemas/seller";
 
 const AddNewSellerForm = () => {
   const d = useDictionary('sellers')

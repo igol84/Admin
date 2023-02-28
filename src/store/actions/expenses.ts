@@ -3,7 +3,9 @@ import {secureApiCreate} from "../../ky";
 import {expensesSlice} from "../slices/expensesSlice";
 import {authSlice} from "../slices/authSlice";
 import _ from "lodash";
-import {CreateExpense, Expense, UpdateExpense} from "../../achemas/expense";
+import {CreateExpense, Expense, UpdateExpense} from "../../schemas/expense";
+import {Place} from "../../schemas/place";
+import {formatISODate} from "../../hooks/form-data";
 
 
 
@@ -13,7 +15,8 @@ export const fetchExpenses = (access_token: string, {storeId}: any = null) => {
     try {
       dispatch(expensesSlice.actions.expensesFetching())
       const expenses: Expense[] = await secureApi.get(`expense/get_by_store_id/${storeId}`).json()
-      dispatch(expensesSlice.actions.expensesFetchingSuccess({expenses}))
+      const places: Place[] = await secureApi.get(`place/get_by_store_id/${storeId}`).json()
+      dispatch(expensesSlice.actions.expensesFetchingSuccess({expenses, places}))
     } catch (err) {
       dispatch(expensesSlice.actions.expensesFetchingError(err as Error))
     }
@@ -25,9 +28,9 @@ export const addNewExpense = (access_token: string, expense: CreateExpense) => {
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(expensesSlice.actions.expensesFetching())
-      const newExpense: CreateExpense = await secureApi.post('expense', {json: expense}).json()
-      dispatch(expensesSlice.actions.addNewExpense({newExpense}))
-      return newExpense
+      // const newExpense: CreateExpense = await secureApi.post('expense', {json: expense}).json()
+      // dispatch(expensesSlice.actions.addNewExpense({newExpense}))
+      // return newExpense
     } catch (err) {
       const errors = err as Error;
       const errorText = errors.message
@@ -39,14 +42,14 @@ export const addNewExpense = (access_token: string, expense: CreateExpense) => {
 }
 
 export const updateExpense = (access_token: string, expense: UpdateExpense) => {
-  const updateExpense = _.pick(expense, ['id', 'store_id', 'name', 'active'])
+  const updated = {...expense, date_cost: formatISODate(expense.date_cost)}
   const secureApi = secureApiCreate(access_token)
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(expensesSlice.actions.expensesFetching())
-      await secureApi.put('expense', {json: updateExpense})
-      dispatch(expensesSlice.actions.updateExpense({changedExpense: expense}))
-      return expense
+      const updatedExpense: Expense  = await secureApi.put('expense', {json: updated}).json()
+      dispatch(expensesSlice.actions.updateExpense({changedExpense: updatedExpense}))
+      return updatedExpense
     } catch (err) {
       const errors = err as Error;
       const errorText = errors.message

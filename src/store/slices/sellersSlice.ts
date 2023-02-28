@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {SellerWithDetails} from "../../achemas/seller";
+import {SellerWithDetails} from "../../schemas/seller";
 
 
 interface SellerState {

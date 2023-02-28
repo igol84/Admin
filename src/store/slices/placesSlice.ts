@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {PlaceWithDetails} from "../../achemas/place";
+import {PlaceWithDetails} from "../../schemas/place";
 
 interface PlaceState {
   places: PlaceWithDetails[]

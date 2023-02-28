@@ -3,7 +3,7 @@ import {secureApiCreate} from "../../ky";
 import {placesSlice} from "../slices/placesSlice";
 import {authSlice} from "../slices/authSlice";
 import _ from "lodash";
-import {CreatePlace, Place, PlaceWithDetails} from "../../achemas/place";
+import {CreatePlace, Place, PlaceWithDetails} from "../../schemas/place";
 
 export const fetchPlaces = (access_token: string, {storeId}: any = null) => {
   const secureApi = secureApiCreate(access_token)

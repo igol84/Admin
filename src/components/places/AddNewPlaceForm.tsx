@@ -6,7 +6,7 @@ import {FormTextInput} from "../Form";
 import {addNewPlace} from "../../store/actions/places";
 import {useStoreId} from "../../hooks/redux";
 import {useDictionary, useFetchAccess} from "../../hooks/pages";
-import {CreatePlace} from "../../achemas/place";
+import {CreatePlace} from "../../schemas/place";
 
 const AddNewPlaceForm = () => {
   const d = useDictionary('places')

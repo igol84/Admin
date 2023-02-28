@@ -3,7 +3,7 @@ import {secureApiCreate} from "../../ky";
 import {sellersSlice} from "../slices/sellersSlice";
 import {authSlice} from "../slices/authSlice";
 import _ from "lodash";
-import {Seller, SellerWithDetails, UpdateSeller} from "../../achemas/seller";
+import {Seller, SellerWithDetails, UpdateSeller} from "../../schemas/seller";
 
 
 export const fetchSellers = (access_token: string, {storeId}: any = null) => {

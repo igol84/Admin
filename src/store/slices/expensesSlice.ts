@@ -1,20 +1,24 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {Expense} from "../../achemas/expense";
+import {Expense} from "../../schemas/expense";
+import {Place} from "../../schemas/place";
 
 interface ExpenseState {
   expenses: Expense[]
+  places: Place[]
   isLoading: boolean
   error: string
 }
 
 const initialState: ExpenseState = {
   expenses: [],
+  places: [],
   isLoading: false,
   error: ''
 }
 
 export interface ExpensesPayload {
   expenses: Expense[]
+  places: Place[]
 }
 
 interface ExpensePayload {
@@ -34,6 +38,7 @@ export const expensesSlice = createSlice({
     },
     expensesFetchingSuccess(state, action: PayloadAction<ExpensesPayload>) {
       state.expenses = action.payload.expenses
+      state.places = action.payload.places
       state.isLoading = false
       state.error = ''
     },
