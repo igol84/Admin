@@ -44,5 +44,12 @@ export const useBoxTableStyle = () => {
     '& .MuiDataGrid-columnHeader:focus': {
       outline: 'none !important',
     },
+    '& .MuiInputBase-input::-webkit-calendar-picker-indicator': {
+      color: colors.black[100],
+    },
+    '& ::-webkit-calendar-picker-indicator': {
+      filter: theme.palette.mode === 'dark' ? 'invert(1)' : 'none'
+    }
+
   }
 }

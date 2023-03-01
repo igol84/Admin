@@ -2,7 +2,6 @@ import {AppDispatch} from "../index";
 import {secureApiCreate} from "../../ky";
 import {expensesSlice} from "../slices/expensesSlice";
 import {authSlice} from "../slices/authSlice";
-import _ from "lodash";
 import {CreateExpense, Expense, UpdateExpense} from "../../schemas/expense";
 import {Place} from "../../schemas/place";
 import {formatISODate} from "../../hooks/form-data";
@@ -28,9 +27,9 @@ export const addNewExpense = (access_token: string, expense: CreateExpense) => {
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(expensesSlice.actions.expensesFetching())
-      // const newExpense: CreateExpense = await secureApi.post('expense', {json: expense}).json()
-      // dispatch(expensesSlice.actions.addNewExpense({newExpense}))
-      // return newExpense
+      const newExpense: Expense = await secureApi.post('expense', {json: expense}).json()
+      dispatch(expensesSlice.actions.addNewExpense({newExpense}))
+      return newExpense
     } catch (err) {
       const errors = err as Error;
       const errorText = errors.message

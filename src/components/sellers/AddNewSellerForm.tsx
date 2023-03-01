@@ -43,10 +43,8 @@ const AddNewSellerForm = () => {
 
           }}>
             <FormTextInput
-              disabled={false}
               label={d['name']}
               name='name'
-              textLabel=''
               withOutBlur={true}
             />
             <Button

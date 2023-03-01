@@ -40,13 +40,10 @@ const AddNewPlaceForm = () => {
         <form onSubmit={handleSubmit}>
           <Box sx={{
             display: 'flex',
-
           }}>
             <FormTextInput
-              disabled={false}
               label={d['name']}
               name='name'
-              textLabel=''
               withOutBlur={true}
             />
             <Button

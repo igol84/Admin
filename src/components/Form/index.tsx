@@ -1,21 +1,23 @@
-import {FieldInputProps, useField} from "formik";
 import _ from "lodash";
 import {FormControl, InputLabel, Select, TextField} from "@mui/material";
 import React from "react";
+import {useField} from "formik";
+
 
 interface TextInputProps {
   label: string
   name: string
   type?: string
-  disabled: boolean
+  disabled?: boolean
   textLabel?: string
   withOutBlur?: boolean
+  focusText?: boolean
 }
 
 export const FormTextInput = (props: TextInputProps) => {
-  const {textLabel = '', withOutBlur=false} = props
+  const {textLabel = '', withOutBlur=false, disabled=false, focusText=false} = props
   const [field, meta] = useField(props)
-  const filteredProps = _.omit(props, ['textLabel', 'withOutBlur'])
+  const filteredProps = _.omit(props, ['textLabel', 'withOutBlur', 'focusText'])
 
   const filteredField = withOutBlur ? _.omit(field, ['onBlur']) : field
   const isError =
@@ -29,6 +31,8 @@ export const FormTextInput = (props: TextInputProps) => {
 
   return (
     <TextField
+      onFocus={focusText ? (event)=>event.target.select() : ()=>null}
+      disabled={disabled}
       color="secondary"
       sx={{width: "100%"}}
       error={isError}

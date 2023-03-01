@@ -1,13 +1,15 @@
 import React from 'react';
-import {Box, Button, Select, MenuItem} from "@mui/material";
+import {Box, Button, FormControl, InputLabel, MenuItem, TextField} from "@mui/material";
 import {Formik, FormikHelpers} from "formik";
-import * as Yup from "yup";
+import * as yup from "yup";
 import {FormSelect, FormTextInput} from "../Form";
 import {useAppSelector, useStoreId} from "../../hooks/redux";
 import {addNewExpense} from "../../store/actions/expenses";
 import {useDictionary, useFetchAccess} from "../../hooks/pages";
-import {CreateExpense} from "../../schemas/expense";
-import * as yup from "yup";
+import 'dayjs/locale/uk';
+import 'dayjs/locale/ru';
+import 'dayjs/locale/en';
+import {formatISODate} from "../../hooks/form-data";
 
 const AddNewExpenseForm = () => {
   const {places} = useAppSelector(state => state.expensesReducer)
@@ -18,36 +20,35 @@ const AddNewExpenseForm = () => {
   interface initialValuesType {
     place_id: number,
     desc: string
-    date_cost: Date
+    date_cost: string | Date
     cost: number
   }
 
   const initialValues: initialValuesType = {
-    place_id:-1,
+    place_id: -1,
     desc: '',
-    date_cost: new Date,
+    date_cost: formatISODate(new Date()),
     cost: 0
   }
 
   const onSubmit = async (value: initialValuesType, actions: FormikHelpers<initialValuesType>) => {
     if (!storeId) return false
-    const newExpense: CreateExpense = {place_id: '0', desc: '', date_cost: new Date(), cost: 0}
-    console.log(newExpense)
-    // await addExpenseAccess(newExpense)
+    console.log(value)
+    await addExpenseAccess(value)
     actions.setSubmitting(false)
     actions.resetForm()
   }
   return (
     <Formik
       initialValues={initialValues}
-      validationSchema={Yup.object({
+      validationSchema={yup.object({
         place_id: yup.number().positive(),
         desc: yup.string(),
         cost: yup.number().required(),
       })}
       onSubmit={onSubmit}
     >
-      {({handleSubmit, isSubmitting}) => (
+      {({handleSubmit, isSubmitting, values, setFieldValue}) => (
         <form onSubmit={handleSubmit}>
           <Box sx={{
             display: 'flex',
@@ -62,13 +63,34 @@ const AddNewExpenseForm = () => {
                 <MenuItem key={place.id} value={place.id}>{place.name}</MenuItem>
               ))}
             </FormSelect>
+
             <FormTextInput
-              disabled={false}
               label={'desc'}
               name='desc'
               textLabel=''
               withOutBlur={true}
             />
+
+            <FormControl sx={{minWidth: '180px'}}>
+              <InputLabel color='secondary'></InputLabel>
+              <TextField
+                color='secondary'
+                size='small'
+                type='date'
+                label="Date"
+                value={values.date_cost}
+                onChange={event => setFieldValue('date_cost', event.target.value)}
+              />
+            </FormControl>
+
+            <FormTextInput
+              label={'cost'}
+              name='cost'
+              textLabel=''
+              withOutBlur
+              focusText
+            />
+
             <Button
               type='submit'
               color='secondary'
