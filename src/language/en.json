@@ -1,6 +1,10 @@
 {
   "expense": {
-    "title": "Expenses"
+    "title": "Expenses",
+    "place_id": "Place",
+    "desc": "Description",
+    "date_cost": "Date cost",
+    "cost": "Cost"
   },
   "places": {
     "title": "Places",
@@ -48,5 +52,11 @@
     "userIsNot": "User is not available",
     "passIsNot": "Incorrect password",
     "networkError": "Connection Error"
+  },
+  "form": {
+    "active": "Active",
+    "delete": "Delete",
+    "required": "Required",
+    "add_button": "Add"
   }
 }

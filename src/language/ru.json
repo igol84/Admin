@@ -1,6 +1,11 @@
 {
   "expense": {
-    "title": "Expenses"
+    "title": "Издержки",
+    "place_id": "Точка",
+    "desc": "Описание",
+    "date_cost": "Дата продажи",
+    "cost": "Расходы"
+
   },
   "places": {
     "title": "Точки",
@@ -48,6 +53,12 @@
     "userIsNot": "Пользователь недоступен",
     "passIsNot": "Неверный пароль",
     "networkError": "Ошибка подключения"
+  },
+  "form": {
+    "active": "Активный",
+    "delete": "Удалить",
+    "required": "Обязательно",
+    "add_button": "Добавить"
   }
 
 

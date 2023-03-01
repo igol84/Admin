@@ -1,6 +1,10 @@
 {
   "expense": {
-    "title": "Expenses"
+    "title": "Витрати",
+    "place_id": "Місце",
+    "desc": "Опис",
+    "date_cost": "Дата продажу",
+    "cost": "Вартість"
   },
   "places": {
     "title": "Точки",
@@ -48,5 +52,11 @@
     "userIsNot": "Користувач недоступний",
     "passIsNot": "Невірний пароль",
     "networkError": "Помилка підключення"
+  },
+  "form": {
+    "active": "Активний",
+    "delete": "Видалити",
+    "required": "Обов'язково",
+    "add_button": "Додати"
   }
 }

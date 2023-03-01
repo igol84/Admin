@@ -1,7 +1,8 @@
 import {useAppSelector} from "../../hooks/redux";
 import {GridColDef, GridRenderCellParams, useGridApiContext} from "@mui/x-data-grid";
-import {Select, SelectChangeEvent} from "@mui/material";
+import {MenuItem, Select, SelectChangeEvent} from "@mui/material";
 import React from "react";
+import {blue} from "@mui/material/colors";
 
 interface TextCellProps {
   placeId: number
@@ -31,15 +32,15 @@ const PlaceSelectEditInputCell = (props: GridRenderCellParams) => {
 
   return (
     <Select
+      color='secondary'
       value={value}
       onChange={handleChange}
       size="small"
-      sx={{height: 1}}
-      native
+      sx={{width: '100%'}}
       autoFocus
     >
       {places.map(place => (
-        <option key={place.id} value={place.id}>{place.name}</option>
+        <MenuItem key={place.id} value={place.id}>{place.name}</MenuItem>
       ))}
     </Select>
   );

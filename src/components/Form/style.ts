@@ -28,11 +28,14 @@ export const useBoxTableStyle = () => {
       backgroundColor: colors.blueAccent[700]
     },
     '& .MuiDataGrid-cell--editing': {
-      backgroundColor: `${colors.greenAccent[300]} !important`,
-      color: `${colors.blueAccent[600]} !important`
+      backgroundColor: `${colors.primary[500]} !important`,
+      color: `${colors.primary[100]} !important`,
+      '& .MuiSelect-outlined': {
+        color: `${colors.greenAccent[100]} !important`,
+      }
     },
     '& .MuiDataGrid-editInputCell': {
-      color: colors.black[900],
+      color: colors.black[100],
     },
     '& .Mui-selected': {
       backgroundColor: `${colors.primary[200]} !important`,
