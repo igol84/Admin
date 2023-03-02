@@ -47,7 +47,7 @@ const AddNewExpenseForm = () => {
         <form onSubmit={handleSubmit}>
           <Box sx={{
             display: 'flex',
-
+            gap: 1
           }}>
             <FormTextInput
               type='date'
