@@ -66,20 +66,20 @@ const TableExpense = () => {
 
   const columns: GridColumns = [
     {
-      field: 'date_cost', headerName: d['date_cost'], flex: 1, editable: true, type: "date",
+      field: 'date_cost', headerName: d['date_cost'], minWidth: 120, flex: 1, editable: true, type: "date",
       valueFormatter: (params: GridValueFormatterParams<string>) => {
         const date = parse(params.value, 'yyyy-MM-dd', new Date())
         return date.toLocaleDateString()
       }
     },
     {
-      field: 'place_id', headerName: d['place_id'], flex: 1, editable: true,
+      field: 'place_id', headerName: d['place_id'], minWidth: 120, flex: 1, editable: true,
       renderEditCell: renderSelectEditInputPlaceCell,
       renderCell: renderCellPlace
 
     },
-    {field: 'desc', headerName: d['desc'], flex: 1, editable: true,},
-    {field: 'cost', headerName: d['cost'], flex: 1, editable: true, type: 'number'},
+    {field: 'desc', headerName: d['desc'], minWidth: 120, flex: 1, editable: true,},
+    {field: 'cost', headerName: d['cost'], minWidth: 100, flex: 1, editable: true, type: 'number'},
 
     {
       field: 'empty', headerName: '', flex: 3, sortable: false, disableColumnMenu: true,
