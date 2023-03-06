@@ -50,7 +50,7 @@ const AddNewPlaceForm = () => {
               type='submit'
               color='secondary'
               variant="contained"
-              sx={{ml: 1, width: '230px', height: '43px'}}
+              sx={{ml: 1, width: '230px', height: '43px', whiteSpace: 'nowrap'}}
               disabled={isSubmitting}
             >
               {d['add_button']}

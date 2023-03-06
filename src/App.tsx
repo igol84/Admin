@@ -8,6 +8,7 @@ import Dashboard from "./pages/dashboard";
 import Sellers from "./pages/sellers";
 import Places from "./pages/places";
 import Expenses from "./pages/expenses";
+import NewProducts from "./pages/new-products";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path='/sellers' element={<Sellers/>}/>
           <Route path='/places' element={<Places/>}/>
           <Route path='/expenses' element={<Expenses/>}/>
+          <Route path='/new-products' element={<NewProducts/>}/>
         </Routes>
       </main>
     </div>

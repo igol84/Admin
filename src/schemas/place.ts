@@ -8,10 +8,6 @@ export interface Place extends CreatePlace{
   id: number
 }
 
-export interface UpdatePlace extends CreatePlace{
-  id: number
-}
-
 export interface PlaceWithDetails extends Place{
   sales: number
   expenses: number

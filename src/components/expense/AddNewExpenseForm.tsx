@@ -87,7 +87,7 @@ const AddNewExpenseForm = () => {
               type='submit'
               color='secondary'
               variant="contained"
-              sx={{ml: 1, width: '230px', height: '43px'}}
+              sx={{ml: 1, px: 5, height: '43px'}}
               disabled={isSubmitting}
             >
               {df['add_button']}

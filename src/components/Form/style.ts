@@ -28,9 +28,12 @@ export const useBoxTableStyle = () => {
       backgroundColor: colors.blueAccent[700]
     },
     '& .MuiDataGrid-cell--editing': {
-      backgroundColor: `${colors.primary[500]} !important`,
+      backgroundColor: `${colors.greenAccent[900]} !important`,
       color: `${colors.primary[100]} !important`,
       '& .MuiSelect-outlined': {
+        color: `${colors.greenAccent[100]} !important`,
+      },
+      '& svg': {
         color: `${colors.greenAccent[100]} !important`,
       }
     },
@@ -38,7 +41,7 @@ export const useBoxTableStyle = () => {
       color: colors.black[100],
     },
     '& .Mui-selected': {
-      backgroundColor: `${colors.primary[200]} !important`,
+      backgroundColor: `${colors.greenAccent[700]} !important`,
       borderColor: `${colors.primary[200]} !important`
     },
     '& .MuiDataGrid-cell:focus': {
