@@ -9,7 +9,7 @@ const NewProducts = () => {
   return (
     <Box m={1}>
       <Box display='flex' justifyContent='space-around' alignItems='center'>
-        <Header title={'New products'}/>
+        <Header title={'New product'}/>
       </Box>
       <AddNewProductForm/>
     </Box>

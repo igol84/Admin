@@ -39,7 +39,7 @@ type Field<T> = {
 
 type FormFields = {
   name: Field<string>
-  priceBuy: Field<number>
+  priceBuy: Field<number | ''>
   priceSell: Field<number>
   productType: Field<ProductType>
   qty: Field<number>
@@ -51,7 +51,7 @@ type FieldNames = keyof FormFields
 
 const initialFormFields: FormFields = {
   name: {value: '', error: ''},
-  priceBuy: {value: 0, error: ''},
+  priceBuy: {value: '', error: ''},
   priceSell: {value: 0, error: ''},
   productType: {value: ProductType.shoes, error: ''},
   qty: {value: 0, error: ''},
@@ -67,7 +67,7 @@ const AddNewProductForm = () => {
       prevFormData[field].value = value
     }))
   }
-  const setError = (field: FieldNames, error: string) => {
+  const checkError = (field: FieldNames, error: string) => {
     setFormData(produce(prevFormData => {
       prevFormData[field].error = error
     }))
@@ -80,22 +80,39 @@ const AddNewProductForm = () => {
     if (value === '') {
       return 'required'
     }
+    return ''
   }
 
   const fieldPositive = (value: number) => {
     if (value < 0) {
       return 'positive'
     }
+    return ''
+  }
+
+  const fieldPositiveNotNull = (value: number) => {
+    if (value <= 0) {
+      return 'positive, more than zero'
+    }
+    return ''
   }
 
   const validateDate = () => {
     let isValid = true
-    if (setError('name', fieldRequired(formData.name.value) || ''))
+    if (checkError('name', fieldRequired(formData.name.value) ))
       isValid = false
-    if (setError('priceBuy', fieldPositive(formData.priceBuy.value) || ''))
+    if (checkError('priceBuy', fieldRequired(String(formData.priceBuy.value))) ||
+      checkError('priceBuy', fieldPositive(Number(formData.priceBuy.value))))
       isValid = false
-    if (setError('priceSell', fieldPositive(formData.priceSell.value) || ''))
+    if (checkError('priceSell', fieldPositive(formData.priceSell.value)))
       isValid = false
+    if (formData.productType.value === ProductType.product) {
+      if (checkError('qty', fieldPositiveNotNull(formData.qty.value)))
+        isValid = false
+    }
+    else if(formData.productType.value === ProductType.shoes){
+
+    }
     return isValid
   }
 
@@ -115,7 +132,7 @@ const AddNewProductForm = () => {
         <Box sx={{width: '300px'}}>
           <SimpleField
             name='name'
-            label="Name"
+            label='Name'
             value={formData.name.value}
             setValue={setterCreator('name')}
             focusText
@@ -126,7 +143,7 @@ const AddNewProductForm = () => {
           <SimpleField
             type='number'
             name='price_buy'
-            label="price_buy"
+            label='price_buy'
             value={formData.priceBuy.value.toString()}
             setValue={setterCreator('priceBuy')}
             focusText
@@ -174,6 +191,7 @@ const AddNewProductForm = () => {
             value={formData.qty.value.toString()}
             setValue={setterCreator('qty')}
             focusText
+            error={useError('qty')}
           />
         </Box>
       </Box>
@@ -191,6 +209,7 @@ const AddNewProductForm = () => {
             value={formData.color.value}
             setValue={setterCreator('color')}
             focusText
+            error={useError('color')}
           />
         </Box>
         <Box width={150}>
@@ -200,6 +219,7 @@ const AddNewProductForm = () => {
             value={formData.width.value}
             setValue={setterCreator('width')}
             focusText
+            error={useError('width')}
           />
         </Box>
       </Box>
