@@ -1,35 +1,13 @@
 import React, {useState} from 'react';
 import {Box, Button, MenuItem} from "@mui/material";
-import {SimpleField, SimpleSelect} from "../Form";
+import {fieldPositive, fieldPositiveNotNull, fieldRequired, SimpleField, SimpleSelect} from "../Form";
 import produce from "immer";
+import TableSizes from "./TableSizes";
 
 
 enum ProductType {
   product = 'product',
   shoes = 'shoes'
-}
-
-interface Product {
-  qty: number
-}
-
-interface Size {
-  size: number
-  length: number
-  qty: number
-}
-
-interface Shoes {
-  color: string
-  width: string
-  sizes: Size[]
-}
-
-interface initialValuesType extends Product, Shoes {
-  name: string
-  price_buy: number
-  price_sell: number
-  productType: ProductType
 }
 
 type Field<T> = {
@@ -59,8 +37,15 @@ const initialFormFields: FormFields = {
   width: {value: '', error: ''}
 }
 
+export interface rangeSizesType {
+  from: number
+  to: number
+}
+const initialRangeSizes={from: 36, to: 41}
+
 const AddNewProductForm = () => {
   const [formData, setFormData] = useState<FormFields>(initialFormFields)
+  const [rangeSizes, setRangeSizes] = useState<rangeSizesType>(initialRangeSizes)
 
   const setterCreator = (field: FieldNames) => (value: string) => {
     setFormData(produce(prevFormData => {
@@ -76,30 +61,10 @@ const AddNewProductForm = () => {
   const useError = (fieldName: FieldNames) => formData[fieldName].error
   const resetForm = () => setFormData(initialFormFields)
 
-  const fieldRequired = (value: string) => {
-    if (value === '') {
-      return 'required'
-    }
-    return ''
-  }
-
-  const fieldPositive = (value: number) => {
-    if (value < 0) {
-      return 'positive'
-    }
-    return ''
-  }
-
-  const fieldPositiveNotNull = (value: number) => {
-    if (value <= 0) {
-      return 'positive, more than zero'
-    }
-    return ''
-  }
 
   const validateDate = () => {
     let isValid = true
-    if (checkError('name', fieldRequired(formData.name.value) ))
+    if (checkError('name', fieldRequired(formData.name.value)))
       isValid = false
     if (checkError('priceBuy', fieldRequired(String(formData.priceBuy.value))) ||
       checkError('priceBuy', fieldPositive(Number(formData.priceBuy.value))))
@@ -109,16 +74,14 @@ const AddNewProductForm = () => {
     if (formData.productType.value === ProductType.product) {
       if (checkError('qty', fieldPositiveNotNull(formData.qty.value)))
         isValid = false
-    }
-    else if(formData.productType.value === ProductType.shoes){
+    } else if (formData.productType.value === ProductType.shoes) {
 
     }
     return isValid
   }
 
-  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if(validateDate()) {
+  const onSubmit = () => {
+    if (validateDate()) {
       resetForm()
     }
   }
@@ -127,7 +90,7 @@ const AddNewProductForm = () => {
   const isCheckedProductType = isCheckedField(formData.productType.value)
 
   return (
-    <form onSubmit={onSubmit}>
+    <>
       <Box sx={{display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center', pb: '20px'}}>
         <Box sx={{width: '300px'}}>
           <SimpleField
@@ -154,7 +117,7 @@ const AddNewProductForm = () => {
           <SimpleField
             type='number'
             name='price_sell'
-            label="price_sell"
+            label='price_sell'
             value={formData.priceSell.value.toString()}
             setValue={setterCreator('priceSell')}
             focusText
@@ -187,7 +150,7 @@ const AddNewProductForm = () => {
           <SimpleField
             type='number'
             name='qty'
-            label="qty"
+            label='qty'
             value={formData.qty.value.toString()}
             setValue={setterCreator('qty')}
             focusText
@@ -198,29 +161,48 @@ const AddNewProductForm = () => {
       <Box sx={{
         display: isCheckedProductType('shoes') ? 'flex' : 'none',
         gap: '10px',
+        flexDirection: 'column',
         flexWrap: 'wrap',
         justifyContent: 'center',
         pb: '20px'
       }}>
-        <Box width={150}>
-          <SimpleField
-            name='color'
-            label="color"
-            value={formData.color.value}
-            setValue={setterCreator('color')}
-            focusText
-            error={useError('color')}
-          />
+        <Box sx={{
+          display: 'flex',
+          gap: '10px',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
+          pb: '20px'
+        }}>
+
+          <Box width={150}>
+            <SimpleField
+              name='color'
+              label='color'
+              value={formData.color.value}
+              setValue={setterCreator('color')}
+              focusText
+              error={useError('color')}
+            />
+          </Box>
+          <Box width={150}>
+            <SimpleField
+              name='width'
+              label='width'
+              value={formData.width.value}
+              setValue={setterCreator('width')}
+              focusText
+              error={useError('width')}
+            />
+          </Box>
         </Box>
-        <Box width={150}>
-          <SimpleField
-            name='width'
-            label="width"
-            value={formData.width.value}
-            setValue={setterCreator('width')}
-            focusText
-            error={useError('width')}
-          />
+        <Box sx={{
+            display: 'flex',
+            gap: '10px',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            pb: '20px'
+          }}>
+          <TableSizes rangeSizes={rangeSizes} setRangeSizes={setRangeSizes}/>
         </Box>
       </Box>
       <Box sx={{display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center'}}>
@@ -230,11 +212,12 @@ const AddNewProductForm = () => {
           variant="contained"
           sx={{ml: 1, px: 5, height: '43px'}}
           disabled={false}
+          onClick={onSubmit}
         >
           {'add_button'}
         </Button>
       </Box>
-    </form>
+    </>
   );
 };
 

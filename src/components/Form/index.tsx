@@ -128,3 +128,24 @@ export const SimpleSelect = (props: FormSelectType) => {
     </FormControl>
   )
 }
+
+export const fieldRequired = (value: string) => {
+  if (value === '') {
+    return 'required'
+  }
+  return ''
+}
+
+export const fieldPositive = (value: number) => {
+  if (value < 0) {
+    return 'positive'
+  }
+  return ''
+}
+
+export const fieldPositiveNotNull = (value: number) => {
+  if (value <= 0) {
+    return 'positive, more than zero'
+  }
+  return ''
+}
