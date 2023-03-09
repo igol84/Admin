@@ -1,15 +1,12 @@
 import React, {Dispatch, SetStateAction} from "react";
 import {Box, TextField} from "@mui/material";
-import {rangeSizesType} from "./AddNewProductForm";
-
+import {RangeSizesType} from "./AddNewProductForm";
 
 
 interface SizesRangeProps {
-  rangeSizes: rangeSizesType
-  setRangeSizes: Dispatch<SetStateAction<rangeSizesType>>
+  rangeSizes: RangeSizesType
+  setRangeSizes: Dispatch<SetStateAction<RangeSizesType>>
 }
-
-
 
 const MIN_SIZE = 1
 const MAX_SIZE = 56

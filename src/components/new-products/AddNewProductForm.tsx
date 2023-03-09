@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
+import React, {useLayoutEffect, useState} from 'react';
 import {Box, Button, MenuItem} from "@mui/material";
 import {fieldPositive, fieldPositiveNotNull, fieldRequired, SimpleField, SimpleSelect} from "../Form";
 import produce from "immer";
 import TableSizes from "./TableSizes";
+import _ from "lodash";
 
 
 enum ProductType {
@@ -14,6 +15,11 @@ type Field<T> = {
   value: T
   error: string
 }
+export interface SizeField {
+  size: number
+  qty?: number
+  length?: number
+}
 
 type FormFields = {
   name: Field<string>
@@ -23,9 +29,22 @@ type FormFields = {
   qty: Field<number>
   color: Field<string>
   width: Field<string>
+  sizes: SizeField[]
 }
 
-type FieldNames = keyof FormFields
+type FieldNames = keyof Omit<FormFields, 'sizes'>
+
+export interface RangeSizesType {
+  from: number
+  to: number
+}
+
+const initialRangeSizes: RangeSizesType = {from: 36, to: 41}
+
+const sizesArray = _.range(initialRangeSizes.from, initialRangeSizes.to + 1)
+const initialDataSizes: SizeField[] = sizesArray.map(size => (
+  {size, qty: 0, length: 0}
+))
 
 const initialFormFields: FormFields = {
   name: {value: '', error: ''},
@@ -34,19 +53,42 @@ const initialFormFields: FormFields = {
   productType: {value: ProductType.shoes, error: ''},
   qty: {value: 0, error: ''},
   color: {value: '', error: ''},
-  width: {value: '', error: ''}
+  width: {value: '', error: ''},
+  sizes: initialDataSizes
 }
 
-export interface rangeSizesType {
-  from: number
-  to: number
-}
-const initialRangeSizes={from: 36, to: 41}
 
 const AddNewProductForm = () => {
   const [formData, setFormData] = useState<FormFields>(initialFormFields)
-  const [rangeSizes, setRangeSizes] = useState<rangeSizesType>(initialRangeSizes)
+  const [rangeSizes, setRangeSizes] = useState<RangeSizesType>(initialRangeSizes)
 
+
+  // useLayoutEffect(() => {
+  //   console.log(formData)
+  // }, [formData])
+
+  useLayoutEffect(() => {
+    const sizesArray = _.range(rangeSizes.from, rangeSizes.to + 1)
+    const dataSizes: SizeField[] = sizesArray.map(size => (
+      {size, qty: 0, length: 0}
+    ))
+    setFormData(produce(prevFormData => {
+      prevFormData.sizes = dataSizes
+    }))
+  }, [rangeSizes])
+
+  const onSizeFieldQtyChange = ({size, qty}: Pick<SizeField, 'size' | 'qty'>) => {
+    const fieldIndex = formData.sizes.findIndex(field => field.size === size)
+    setFormData(produce(prevFormData => {
+      prevFormData.sizes[fieldIndex] = {...prevFormData.sizes[fieldIndex], qty}
+    }))
+  }
+  const onSizeFieldLengthChange = ({size, length}: Pick<SizeField, 'size' | 'length'>) => {
+    const fieldIndex = formData.sizes.findIndex(field => field.size === size)
+    setFormData(produce(prevFormData => {
+      prevFormData.sizes[fieldIndex] = {...prevFormData.sizes[fieldIndex], length}
+    }))
+  }
   const setterCreator = (field: FieldNames) => (value: string) => {
     setFormData(produce(prevFormData => {
       prevFormData[field].value = value
@@ -196,13 +238,19 @@ const AddNewProductForm = () => {
           </Box>
         </Box>
         <Box sx={{
-            display: 'flex',
-            gap: '10px',
-            flexWrap: 'wrap',
-            justifyContent: 'center',
-            pb: '20px'
-          }}>
-          <TableSizes rangeSizes={rangeSizes} setRangeSizes={setRangeSizes}/>
+          display: 'flex',
+          gap: '10px',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
+          pb: '20px'
+        }}>
+          <TableSizes
+            rangeSizes={rangeSizes}
+            setRangeSizes={setRangeSizes}
+            dataSizes={formData.sizes}
+            onSizeFieldQtyChange={onSizeFieldQtyChange}
+            onSizeFieldLengthChange={onSizeFieldLengthChange}
+          />
         </Box>
       </Box>
       <Box sx={{display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center'}}>

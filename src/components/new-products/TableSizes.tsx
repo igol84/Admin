@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
+import React, {Dispatch, SetStateAction} from 'react';
 import {
   Box,
   Table,
@@ -11,31 +11,35 @@ import {
   useTheme
 } from "@mui/material";
 import {tokens} from "../../theme";
-import _ from "lodash";
 import SizesRange from "./TableSizesSizeRange";
-import {rangeSizesType} from "./AddNewProductForm";
+import {RangeSizesType, SizeField} from "./AddNewProductForm";
 
-interface SizeField {
-  size: number
-  qty?: number
-  length?: number
+interface TableSizesType {
+  rangeSizes: RangeSizesType
+  setRangeSizes: Dispatch<SetStateAction<RangeSizesType>>
+  dataSizes: SizeField[]
+  onSizeFieldQtyChange: (field: Pick<SizeField, 'size' | 'qty'>) => void
+  onSizeFieldLengthChange: (field: Pick<SizeField, 'size' | 'length'>) => void
 }
 
-interface TableSizesType{
-  rangeSizes : rangeSizesType
-  setRangeSizes: Dispatch<SetStateAction<rangeSizesType>>
-}
 const TableSizes = (props: TableSizesType) => {
-  const {rangeSizes, setRangeSizes} = props
+  const {rangeSizes, setRangeSizes, dataSizes, onSizeFieldQtyChange, onSizeFieldLengthChange} = props
   const theme = useTheme()
   const colors = tokens(theme.palette.mode)
-  const sizesArray = _.range(rangeSizes.from, rangeSizes.to + 1)
-  const dataSizesForm: SizeField[]  = sizesArray.map(size=>(
-    {size, qty: 0, length: 0}
-  ))
-  useEffect(() => {
-    console.log(dataSizesForm)
-  }, [])
+
+  const onQtyChange = (props: Pick<SizeField, 'size' | 'qty'>) => {
+    const {size, qty} = props
+    if (qty !== undefined && qty >= 0 && qty < 10000)
+      onSizeFieldQtyChange({size, qty})
+  }
+  const onLengthChange = (props: { size: number, length: string }) => {
+    const {size, length} = props
+    console.log(length)
+    const NumberLength = Number(length)
+    if (length !== undefined && NumberLength >= 0 && NumberLength < 80)
+      onSizeFieldLengthChange({size, length: NumberLength})
+  }
+
   return (
     <Box minWidth='600px' sx={{border: `1px solid ${colors.primary[400]}`}}>
       <TableContainer sx={{maxHeight: '50vh',}}>
@@ -50,12 +54,12 @@ const TableSizes = (props: TableSizesType) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {dataSizesForm.map((field) => (
+            {dataSizes.map((field) => (
               <TableRow
                 key={field.size}
                 sx={{
                   '&:last-child td, &:last-child th': {border: 0},
-                  '& td, & th': { p: 1}
+                  '& td, & th': {p: 1}
                 }}
               >
                 <TableCell component="th" scope="row" align='right'>
@@ -69,16 +73,25 @@ const TableSizes = (props: TableSizesType) => {
                     color="secondary"
                     size="small"
                     value={field.qty}
+                    onFocus={(event) => event.target.select()}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                      onQtyChange({size: field.size, qty: Number(event.target.value)})
+                    }}
                   />
                 </TableCell>
                 <TableCell align="right">
                   <TextField
+                    inputProps={{step: 0.5, inputMode: 'numeric', pattern: '[0-9]*' }}
                     sx={{width: '100px'}}
                     name={`length-${field.size}`}
                     type='number'
                     color="secondary"
                     size="small"
                     value={field.length}
+                    onFocus={(event) => event.target.select()}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                      onLengthChange({size: field.size, length: event.target.value})
+                    }}
                   />
                 </TableCell>
 
