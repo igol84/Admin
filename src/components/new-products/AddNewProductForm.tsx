@@ -6,6 +6,9 @@ import TableSizes from "./TableSizes";
 import _ from "lodash";
 import {NewProducts} from "../../schemas/new-products";
 import {useStoreId} from "../../hooks/redux";
+import {addNewProducts} from "../../store/actions/new-products";
+import {useFetchAccess} from "../../hooks/pages";
+
 
 
 enum ProductType {
@@ -65,6 +68,7 @@ const AddNewProductForm = () => {
   const [formData, setFormData] = useState<FormFields>(initialFormFields)
   const [rangeSizes, setRangeSizes] = useState<RangeSizesType>(initialRangeSizes)
   const storeId = useStoreId()
+  const addNewProductsAccess = useFetchAccess(addNewProducts)
 
   useLayoutEffect(() => {
     const sizesArray = _.range(rangeSizes.from, rangeSizes.to + 1)
@@ -75,6 +79,17 @@ const AddNewProductForm = () => {
       prevFormData.sizes = dataSizes
     }))
   }, [rangeSizes])
+
+  const onSubmit = async () => {
+    if (validateDate()) {
+      const data: null | NewProducts = createData()
+      if(data){
+        await addNewProductsAccess(data)
+        // resetForm()
+      }
+
+    }
+  }
 
   const onSizeFieldQtyChange = ({size, qty}: Pick<SizeField, 'size' | 'qty'>) => {
     const fieldIndex = formData.sizes.findIndex(field => field.size === size)
@@ -148,16 +163,6 @@ const AddNewProductForm = () => {
     return null
   }
 
-  const onSubmit = () => {
-    if (validateDate()) {
-      const data: null | NewProducts = createData()
-      if(data){
-        console.log(data)
-        resetForm()
-      }
-
-    }
-  }
 
   const isCheckedField = (field: any) => (name: any) => field === name
   const isCheckedProductType = isCheckedField(formData.productType.value)
