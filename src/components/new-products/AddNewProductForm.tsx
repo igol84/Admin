@@ -4,6 +4,8 @@ import {fieldPositive, fieldPositiveNotNull, fieldRequired, SimpleField, SimpleS
 import produce from "immer";
 import TableSizes from "./TableSizes";
 import _ from "lodash";
+import {NewProducts} from "../../schemas/new-products";
+import {useStoreId} from "../../hooks/redux";
 
 
 enum ProductType {
@@ -15,15 +17,16 @@ type Field<T> = {
   value: T
   error: string
 }
+
 export interface SizeField {
   size: number
-  qty?: number
-  length?: number
+  qty: number
+  length: number
 }
 
 type FormFields = {
   name: Field<string>
-  priceBuy: Field<number | ''>
+  priceBuy: Field<number>
   priceSell: Field<number>
   productType: Field<ProductType>
   qty: Field<number>
@@ -48,7 +51,7 @@ const initialDataSizes: SizeField[] = sizesArray.map(size => (
 
 const initialFormFields: FormFields = {
   name: {value: '', error: ''},
-  priceBuy: {value: '', error: ''},
+  priceBuy: {value: 0, error: ''},
   priceSell: {value: 0, error: ''},
   productType: {value: ProductType.shoes, error: ''},
   qty: {value: 0, error: ''},
@@ -61,11 +64,7 @@ const initialFormFields: FormFields = {
 const AddNewProductForm = () => {
   const [formData, setFormData] = useState<FormFields>(initialFormFields)
   const [rangeSizes, setRangeSizes] = useState<RangeSizesType>(initialRangeSizes)
-
-
-  // useLayoutEffect(() => {
-  //   console.log(formData)
-  // }, [formData])
+  const storeId = useStoreId()
 
   useLayoutEffect(() => {
     const sizesArray = _.range(rangeSizes.from, rangeSizes.to + 1)
@@ -122,9 +121,41 @@ const AddNewProductForm = () => {
     return isValid
   }
 
+
+  const getModuleData = (SelectedProductType: ProductType) => {
+    if (SelectedProductType === ProductType.shoes) {
+      return {
+        width: formData.width.value,
+        color: formData.color.value,
+        sizes: formData.sizes.filter(fieldSize => fieldSize.qty > 0)
+      }
+    } else return null
+  }
+
+  const createData = () => {
+    if (storeId !== null) {
+      const data: NewProducts = {
+        store_id: storeId,
+        type: formData.productType.value,
+        name: formData.name.value,
+        price_sell: formData.priceSell.value,
+        price_buy: formData.priceBuy.value,
+        qty: formData.qty.value,
+        module: getModuleData(formData.productType.value)
+      }
+      return data
+    }
+    return null
+  }
+
   const onSubmit = () => {
     if (validateDate()) {
-      resetForm()
+      const data: null | NewProducts = createData()
+      if(data){
+        console.log(data)
+        resetForm()
+      }
+
     }
   }
 
