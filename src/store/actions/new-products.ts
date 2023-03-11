@@ -12,7 +12,8 @@ export const addNewProducts = (access_token: string, newProducts: NewProducts) =
     try {
       console.log(newProducts)
       dispatch(newProductsSlice.actions.NewProductsFetching())
-      await secureApi.put('handler_receiving_the_item/receiving_the_items', {json: newProducts}).json()
+      const result = await secureApi.put('handler_receiving_the_item/receiving_the_items', {json: newProducts}).json()
+      console.log(result)
       dispatch(newProductsSlice.actions.NewProductsFetchingSuccess())
     } catch (err) {
       const errors = err as Error;

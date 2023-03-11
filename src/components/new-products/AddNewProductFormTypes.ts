@@ -28,3 +28,19 @@ export interface RangeSizesType {
   from: number
   to: number
 }
+
+export interface SetterFieldCreator {
+  (
+    field: FieldNames,
+    valid?: (value: any) => string
+  )
+    : (value: string) => void
+}
+
+export interface OnConcreteFieldChange {
+  (field: {size: number, value: string}) : void
+}
+export interface OnSizeFieldChange {
+  (fieldName: string)
+    : OnConcreteFieldChange
+}

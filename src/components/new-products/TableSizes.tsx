@@ -3,14 +3,14 @@ import {Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, u
 import {tokens} from "../../theme";
 import SizesRange from "./TableSizesSizeRange";
 import {SimpleField} from "../Form";
-import {RangeSizesType, SizeField} from "./AddNewProductFormTypes";
+import {OnConcreteFieldChange, RangeSizesType, SizeField} from "./AddNewProductFormTypes";
 
 interface TableSizesType {
   rangeSizes: RangeSizesType
   setRangeSizes: Dispatch<SetStateAction<RangeSizesType>>
   dataSizes: SizeField[]
-  onSizeFieldQtyChange: (field: { size: number, qty: string }) => void
-  onSizeFieldLengthChange: (field: { size: number, length: string }) => void
+  onSizeFieldQtyChange: OnConcreteFieldChange
+  onSizeFieldLengthChange: OnConcreteFieldChange
 }
 
 const TableSizes = (props: TableSizesType) => {
@@ -20,12 +20,12 @@ const TableSizes = (props: TableSizesType) => {
 
   const onQtyChange = (props: { size: number, qty: string }) => {
     const {size, qty} = props
-    if (Number(qty))
-      onSizeFieldQtyChange({size, qty: Number(qty).toString()})
+    if (Number(qty) >= 0)
+      onSizeFieldQtyChange({size, value: Number(qty).toString()})
   }
   const onLengthChange = (props: { size: number, length: string }) => {
     const {size, length} = props
-    onSizeFieldLengthChange({size, length})
+    onSizeFieldLengthChange({size, value: length})
   }
 
   return (
