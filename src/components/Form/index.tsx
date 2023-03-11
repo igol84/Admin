@@ -79,10 +79,11 @@ interface FieldType {
   label?: string
   focusText?: boolean
   error? :string
+  inputProps?: any
 }
 
 export const SimpleField = (props: FieldType) => {
-  const {type = 'text', name, value, setValue, label = '', focusText = false, error=''} = props
+  const {type = 'text', name, value, setValue, label = '', focusText = false, error='', inputProps={}} = props
   return (
     <TextField
       type={type}
@@ -98,6 +99,7 @@ export const SimpleField = (props: FieldType) => {
       onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
         setValue(event.target.value);
       }}
+      inputProps={inputProps}
     />
   );
 };

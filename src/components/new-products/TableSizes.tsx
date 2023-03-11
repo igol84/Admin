@@ -13,13 +13,14 @@ import {
 import {tokens} from "../../theme";
 import SizesRange from "./TableSizesSizeRange";
 import {RangeSizesType, SizeField} from "./AddNewProductForm";
+import {SimpleField} from "../Form";
 
 interface TableSizesType {
   rangeSizes: RangeSizesType
   setRangeSizes: Dispatch<SetStateAction<RangeSizesType>>
   dataSizes: SizeField[]
-  onSizeFieldQtyChange: (field: Pick<SizeField, 'size' | 'qty'>) => void
-  onSizeFieldLengthChange: (field: Pick<SizeField, 'size' | 'length'>) => void
+  onSizeFieldQtyChange: (field: {size: number, qty: string}) => void
+  onSizeFieldLengthChange: (field: {size: number, length: string}) => void
 }
 
 const TableSizes = (props: TableSizesType) => {
@@ -27,17 +28,14 @@ const TableSizes = (props: TableSizesType) => {
   const theme = useTheme()
   const colors = tokens(theme.palette.mode)
 
-  const onQtyChange = (props: Pick<SizeField, 'size' | 'qty'>) => {
+  const onQtyChange = (props: {size: number, qty: string }) => {
     const {size, qty} = props
-    if (qty !== undefined && qty >= 0 && qty < 10000)
-      onSizeFieldQtyChange({size, qty})
+    if(Number(qty))
+      onSizeFieldQtyChange({size, qty: Number(qty).toString()})
   }
-  const onLengthChange = (props: { size: number, length: string }) => {
+  const onLengthChange = (props: {size: number, length: string }) => {
     const {size, length} = props
-    console.log(length)
-    const NumberLength = Number(length)
-    if (length !== undefined && NumberLength >= 0 && NumberLength < 80)
-      onSizeFieldLengthChange({size, length: NumberLength})
+    onSizeFieldLengthChange({size, length})
   }
 
   return (
@@ -49,8 +47,8 @@ const TableSizes = (props: TableSizesType) => {
               <TableCell>
                 <SizesRange rangeSizes={rangeSizes} setRangeSizes={setRangeSizes}/>
               </TableCell>
-              <TableCell align="center">Count</TableCell>
-              <TableCell align="center">Length</TableCell>
+              <TableCell align="center" width='120px'>Count</TableCell>
+              <TableCell align="center" width='120px'>Length</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -66,32 +64,22 @@ const TableSizes = (props: TableSizesType) => {
                   {field.size}
                 </TableCell>
                 <TableCell align="right">
-                  <TextField
-                    sx={{width: '100px'}}
-                    name={`qty-${field.size}`}
+                  <SimpleField
                     type='number'
-                    color="secondary"
-                    size="small"
-                    value={field.qty}
-                    onFocus={(event) => event.target.select()}
-                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                      onQtyChange({size: field.size, qty: Number(event.target.value)})
-                    }}
+                    name={`qty-${field.size}`}
+                    value={field.qty.toString()}
+                    setValue={(value: string)=> onQtyChange({size: field.size, qty: value})}
+                    focusText
                   />
                 </TableCell>
                 <TableCell align="right">
-                  <TextField
-                    inputProps={{step: 0.5, inputMode: 'numeric', pattern: '[0-9]*' }}
-                    sx={{width: '100px'}}
-                    name={`length-${field.size}`}
+                  <SimpleField
                     type='number'
-                    color="secondary"
-                    size="small"
-                    value={field.length}
-                    onFocus={(event) => event.target.select()}
-                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                      onLengthChange({size: field.size, length: event.target.value})
-                    }}
+                    inputProps={{step: 0.5}}
+                    name={`length-${field.size}`}
+                    value={field.length.toString()}
+                    setValue={(value: string)=> onLengthChange({size: field.size, length: value})}
+                    focusText
                   />
                 </TableCell>
 

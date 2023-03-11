@@ -10,7 +10,6 @@ import {addNewProducts} from "../../store/actions/new-products";
 import {useFetchAccess} from "../../hooks/pages";
 
 
-
 enum ProductType {
   product = 'product',
   shoes = 'shoes'
@@ -23,16 +22,16 @@ type Field<T> = {
 
 export interface SizeField {
   size: number
-  qty: number
-  length: number
+  qty: string
+  length: string
 }
 
 type FormFields = {
   name: Field<string>
-  priceBuy: Field<number>
-  priceSell: Field<number>
+  priceBuy: Field<string>
+  priceSell: Field<string>
   productType: Field<ProductType>
-  qty: Field<number>
+  qty: Field<string>
   color: Field<string>
   width: Field<string>
   sizes: SizeField[]
@@ -49,15 +48,15 @@ const initialRangeSizes: RangeSizesType = {from: 36, to: 41}
 
 const sizesArray = _.range(initialRangeSizes.from, initialRangeSizes.to + 1)
 const initialDataSizes: SizeField[] = sizesArray.map(size => (
-  {size, qty: 0, length: 0}
+  {size, qty: '0', length: ''}
 ))
 
 const initialFormFields: FormFields = {
   name: {value: '', error: ''},
-  priceBuy: {value: 0, error: ''},
-  priceSell: {value: 0, error: ''},
+  priceBuy: {value: '0', error: ''},
+  priceSell: {value: '', error: ''},
   productType: {value: ProductType.shoes, error: ''},
-  qty: {value: 0, error: ''},
+  qty: {value: '0', error: ''},
   color: {value: '', error: ''},
   width: {value: '', error: ''},
   sizes: initialDataSizes
@@ -73,7 +72,7 @@ const AddNewProductForm = () => {
   useLayoutEffect(() => {
     const sizesArray = _.range(rangeSizes.from, rangeSizes.to + 1)
     const dataSizes: SizeField[] = sizesArray.map(size => (
-      {size, qty: 0, length: 0}
+      {size, qty: '0', length: ''}
     ))
     setFormData(produce(prevFormData => {
       prevFormData.sizes = dataSizes
@@ -83,21 +82,23 @@ const AddNewProductForm = () => {
   const onSubmit = async () => {
     if (validateDate()) {
       const data: null | NewProducts = createData()
-      if(data){
+      if (data) {
         await addNewProductsAccess(data)
-        // resetForm()
+        resetForm()
       }
 
     }
   }
 
-  const onSizeFieldQtyChange = ({size, qty}: Pick<SizeField, 'size' | 'qty'>) => {
+  const onSizeFieldQtyChange = (field: { size: number, qty: string }) => {
+    const {size, qty} = field
     const fieldIndex = formData.sizes.findIndex(field => field.size === size)
     setFormData(produce(prevFormData => {
       prevFormData.sizes[fieldIndex] = {...prevFormData.sizes[fieldIndex], qty}
     }))
   }
-  const onSizeFieldLengthChange = ({size, length}: Pick<SizeField, 'size' | 'length'>) => {
+  const onSizeFieldLengthChange = (field: { size: number, length: string }) => {
+    const {size, length} = field
     const fieldIndex = formData.sizes.findIndex(field => field.size === size)
     setFormData(produce(prevFormData => {
       prevFormData.sizes[fieldIndex] = {...prevFormData.sizes[fieldIndex], length}
@@ -122,13 +123,18 @@ const AddNewProductForm = () => {
     let isValid = true
     if (checkError('name', fieldRequired(formData.name.value)))
       isValid = false
-    if (checkError('priceBuy', fieldRequired(String(formData.priceBuy.value))) ||
-      checkError('priceBuy', fieldPositive(Number(formData.priceBuy.value))))
+    if (
+      checkError('priceBuy', fieldRequired(formData.priceBuy.value)) ||
+      checkError('priceBuy', fieldPositive(Number(formData.priceBuy.value)))
+    )
       isValid = false
-    if (checkError('priceSell', fieldPositive(formData.priceSell.value)))
+    if (
+      Number(formData.priceSell.value) > 0 &&
+      checkError('priceSell', fieldPositive(Number(formData.priceSell.value)))
+    )
       isValid = false
     if (formData.productType.value === ProductType.product) {
-      if (checkError('qty', fieldPositiveNotNull(formData.qty.value)))
+      if (checkError('qty', fieldPositiveNotNull(Number(formData.qty.value))))
         isValid = false
     } else if (formData.productType.value === ProductType.shoes) {
 
@@ -142,7 +148,9 @@ const AddNewProductForm = () => {
       return {
         width: formData.width.value,
         color: formData.color.value,
-        sizes: formData.sizes.filter(fieldSize => fieldSize.qty > 0)
+        sizes: formData.sizes.filter(fieldSize => Number(fieldSize.qty) > 0).map((fieldSize) => {
+          return {size: fieldSize.size, qty: Number(fieldSize.qty), length: Number(fieldSize.length)}
+        })
       }
     } else return null
   }
@@ -153,9 +161,9 @@ const AddNewProductForm = () => {
         store_id: storeId,
         type: formData.productType.value,
         name: formData.name.value,
-        price_sell: formData.priceSell.value,
-        price_buy: formData.priceBuy.value,
-        qty: formData.qty.value,
+        price_sell: Number(formData.priceSell.value),
+        price_buy: Number(formData.priceBuy.value),
+        qty: Number(formData.qty.value),
         module: getModuleData(formData.productType.value)
       }
       return data
@@ -176,8 +184,8 @@ const AddNewProductForm = () => {
             label='Name'
             value={formData.name.value}
             setValue={setterCreator('name')}
-            focusText
             error={useError('name')}
+            focusText
           />
         </Box>
         <Box sx={{width: '150px'}}>
@@ -187,8 +195,8 @@ const AddNewProductForm = () => {
             label='price_buy'
             value={formData.priceBuy.value.toString()}
             setValue={setterCreator('priceBuy')}
-            focusText
             error={useError('priceBuy')}
+            focusText
           />
         </Box>
         <Box sx={{width: '150px'}}>
@@ -198,8 +206,8 @@ const AddNewProductForm = () => {
             label='price_sell'
             value={formData.priceSell.value.toString()}
             setValue={setterCreator('priceSell')}
-            focusText
             error={useError('priceSell')}
+            focusText
           />
         </Box>
         <Box width={150}>
@@ -231,8 +239,8 @@ const AddNewProductForm = () => {
             label='qty'
             value={formData.qty.value.toString()}
             setValue={setterCreator('qty')}
-            focusText
             error={useError('qty')}
+            focusText
           />
         </Box>
       </Box>
@@ -258,8 +266,8 @@ const AddNewProductForm = () => {
               label='color'
               value={formData.color.value}
               setValue={setterCreator('color')}
-              focusText
               error={useError('color')}
+              focusText
             />
           </Box>
           <Box width={150}>
@@ -268,8 +276,8 @@ const AddNewProductForm = () => {
               label='width'
               value={formData.width.value}
               setValue={setterCreator('width')}
-              focusText
               error={useError('width')}
+              focusText
             />
           </Box>
         </Box>
