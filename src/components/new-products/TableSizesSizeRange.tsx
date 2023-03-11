@@ -1,6 +1,7 @@
 import React, {Dispatch, SetStateAction} from "react";
 import {Box, TextField} from "@mui/material";
-import {RangeSizesType} from "./AddNewProductForm";
+import {RangeSizesType} from "./AddNewProductFormTypes";
+
 
 
 interface SizesRangeProps {

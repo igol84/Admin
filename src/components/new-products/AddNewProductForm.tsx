@@ -4,45 +4,12 @@ import {fieldPositive, fieldPositiveNotNull, fieldRequired, SimpleField, SimpleS
 import produce from "immer";
 import TableSizes from "./TableSizes";
 import _ from "lodash";
-import {NewProducts} from "../../schemas/new-products";
+import {NewProducts, ProductType} from "../../schemas/items";
 import {useStoreId} from "../../hooks/redux";
 import {addNewProducts} from "../../store/actions/new-products";
 import {useFetchAccess} from "../../hooks/pages";
+import {FieldNames, FormFields, RangeSizesType, SizeField} from "./AddNewProductFormTypes";
 
-
-enum ProductType {
-  product = 'product',
-  shoes = 'shoes'
-}
-
-type Field<T> = {
-  value: T
-  error: string
-}
-
-export interface SizeField {
-  size: number
-  qty: string
-  length: string
-}
-
-type FormFields = {
-  name: Field<string>
-  priceBuy: Field<string>
-  priceSell: Field<string>
-  productType: Field<ProductType>
-  qty: Field<string>
-  color: Field<string>
-  width: Field<string>
-  sizes: SizeField[]
-}
-
-type FieldNames = keyof Omit<FormFields, 'sizes'>
-
-export interface RangeSizesType {
-  from: number
-  to: number
-}
 
 const initialRangeSizes: RangeSizesType = {from: 36, to: 41}
 
@@ -56,7 +23,7 @@ const initialFormFields: FormFields = {
   priceBuy: {value: '0', error: ''},
   priceSell: {value: '', error: ''},
   productType: {value: ProductType.shoes, error: ''},
-  qty: {value: '0', error: ''},
+  qty: {value: '1', error: ''},
   color: {value: '', error: ''},
   width: {value: '', error: ''},
   sizes: initialDataSizes
@@ -79,16 +46,6 @@ const AddNewProductForm = () => {
     }))
   }, [rangeSizes])
 
-  const onSubmit = async () => {
-    if (validateDate()) {
-      const data: null | NewProducts = createData()
-      if (data) {
-        await addNewProductsAccess(data)
-        resetForm()
-      }
-
-    }
-  }
 
   const onSizeFieldQtyChange = (field: { size: number, qty: string }) => {
     const {size, qty} = field
@@ -104,10 +61,16 @@ const AddNewProductForm = () => {
       prevFormData.sizes[fieldIndex] = {...prevFormData.sizes[fieldIndex], length}
     }))
   }
-  const setterCreator = (field: FieldNames) => (value: string) => {
+  const setterFieldCreator = (field: FieldNames) => (value: string) => {
     setFormData(produce(prevFormData => {
       prevFormData[field].value = value
     }))
+  }
+  const setQtyField = (qty: string) => {
+    if (Number(qty) > 0)
+      setFormData(produce(prevFormData => {
+        prevFormData['qty'].value = qty
+      }))
   }
   const checkError = (field: FieldNames, error: string) => {
     setFormData(produce(prevFormData => {
@@ -119,7 +82,7 @@ const AddNewProductForm = () => {
   const resetForm = () => setFormData(initialFormFields)
 
 
-  const validateDate = () => {
+  const validateDate = (formData: FormFields) => {
     let isValid = true
     if (checkError('name', fieldRequired(formData.name.value)))
       isValid = false
@@ -136,8 +99,6 @@ const AddNewProductForm = () => {
     if (formData.productType.value === ProductType.product) {
       if (checkError('qty', fieldPositiveNotNull(Number(formData.qty.value))))
         isValid = false
-    } else if (formData.productType.value === ProductType.shoes) {
-
     }
     return isValid
   }
@@ -155,7 +116,7 @@ const AddNewProductForm = () => {
     } else return null
   }
 
-  const createData = () => {
+  const createData = (formData: FormFields) => {
     if (storeId !== null) {
       const data: NewProducts = {
         store_id: storeId,
@@ -171,6 +132,15 @@ const AddNewProductForm = () => {
     return null
   }
 
+  const onSubmit = async (formData: FormFields) => {
+    if (validateDate(formData)) {
+      const data: null | NewProducts = createData(formData)
+      if (data) {
+        await addNewProductsAccess(data)
+        resetForm()
+      }
+    }
+  }
 
   const isCheckedField = (field: any) => (name: any) => field === name
   const isCheckedProductType = isCheckedField(formData.productType.value)
@@ -183,7 +153,7 @@ const AddNewProductForm = () => {
             name='name'
             label='Name'
             value={formData.name.value}
-            setValue={setterCreator('name')}
+            setValue={setterFieldCreator('name')}
             error={useError('name')}
             focusText
           />
@@ -194,7 +164,7 @@ const AddNewProductForm = () => {
             name='price_buy'
             label='price_buy'
             value={formData.priceBuy.value.toString()}
-            setValue={setterCreator('priceBuy')}
+            setValue={setterFieldCreator('priceBuy')}
             error={useError('priceBuy')}
             focusText
           />
@@ -205,7 +175,7 @@ const AddNewProductForm = () => {
             name='price_sell'
             label='price_sell'
             value={formData.priceSell.value.toString()}
-            setValue={setterCreator('priceSell')}
+            setValue={setterFieldCreator('priceSell')}
             error={useError('priceSell')}
             focusText
           />
@@ -215,7 +185,7 @@ const AddNewProductForm = () => {
             name='productType'
             label={'product Type'}
             value={formData.productType.value.toString()}
-            setValue={setterCreator('productType')}
+            setValue={setterFieldCreator('productType')}
           >
             {Object.values(ProductType).map((productType, id) => (
               <MenuItem key={id} value={productType}>{productType}</MenuItem>
@@ -237,8 +207,8 @@ const AddNewProductForm = () => {
             type='number'
             name='qty'
             label='qty'
-            value={formData.qty.value.toString()}
-            setValue={setterCreator('qty')}
+            value={formData.qty.value}
+            setValue={setQtyField}
             error={useError('qty')}
             focusText
           />
@@ -265,7 +235,7 @@ const AddNewProductForm = () => {
               name='color'
               label='color'
               value={formData.color.value}
-              setValue={setterCreator('color')}
+              setValue={setterFieldCreator('color')}
               error={useError('color')}
               focusText
             />
@@ -275,7 +245,7 @@ const AddNewProductForm = () => {
               name='width'
               label='width'
               value={formData.width.value}
-              setValue={setterCreator('width')}
+              setValue={setterFieldCreator('width')}
               error={useError('width')}
               focusText
             />
@@ -304,7 +274,7 @@ const AddNewProductForm = () => {
           variant="contained"
           sx={{ml: 1, px: 5, height: '43px'}}
           disabled={false}
-          onClick={onSubmit}
+          onClick={() => onSubmit(formData)}
         >
           {'add_button'}
         </Button>

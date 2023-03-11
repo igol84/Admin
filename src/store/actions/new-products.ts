@@ -1,7 +1,7 @@
 import {AppDispatch} from "../index";
 import {secureApiCreate} from "../../ky";
 import {newProductsSlice} from "../slices/newProductsSlice";
-import {NewProducts} from "../../schemas/new-products";
+import {NewProducts} from "../../schemas/items";
 import {authSlice} from "../slices/authSlice";
 
 

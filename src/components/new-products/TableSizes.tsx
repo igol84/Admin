@@ -1,26 +1,16 @@
 import React, {Dispatch, SetStateAction} from 'react';
-import {
-  Box,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TextField,
-  useTheme
-} from "@mui/material";
+import {Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, useTheme} from "@mui/material";
 import {tokens} from "../../theme";
 import SizesRange from "./TableSizesSizeRange";
-import {RangeSizesType, SizeField} from "./AddNewProductForm";
 import {SimpleField} from "../Form";
+import {RangeSizesType, SizeField} from "./AddNewProductFormTypes";
 
 interface TableSizesType {
   rangeSizes: RangeSizesType
   setRangeSizes: Dispatch<SetStateAction<RangeSizesType>>
   dataSizes: SizeField[]
-  onSizeFieldQtyChange: (field: {size: number, qty: string}) => void
-  onSizeFieldLengthChange: (field: {size: number, length: string}) => void
+  onSizeFieldQtyChange: (field: { size: number, qty: string }) => void
+  onSizeFieldLengthChange: (field: { size: number, length: string }) => void
 }
 
 const TableSizes = (props: TableSizesType) => {
@@ -28,12 +18,12 @@ const TableSizes = (props: TableSizesType) => {
   const theme = useTheme()
   const colors = tokens(theme.palette.mode)
 
-  const onQtyChange = (props: {size: number, qty: string }) => {
+  const onQtyChange = (props: { size: number, qty: string }) => {
     const {size, qty} = props
-    if(Number(qty))
+    if (Number(qty))
       onSizeFieldQtyChange({size, qty: Number(qty).toString()})
   }
-  const onLengthChange = (props: {size: number, length: string }) => {
+  const onLengthChange = (props: { size: number, length: string }) => {
     const {size, length} = props
     onSizeFieldLengthChange({size, length})
   }
@@ -68,7 +58,7 @@ const TableSizes = (props: TableSizesType) => {
                     type='number'
                     name={`qty-${field.size}`}
                     value={field.qty.toString()}
-                    setValue={(value: string)=> onQtyChange({size: field.size, qty: value})}
+                    setValue={(value: string) => onQtyChange({size: field.size, qty: value})}
                     focusText
                   />
                 </TableCell>
@@ -78,7 +68,7 @@ const TableSizes = (props: TableSizesType) => {
                     inputProps={{step: 0.5}}
                     name={`length-${field.size}`}
                     value={field.length.toString()}
-                    setValue={(value: string)=> onLengthChange({size: field.size, length: value})}
+                    setValue={(value: string) => onLengthChange({size: field.size, length: value})}
                     focusText
                   />
                 </TableCell>

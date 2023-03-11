@@ -9,7 +9,7 @@ export interface NewProducts {
   module: Modules
 }
 
-enum ProductType {
+export enum ProductType {
   product = 'product',
   shoes = 'shoes'
 }
