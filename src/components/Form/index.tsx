@@ -1,5 +1,5 @@
 import _ from "lodash";
-import {FormControl, InputLabel, Select, SelectChangeEvent, TextField} from "@mui/material";
+import {Autocomplete, FormControl, InputLabel, Select, SelectChangeEvent, TextField} from "@mui/material";
 import React from "react";
 import {useField} from "formik";
 
@@ -78,12 +78,12 @@ interface FieldType {
   setValue: (value: any) => void
   label?: string
   focusText?: boolean
-  error? :string
+  error?: string
   inputProps?: any
 }
 
 export const SimpleField = (props: FieldType) => {
-  const {type = 'text', name, value, setValue, label = '', focusText = false, error='', inputProps={}} = props
+  const {type = 'text', name, value, setValue, label = '', focusText = false, error = '', inputProps = {}} = props
   return (
     <TextField
       type={type}
@@ -128,6 +128,68 @@ export const SimpleSelect = (props: FormSelectType) => {
         {...filteredProps}
       />
     </FormControl>
+  )
+}
+
+interface AutocompleteType {
+  name: string
+  value: string
+  setValue: (value: any) => void
+  label?: string
+  focusText?: boolean
+  error?: string
+  inputProps?: any
+  items: string[]
+  setItem: (value: any) => void
+}
+
+export const SimpleAutocomplete = (props: AutocompleteType) => {
+  const {
+    name,
+    value,
+    setValue,
+    label = '',
+    focusText = false,
+    error = '',
+    items = [],
+    setItem
+  } = props
+  return (
+    <Autocomplete
+      freeSolo
+      color="secondary"
+      sx={{width: "100%"}}
+      size="small"
+      onChange={(event, value) => {
+        setItem(value)
+        setValue(value ? value : null)
+      }}
+
+      options={items}
+      renderInput={(params) => (
+        <TextField
+          name={name}
+          label={label}
+          value={value}
+          onFocus={focusText ? (event) => event.target.select() : () => null}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            if(value !== event.target.value.trim()) {
+              setValue(event.target.value.trim())
+            }
+            if(items.includes(event.target.value.trim())) {
+              setItem(event.target.value.trim())
+            }
+            else
+              setItem(null)
+          }}
+          error={!!error}
+          helperText={error}
+          color="secondary"
+          {...params}
+        />
+      )
+      }
+    />
   )
 }
 

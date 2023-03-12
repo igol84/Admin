@@ -1,12 +1,12 @@
 import React, {useLayoutEffect, useState} from 'react';
 import {Box, Button, MenuItem} from "@mui/material";
-import {fieldPositive, fieldPositiveNotNull, SimpleField, SimpleSelect} from "../Form";
+import {fieldPositive, fieldPositiveNotNull, SimpleAutocomplete, SimpleField, SimpleSelect} from "../Form";
 import produce from "immer";
 import TableSizes from "./TableSizes";
 import _ from "lodash";
 import {ProductType} from "../../schemas/items";
-import {addNewProducts} from "../../store/actions/new-products";
-import {useFetchAccess} from "../../hooks/pages";
+import {addNewProducts, requestProducts} from "../../store/actions/new-products";
+import {useFetchAccess, useIsLoadingDisplay, useLoaderAccess} from "../../hooks/pages";
 import {
   FieldNames,
   FormFields,
@@ -16,6 +16,9 @@ import {
   SizeField
 } from "./AddNewProductFormTypes";
 import {useSubmit} from "./AddNewProductFormOnSubmit";
+import {Product} from "../../schemas/product";
+import {useAppSelector} from "../../hooks/redux";
+import LoadingCircular from "../LoadingCircular";
 
 
 const initialRangeSizes: RangeSizesType = {from: 36, to: 41}
@@ -36,12 +39,27 @@ const initialFormFields: FormFields = {
   sizes: initialDataSizes
 }
 
+const getAllNames = (products: Product[]) => {
+  return _.chain(products).map(product => _.capitalize(product.name)).sort().uniq().value()
+}
+const onSelectProductName = (name: string| null) => {
+  console.log(name)
+}
 
 const AddNewProductForm = () => {
   const [formData, setFormData] = useState<FormFields>(initialFormFields)
+  const [selectedProduct, setSelectedProduct] = useState<string | null>(null)
   const [rangeSizes, setRangeSizes] = useState<RangeSizesType>(initialRangeSizes)
 
+  useLoaderAccess(requestProducts)
   const addNewProductsAccess = useFetchAccess(addNewProducts)
+
+  const {isLoading, products} = useAppSelector(state => state.newProductsSlice)
+  const showLoading = useIsLoadingDisplay(isLoading)
+
+  useLayoutEffect(()=>{
+    console.log(selectedProduct)
+  }, [selectedProduct])
 
   useLayoutEffect(() => {
     const sizesArray = _.range(rangeSizes.from, rangeSizes.to + 1)
@@ -76,6 +94,7 @@ const AddNewProductForm = () => {
     if (validateDate(formData, setFormData)) {
       const data = createData(formData, setFormData)
       if (data) {
+        console.log(data)
         await addNewProductsAccess(data)
         resetForm()
       }
@@ -89,14 +108,8 @@ const AddNewProductForm = () => {
     <>
       <Box sx={{display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center', pb: '20px'}}>
         <Box sx={{width: '300px'}}>
-          <SimpleField
-            name='name'
-            label='Name'
-            value={formData.name.value}
-            setValue={setterFieldCreator('name')}
-            error={useError('name')}
-            focusText
-          />
+          <SimpleAutocomplete name='name' value={formData.name.value} setValue={setterFieldCreator('name')}
+                              items={getAllNames(products)} setItem={setSelectedProduct}/>
         </Box>
         <Box sx={{width: '150px'}}>
           <SimpleField
@@ -219,6 +232,7 @@ const AddNewProductForm = () => {
           {'add_button'}
         </Button>
       </Box>
+      <LoadingCircular show={showLoading}/>
     </>
   );
 };

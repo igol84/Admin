@@ -1,21 +1,40 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {Product} from "../../schemas/product";
+import {PlaceWithDetails} from "../../schemas/place";
 
 
 interface NewProductState {
+  products: Product[]
   isLoading: boolean
   error: string
 }
 
 const initialState: NewProductState = {
+  products: [],
   isLoading: false,
   error: ''
 }
 
+export interface ProductsPayload {
+  products: Product[]
+}
 
 export const newProductsSlice = createSlice({
   name: 'NewProducts',
   initialState,
   reducers: {
+    RequestProducts(state) {
+      state.isLoading = true
+    },
+    RequestProductsSuccess(state, action: PayloadAction<ProductsPayload>) {
+      state.products = action.payload.products
+      state.isLoading = false
+      state.error = ''
+    },
+    RequestProductsError(state, action: PayloadAction<Error>) {
+      state.isLoading = false
+      state.error = action.payload.message
+    },
     NewProductsFetching(state) {
       state.isLoading = true
     },
