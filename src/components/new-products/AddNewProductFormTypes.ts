@@ -4,6 +4,12 @@ type Field<T> = {
   value: T
   error: string
 }
+type FieldSelect = {
+  value: string
+  error: string
+  items: string[]
+  selected: string
+}
 
 export interface SizeField {
   size: number
@@ -12,7 +18,7 @@ export interface SizeField {
 }
 
 export type FormFields = {
-  name: Field<string>
+  name: FieldSelect
   priceBuy: Field<string>
   priceSell: Field<string>
   productType: Field<ProductType>

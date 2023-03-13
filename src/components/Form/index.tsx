@@ -80,10 +80,21 @@ interface FieldType {
   focusText?: boolean
   error?: string
   inputProps?: any
+  disabled?: boolean
 }
 
 export const SimpleField = (props: FieldType) => {
-  const {type = 'text', name, value, setValue, label = '', focusText = false, error = '', inputProps = {}} = props
+  const {
+    type = 'text',
+    name,
+    value,
+    setValue,
+    label = '',
+    focusText = false,
+    error = '',
+    inputProps = {},
+    disabled = false
+  } = props
   return (
     <TextField
       type={type}
@@ -100,6 +111,7 @@ export const SimpleField = (props: FieldType) => {
         setValue(event.target.value);
       }}
       inputProps={inputProps}
+      disabled={disabled}
     />
   );
 };
@@ -156,13 +168,14 @@ export const SimpleAutocomplete = (props: AutocompleteType) => {
   } = props
   return (
     <Autocomplete
+      value={value}
       freeSolo
       color="secondary"
       sx={{width: "100%"}}
       size="small"
       onChange={(event, value) => {
-        setItem(value)
-        setValue(value ? value : null)
+        setItem(value ? value : '')
+        setValue(value ? value : '')
       }}
 
       options={items}
@@ -173,14 +186,13 @@ export const SimpleAutocomplete = (props: AutocompleteType) => {
           value={value}
           onFocus={focusText ? (event) => event.target.select() : () => null}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-            if(value !== event.target.value.trim()) {
+            if (value !== event.target.value.trim()) {
               setValue(event.target.value.trim())
             }
-            if(items.includes(event.target.value.trim())) {
+            if (items.includes(event.target.value.trim())) {
               setItem(event.target.value.trim())
-            }
-            else
-              setItem(null)
+            } else
+              setItem('')
           }}
           error={!!error}
           helperText={error}

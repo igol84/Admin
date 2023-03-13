@@ -1,5 +1,6 @@
 
 export interface NewProducts {
+  id?: number
   store_id: number
   type: ProductType
   name: string

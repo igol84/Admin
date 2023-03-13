@@ -29,7 +29,7 @@ const initialDataSizes: SizeField[] = sizesArray.map(size => (
 ))
 
 const initialFormFields: FormFields = {
-  name: {value: '', error: ''},
+  name: {value: '', items: [], selected: '', error: ''},
   priceBuy: {value: '0', error: ''},
   priceSell: {value: '', error: ''},
   productType: {value: ProductType.shoes, error: ''},
@@ -39,16 +39,17 @@ const initialFormFields: FormFields = {
   sizes: initialDataSizes
 }
 
-const getAllNames = (products: Product[]) => {
-  return _.chain(products).map(product => _.capitalize(product.name)).sort().uniq().value()
+const getProductNames = (products: Product[], selectedType: keyof typeof ProductType) => {
+  return _.chain(products).filter(product => product.type === selectedType)
+    .map(product => _.capitalize(product.name)).sort().uniq().value()
 }
-const onSelectProductName = (name: string| null) => {
-  console.log(name)
+const getProductData = (products: Product[], name: string) => {
+  console.log(_.chain(products).filter(product => product.name.toLowerCase() === name.toLowerCase()).value())
+  return _.chain(products).filter(product => product.name.toLowerCase() === name.toLowerCase()).last().value()
 }
 
 const AddNewProductForm = () => {
   const [formData, setFormData] = useState<FormFields>(initialFormFields)
-  const [selectedProduct, setSelectedProduct] = useState<string | null>(null)
   const [rangeSizes, setRangeSizes] = useState<RangeSizesType>(initialRangeSizes)
 
   useLoaderAccess(requestProducts)
@@ -57,9 +58,17 @@ const AddNewProductForm = () => {
   const {isLoading, products} = useAppSelector(state => state.newProductsSlice)
   const showLoading = useIsLoadingDisplay(isLoading)
 
-  useLayoutEffect(()=>{
-    console.log(selectedProduct)
-  }, [selectedProduct])
+  const selectedType = formData.productType.value
+  const selectedName = formData.name.selected
+
+  useLayoutEffect(() => {
+    if (selectedName) {
+      const selectedProduct: Product = (getProductData(products, selectedName))
+      setFormData(produce(prevFormData => {
+        prevFormData.priceSell.value = selectedProduct.price.toString()
+      }))
+    }
+  }, [selectedName])
 
   useLayoutEffect(() => {
     const sizesArray = _.range(rangeSizes.from, rangeSizes.to + 1)
@@ -71,6 +80,12 @@ const AddNewProductForm = () => {
     }))
   }, [rangeSizes])
 
+
+  useLayoutEffect(()=> {
+    setFormData(produce(prevFormData => {
+      prevFormData.name.items = getProductNames(products, selectedType)
+    }))
+  }, [selectedType, products])
 
   const onSizeFieldChange: OnSizeFieldChange = (fieldName) => (field) => {
     const {size, value} = field
@@ -87,9 +102,28 @@ const AddNewProductForm = () => {
       }))
   }
 
+  const onTypeChange = (value: keyof typeof ProductType) => {
+    if (formData.name.items.includes(formData.name.selected.trim())) {
+      setFormData(produce(prevFormData => {
+        prevFormData.name.value = ''
+      }))
+    }
+    setFormData(produce(prevFormData => {
+      prevFormData.name.selected = ''
+    }))
+    return setterFieldCreator('productType')(value)
+  }
+
+  const onNameSelected = (value: string) => {
+    setFormData(produce(prevFormData => {
+      prevFormData.name.selected = value
+    }))
+  }
+
   const useError = (fieldName: FieldNames) => formData[fieldName].error
   const resetForm = () => setFormData(initialFormFields)
   const [validateDate, createData] = useSubmit()
+
   const onSubmit = async () => {
     if (validateDate(formData, setFormData)) {
       const data = createData(formData, setFormData)
@@ -109,7 +143,7 @@ const AddNewProductForm = () => {
       <Box sx={{display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center', pb: '20px'}}>
         <Box sx={{width: '300px'}}>
           <SimpleAutocomplete name='name' value={formData.name.value} setValue={setterFieldCreator('name')}
-                              items={getAllNames(products)} setItem={setSelectedProduct}/>
+                              items={formData.name.items} setItem={onNameSelected}/>
         </Box>
         <Box sx={{width: '150px'}}>
           <SimpleField
@@ -131,6 +165,7 @@ const AddNewProductForm = () => {
             setValue={setterFieldCreator('priceSell', fieldPositive)}
             error={useError('priceSell')}
             focusText
+            disabled={formData.name.selected !== ''}
           />
         </Box>
         <Box width={150}>
@@ -138,7 +173,7 @@ const AddNewProductForm = () => {
             name='productType'
             label={'product Type'}
             value={formData.productType.value.toString()}
-            setValue={setterFieldCreator('productType')}
+            setValue={onTypeChange}
           >
             {Object.values(ProductType).map((productType, id) => (
               <MenuItem key={id} value={productType}>{productType}</MenuItem>
