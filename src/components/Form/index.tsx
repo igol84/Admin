@@ -1,5 +1,14 @@
 import _ from "lodash";
-import {Autocomplete, FormControl, InputLabel, Select, SelectChangeEvent, TextField} from "@mui/material";
+import {
+  Alert,
+  Autocomplete, colors,
+  FormControl,
+  InputLabel,
+  Select,
+  SelectChangeEvent,
+  Snackbar,
+  TextField
+} from "@mui/material";
 import React from "react";
 import {useField} from "formik";
 
@@ -240,4 +249,19 @@ export const fieldPositiveNotNull = (value: number) => {
     return 'positive, more than zero'
   }
   return ''
+}
+
+interface SnackBarSuccessProps{
+  openSuccessSnackbar: boolean
+  handleSuccessSnackbar: (event?: (React.SyntheticEvent | Event), reason?: string) => void
+}
+export const SnackBarSuccess = (props: SnackBarSuccessProps) => {
+  const {openSuccessSnackbar, handleSuccessSnackbar} = props
+  return (
+    <Snackbar open={openSuccessSnackbar} autoHideDuration={6000} onClose={handleSuccessSnackbar}>
+      <Alert variant="filled" onClose={handleSuccessSnackbar} severity="success" sx={{color: colors.grey[100]}}>
+        Successful Added
+      </Alert>
+    </Snackbar>
+  )
 }

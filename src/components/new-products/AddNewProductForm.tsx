@@ -1,12 +1,19 @@
 import React, {useLayoutEffect, useState} from 'react';
 import {Box, Button, MenuItem} from "@mui/material";
-import {fieldPositive, fieldPositiveNotNull, SimpleAutocomplete, SimpleField, SimpleSelect} from "../Form";
+import {
+  fieldPositive,
+  fieldPositiveNotNull,
+  SimpleAutocomplete,
+  SimpleField,
+  SimpleSelect,
+  SnackBarSuccess
+} from "../Form";
 import produce from "immer";
 import TableSizes from "./TableSizes";
 import _ from "lodash";
 import {getDefaultSeizesLength, ProductType, WidthType} from "../../schemas/items";
 import {addNewProducts, requestProducts} from "../../store/actions/new-products";
-import {useFetchAccess, useIsLoadingDisplay, useLoaderAccess} from "../../hooks/pages";
+import {useFetchAccess, useIsLoadingDisplay, useLoaderAccess, useSuccessSnackbar} from "../../hooks/pages";
 import {
   FieldNames,
   FormFields,
@@ -43,7 +50,7 @@ const initialFormFields: FormFields = {
 const AddNewProductForm = () => {
   const [formData, setFormData] = useState<FormFields>(initialFormFields)
   const [rangeSizes, setRangeSizes] = useState<RangeSizesType>(initialRangeSizes)
-
+  const [openSuccessSnackbar, setOpenSuccessSnackbar, handleSuccessSnackbar] = useSuccessSnackbar()
   useLoaderAccess(requestProducts)
   const addNewProductsAccess = useFetchAccess(addNewProducts)
 
@@ -141,7 +148,6 @@ const AddNewProductForm = () => {
       prevFormData.priceSell.value = '0'
       prevFormData.color.value = ''
       prevFormData.color.selected = ''
-      prevFormData.sizes = initialDataSizes
     }))
   }
   const [validateDate, createData] = useSubmit()
@@ -151,6 +157,7 @@ const AddNewProductForm = () => {
       const data = createData(formData, setFormData)
       if (data) {
         await addNewProductsAccess(data)
+        setOpenSuccessSnackbar(true)
         resetForm()
       }
     }
@@ -303,6 +310,7 @@ const AddNewProductForm = () => {
         </Button>
       </Box>
       <LoadingCircular show={showLoading}/>
+      <SnackBarSuccess openSuccessSnackbar={openSuccessSnackbar} handleSuccessSnackbar={handleSuccessSnackbar}/>
     </>
   );
 };

@@ -115,3 +115,24 @@ export const useErrorMessage: UseErrorMessage = (errorText) => {
   const handleCloseAlertSnackbar = handleCloseAlertSnackbarCreator(setOpenAlertSnackbar)
   return [openAlertSnackbar, handleCloseAlertSnackbar, errorTextNetwork]
 }
+
+interface UseSuccessSnackbar{
+  ():[
+    boolean,
+    React.Dispatch<React.SetStateAction<boolean>>,
+    (event?: (React.SyntheticEvent | Event), reason?: string) => void
+  ]
+}
+export const useSuccessSnackbar: UseSuccessSnackbar = () => {
+  const [openSuccessSnackbar, setOpenSuccessSnackbar] = React.useState(false)
+  const handleCloseAlertSnackbarCreator = (setOpenState: (value: boolean) => void) =>
+    (event?: React.SyntheticEvent | Event, reason?: string) => {
+      if (reason === 'clickaway') {
+        return;
+      }
+      setOpenState(false)
+    }
+  const handleSuccessSnackbar = handleCloseAlertSnackbarCreator(setOpenSuccessSnackbar)
+  return [openSuccessSnackbar, setOpenSuccessSnackbar, handleSuccessSnackbar]
+}
+
