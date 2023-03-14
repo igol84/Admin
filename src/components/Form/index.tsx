@@ -81,6 +81,9 @@ interface FieldType {
   error?: string
   inputProps?: any
   disabled?: boolean
+  onKeyDown?: (value: any) => void
+  autoFocus?: boolean
+  tabIndex?: number
 }
 
 export const SimpleField = (props: FieldType) => {
@@ -93,7 +96,10 @@ export const SimpleField = (props: FieldType) => {
     focusText = false,
     error = '',
     inputProps = {},
-    disabled = false
+    disabled = false,
+    onKeyDown = (_) => true,
+    autoFocus = false,
+    tabIndex = undefined
   } = props
   return (
     <TextField
@@ -112,6 +118,11 @@ export const SimpleField = (props: FieldType) => {
       }}
       inputProps={inputProps}
       disabled={disabled}
+      onKeyDown={() => {
+        onKeyDown(name)
+      }}
+      autoFocus={autoFocus}
+      tabIndex={tabIndex}
     />
   );
 };
@@ -153,6 +164,8 @@ interface AutocompleteType {
   inputProps?: any
   items: string[]
   setItem: (value: any) => void
+  blurOnSelect?: boolean
+  autoFocus?: boolean
 }
 
 export const SimpleAutocomplete = (props: AutocompleteType) => {
@@ -164,7 +177,9 @@ export const SimpleAutocomplete = (props: AutocompleteType) => {
     focusText = false,
     error = '',
     items = [],
-    setItem
+    setItem,
+    blurOnSelect = false,
+    autoFocus = false
   } = props
   return (
     <Autocomplete
@@ -177,7 +192,7 @@ export const SimpleAutocomplete = (props: AutocompleteType) => {
         setItem(value ? value : '')
         setValue(value ? value : '')
       }}
-
+      blurOnSelect={blurOnSelect}
       options={items}
       renderInput={(params) => (
         <TextField
@@ -197,6 +212,7 @@ export const SimpleAutocomplete = (props: AutocompleteType) => {
           error={!!error}
           helperText={error}
           color="secondary"
+          autoFocus={autoFocus}
           {...params}
         />
       )

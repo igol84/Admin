@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction} from 'react';
+import React, {Dispatch, SetStateAction, useEffect} from 'react';
 import {Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, useTheme} from "@mui/material";
 import {tokens} from "../../theme";
 import SizesRange from "./TableSizesSizeRange";
@@ -25,6 +25,7 @@ const TableSizes = (props: TableSizesType) => {
   }
   const onLengthChange = (props: { size: number, length: string }) => {
     const {size, length} = props
+    if (Number(length) >= 0)
     onSizeFieldLengthChange({size, value: length})
   }
 
@@ -42,7 +43,7 @@ const TableSizes = (props: TableSizesType) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {dataSizes.map((field) => (
+            {dataSizes.map((field, index) => (
               <TableRow
                 key={field.size}
                 sx={{
@@ -60,6 +61,7 @@ const TableSizes = (props: TableSizesType) => {
                     value={field.qty.toString()}
                     setValue={(value: string) => onQtyChange({size: field.size, qty: value})}
                     focusText
+                    tabIndex={index+12}
                   />
                 </TableCell>
                 <TableCell align="right">
@@ -70,6 +72,7 @@ const TableSizes = (props: TableSizesType) => {
                     value={field.length.toString()}
                     setValue={(value: string) => onLengthChange({size: field.size, length: value})}
                     focusText
+                    tabIndex={index+30}
                   />
                 </TableCell>
 

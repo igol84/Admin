@@ -19,7 +19,6 @@ export const useSubmit = () => {
   const validateDate = useCallback((formData: FormFields, setFormData: Dispatch<SetStateAction<FormFields>>) => {
     let isValid = true
     if (checkError('name', fieldRequired(formData.name.value), setFormData)) {
-      console.log(formData)
       isValid = false
     }
     if (

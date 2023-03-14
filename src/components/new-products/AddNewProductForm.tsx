@@ -4,7 +4,7 @@ import {fieldPositive, fieldPositiveNotNull, SimpleAutocomplete, SimpleField, Si
 import produce from "immer";
 import TableSizes from "./TableSizes";
 import _ from "lodash";
-import {ProductType} from "../../schemas/items";
+import {getDefaultSeizesLength, ProductType, WidthType} from "../../schemas/items";
 import {addNewProducts, requestProducts} from "../../store/actions/new-products";
 import {useFetchAccess, useIsLoadingDisplay, useLoaderAccess} from "../../hooks/pages";
 import {
@@ -19,6 +19,7 @@ import {useSubmit} from "./AddNewProductFormOnSubmit";
 import {Product} from "../../schemas/product";
 import {useAppSelector} from "../../hooks/redux";
 import LoadingCircular from "../LoadingCircular";
+import {getProductColors, getProductData, getProductNames} from "./functions";
 
 
 const initialRangeSizes: RangeSizesType = {from: 36, to: 41}
@@ -34,18 +35,9 @@ const initialFormFields: FormFields = {
   priceSell: {value: '', error: ''},
   productType: {value: ProductType.shoes, error: ''},
   qty: {value: '1', error: ''},
-  color: {value: '', error: ''},
-  width: {value: '', error: ''},
+  color: {value: '', items: [], selected: '', error: ''},
+  width: {value: WidthType.medium, items: [], error: ''},
   sizes: initialDataSizes
-}
-
-const getProductNames = (products: Product[], selectedType: keyof typeof ProductType) => {
-  return _.chain(products).filter(product => product.type === selectedType)
-    .map(product => _.capitalize(product.name)).sort().uniq().value()
-}
-const getProductData = (products: Product[], name: string) => {
-  console.log(_.chain(products).filter(product => product.name.toLowerCase() === name.toLowerCase()).value())
-  return _.chain(products).filter(product => product.name.toLowerCase() === name.toLowerCase()).last().value()
 }
 
 const AddNewProductForm = () => {
@@ -63,27 +55,41 @@ const AddNewProductForm = () => {
 
   useLayoutEffect(() => {
     if (selectedName) {
-      const selectedProduct: Product = (getProductData(products, selectedName))
+      const selectedProductData: Product = getProductData(products, selectedName)
       setFormData(produce(prevFormData => {
-        prevFormData.priceSell.value = selectedProduct.price.toString()
+        prevFormData.priceSell.value = selectedProductData.price.toString()
+      }))
+
+      if (selectedProductData.type === ProductType.shoes) {
+        setFormData(produce(prevFormData => {
+          prevFormData.color.items = getProductColors(products, selectedName)
+        }))
+      }
+    } else {
+      setFormData(produce(prevFormData => {
+        prevFormData.color.items = []
       }))
     }
+    setFormData(produce(prevFormData => {
+      prevFormData.color.value = ''
+      prevFormData.color.selected = ''
+    }))
   }, [selectedName])
 
   useLayoutEffect(() => {
     const sizesArray = _.range(rangeSizes.from, rangeSizes.to + 1)
-    const dataSizes: SizeField[] = sizesArray.map(size => (
-      {size, qty: '0', length: ''}
-    ))
+    const dataSizes: SizeField[] = sizesArray.map(size => {
+      return {size, qty: '0', length: getDefaultSeizesLength(size)}
+    })
     setFormData(produce(prevFormData => {
       prevFormData.sizes = dataSizes
     }))
   }, [rangeSizes])
 
-
-  useLayoutEffect(()=> {
+  useLayoutEffect(() => {
+    const prod = getProductNames(products, selectedType)
     setFormData(produce(prevFormData => {
-      prevFormData.name.items = getProductNames(products, selectedType)
+      prevFormData.name.items = prod
     }))
   }, [selectedType, products])
 
@@ -93,13 +99,6 @@ const AddNewProductForm = () => {
     setFormData(produce(prevFormData => {
       prevFormData.sizes[fieldIndex] = {...prevFormData.sizes[fieldIndex], [fieldName]: value}
     }))
-  }
-
-  const setterFieldCreator: SetterFieldCreator = (field, valid = undefined) => value => {
-    if (valid === undefined || !(!!valid(value)))
-      setFormData(produce(prevFormData => {
-        prevFormData[field].value = value
-      }))
   }
 
   const onTypeChange = (value: keyof typeof ProductType) => {
@@ -114,21 +113,43 @@ const AddNewProductForm = () => {
     return setterFieldCreator('productType')(value)
   }
 
+  const setterFieldCreator: SetterFieldCreator = (field, valid = undefined) => value => {
+    if (valid === undefined || !(!!valid(value)))
+      setFormData(produce(prevFormData => {
+        prevFormData[field].value = value
+      }))
+  }
+
   const onNameSelected = (value: string) => {
     setFormData(produce(prevFormData => {
       prevFormData.name.selected = value
     }))
   }
 
+  const onColorSelected = (value: string) => {
+    setFormData(produce(prevFormData => {
+      prevFormData.color.selected = value
+    }))
+  }
+
   const useError = (fieldName: FieldNames) => formData[fieldName].error
-  const resetForm = () => setFormData(initialFormFields)
+  const resetForm = () => {
+    setFormData(produce(prevFormData => {
+      prevFormData.name.value = ''
+      prevFormData.name.selected = ''
+      prevFormData.priceBuy.value = '0'
+      prevFormData.priceSell.value = '0'
+      prevFormData.color.value = ''
+      prevFormData.color.selected = ''
+      prevFormData.sizes = initialDataSizes
+    }))
+  }
   const [validateDate, createData] = useSubmit()
 
   const onSubmit = async () => {
     if (validateDate(formData, setFormData)) {
       const data = createData(formData, setFormData)
       if (data) {
-        console.log(data)
         await addNewProductsAccess(data)
         resetForm()
       }
@@ -142,8 +163,17 @@ const AddNewProductForm = () => {
     <>
       <Box sx={{display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center', pb: '20px'}}>
         <Box sx={{width: '300px'}}>
-          <SimpleAutocomplete name='name' value={formData.name.value} setValue={setterFieldCreator('name')}
-                              items={formData.name.items} setItem={onNameSelected}/>
+          <SimpleAutocomplete
+            name='name'
+            value={formData.name.value}
+            setValue={setterFieldCreator('name')}
+            items={formData.name.items}
+            setItem={onNameSelected}
+            error={useError('name')}
+            blurOnSelect
+            focusText
+            autoFocus={true}
+          />
         </Box>
         <Box sx={{width: '150px'}}>
           <SimpleField
@@ -219,24 +249,29 @@ const AddNewProductForm = () => {
         }}>
 
           <Box width={150}>
-            <SimpleField
+            <SimpleAutocomplete
               name='color'
-              label='color'
               value={formData.color.value}
               setValue={setterFieldCreator('color')}
+              items={formData.color.items}
+              setItem={onColorSelected}
               error={useError('color')}
+              blurOnSelect
               focusText
             />
           </Box>
           <Box width={150}>
-            <SimpleField
+
+            <SimpleSelect
               name='width'
-              label='width'
+              label={'width'}
               value={formData.width.value}
               setValue={setterFieldCreator('width')}
-              error={useError('width')}
-              focusText
-            />
+            >
+              {Object.values(WidthType).map((widthType, id) => (
+                <MenuItem key={id} value={widthType}>{widthType}</MenuItem>
+              ))}
+            </SimpleSelect>
           </Box>
         </Box>
         <Box sx={{

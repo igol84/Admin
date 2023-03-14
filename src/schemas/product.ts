@@ -13,3 +13,16 @@ export interface Shoes {
   length?: number
   width: string
 }
+
+export interface OutputItems {
+  products?: Product[]
+  items: Item[]
+}
+
+export interface Item {
+  prod_id: number
+  store_id: number
+  qty: number
+  buy_price: number
+  date_buy: Date
+}

@@ -1,15 +1,23 @@
-import {ProductType} from "../../schemas/items";
+import {ProductType, WidthType} from "../../schemas/items";
 
 type Field<T> = {
   value: T
   error: string
 }
-type FieldSelect = {
-  value: string
+type FieldSelect<T> = {
+  value: T
   error: string
-  items: string[]
-  selected: string
+  items: T[]
 }
+
+
+type FieldAutocomplete<T> = {
+  value: T
+  error: string
+  items: T[]
+  selected: T
+}
+
 
 export interface SizeField {
   size: number
@@ -18,13 +26,13 @@ export interface SizeField {
 }
 
 export type FormFields = {
-  name: FieldSelect
+  name: FieldAutocomplete<string>
   priceBuy: Field<string>
   priceSell: Field<string>
   productType: Field<ProductType>
   qty: Field<string>
-  color: Field<string>
-  width: Field<string>
+  color: FieldAutocomplete<string>
+  width: FieldSelect<WidthType>
   sizes: SizeField[]
 }
 
