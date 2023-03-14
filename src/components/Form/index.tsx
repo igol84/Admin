@@ -1,7 +1,8 @@
 import _ from "lodash";
 import {
   Alert,
-  Autocomplete, colors,
+  Autocomplete,
+  colors,
   FormControl,
   InputLabel,
   Select,
@@ -251,16 +252,18 @@ export const fieldPositiveNotNull = (value: number) => {
   return ''
 }
 
-interface SnackBarSuccessProps{
+interface SnackBarSuccessProps {
+  label: string
   openSuccessSnackbar: boolean
   handleSuccessSnackbar: (event?: (React.SyntheticEvent | Event), reason?: string) => void
 }
+
 export const SnackBarSuccess = (props: SnackBarSuccessProps) => {
-  const {openSuccessSnackbar, handleSuccessSnackbar} = props
+  const {label, openSuccessSnackbar, handleSuccessSnackbar} = props
   return (
     <Snackbar open={openSuccessSnackbar} autoHideDuration={6000} onClose={handleSuccessSnackbar}>
       <Alert variant="filled" onClose={handleSuccessSnackbar} severity="success" sx={{color: colors.grey[100]}}>
-        Successful Added
+        {label}
       </Alert>
     </Snackbar>
   )

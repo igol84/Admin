@@ -1,4 +1,25 @@
 {
+  "newProducts": {
+    "title": "Новые продукты",
+    "productName": "Название продукта",
+    "price_buy": "Цена покупки",
+    "price_sell": "Цена продажи",
+    "productType": "Тип продукта",
+    "product": "Продукт",
+    "shoes": "Обувь",
+    "qty": "Количество",
+    "color": "Цвет",
+    "width": "Ширина",
+    "Medium": "Стандартная",
+    "Wide": "Широкая",
+    "add_button": "Добавить",
+    "count": "Пар",
+    "length": "Длина",
+    "sizesRange": "Размеры",
+    "fromSize": "от",
+    "toSize": "до",
+    "SuccessfulAdded": "Успешно добавлено"
+  },
   "expense": {
     "title": "Издержки",
     "place_id": "Точка",
@@ -40,7 +61,8 @@
     "data": "Данные",
     "sellers": "Продавцы",
     "places": "Магазины",
-    "expenses": "Издержки"
+    "expenses": "Издержки",
+    "newProducts": "Новые продукты"
   },
   "auth": {
     "title": "Авторизация",

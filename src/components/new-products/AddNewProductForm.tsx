@@ -13,7 +13,13 @@ import TableSizes from "./TableSizes";
 import _ from "lodash";
 import {getDefaultSeizesLength, ProductType, WidthType} from "../../schemas/items";
 import {addNewProducts, requestProducts} from "../../store/actions/new-products";
-import {useFetchAccess, useIsLoadingDisplay, useLoaderAccess, useSuccessSnackbar} from "../../hooks/pages";
+import {
+  useDictionary,
+  useFetchAccess,
+  useIsLoadingDisplay,
+  useLoaderAccess,
+  useSuccessSnackbar
+} from "../../hooks/pages";
 import {
   FieldNames,
   FormFields,
@@ -51,6 +57,7 @@ const AddNewProductForm = () => {
   const [formData, setFormData] = useState<FormFields>(initialFormFields)
   const [rangeSizes, setRangeSizes] = useState<RangeSizesType>(initialRangeSizes)
   const [openSuccessSnackbar, setOpenSuccessSnackbar, handleSuccessSnackbar] = useSuccessSnackbar()
+  const d = useDictionary('newProducts')
   useLoaderAccess(requestProducts)
   const addNewProductsAccess = useFetchAccess(addNewProducts)
 
@@ -172,6 +179,7 @@ const AddNewProductForm = () => {
         <Box sx={{width: '300px'}}>
           <SimpleAutocomplete
             name='name'
+            label={d['productName']}
             value={formData.name.value}
             setValue={setterFieldCreator('name')}
             items={formData.name.items}
@@ -186,7 +194,7 @@ const AddNewProductForm = () => {
           <SimpleField
             type='number'
             name='price_buy'
-            label='price_buy'
+            label={d['price_buy']}
             value={formData.priceBuy.value.toString()}
             setValue={setterFieldCreator('priceBuy', fieldPositive)}
             error={useError('priceBuy')}
@@ -197,7 +205,7 @@ const AddNewProductForm = () => {
           <SimpleField
             type='number'
             name='price_sell'
-            label='price_sell'
+            label={d['price_sell']}
             value={formData.priceSell.value.toString()}
             setValue={setterFieldCreator('priceSell', fieldPositive)}
             error={useError('priceSell')}
@@ -208,12 +216,12 @@ const AddNewProductForm = () => {
         <Box width={150}>
           <SimpleSelect
             name='productType'
-            label={'product Type'}
+            label={d['productType']}
             value={formData.productType.value.toString()}
             setValue={onTypeChange}
           >
             {Object.values(ProductType).map((productType, id) => (
-              <MenuItem key={id} value={productType}>{productType}</MenuItem>
+              <MenuItem key={id} value={productType}>{d[productType] ?? productType}</MenuItem>
             ))}
           </SimpleSelect>
         </Box>
@@ -231,7 +239,7 @@ const AddNewProductForm = () => {
           <SimpleField
             type='number'
             name='qty'
-            label='qty'
+            label={d['qty']}
             value={formData.qty.value}
             setValue={setterFieldCreator('qty', fieldPositiveNotNull)}
             error={useError('qty')}
@@ -258,6 +266,7 @@ const AddNewProductForm = () => {
           <Box width={150}>
             <SimpleAutocomplete
               name='color'
+              label={d['color']}
               value={formData.color.value}
               setValue={setterFieldCreator('color')}
               items={formData.color.items}
@@ -268,15 +277,14 @@ const AddNewProductForm = () => {
             />
           </Box>
           <Box width={150}>
-
             <SimpleSelect
               name='width'
-              label={'width'}
+              label={d['width']}
               value={formData.width.value}
               setValue={setterFieldCreator('width')}
             >
               {Object.values(WidthType).map((widthType, id) => (
-                <MenuItem key={id} value={widthType}>{widthType}</MenuItem>
+                <MenuItem key={id} value={widthType}>{d[widthType] ?? widthType}</MenuItem>
               ))}
             </SimpleSelect>
           </Box>
@@ -306,11 +314,12 @@ const AddNewProductForm = () => {
           disabled={false}
           onClick={onSubmit}
         >
-          {'add_button'}
+          {d['add_button']}
         </Button>
       </Box>
       <LoadingCircular show={showLoading}/>
-      <SnackBarSuccess openSuccessSnackbar={openSuccessSnackbar} handleSuccessSnackbar={handleSuccessSnackbar}/>
+      <SnackBarSuccess label={d['SuccessfulAdded']} openSuccessSnackbar={openSuccessSnackbar}
+                       handleSuccessSnackbar={handleSuccessSnackbar}/>
     </>
   );
 };

@@ -1,4 +1,25 @@
 {
+  "newProducts": {
+    "title": "Нові продукти",
+    "productName": "Назва продукту",
+    "price_buy": "Ціна покупки",
+    "price_sell": "Ціна продажу",
+    "productType": "Тип продукту",
+    "product": "Продукт",
+    "shoes": "Взуття",
+    "qty": "Кількість",
+    "color": "Колір",
+    "width": "Ширина",
+    "Medium": "Стандартна",
+    "Wide": "Широка",
+    "add_button": "Додати",
+    "count": "Пар",
+    "length": "Довжина",
+    "sizesRange": "Розміри",
+    "fromSize": "від",
+    "toSize": "до",
+    "SuccessfulAdded": "Успішно додано"
+  },
   "expense": {
     "title": "Витрати",
     "place_id": "Місце",
@@ -39,7 +60,9 @@
     "data": "Дані",
     "sellers": "Продавці",
     "places": "Магазини",
-    "expenses": "Витрати"
+    "expenses": "Витрати",
+    "newProducts": "Нові продукти"
+
   },
   "auth": {
     "title": "Авторизація",

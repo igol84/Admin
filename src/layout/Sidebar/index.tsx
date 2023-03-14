@@ -101,7 +101,7 @@ const SidebarMenu = () => {
               location={location.pathname}
             />
             <Item
-              title={'New Products'}
+              title={d['newProducts']}
               to='/new-products'
               icon={<LibraryAddOutlinedIcon/>}
               location={location.pathname}

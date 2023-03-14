@@ -56,7 +56,6 @@ export const useBoxGridTableStyle = () => {
     '& ::-webkit-calendar-picker-indicator': {
       filter: theme.palette.mode === 'dark' ? 'invert(1)' : 'none'
     }
-
   }
 }
 
@@ -64,7 +63,6 @@ export const useBoxTableStyle = () => {
   const theme = useTheme()
   const colors = tokens(theme.palette.mode)
   return {
-    border: `1px solid ${colors.primary[400]}`,
     '& .MuiTableCell-head': {
       backgroundColor: `${colors.blueAccent[700]} !important`,
       color: `${colors.blueAccent[100]} !important`

@@ -1,4 +1,26 @@
 {
+
+  "newProducts": {
+    "title": "New Products",
+    "productName": "Product name",
+    "price_buy": "Price buy",
+    "price_sell": "Price sell",
+    "productType": "Product Type",
+    "product": "Product",
+    "shoes": "Shoes",
+    "qty": "Quantity",
+    "color": "Color",
+    "width": "width",
+    "Medium": "Medium",
+    "Wide": "Wide",
+    "add_button": "Add",
+    "count": "Pars",
+    "length": "Length",
+    "sizesRange": "Sizes range",
+    "fromSize": "from size",
+    "toSize": "to size",
+    "SuccessfulAdded": "Successful Added"
+  },
   "expense": {
     "title": "Expenses",
     "place_id": "Place",
@@ -39,7 +61,8 @@
     "data": "Data",
     "sellers": "Sellers",
     "places": "Places",
-    "expenses": "Expenses"
+    "expenses": "Expenses",
+    "newProducts": "New Products"
   },
   "auth": {
     "title": "Authorization",

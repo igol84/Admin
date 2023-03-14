@@ -1,10 +1,10 @@
-import React, {Dispatch, SetStateAction, useEffect} from 'react';
-import {Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, useTheme} from "@mui/material";
-import {tokens} from "../../theme";
+import React, {Dispatch, SetStateAction} from 'react';
+import {Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 import SizesRange from "./TableSizesSizeRange";
 import {SimpleField} from "../Form";
 import {OnConcreteFieldChange, RangeSizesType, SizeField} from "./AddNewProductFormTypes";
 import {useBoxTableStyle} from "../Form/style";
+import {useDictionary} from "../../hooks/pages";
 
 interface TableSizesType {
   rangeSizes: RangeSizesType
@@ -16,9 +16,8 @@ interface TableSizesType {
 
 const TableSizes = (props: TableSizesType) => {
   const {rangeSizes, setRangeSizes, dataSizes, onSizeFieldQtyChange, onSizeFieldLengthChange} = props
-  const theme = useTheme()
-  const colors = tokens(theme.palette.mode)
   const boxTableStyle = useBoxTableStyle()
+  const d = useDictionary('newProducts')
 
   const onQtyChange = (props: { size: number, qty: string }) => {
     const {size, qty} = props
@@ -28,7 +27,7 @@ const TableSizes = (props: TableSizesType) => {
   const onLengthChange = (props: { size: number, length: string }) => {
     const {size, length} = props
     if (Number(length) >= 0)
-    onSizeFieldLengthChange({size, value: length})
+      onSizeFieldLengthChange({size, value: length})
   }
 
   return (
@@ -40,8 +39,8 @@ const TableSizes = (props: TableSizesType) => {
               <TableCell>
                 <SizesRange rangeSizes={rangeSizes} setRangeSizes={setRangeSizes}/>
               </TableCell>
-              <TableCell align="center" width='120px'>Count</TableCell>
-              <TableCell align="center" width='120px'>Length</TableCell>
+              <TableCell align="center" width='120px'>{d['count']}</TableCell>
+              <TableCell align="center" width='120px'>{d['length']}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -63,7 +62,7 @@ const TableSizes = (props: TableSizesType) => {
                     value={field.qty.toString()}
                     setValue={(value: string) => onQtyChange({size: field.size, qty: value})}
                     focusText
-                    tabIndex={index+12}
+                    tabIndex={index + 12}
                   />
                 </TableCell>
                 <TableCell align="right">
@@ -74,10 +73,9 @@ const TableSizes = (props: TableSizesType) => {
                     value={field.length.toString()}
                     setValue={(value: string) => onLengthChange({size: field.size, length: value})}
                     focusText
-                    tabIndex={index+30}
+                    tabIndex={index + 30}
                   />
                 </TableCell>
-
               </TableRow>
             ))}
           </TableBody>

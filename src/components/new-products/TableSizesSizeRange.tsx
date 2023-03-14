@@ -1,7 +1,7 @@
 import React, {Dispatch, SetStateAction} from "react";
 import {Box, TextField} from "@mui/material";
 import {RangeSizesType} from "./AddNewProductFormTypes";
-
+import {useDictionary} from "../../hooks/pages";
 
 
 interface SizesRangeProps {
@@ -15,6 +15,7 @@ const MAX_SIZE = 56
 
 const SizesRange = (props: SizesRangeProps) => {
   const {rangeSizes, setRangeSizes} = props
+  const d = useDictionary('newProducts')
 
   const onChange = (value: number, field: 'from' | 'to') => {
     if (value >= MIN_SIZE && value <= MAX_SIZE)
@@ -25,13 +26,12 @@ const SizesRange = (props: SizesRangeProps) => {
   }
 
   return (
-
     <Box display='flex' gap={1} alignItems='center'>
-      Sizes range:
+      {d['sizesRange']}:
       <TextField
         sx={{width: '80px'}}
         type='number'
-        label='from size'
+        label={d['fromSize']}
         color="secondary"
         size="small"
         value={rangeSizes.from}
@@ -44,7 +44,7 @@ const SizesRange = (props: SizesRangeProps) => {
       <TextField
         sx={{width: '80px'}}
         type='number'
-        label='to size'
+        label={d['toSize']}
         color="secondary"
         size="small"
         value={rangeSizes.to}
