@@ -2,7 +2,7 @@ import React from 'react';
 import * as yup from 'yup'
 import {DataGrid, GridColumns, GridRenderCellParams, GridRowId, GridSortModel} from "@mui/x-data-grid";
 import {Alert, AlertProps, Box, Snackbar} from "@mui/material";
-import {useBoxTableStyle} from "../Form/style";
+import {useBoxGridTableStyle} from "../Form/style";
 import {fetchPlaces, updatePlace} from "../../store/actions/places";
 import {toTrimTheRow} from "../../hooks/form-data";
 import equal from "fast-deep-equal";
@@ -50,7 +50,7 @@ const TablePlaces = () => {
     return trimmedRow
   }
 
-  const boxTableStyle = useBoxTableStyle()
+  const boxTableStyle = useBoxGridTableStyle()
   const handleCloseSnackbar = () => setSnackbar(null);
   const [snackbar, setSnackbar] = React.useState<Pick<AlertProps, 'children' | 'severity'> | null>(null);
 

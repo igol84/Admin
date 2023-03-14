@@ -8,7 +8,7 @@ import {
   GridValueFormatterParams
 } from "@mui/x-data-grid";
 import {Alert, AlertProps, Box, Snackbar} from "@mui/material";
-import {useBoxTableStyle} from "../Form/style";
+import {useBoxGridTableStyle} from "../Form/style";
 import {fetchExpenses} from "../../store/actions/expenses";
 import {
   useDictionary,
@@ -36,7 +36,7 @@ const TableExpense = () => {
   const d = useDictionary('expense')
   const df = useDictionary('form')
   const muiLanguage = useMuiLanguage()
-  const boxTableStyle = useBoxTableStyle()
+  const boxTableStyle = useBoxGridTableStyle()
   const handlerRowUpdate = useHandlerUpdate()
 
   const storeId = useStoreId()

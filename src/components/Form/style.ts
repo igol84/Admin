@@ -2,7 +2,7 @@ import {useTheme} from "@mui/material";
 import {tokens} from "../../theme";
 
 
-export const useBoxTableStyle = () => {
+export const useBoxGridTableStyle = () => {
   const theme = useTheme()
   const colors = tokens(theme.palette.mode)
   return {
@@ -57,5 +57,20 @@ export const useBoxTableStyle = () => {
       filter: theme.palette.mode === 'dark' ? 'invert(1)' : 'none'
     }
 
+  }
+}
+
+export const useBoxTableStyle = () => {
+  const theme = useTheme()
+  const colors = tokens(theme.palette.mode)
+  return {
+    border: `1px solid ${colors.primary[400]}`,
+    '& .MuiTableCell-head': {
+      backgroundColor: `${colors.blueAccent[700]} !important`,
+      color: `${colors.blueAccent[100]} !important`
+    },
+    '& .MuiTableCell-body': {
+      backgroundColor: `${colors.primary[400]} !important`
+    }
   }
 }

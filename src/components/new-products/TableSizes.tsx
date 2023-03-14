@@ -4,6 +4,7 @@ import {tokens} from "../../theme";
 import SizesRange from "./TableSizesSizeRange";
 import {SimpleField} from "../Form";
 import {OnConcreteFieldChange, RangeSizesType, SizeField} from "./AddNewProductFormTypes";
+import {useBoxTableStyle} from "../Form/style";
 
 interface TableSizesType {
   rangeSizes: RangeSizesType
@@ -17,6 +18,7 @@ const TableSizes = (props: TableSizesType) => {
   const {rangeSizes, setRangeSizes, dataSizes, onSizeFieldQtyChange, onSizeFieldLengthChange} = props
   const theme = useTheme()
   const colors = tokens(theme.palette.mode)
+  const boxTableStyle = useBoxTableStyle()
 
   const onQtyChange = (props: { size: number, qty: string }) => {
     const {size, qty} = props
@@ -30,7 +32,7 @@ const TableSizes = (props: TableSizesType) => {
   }
 
   return (
-    <Box minWidth='600px' sx={{border: `1px solid ${colors.primary[400]}`}}>
+    <Box minWidth='600px' sx={boxTableStyle}>
       <TableContainer sx={{maxHeight: '50vh',}}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
