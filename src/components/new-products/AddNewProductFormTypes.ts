@@ -1,4 +1,4 @@
-import {ProductType, WidthType} from "../../schemas/items";
+import {ProductType, WidthType} from "./types";
 
 type Field<T> = {
   value: T

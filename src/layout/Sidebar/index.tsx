@@ -7,6 +7,7 @@ import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import StorefrontOutlinedIcon from '@mui/icons-material/StorefrontOutlined';
 import CardTravelOutlinedIcon from '@mui/icons-material/CardTravelOutlined';
 import LibraryAddOutlinedIcon from '@mui/icons-material/LibraryAddOutlined';
+import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
 import {tokens} from "../../theme";
 import {menuItemStyles} from "./Sidebar.theme";
 import {useLocation} from "react-router-dom";
@@ -104,6 +105,12 @@ const SidebarMenu = () => {
               title={d['newProducts']}
               to='/new-products'
               icon={<LibraryAddOutlinedIcon/>}
+              location={location.pathname}
+            />
+            <Item
+              title={'ItemsEditor'}
+              to='/items-editor'
+              icon={<Inventory2OutlinedIcon/>}
               location={location.pathname}
             />
           </Box>

@@ -1,8 +1,8 @@
-import {Product} from "../../schemas/product";
-import {ProductType} from "../../schemas/items";
+import {NewProducts} from "../../schemas/new-products";
+import {ProductType} from "./types";
 import _ from "lodash";
 
-export const getProductNames = (products: Product[], selectedType: keyof typeof ProductType) => {
+export const getProductNames = (products: NewProducts[], selectedType: keyof typeof ProductType) => {
   return _.chain(products)
     .filter(product => product.type === selectedType)
     .map(product => _.capitalize(product.name))
@@ -10,14 +10,14 @@ export const getProductNames = (products: Product[], selectedType: keyof typeof 
     .uniq()
     .value()
 }
-export const getProductData = (products: Product[], name: string) => {
+export const getProductData = (products: NewProducts[], name: string) => {
   return _.chain(products)
     .filter(product => product.name.toLowerCase() === name.toLowerCase())
     .last()
     .value()
 }
 
-export const getProductColors = (products: Product[], name: string) => {
+export const getProductColors = (products: NewProducts[], name: string) => {
   return _.chain(products)
     .filter(product => product.name.toLowerCase() === name.toLowerCase())
     .map(product => _.lowerCase(product.shoes.color))

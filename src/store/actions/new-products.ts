@@ -1,9 +1,9 @@
 import {AppDispatch} from "../index";
 import {secureApiCreate} from "../../ky";
 import {newProductsSlice} from "../slices/newProductsSlice";
-import {NewProducts} from "../../schemas/items";
+import {Types} from "../../components/new-products/types";
 import {authSlice} from "../slices/authSlice";
-import {OutputItems, Product} from "../../schemas/product";
+import {OutputItems, NewProducts} from "../../schemas/new-products";
 
 
 export const requestProducts = (access_token: string) => {
@@ -11,7 +11,7 @@ export const requestProducts = (access_token: string) => {
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(newProductsSlice.actions.RequestProducts())
-      const products: Product[] = await secureApi.get(`prod/`).json()
+      const products: NewProducts[] = await secureApi.get(`prod/`).json()
       dispatch(newProductsSlice.actions.RequestProductsSuccess({products}))
     } catch (err) {
       dispatch(newProductsSlice.actions.RequestProductsError(err as Error))
@@ -19,7 +19,7 @@ export const requestProducts = (access_token: string) => {
   }
 }
 
-export const addNewProducts = (access_token: string, newProducts: NewProducts) => {
+export const addNewProducts = (access_token: string, newProducts: Types) => {
   const secureApi = secureApiCreate(access_token)
   return async (dispatch: AppDispatch) => {
     try {

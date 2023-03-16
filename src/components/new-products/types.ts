@@ -1,4 +1,4 @@
-export interface NewProducts {
+export interface Types {
   id?: number
   store_id: number
   type: ProductType

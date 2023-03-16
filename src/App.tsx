@@ -9,6 +9,7 @@ import Sellers from "./pages/sellers";
 import Places from "./pages/places";
 import Expenses from "./pages/expenses";
 import NewProducts from "./pages/new-products";
+import Items from "./pages/items-editor";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path='/places' element={<Places/>}/>
           <Route path='/expenses' element={<Expenses/>}/>
           <Route path='/new-products' element={<NewProducts/>}/>
+          <Route path='/items-editor' element={<Items/>}/>
         </Routes>
       </main>
     </div>

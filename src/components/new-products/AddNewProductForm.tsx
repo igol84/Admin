@@ -11,7 +11,7 @@ import {
 import produce from "immer";
 import TableSizes from "./TableSizes";
 import _ from "lodash";
-import {getDefaultSeizesLength, ProductType, WidthType} from "../../schemas/items";
+import {getDefaultSeizesLength, ProductType, WidthType} from "./types";
 import {addNewProducts, requestProducts} from "../../store/actions/new-products";
 import {
   useDictionary,
@@ -29,7 +29,7 @@ import {
   SizeField
 } from "./AddNewProductFormTypes";
 import {useSubmit} from "./AddNewProductFormOnSubmit";
-import {Product} from "../../schemas/product";
+import {NewProducts} from "../../schemas/new-products";
 import {useAppSelector} from "../../hooks/redux";
 import LoadingCircular from "../LoadingCircular";
 import {getProductColors, getProductData, getProductNames} from "./functions";
@@ -69,7 +69,7 @@ const AddNewProductForm = () => {
 
   useLayoutEffect(() => {
     if (selectedName) {
-      const selectedProductData: Product = getProductData(products, selectedName)
+      const selectedProductData: NewProducts = getProductData(products, selectedName)
       setFormData(produce(prevFormData => {
         prevFormData.priceSell.value = selectedProductData.price.toString()
       }))

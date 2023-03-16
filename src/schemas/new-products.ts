@@ -1,4 +1,9 @@
-export interface Product {
+export interface OutputItems {
+  products?: NewProducts[]
+  items: Item[]
+}
+
+export interface NewProducts {
   type: string
   name: string
   price: number
@@ -12,11 +17,6 @@ export interface Shoes {
   size: number
   length?: number
   width: string
-}
-
-export interface OutputItems {
-  products?: Product[]
-  items: Item[]
 }
 
 export interface Item {
