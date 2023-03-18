@@ -15,10 +15,10 @@ const getItemsForm: GetItemsForm = (items) => {
       name = `${item.product.name}: ${item.product.shoes.color}, ${item.product.shoes.width}, ${item.product.shoes.size}`
     }
     return {
-      id: item.id.toString(),
+      id: item.id,
       name,
-      qty: item.qty.toString(),
-      buy_price: item.buy_price.toString(),
+      qty: item.qty,
+      buy_price: item.buy_price,
       date_buy: item.date_buy.toString()
     }
   })

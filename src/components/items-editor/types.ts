@@ -1,7 +1,7 @@
 export interface ItemForm {
-  id: string
+  id: number
   name: string
-  qty: string
-  buy_price: string
+  qty: number
+  buy_price: number
   date_buy: string
 }
