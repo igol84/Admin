@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react'
 import {
   Box,
-  Checkbox,
   Table,
   TableBody,
   TableCell,
@@ -43,22 +42,12 @@ function getComparator<Key extends keyof any>(
     : (a, b) => -descendingComparator(a, b, orderBy)
 }
 
-interface HeadCell {
-  id: keyof ItemForm
+interface HeadCell<T> {
+  id: keyof T
   label: string
 }
-function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) {
-  const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) {
-      return order;
-    }
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-}
-const headCells: readonly HeadCell[] = [
+
+const headCells: readonly HeadCell<ItemForm>[] = [
   {
     id: 'id',
     label: 'Item Id',
@@ -96,7 +85,7 @@ interface EnhancedTableProps {
 }
 
 function EnhancedTableHead(props: EnhancedTableProps) {
-  const {onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort} =
+  const {order, orderBy, onRequestSort} =
     props;
   const createSortHandler =
     (property: keyof ItemForm) => (event: React.MouseEvent<unknown>) => {
@@ -106,17 +95,6 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              'aria-label': 'select all desserts',
-            }}
-          />
-        </TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -226,11 +204,10 @@ const ItemsEdit = () => {
             rowCount={rows.length}
           />
           <TableBody>
-            {stableSort(rows, getComparator(order, orderBy))
+            {rows.slice().sort(getComparator(order, orderBy))
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row, index) => {
+              .map((row) => {
                 const isItemSelected = isSelected(row.id);
-                const labelId = `enhanced-table-checkbox-${index}`;
 
                 return (
                   <TableRow
@@ -242,15 +219,6 @@ const ItemsEdit = () => {
                     key={row.id}
                     selected={isItemSelected}
                   >
-                    <TableCell padding="checkbox">
-                      <Checkbox
-                        color="primary"
-                        checked={isItemSelected}
-                        inputProps={{
-                          'aria-labelledby': labelId,
-                        }}
-                      />
-                    </TableCell>
                     <TableCell>{row.id}</TableCell>
                     <TableCell>{row.name}</TableCell>
                     <TableCell>{row.qty}</TableCell>
