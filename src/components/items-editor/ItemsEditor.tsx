@@ -1,118 +1,24 @@
-import React, {useEffect} from 'react'
-import {
-  Box,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TablePagination,
-  TableRow,
-  TableSortLabel
-} from "@mui/material"
+import React from 'react'
+import {Box, Table, TableBody, TableCell, TableContainer, TablePagination, TableRow} from "@mui/material"
 import {useLoaderAccess} from "../../hooks/pages"
 
 import {useAppSelector, useStoreId} from "../../hooks/redux"
 import {fetchItemsEditor} from "../../store/actions/items-editor"
 import {useBoxTableStyle} from "../Form/style"
 import {ItemForm} from "./types"
+import {useOrder, usePages} from "./hooks";
+import EnhancedTableHead from "./EnhancedTableHead";
+import {getComparator, HeadCell} from "../../hooks/form-data";
+import DeleteButton from "./DeleteButton";
 
-
-function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-type Order = 'asc' | 'desc';
-
-function getComparator<Key extends keyof any>(
-  order: Order,
-  orderBy: Key,
-): (
-  a: { [key in Key]: number | string },
-  b: { [key in Key]: number | string },
-) => number {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy)
-}
-
-interface HeadCell<T> {
-  id: keyof T
-  label: string
-}
 
 const headCells: readonly HeadCell<ItemForm>[] = [
-  {
-    id: 'id',
-    label: 'Item Id',
-
-  },
-  {
-    id: 'name',
-    label: 'Name',
-
-  },
-  {
-    id: 'qty',
-    label: 'Quantity',
-
-  },
-  {
-    id: 'buy_price',
-    label: 'Buy price',
-
-  },
-  {
-    id: 'date_buy',
-    label: 'Date buy',
-
-  },
+  {id: 'id', label: 'Item Id'},
+  {id: 'name', label: 'Name'},
+  {id: 'qty', label: 'Quantity'},
+  {id: 'buy_price', label: 'Buy price'},
+  {id: 'date_buy', label: 'Date buy'},
 ];
-
-interface EnhancedTableProps {
-  numSelected: number;
-  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof ItemForm) => void;
-  onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  order: Order;
-  orderBy: string;
-  rowCount: number;
-}
-
-function EnhancedTableHead(props: EnhancedTableProps) {
-  const {order, orderBy, onRequestSort} =
-    props;
-  const createSortHandler =
-    (property: keyof ItemForm) => (event: React.MouseEvent<unknown>) => {
-      onRequestSort(event, property);
-    };
-
-  return (
-    <TableHead>
-      <TableRow>
-        {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : 'asc'}
-              onClick={createSortHandler(headCell.id)}
-            >
-              {headCell.label}
-            </TableSortLabel>
-          </TableCell>
-        ))}
-      </TableRow>
-    </TableHead>
-  );
-}
 
 
 const ItemsEdit = () => {
@@ -121,70 +27,17 @@ const ItemsEdit = () => {
   const boxTableStyle = useBoxTableStyle()
   const {itemsEditor} = useAppSelector(state => state.itemsEditorSlice)
   const rows = itemsEditor
-  useEffect(() => {
-    console.log(itemsEditor)
-  }, [itemsEditor])
+
+  const [order, orderBy, handleRequestSort] = useOrder()
+  const [page, rowsPerPage, handleChangePage, handleChangeRowsPerPage, emptyRows] = usePages(rows.length)
 
 
-  const [order, setOrder] = React.useState<Order>('asc');
-  const [orderBy, setOrderBy] = React.useState<keyof ItemForm>('id');
-  const [selected, setSelected] = React.useState<readonly number[]>([]);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
-  const handleRequestSort = (
-    event: React.MouseEvent<unknown>,
-    property: keyof ItemForm,
-  ) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
-  };
-
-  const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.checked) {
-      const newSelected = rows.map((n) => n.id);
-      setSelected(newSelected);
-      return;
-    }
-    setSelected([]);
-  };
-
+  const [selected, setSelected] = React.useState<number | null>(null);
   const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
-    const selectedIndex = selected.indexOf(id);
-    let newSelected: readonly number[] = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
-
-    setSelected(newSelected);
+    setSelected(id);
   };
+  const isSelected = (id: number) => id === selected;
 
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-
-  const isSelected = (id: number) => selected.indexOf(id) !== -1;
-
-  // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
 
   return (
@@ -196,19 +49,16 @@ const ItemsEdit = () => {
           stickyHeader
         >
           <EnhancedTableHead
-            numSelected={selected.length}
             order={order}
             orderBy={orderBy}
-            onSelectAllClick={handleSelectAllClick}
             onRequestSort={handleRequestSort}
-            rowCount={rows.length}
+            headCells={headCells}
           />
           <TableBody>
             {rows.slice().sort(getComparator(order, orderBy))
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => {
-                const isItemSelected = isSelected(row.id);
-
+                const isItemSelected = isSelected(row.id)
                 return (
                   <TableRow
                     hover
@@ -224,11 +74,14 @@ const ItemsEdit = () => {
                     <TableCell>{row.qty}</TableCell>
                     <TableCell>{row.buy_price}</TableCell>
                     <TableCell>{row.date_buy}</TableCell>
+                    <TableCell sx={{p: 0}}><DeleteButton hidden={!isItemSelected} deletable={true} itemID={row.id}/></TableCell>
                   </TableRow>
                 );
               })}
             {emptyRows > 0 && (
-              <TableRow>
+              <TableRow sx={{
+                height: 56 * emptyRows,
+              }}>
                 <TableCell colSpan={6}/>
               </TableRow>
             )}

@@ -12,7 +12,15 @@ const getItemsForm: GetItemsForm = (items) => {
   return items.map(item => {
     let name = item.product.name
     if (item.product.shoes) {
-      name = `${item.product.name}: ${item.product.shoes.color}, ${item.product.shoes.width}, ${item.product.shoes.size}`
+      const shoesProps = []
+      const shoesName = item.product.name
+      shoesProps.push(shoesName)
+      const width = item.product.shoes.width ? item.product.shoes.width : 'Medium'
+      if(width !== 'Medium')
+        shoesProps.push(width)
+      const size = item.product.shoes.size
+      shoesProps.push(size)
+      name = shoesProps.join(' - ')
     }
     return {
       id: item.id,
