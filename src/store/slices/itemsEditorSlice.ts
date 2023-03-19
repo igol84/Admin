@@ -1,21 +1,28 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {ItemForm} from "../../components/items-editor/types";
+import {Sale} from "../../schemas/items-editor";
 
 
 interface ItemsEditor {
   itemsEditor: ItemForm[]
+  itemSales: Sale[]
   isLoading: boolean
   error: string
 }
 
 const initialState: ItemsEditor = {
   itemsEditor: [],
+  itemSales: [],
   isLoading: false,
   error: ''
 }
 
 export interface ItemsEditorPayload {
   itemsEditor: ItemForm[]
+}
+
+export interface SalesByItemFetchingPayload {
+  itemSales: Sale[]
 }
 
 // interface ExpensePayload {
@@ -39,6 +46,18 @@ export const itemsEditorSlice = createSlice({
       state.error = ''
     },
     ItemsEditorFetchingError(state, action: PayloadAction<Error>) {
+      state.isLoading = false
+      state.error = action.payload.message
+    },
+    SalesByItemFetching(state) {
+      state.isLoading = true
+    },
+    SalesByItemFetchingSuccess(state, action: PayloadAction<SalesByItemFetchingPayload>) {
+      state.itemSales = action.payload.itemSales
+      state.isLoading = false
+      state.error = ''
+    },
+    SalesByItemFetchingError(state, action: PayloadAction<Error>) {
       state.isLoading = false
       state.error = action.payload.message
     },

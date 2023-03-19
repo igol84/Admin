@@ -1,14 +1,14 @@
 import {AppDispatch} from "../index";
 import {secureApiCreate} from "../../ky";
 import {itemsEditorSlice} from "../slices/itemsEditorSlice";
-import {Item} from "../../schemas/items-editor";
+import {Item, Sale} from "../../schemas/items-editor";
 import {ItemForm} from "../../components/items-editor/types";
 
-interface GetItemsForm {
+interface GetRowsForm {
   (items: Item[]): ItemForm[]
 }
 
-const getItemsForm: GetItemsForm = (items) => {
+const getRowsForm: GetRowsForm = (items) => {
   return items.map(item => {
     let name = item.product.name
     if (item.product.shoes) {
@@ -16,7 +16,7 @@ const getItemsForm: GetItemsForm = (items) => {
       const shoesName = item.product.name
       shoesProps.push(shoesName)
       const width = item.product.shoes.width ? item.product.shoes.width : 'Medium'
-      if(width !== 'Medium')
+      if (width !== 'Medium')
         shoesProps.push(width)
       const size = item.product.shoes.size
       shoesProps.push(size)
@@ -37,10 +37,27 @@ export const fetchItemsEditor = (access_token: string, {storeId}: any = null) =>
     try {
       dispatch(itemsEditorSlice.actions.ItemsEditorFetching())
       const items: Item[] = await secureApi.get(`item/by_store_id/${storeId}`).json()
-      const itemsEditor = getItemsForm(items)
+      const itemsEditor = getRowsForm(items)
       dispatch(itemsEditorSlice.actions.ItemsEditorFetchingSuccess({itemsEditor}))
     } catch (err) {
       dispatch(itemsEditorSlice.actions.ItemsEditorFetchingError(err as Error))
+    }
+  }
+}
+
+interface FetchSalesByItemProps {
+  itemId: number
+}
+
+export const fetchSalesByItem = (access_token: string, {itemId}: FetchSalesByItemProps) => {
+  const secureApi = secureApiCreate(access_token)
+  return async (dispatch: AppDispatch) => {
+    try {
+      dispatch(itemsEditorSlice.actions.SalesByItemFetching())
+      const itemSales: Sale[] = await secureApi.get(`handler_items_editor/get_item_sales/${itemId}`).json()
+      dispatch(itemsEditorSlice.actions.SalesByItemFetchingSuccess({itemSales}))
+    } catch (err) {
+      dispatch(itemsEditorSlice.actions.SalesByItemFetchingError(err as Error))
     }
   }
 }

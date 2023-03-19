@@ -23,3 +23,11 @@ export interface Shoes {
   length: number
   width: string
 }
+
+
+export interface Sale {
+  sale_id: number
+  date: string
+  qty: number
+  price: number
+}
