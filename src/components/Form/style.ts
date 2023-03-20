@@ -74,8 +74,36 @@ export const useBoxTableStyle = () => {
       backgroundColor: `${colors.blueAccent[700]} !important`
     },
     '& .Mui-selected .MuiTableCell-body': {
+      backgroundColor: `${colors.greenAccent[700]} !important`
+    },
+    "& .MuiTableRow-hover:hover:not(.Mui-selected) .MuiTableCell-body": {
+      cursor: "pointer",
       backgroundColor: `${colors.primary[500]} !important`
     },
+    '& button .MuiButtonBase-root': {
+      color: `${colors.blueAccent[700]} !important`
+    },
+  }
+}
 
+export const useDialogStyle = () => {
+  const theme = useTheme()
+  const colors = tokens(theme.palette.mode)
+  return {
+    '& .MuiButton-root': {
+      backgroundColor: `${colors.blueAccent[700]} !important`,
+      color: `${colors.blueAccent[100]} !important`
+    },
+    '& #alert-dialog-title': {
+      fontSize: '16px'
+    },
+    '& #alert-dialog-yes': {
+      backgroundColor: `${colors.redAccent[700]} !important`,
+      color: `${colors.blueAccent[100]} !important`
+    },
+    '& #alert-dialog-no': {
+      backgroundColor: `${colors.greenAccent[700]} !important`,
+      color: `${colors.blueAccent[100]} !important`
+    }
   }
 }

@@ -25,6 +25,8 @@ import LoadingCircular from "../LoadingCircular";
 import produce from "immer";
 import {SimpleField} from "../Form";
 import SaveButton from "./SaveButton";
+import CloseIcon from "@mui/icons-material/Close";
+import {GridActionsCellItem} from "@mui/x-data-grid";
 
 
 const headCells: readonly HeadCell<ItemForm>[] = [
@@ -138,6 +140,12 @@ const ItemsEdit = () => {
                       resetFormData={resetFormData}
                     />
                     <DeleteButton deletable={isDeletable} itemID={row.id}/>
+                    <GridActionsCellItem
+                      icon={<CloseIcon/>}
+                      label={'close'}
+                      onClick={resetFormData}
+                      color="inherit"
+                    />
                   </Box>
                   : null
                 return (
@@ -172,8 +180,8 @@ const ItemsEdit = () => {
                                          <TableRow>
                                             <TableCell>Sale Id</TableCell>
                                             <TableCell>Qty</TableCell>
-                                            <TableCell align="right">Date</TableCell>
-                                            <TableCell align="right">Price sell</TableCell>
+                                            <TableCell>Date</TableCell>
+                                            <TableCell>Price sell</TableCell>
                                          </TableRow>
                                       </TableHead>
                                       <TableBody>
