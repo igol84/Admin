@@ -74,7 +74,7 @@ export const useBoxTableStyle = () => {
       backgroundColor: `${colors.blueAccent[700]} !important`
     },
     '& .Mui-selected .MuiTableCell-body': {
-      backgroundColor: `${colors.greenAccent[500]} !important`
+      backgroundColor: `${colors.primary[500]} !important`
     },
 
   }

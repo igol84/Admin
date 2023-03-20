@@ -31,3 +31,10 @@ export interface Sale {
   qty: number
   price: number
 }
+
+export interface UpdatedItem {
+  id: number
+  new_qty: number
+  new_price: number
+}
+

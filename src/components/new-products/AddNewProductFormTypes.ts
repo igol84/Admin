@@ -1,22 +1,5 @@
 import {ProductType, WidthType} from "./types";
-
-type Field<T> = {
-  value: T
-  error: string
-}
-type FieldSelect<T> = {
-  value: T
-  error: string
-  items: T[]
-}
-
-
-type FieldAutocomplete<T> = {
-  value: T
-  error: string
-  items: T[]
-  selected: T
-}
+import {Field, FieldAutocomplete, FieldSelect} from "../Form/types";
 
 
 export interface SizeField {
@@ -52,8 +35,9 @@ export interface SetterFieldCreator {
 }
 
 export interface OnConcreteFieldChange {
-  (field: {size: number, value: string}) : void
+  (field: { size: number, value: string }): void
 }
+
 export interface OnSizeFieldChange {
   (fieldName: string)
     : OnConcreteFieldChange

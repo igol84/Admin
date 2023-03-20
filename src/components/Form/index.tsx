@@ -94,6 +94,7 @@ interface FieldType {
   onKeyDown?: (value: any) => void
   autoFocus?: boolean
   tabIndex?: number
+  fullWidth?: boolean
 }
 
 export const SimpleField = (props: FieldType) => {
@@ -109,7 +110,8 @@ export const SimpleField = (props: FieldType) => {
     disabled = false,
     onKeyDown = (_) => true,
     autoFocus = false,
-    tabIndex = undefined
+    tabIndex = undefined,
+    fullWidth = true
   } = props
   return (
     <TextField
@@ -118,7 +120,7 @@ export const SimpleField = (props: FieldType) => {
       label={label}
       onFocus={focusText ? (event) => event.target.select() : () => null}
       color="secondary"
-      sx={{width: "100%"}}
+      sx={fullWidth ? {width: "100%"} : null}
       size="small"
       error={!!error}
       helperText={error}
@@ -243,6 +245,10 @@ export const fieldPositive = (value: number) => {
     return 'positive'
   }
   return ''
+}
+
+export const isFieldPositive = (value: number) => {
+  return !(!!fieldPositive(value))
 }
 
 export const fieldPositiveNotNull = (value: number) => {

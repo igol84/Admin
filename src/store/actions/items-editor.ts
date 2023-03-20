@@ -1,7 +1,7 @@
 import {AppDispatch} from "../index";
 import {secureApiCreate} from "../../ky";
 import {itemsEditorSlice} from "../slices/itemsEditorSlice";
-import {Item, Sale} from "../../schemas/items-editor";
+import {Item, Sale, UpdatedItem} from "../../schemas/items-editor";
 import {ItemForm} from "../../components/items-editor/types";
 import {authSlice} from "../slices/authSlice";
 
@@ -62,6 +62,24 @@ export const fetchSalesByItem = (access_token: string, {itemId}: FetchSalesByIte
     }
   }
 }
+
+export const updateItem = (access_token: string, itemData: UpdatedItem) => {
+  const secureApi = secureApiCreate(access_token)
+  return async (dispatch: AppDispatch) => {
+    try {
+      dispatch(itemsEditorSlice.actions.SalesByItemFetching())
+      const updatedItem: UpdatedItem = await secureApi.put('handler_items_editor/edit_item', {json: itemData}).json()
+      dispatch(itemsEditorSlice.actions.updateItem({changedItem: updatedItem}))
+    } catch (err) {
+      const errors = err as Error;
+      const errorText = errors.message
+      if (errorText) {
+        dispatch(authSlice.actions.loginFail({errorText}))
+      }
+    }
+  }
+}
+
 export const delItem = (access_token: string, itemId: number) => {
   const secureApi = secureApiCreate(access_token)
   return async (dispatch: AppDispatch) => {
@@ -78,40 +96,3 @@ export const delItem = (access_token: string, itemId: number) => {
     }
   }
 }
-// export const addNewExpense = (access_token: string, expense: CreateExpense) => {
-//   const secureApi = secureApiCreate(access_token)
-//   return async (dispatch: AppDispatch) => {
-//     try {
-//       dispatch(itemsEditorSlice.actions.itemsEditorFetching())
-//       const newExpense: Expense = await secureApi.post('expense', {json: expense}).json()
-//       dispatch(itemsEditorSlice.actions.addNewExpense({newExpense}))
-//       return newExpense
-//     } catch (err) {
-//       const errors = err as Error;
-//       const errorText = errors.message
-//       if (errorText) {
-//         dispatch(authSlice.actions.loginFail({errorText}))
-//       }
-//     }
-//   }
-// }
-//
-// export const updateExpense = (access_token: string, expense: UpdateExpense) => {
-//   const updated = {...expense, date_cost: formatISODate(expense.date_cost)}
-//   const secureApi = secureApiCreate(access_token)
-//   return async (dispatch: AppDispatch) => {
-//     try {
-//       dispatch(itemsEditorSlice.actions.itemsEditorFetching())
-//       const updatedExpense: Expense  = await secureApi.put('expense', {json: updated}).json()
-//       dispatch(itemsEditorSlice.actions.updateExpense({changedExpense: updatedExpense}))
-//       return updatedExpense
-//     } catch (err) {
-//       const errors = err as Error;
-//       const errorText = errors.message
-//       if (errorText) {
-//         dispatch(authSlice.actions.loginFail({errorText}))
-//       }
-//     }
-//   }
-// }
-//

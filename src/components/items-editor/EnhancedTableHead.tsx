@@ -34,7 +34,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
             </TableSortLabel>
           </TableCell>
         ))}
-        <TableCell width='90px' />
+        <TableCell width='120px' />
       </TableRow>
     </TableHead>
   );

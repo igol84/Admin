@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {ItemForm} from "../../components/items-editor/types";
-import {Sale} from "../../schemas/items-editor";
+import {Sale, UpdatedItem} from "../../schemas/items-editor";
 
 
 interface ItemsEditor {
@@ -25,9 +25,9 @@ export interface SalesByItemFetchingPayload {
   itemSales: Sale[]
 }
 
-// interface ExpensePayload {
-//   newExpense: Expense
-// }
+interface ChangedItemPayload {
+  changedItem: UpdatedItem
+}
 //
 // interface ChangedExpensePayload {
 //   changedExpense: Expense
@@ -61,13 +61,13 @@ export const itemsEditorSlice = createSlice({
       state.isLoading = false
       state.error = action.payload.message
     },
-    // updateExpense(state, {payload: {changedExpense}}: PayloadAction<ChangedExpensePayload>) {
-    //   state.isLoading = false
-    //   state.ItemsEditor = state.ItemsEditor.map(expense => {
-    //     return expense.id == changedExpense.id ? changedExpense : expense
-    //   })
-    //   state.error = ''
-    // },
+    updateItem(state, {payload: {changedItem}}: PayloadAction<ChangedItemPayload>) {
+      state.isLoading = false
+      state.itemsEditor = state.itemsEditor.map(item => {
+        return item.id == changedItem.id ? {...item, qty: changedItem.new_qty, buy_price: changedItem.new_price} : item
+      })
+      state.error = ''
+    },
     delItem(state, {payload: delId}: PayloadAction<number>) {
       state.isLoading = false
       state.itemsEditor = state.itemsEditor.filter(item => {

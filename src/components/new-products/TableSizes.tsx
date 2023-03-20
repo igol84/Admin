@@ -44,7 +44,7 @@ const TableSizes = (props: TableSizesType) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {dataSizes.map((field, index) => (
+            {dataSizes.map((field) => (
               <TableRow
                 key={field.size}
                 sx={{
@@ -62,7 +62,6 @@ const TableSizes = (props: TableSizesType) => {
                     value={field.qty.toString()}
                     setValue={(value: string) => onQtyChange({size: field.size, qty: value})}
                     focusText
-                    tabIndex={index + 12}
                   />
                 </TableCell>
                 <TableCell align="right">
@@ -73,7 +72,6 @@ const TableSizes = (props: TableSizesType) => {
                     value={field.length.toString()}
                     setValue={(value: string) => onLengthChange({size: field.size, length: value})}
                     focusText
-                    tabIndex={index + 30}
                   />
                 </TableCell>
               </TableRow>
