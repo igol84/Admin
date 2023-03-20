@@ -1,7 +1,8 @@
-import {useDictionary} from "../../hooks/pages";
+import {useDictionary, useFetchAccess} from "../../hooks/pages";
 import {GridActionsCellItem} from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import React from "react";
+import {delItem} from "../../store/actions/items-editor";
 
 interface DeleteButtonType {
   itemID: number
@@ -11,8 +12,9 @@ interface DeleteButtonType {
 const DeleteButton = (props: DeleteButtonType) => {
   const d = useDictionary('sellers')
   const {itemID, deletable} = props
+  const deletePlaceAccess = useFetchAccess(delItem)
   const onClick = async () => {
-    console.log(itemID)
+    await deletePlaceAccess(itemID)
   }
   return (
     <GridActionsCellItem

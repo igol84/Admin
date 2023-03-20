@@ -3,6 +3,7 @@ import {secureApiCreate} from "../../ky";
 import {itemsEditorSlice} from "../slices/itemsEditorSlice";
 import {Item, Sale} from "../../schemas/items-editor";
 import {ItemForm} from "../../components/items-editor/types";
+import {authSlice} from "../slices/authSlice";
 
 interface GetRowsForm {
   (items: Item[]): ItemForm[]
@@ -61,7 +62,22 @@ export const fetchSalesByItem = (access_token: string, {itemId}: FetchSalesByIte
     }
   }
 }
-
+export const delItem = (access_token: string, itemId: number) => {
+  const secureApi = secureApiCreate(access_token)
+  return async (dispatch: AppDispatch) => {
+    try {
+      dispatch(itemsEditorSlice.actions.SalesByItemFetching())
+      await secureApi.delete(`handler_items_editor/del_item/${itemId}`)
+      dispatch(itemsEditorSlice.actions.delItem(itemId))
+    } catch (err) {
+      const errors = err as Error;
+      const errorText = errors.message
+      if (errorText) {
+        dispatch(authSlice.actions.loginFail({errorText}))
+      }
+    }
+  }
+}
 // export const addNewExpense = (access_token: string, expense: CreateExpense) => {
 //   const secureApi = secureApiCreate(access_token)
 //   return async (dispatch: AppDispatch) => {
@@ -99,19 +115,3 @@ export const fetchSalesByItem = (access_token: string, {itemId}: FetchSalesByIte
 //   }
 // }
 //
-// export const delExpense = (access_token: string, id: number) => {
-//   const secureApi = secureApiCreate(access_token)
-//   return async (dispatch: AppDispatch) => {
-//     try {
-//       dispatch(itemsEditorSlice.actions.itemsEditorFetching())
-//       await secureApi.delete(`expense/${id}`)
-//       dispatch(itemsEditorSlice.actions.delExpense(id))
-//     } catch (err) {
-//       const errors = err as Error;
-//       const errorText = errors.message
-//       if (errorText) {
-//         dispatch(authSlice.actions.loginFail({errorText}))
-//       }
-//     }
-//   }
-// }

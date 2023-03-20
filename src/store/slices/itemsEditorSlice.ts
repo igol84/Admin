@@ -61,11 +61,6 @@ export const itemsEditorSlice = createSlice({
       state.isLoading = false
       state.error = action.payload.message
     },
-    // addNewExpense(state, {payload: {newExpense}}: PayloadAction<ExpensePayload>) {
-    //   state.isLoading = false
-    //   state.ItemsEditor.unshift(newExpense)
-    //   state.error = ''
-    // },
     // updateExpense(state, {payload: {changedExpense}}: PayloadAction<ChangedExpensePayload>) {
     //   state.isLoading = false
     //   state.ItemsEditor = state.ItemsEditor.map(expense => {
@@ -73,13 +68,13 @@ export const itemsEditorSlice = createSlice({
     //   })
     //   state.error = ''
     // },
-    // delExpense(state, {payload: delId}: PayloadAction<number>) {
-    //   state.isLoading = false
-    //   state.ItemsEditor = state.ItemsEditor.filter(expense => {
-    //     return expense.id !== delId
-    //   })
-    //   state.error = ''
-    // }
+    delItem(state, {payload: delId}: PayloadAction<number>) {
+      state.isLoading = false
+      state.itemsEditor = state.itemsEditor.filter(item => {
+        return item.id !== delId
+      })
+      state.error = ''
+    }
 
   }
 })
