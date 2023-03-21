@@ -59,7 +59,8 @@ export interface UseForm {
       onPriceFieldChange: (price: string) => void,
       resetFormData: () => void,
       useError: (fieldName: FieldNames) => string,
-      handleClick: (event: React.MouseEvent<unknown>, id: number, qty: number, price: number) => Promise<void>
+      handleClick: (event: React.MouseEvent<unknown>, id: number, qty: number, price: number) => Promise<void>,
+      formWasEdited: (qty: number, price: number) => boolean
     ]
 }
 
@@ -103,5 +104,11 @@ export const useForm: UseForm = () => {
     }
   }
 
-  return [formData, isSelected, onQtyFieldChange, onPriceFieldChange, resetFormData, useError, handleClick]
+
+  const formWasEdited: (qty: number, price: number) => boolean = (qty, price) => {
+    return qty !== Number(formData.qty.value) || price !== Number(formData.price.value)
+  }
+
+  return [formData, isSelected, onQtyFieldChange, onPriceFieldChange, resetFormData, useError, handleClick,
+    formWasEdited]
 }

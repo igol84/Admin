@@ -10,10 +10,11 @@ interface SaveButtonType {
   qty: number
   price: number
   resetFormData: () => void
+  disabled?: boolean
 }
 
 const SaveButton = (props: SaveButtonType) => {
-  const {id, qty, price, resetFormData} = props
+  const {id, qty, price, resetFormData, disabled = false} = props
   const editItem = useFetchAccess(updateItem)
   const onClick = async () => {
     const data: UpdatedItem = {id, new_qty: qty, new_price: price}
@@ -26,6 +27,7 @@ const SaveButton = (props: SaveButtonType) => {
       label={'save'}
       onClick={onClick}
       color="inherit"
+      disabled={disabled}
     />
   )
 }

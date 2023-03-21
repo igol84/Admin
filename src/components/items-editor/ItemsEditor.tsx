@@ -34,11 +34,15 @@ const ItemsEdit = () => {
   const boxTableStyle = useBoxTableStyle()
   const {itemsEditor, isLoading, itemSales} = useAppSelector(state => state.itemsEditorSlice)
   const rows = itemsEditor
+  const isItemWithSales = !!itemSales.length
 
   const showLoading = useIsLoadingDisplay(isLoading)
   const [order, orderBy, handleRequestSort] = useOrder()
   const [page, rowsPerPage, handleChangePage, handleChangeRowsPerPage, emptyRows] = usePages(rows.length)
-  const [formData, isSelected, onQtyFieldChange, onPriceFieldChange, resetFormData, useError, handleClick] = useForm()
+  const [
+    formData, isSelected, onQtyFieldChange, onPriceFieldChange, resetFormData, useError, handleClick, formWasEdited
+  ] = useForm()
+
   return (
     <Box sx={boxTableStyle}>
       <TableContainer sx={{maxHeight: '70vh',}}>
@@ -58,7 +62,6 @@ const ItemsEdit = () => {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => {
                 const isItemSelected = isSelected(row.id)
-                const isItemWithSales = !!itemSales.length
                 const qtyContent = isItemSelected ?
                   <SimpleField
                     type='number'
@@ -82,9 +85,10 @@ const ItemsEdit = () => {
                     fullWidth={false}
                   /> : row.buy_price
 
-                const buttons = isItemSelected ?
+                const buttons = isItemSelected &&
                   <Box display={'flex'} justifyContent={'space-between'}>
                     <SaveButton
+                      disabled={!formWasEdited(row.qty, row.buy_price)}
                       id={row.id}
                       qty={Number(formData.qty.value)}
                       price={Number(formData.price.value)}
@@ -98,15 +102,19 @@ const ItemsEdit = () => {
                       color="inherit"
                     />
                   </Box>
-                  : null
+
+                const salesRow = isItemSelected && isItemWithSales &&
+                   <TableRow>
+                      <SalesItemsTable isItemSelected={isItemSelected} itemSales={itemSales}/>
+                   </TableRow>
+
+
                 return (
                   <React.Fragment key={row.id}>
                     <TableRow
                       hover
                       onClick={(event) => handleClick(event, row.id, row.qty, row.buy_price)}
                       role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
                       selected={isItemSelected}
                     >
                       <TableCell>{row.id}</TableCell>
@@ -114,17 +122,11 @@ const ItemsEdit = () => {
                       <TableCell>{qtyContent}</TableCell>
                       <TableCell>{priceContent}</TableCell>
                       <TableCell>{row.date_buy}</TableCell>
-                      <TableCell>
-                        {buttons}
-                      </TableCell>
+                      <TableCell>{buttons}</TableCell>
                     </TableRow>
-                    {isItemSelected && isItemWithSales &&
-                       <TableRow>
-                          <SalesItemsTable isItemSelected={isItemSelected} itemSales={itemSales}/>
-                       </TableRow>
-                    }
+                    {salesRow}
                   </React.Fragment>
-                );
+                )
               })}
             {emptyRows > 0 && (
               <TableRow sx={{
@@ -147,7 +149,7 @@ const ItemsEdit = () => {
       />
       <LoadingCircular show={showLoading}/>
     </Box>
-  );
+  )
 }
 
 export default ItemsEdit
