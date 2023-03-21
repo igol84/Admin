@@ -29,6 +29,18 @@ export const tokens = (mode: PaletteMode) => ({
         800: '#000000',
         900: '#000000'
       },
+      primaryAccent: {
+        50: '#eef2ff',
+        100: '#e0e7ff',
+        200: '#c7d2fe',
+        300: '#a5b4fc',
+        400: '#818cf8',
+        500: '#6366f1',
+        600: '#4f46e5',
+        700: '#4338ca',
+        800: '#3730a3',
+        900: '#312e81'
+      },
       greenAccent: {
         100: "#dbf5ee",
         200: "#b7ebde",
@@ -89,6 +101,18 @@ export const tokens = (mode: PaletteMode) => ({
         700: "#727681",
         800: "#a1a4ab",
         900: "#d0d1d5",
+      },
+      primaryAccent: {
+        50: '#312e81',
+        100: '#3730a3',
+        200: '#4338ca',
+        300: '#4f46e5',
+        400: '#6366f1',
+        500: '#818cf8',
+        600: '#a5b4fc',
+        700: '#c7d2fe',
+        800: '#e0e7ff',
+        900: '#eef2ff'
       },
       greenAccent: {
         100: "#0f2922",

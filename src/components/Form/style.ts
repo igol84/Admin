@@ -78,11 +78,28 @@ export const useBoxTableStyle = () => {
     },
     "& .MuiTableRow-hover:hover:not(.Mui-selected) .MuiTableCell-body": {
       cursor: "pointer",
-      backgroundColor: `${colors.primary[500]} !important`
+      backgroundColor: `${colors.primaryAccent[600]} !important`
     },
     '& button .MuiButtonBase-root': {
       color: `${colors.blueAccent[700]} !important`
     },
+    '& .MuiInputBase-inputTypeSearch ': {
+      color: `${colors.black[100]} !important`
+    },
+    '& input[type = "search"]::-webkit-search-cancel-button': {
+      '-webkit-appearance': 'none',
+      height: '1em',
+      width: '1em',
+      borderRadius: '50em',
+      background: 'url(https://pro.fontawesome.com/releases/v5.10.0/svgs/solid/times-circle.svg) no-repeat 50% 50%',
+      backgroundSize: 'contain',
+      opacity: '0',
+      pointerEvents: 'none',
+    },
+    '& input[type = "search"]:focus::-webkit-search-cancel-button': {
+      opacity: '0.5',
+      pointerEvents: 'all'
+    }
   }
 }
 

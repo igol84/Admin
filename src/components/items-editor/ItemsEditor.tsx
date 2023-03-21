@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {Box, Table, TableBody, TableCell, TableContainer, TablePagination, TableRow} from "@mui/material"
 import {useIsLoadingDisplay, useLoaderAccess} from "../../hooks/pages"
 
@@ -36,9 +36,15 @@ const ItemsEdit = () => {
   const rows = itemsEditor
   const isItemWithSales = !!itemSales.length
 
+  const [search, setSearch] = useState<string>('')
+  const searchRowsByName = (row: ItemForm) => row.name.toUpperCase().includes(search.toUpperCase())
+  const filteredRows = rows.slice().filter(searchRowsByName)
+  const countOfRows = filteredRows.length
+
   const showLoading = useIsLoadingDisplay(isLoading)
   const [order, orderBy, handleRequestSort] = useOrder()
-  const [page, rowsPerPage, handleChangePage, handleChangeRowsPerPage, emptyRows] = usePages(rows.length)
+
+  const [page, rowsPerPage, handleChangePage, handleChangeRowsPerPage, emptyRows] = usePages(countOfRows)
   const [
     formData, isSelected, onQtyFieldChange, onPriceFieldChange, resetFormData, useError, handleClick, formWasEdited
   ] = useForm()
@@ -56,9 +62,12 @@ const ItemsEdit = () => {
             orderBy={orderBy}
             onRequestSort={handleRequestSort}
             headCells={headCells}
+            search={search}
+            setSearch={setSearch}
           />
           <TableBody>
-            {rows.slice().sort(getComparator(order, orderBy))
+            {rows.slice().filter(searchRowsByName)
+              .sort(getComparator(order, orderBy))
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => {
                 const isItemSelected = isSelected(row.id)
@@ -86,22 +95,22 @@ const ItemsEdit = () => {
                   /> : row.buy_price
 
                 const buttons = isItemSelected &&
-                  <Box display={'flex'} justifyContent={'space-between'}>
-                    <SaveButton
-                      disabled={!formWasEdited(row.qty, row.buy_price)}
-                      id={row.id}
-                      qty={Number(formData.qty.value)}
-                      price={Number(formData.price.value)}
-                      resetFormData={resetFormData}
-                    />
-                    <DeleteButton deletable={!isItemWithSales} itemID={row.id}/>
-                    <GridActionsCellItem
-                      icon={<CloseIcon/>}
-                      label={'close'}
-                      onClick={resetFormData}
-                      color="inherit"
-                    />
-                  </Box>
+                   <Box display={'flex'} justifyContent={'space-between'}>
+                      <SaveButton
+                         disabled={!formWasEdited(row.qty, row.buy_price)}
+                         id={row.id}
+                         qty={Number(formData.qty.value)}
+                         price={Number(formData.price.value)}
+                         resetFormData={resetFormData}
+                      />
+                      <DeleteButton deletable={!isItemWithSales} itemID={row.id}/>
+                      <GridActionsCellItem
+                         icon={<CloseIcon/>}
+                         label={'close'}
+                         onClick={resetFormData}
+                         color="inherit"
+                      />
+                   </Box>
 
                 const salesRow = isItemSelected && isItemWithSales &&
                    <TableRow>
@@ -141,7 +150,7 @@ const ItemsEdit = () => {
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
-        count={rows.length}
+        count={countOfRows}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
