@@ -1,32 +1,21 @@
-import React, {useState} from 'react'
-import {
-  Box,
-  Collapse,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TablePagination,
-  TableRow,
-  Typography
-} from "@mui/material"
-import {useFetchAccess, useIsLoadingDisplay, useLoaderAccess} from "../../hooks/pages"
+import React from 'react'
+import {Box, Table, TableBody, TableCell, TableContainer, TablePagination, TableRow} from "@mui/material"
+import {useIsLoadingDisplay, useLoaderAccess} from "../../hooks/pages"
 
 import {useAppSelector, useStoreId} from "../../hooks/redux"
-import {fetchItemsEditor, fetchSalesByItem} from "../../store/actions/items-editor"
+import {fetchItemsEditor} from "../../store/actions/items-editor"
 import {useBoxTableStyle} from "../Form/style"
-import {FieldNames, FormFields, ItemForm} from "./types"
-import {useOrder, usePages} from "./hooks";
+import {ItemForm} from "./types"
+import {useForm, useOrder, usePages} from "./hooks";
 import EnhancedTableHead from "./EnhancedTableHead";
 import {getComparator, HeadCell} from "../../hooks/form-data";
 import DeleteButton from "./DeleteButton";
 import LoadingCircular from "../LoadingCircular";
-import produce from "immer";
 import {SimpleField} from "../Form";
 import SaveButton from "./SaveButton";
 import CloseIcon from "@mui/icons-material/Close";
 import {GridActionsCellItem} from "@mui/x-data-grid";
+import SalesItemsTable from "./SalesItemsTable";
 
 
 const headCells: readonly HeadCell<ItemForm>[] = [
@@ -41,53 +30,15 @@ const headCells: readonly HeadCell<ItemForm>[] = [
 const ItemsEdit = () => {
   const storeId = useStoreId()
   useLoaderAccess(fetchItemsEditor, {storeId})
-  const fetchSalesByItemAccess = useFetchAccess(fetchSalesByItem)
+
   const boxTableStyle = useBoxTableStyle()
   const {itemsEditor, isLoading, itemSales} = useAppSelector(state => state.itemsEditorSlice)
-  const showLoading = useIsLoadingDisplay(isLoading)
   const rows = itemsEditor
 
+  const showLoading = useIsLoadingDisplay(isLoading)
   const [order, orderBy, handleRequestSort] = useOrder()
   const [page, rowsPerPage, handleChangePage, handleChangeRowsPerPage, emptyRows] = usePages(rows.length)
-
-  const isSelected = (id: number) => id === formData.id
-  const initialFormFields: FormFields = {
-    id: null,
-    qty: {value: '', error: ''},
-    price: {value: '', error: ''},
-  }
-  const [formData, setFormData] = useState<FormFields>(initialFormFields)
-
-  const onQtyFieldChange = (qty: string) => {
-    if (Number(qty) >= 0)
-      setFormData(produce(prevFormData => {
-        prevFormData.qty.value = Number(qty).toString()
-      }))
-  }
-
-  const onPriceFieldChange = (price: string) => {
-    if (Number(price) >= 0)
-      setFormData(produce(prevFormData => {
-        prevFormData.price.value = price
-      }))
-  }
-
-  const resetFormData = () => {
-    setFormData(initialFormFields)
-  }
-  const useError = (fieldName: FieldNames) => formData[fieldName].error
-
-  const handleClick = async (event: React.MouseEvent<unknown>, id: number, qty: number, price: number) => {
-    if (formData.id !== id) {
-      await fetchSalesByItemAccess({itemId: id})
-      setFormData(produce(prevFormData => {
-        prevFormData.id = id
-        prevFormData.qty.value = qty.toString()
-        prevFormData.price.value = price.toString()
-      }))
-    }
-  }
-  const isDeletable = !(!!itemSales.length)
+  const [formData, isSelected, onQtyFieldChange, onPriceFieldChange, resetFormData, useError, handleClick] = useForm()
   return (
     <Box sx={boxTableStyle}>
       <TableContainer sx={{maxHeight: '70vh',}}>
@@ -139,7 +90,7 @@ const ItemsEdit = () => {
                       price={Number(formData.price.value)}
                       resetFormData={resetFormData}
                     />
-                    <DeleteButton deletable={isDeletable} itemID={row.id}/>
+                    <DeleteButton deletable={!isItemWithSales} itemID={row.id}/>
                     <GridActionsCellItem
                       icon={<CloseIcon/>}
                       label={'close'}
@@ -168,36 +119,8 @@ const ItemsEdit = () => {
                       </TableCell>
                     </TableRow>
                     {isItemSelected && isItemWithSales &&
-                       <TableRow key={row.id}>
-                          <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>
-                             <Collapse in={isItemSelected} timeout="auto" unmountOnExit>
-                                <Box sx={{margin: 1}}>
-                                   <Typography variant="h6" gutterBottom component="div">
-                                      Sales
-                                   </Typography>
-                                   <Table size="small" aria-label="purchases">
-                                      <TableHead>
-                                         <TableRow>
-                                            <TableCell>Sale Id</TableCell>
-                                            <TableCell>Qty</TableCell>
-                                            <TableCell>Date</TableCell>
-                                            <TableCell>Price sell</TableCell>
-                                         </TableRow>
-                                      </TableHead>
-                                      <TableBody>
-                                        {itemSales.map((sale) => (
-                                          <TableRow key={sale.sale_id}>
-                                            <TableCell component="th" scope="row">{sale.sale_id}</TableCell>
-                                            <TableCell>{sale.qty}</TableCell>
-                                            <TableCell>{sale.date}</TableCell>
-                                            <TableCell>{sale.price}</TableCell>
-                                          </TableRow>
-                                        ))}
-                                      </TableBody>
-                                   </Table>
-                                </Box>
-                             </Collapse>
-                          </TableCell>
+                       <TableRow>
+                          <SalesItemsTable isItemSelected={isItemSelected} itemSales={itemSales}/>
                        </TableRow>
                     }
                   </React.Fragment>

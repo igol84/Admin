@@ -28,10 +28,7 @@ export interface SalesByItemFetchingPayload {
 interface ChangedItemPayload {
   changedItem: UpdatedItem
 }
-//
-// interface ChangedExpensePayload {
-//   changedExpense: Expense
-// }
+
 
 export const itemsEditorSlice = createSlice({
   name: 'ItemsEditor',
