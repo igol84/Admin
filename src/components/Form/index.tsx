@@ -95,6 +95,7 @@ interface FieldType {
   autoFocus?: boolean
   tabIndex?: number
   fullWidth?: boolean
+  variant?: "outlined" | "standard" | "filled" | undefined
 }
 
 export const SimpleField = (props: FieldType) => {
@@ -111,7 +112,8 @@ export const SimpleField = (props: FieldType) => {
     onKeyDown = (_) => true,
     autoFocus = false,
     tabIndex = undefined,
-    fullWidth = true
+    fullWidth = true,
+    variant = 'outlined'
   } = props
   return (
     <TextField
@@ -125,6 +127,7 @@ export const SimpleField = (props: FieldType) => {
       error={!!error}
       helperText={error}
       value={value}
+      variant={variant}
       onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
         setValue(event.target.value);
       }}

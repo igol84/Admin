@@ -1,5 +1,15 @@
 {
-
+  "itemsEditor": {
+    "temId": "Item Id",
+    "name": "Name",
+    "quantity": "Quantity",
+    "buyPrice": "Buy price",
+    "dateBuy": "Date buy",
+    "youSure": "Are you sure you want to delete the item?",
+    "saleId": "Sale Id",
+    "dateSale": "Date sale",
+    "priceSell": "Price sell"
+  },
   "newProducts": {
     "title": "New Products",
     "productName": "Product name",
@@ -62,7 +72,8 @@
     "sellers": "Sellers",
     "places": "Places",
     "expenses": "Expenses",
-    "newProducts": "New Products"
+    "newProducts": "New Products",
+    "itemsEditor": "Product editor"
   },
   "auth": {
     "title": "Authorization",
@@ -80,6 +91,9 @@
     "active": "Active",
     "delete": "Delete",
     "required": "Required",
-    "add_button": "Add"
+    "add_button": "Add",
+    "yes": "Yes",
+    "no": "No",
+    "save": "Save"
   }
 }

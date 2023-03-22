@@ -26,7 +26,7 @@ import {renderCellPlace, renderSelectEditInputPlaceCell} from "./PlaceCell";
 import EditToolbar from "./EditToolbar";
 import {useHandlerUpdate} from "./updateHandler";
 import DeleteButton from "./DeleteButton";
-import {parse} from "date-fns";
+import {formatData} from "../../hooks/form-data";
 
 
 const SORT_MODEL = 'expenses-sort-model'
@@ -68,8 +68,7 @@ const TableExpense = () => {
     {
       field: 'date_cost', headerName: d['date_cost'], minWidth: 120, flex: 1, editable: true, type: "date",
       valueFormatter: (params: GridValueFormatterParams<string>) => {
-        const date = parse(params.value, 'yyyy-MM-dd', new Date())
-        return date.toLocaleDateString()
+        return formatData(params.value)
       }
     },
     {

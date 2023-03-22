@@ -1,6 +1,8 @@
 import React from 'react';
 import {Box, Collapse, Table, TableBody, TableCell, TableHead, TableRow, Typography} from "@mui/material";
 import {Sale} from "../../schemas/items-editor";
+import {useDictionaryTranslate} from "../../hooks/pages";
+import {formatData, getComparator} from "../../hooks/form-data";
 
 interface SalesItemsTableType {
   isItemSelected: boolean
@@ -8,6 +10,7 @@ interface SalesItemsTableType {
 }
 
 const SalesItemsTable = (props: SalesItemsTableType) => {
+  const dict = useDictionaryTranslate('itemsEditor')
   const {isItemSelected, itemSales} = props
   return (
     <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>
@@ -19,18 +22,18 @@ const SalesItemsTable = (props: SalesItemsTableType) => {
           <Table size="small" aria-label="purchases">
             <TableHead>
               <TableRow>
-                <TableCell>Sale Id</TableCell>
-                <TableCell>Qty</TableCell>
-                <TableCell>Date</TableCell>
-                <TableCell>Price sell</TableCell>
+                <TableCell>{dict('saleId')}</TableCell>
+                <TableCell>{dict('quantity')}</TableCell>
+                <TableCell>{dict('dateSale')}</TableCell>
+                <TableCell>{dict('priceSell')}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {itemSales.map((sale) => (
+              {itemSales.slice().sort(getComparator('asc', 'sale_id')).map((sale) => (
                 <TableRow key={sale.sale_id}>
                   <TableCell component="th" scope="row">{sale.sale_id}</TableCell>
                   <TableCell>{sale.qty}</TableCell>
-                  <TableCell>{sale.date}</TableCell>
+                  <TableCell>{formatData(sale.date)}</TableCell>
                   <TableCell>{sale.price}</TableCell>
                 </TableRow>
               ))}

@@ -87,7 +87,7 @@ export const useBoxTableStyle = () => {
       color: `${colors.black[100]} !important`
     },
     '& input[type = "search"]::-webkit-search-cancel-button': {
-      '-webkit-appearance': 'none',
+      WebkitAppearance: 'none',
       height: '1em',
       width: '1em',
       borderRadius: '50em',

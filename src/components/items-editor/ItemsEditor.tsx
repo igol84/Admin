@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import {Box, Table, TableBody, TableCell, TableContainer, TablePagination, TableRow} from "@mui/material"
-import {useIsLoadingDisplay, useLoaderAccess} from "../../hooks/pages"
+import {useDictionaryTranslate, useIsLoadingDisplay, useLoaderAccess} from "../../hooks/pages"
 
 import {useAppSelector, useStoreId} from "../../hooks/redux"
 import {fetchItemsEditor} from "../../store/actions/items-editor"
@@ -8,7 +8,7 @@ import {useBoxTableStyle} from "../Form/style"
 import {ItemForm} from "./types"
 import {useForm, useOrder, usePages} from "./hooks";
 import EnhancedTableHead from "./EnhancedTableHead";
-import {getComparator, HeadCell} from "../../hooks/form-data";
+import {formatData, getComparator, HeadCell} from "../../hooks/form-data";
 import DeleteButton from "./DeleteButton";
 import LoadingCircular from "../LoadingCircular";
 import {SimpleField} from "../Form";
@@ -17,17 +17,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import {GridActionsCellItem} from "@mui/x-data-grid";
 import SalesItemsTable from "./SalesItemsTable";
 
-
-const headCells: readonly HeadCell<ItemForm>[] = [
-  {id: 'id', label: 'Item Id'},
-  {id: 'name', label: 'Name'},
-  {id: 'qty', label: 'Quantity'},
-  {id: 'buy_price', label: 'Buy price'},
-  {id: 'date_buy', label: 'Date buy'},
-];
-
-
 const ItemsEdit = () => {
+
   const storeId = useStoreId()
   useLoaderAccess(fetchItemsEditor, {storeId})
 
@@ -35,6 +26,16 @@ const ItemsEdit = () => {
   const {itemsEditor, isLoading, itemSales} = useAppSelector(state => state.itemsEditorSlice)
   const rows = itemsEditor
   const isItemWithSales = !!itemSales.length
+
+  const dict = useDictionaryTranslate('itemsEditor')
+
+  const headCells: readonly HeadCell<ItemForm>[] = [
+    {id: 'id', label: dict('temId')},
+    {id: 'name', label: dict('name')},
+    {id: 'qty', label: dict('quantity')},
+    {id: 'buy_price', label: dict('buyPrice')},
+    {id: 'date_buy', label: dict('dateBuy')},
+  ];
 
   const [search, setSearch] = useState<string>('')
   const searchRowsByName = (row: ItemForm) => row.name.toUpperCase().includes(search.toUpperCase())
@@ -75,23 +76,23 @@ const ItemsEdit = () => {
                   <SimpleField
                     type='number'
                     name='qty'
-                    label={'qty'}
                     value={formData.qty.value.toString()}
                     setValue={onQtyFieldChange}
                     error={useError('qty')}
                     focusText
                     fullWidth={false}
+                    variant={'standard'}
                   /> : row.qty
                 const priceContent = isItemSelected ?
                   <SimpleField
                     type='number'
                     name='price'
-                    label={'price'}
                     value={formData.price.value.toString()}
                     setValue={onPriceFieldChange}
                     error={useError('price')}
                     focusText
                     fullWidth={false}
+                    variant={'standard'}
                   /> : row.buy_price
 
                 const buttons = isItemSelected &&
@@ -130,7 +131,7 @@ const ItemsEdit = () => {
                       <TableCell>{row.name}</TableCell>
                       <TableCell>{qtyContent}</TableCell>
                       <TableCell>{priceContent}</TableCell>
-                      <TableCell>{row.date_buy}</TableCell>
+                      <TableCell>{formatData(row.date_buy)}</TableCell>
                       <TableCell>{buttons}</TableCell>
                     </TableRow>
                     {salesRow}

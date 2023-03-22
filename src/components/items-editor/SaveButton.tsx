@@ -1,4 +1,4 @@
-import {useFetchAccess} from "../../hooks/pages";
+import {useDictionaryTranslate, useFetchAccess} from "../../hooks/pages";
 import {GridActionsCellItem} from "@mui/x-data-grid";
 import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
 import React from "react";
@@ -14,6 +14,7 @@ interface SaveButtonType {
 }
 
 const SaveButton = (props: SaveButtonType) => {
+  const dict = useDictionaryTranslate('form')
   const {id, qty, price, resetFormData, disabled = false} = props
   const editItem = useFetchAccess(updateItem)
   const onClick = async () => {
@@ -24,7 +25,7 @@ const SaveButton = (props: SaveButtonType) => {
   return (
     <GridActionsCellItem
       icon={<SaveRoundedIcon/>}
-      label={'save'}
+      label={dict('save')}
       onClick={onClick}
       color="inherit"
       disabled={disabled}

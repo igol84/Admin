@@ -20,7 +20,8 @@ const muiLanguage = {
   ua: ukUA,
   en: enUS,
   ru: ruRU
-};
+}
+
 const defaultLanguage = 'en'
 export type LanguageType = keyof typeof languageOptions
 

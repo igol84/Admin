@@ -1,4 +1,4 @@
-import {formatISO, isDate} from "date-fns";
+import {formatISO, isDate, parse} from "date-fns";
 import React from "react";
 
 export const toTrimTheRow = (field: string) => (data: any) => {
@@ -7,10 +7,12 @@ export const toTrimTheRow = (field: string) => (data: any) => {
 
 export const formatISODate = (date: Date): string | Date => {
   if (isDate(date))
-    return formatISO(date, { representation: 'date' })
+    return formatISO(date, {representation: 'date'})
   else
     return date
 }
+
+export const formatData = (data: string) => parse(data, 'yyyy-MM-dd', new Date()).toLocaleDateString()
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -41,7 +43,7 @@ export interface HeadCell<T> {
   label: string
 }
 
-export interface UseOrder<T>{
+export interface UseOrder<T> {
   ():
     [
       order: Order,

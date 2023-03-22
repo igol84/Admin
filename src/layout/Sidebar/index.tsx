@@ -13,11 +13,11 @@ import {menuItemStyles} from "./Sidebar.theme";
 import {useLocation} from "react-router-dom";
 import {Item} from "./Item";
 import {useAppSelector} from "../../hooks/redux";
-import {useDictionary} from "../../hooks/pages";
+import {useDictionaryTranslate} from "../../hooks/pages";
 
 
 const SidebarMenu = () => {
-  const d = useDictionary('sidebar')
+  const dict = useDictionaryTranslate('sidebar')
   const location = useLocation()
   const theme = useTheme()
   const colors = tokens(theme.palette.mode)
@@ -53,7 +53,7 @@ const SidebarMenu = () => {
                     userName ?
                       <Avatar sx={{backgroundColor: colors.greenAccent[500]}}>{userName[0].toUpperCase()}</Avatar>
                       :
-                      d['admin']
+                      dict('admin')
                   }
                 </Typography>
                 <IconButton>
@@ -70,7 +70,7 @@ const SidebarMenu = () => {
             hidden={!isAuthenticated}
           >
             <Item
-              title={d['dashboard']}
+              title={dict('dashboard')}
               to='/'
               icon={<HomeOutlinedIcon/>}
               location={location.pathname}
@@ -81,34 +81,34 @@ const SidebarMenu = () => {
               color={colors.grey[200]}
               sx={{m: '10px 0 5px 20px'}}
             >
-              {d['data']}
+              {dict('data')}
             </Typography>
             <Item
-              title={d['sellers']}
+              title={dict('sellers')}
               to='/sellers'
               icon={<PeopleOutlinedIcon/>}
               location={location.pathname}
             />
             <Item
-              title={d['places']}
+              title={dict('places')}
               to='/places'
               icon={<StorefrontOutlinedIcon/>}
               location={location.pathname}
             />
             <Item
-              title={d['expenses']}
+              title={dict('expenses')}
               to='/expenses'
               icon={<CardTravelOutlinedIcon/>}
               location={location.pathname}
             />
             <Item
-              title={d['newProducts']}
+              title={dict('newProducts')}
               to='/new-products'
               icon={<LibraryAddOutlinedIcon/>}
               location={location.pathname}
             />
             <Item
-              title={'ItemsEditor'}
+              title={dict('itemsEditor')}
               to='/items-editor'
               icon={<Inventory2OutlinedIcon/>}
               location={location.pathname}

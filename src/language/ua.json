@@ -1,4 +1,15 @@
 {
+  "itemsEditor": {
+    "temId": "Id",
+    "name": "Назва",
+    "quantity": "Кількість",
+    "buyPrice": "Ціна закупівлі",
+    "dateBuy": "Дата закупівлі",
+    "youSure": "Ви впевнені, що ви хочете видалити продукт?",
+    "saleId": "Id продажу",
+    "dateSale": "Дата продажу",
+    "priceSell": "Ціна продажу"
+  },
   "newProducts": {
     "title": "Нові продукти",
     "productName": "Назва продукту",
@@ -61,8 +72,8 @@
     "sellers": "Продавці",
     "places": "Магазини",
     "expenses": "Витрати",
-    "newProducts": "Нові продукти"
-
+    "newProducts": "Нові продукти",
+    "itemsEditor": "Склад"
   },
   "auth": {
     "title": "Авторизація",
@@ -80,6 +91,9 @@
     "active": "Активний",
     "delete": "Видалити",
     "required": "Обов'язково",
-    "add_button": "Додати"
+    "add_button": "Додати",
+    "yes": "Так",
+    "no": "Ні",
+    "save": "Зберегти"
   }
 }

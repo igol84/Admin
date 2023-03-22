@@ -6,6 +6,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import {useDialogStyle} from "../Form/style";
 import CloseIcon from '@mui/icons-material/Close';
 import {GridActionsCellItem} from "@mui/x-data-grid";
+import {useDictionaryTranslate} from "../../hooks/pages";
 
 interface DeleteDialogType {
   isOpen: boolean
@@ -14,6 +15,8 @@ interface DeleteDialogType {
 }
 
 export default function DeleteDialog(props: DeleteDialogType) {
+  const dict = useDictionaryTranslate('itemsEditor')
+  const dictForm = useDictionaryTranslate('form')
   const style = useDialogStyle()
   const {isOpen, handleConfirm, handleClose} = props
 
@@ -25,7 +28,7 @@ export default function DeleteDialog(props: DeleteDialogType) {
       onClose={handleClose}
     >
       <DialogTitle id="alert-dialog-title">
-        {"Are you sure you want to delete the item?"}
+        {dict('youSure')}
         <GridActionsCellItem
           icon={<CloseIcon/>}
           label={'close'}
@@ -34,8 +37,8 @@ export default function DeleteDialog(props: DeleteDialogType) {
         />
       </DialogTitle>
       <DialogActions>
-        <Button id="alert-dialog-yes" onClick={handleConfirm}>Yes</Button>
-        <Button id="alert-dialog-no" onClick={handleClose} autoFocus>No</Button>
+        <Button id="alert-dialog-yes" onClick={handleConfirm}>{dictForm('yes')}</Button>
+        <Button id="alert-dialog-no" onClick={handleClose} autoFocus>{dictForm('no')}</Button>
       </DialogActions>
     </Dialog>
   )

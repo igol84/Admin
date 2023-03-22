@@ -48,6 +48,12 @@ export const useDictionary = (page: string) => {
   return dictionary[page]
 }
 
+export const useDictionaryTranslate = (page: string) => (title: string) => {
+  const {dictionary} = useContext(LanguageModeContext)
+  const dictionaryPage = dictionary[page]
+  return dictionaryPage[title] ?? title
+}
+
 export const useMuiLanguage = () => {
   const {muiLanguage, language} = useContext(LanguageModeContext)
   return muiLanguage[language]
@@ -78,13 +84,12 @@ export const useSortModel: UseSortModel = (defaultLocalSortModel, localName) => 
 }
 
 
-
-interface UseErrorMessage{
+interface UseErrorMessage {
   (errorText: string)
     :
     [
-      openAlertSnackbar:boolean,
-      handleCloseAlertSnackbar:  (event?: (React.SyntheticEvent | Event), reason?: string) => void,
+      openAlertSnackbar: boolean,
+      handleCloseAlertSnackbar: (event?: (React.SyntheticEvent | Event), reason?: string) => void,
       errorTextNetwork: string
     ]
 }
@@ -96,8 +101,7 @@ export const useErrorMessage: UseErrorMessage = (errorText) => {
     if (errorText === 'Failed to fetch') {
       setErrorTextNetwork(d['networkError'])
       setOpenAlertSnackbar(true)
-    }
-    else {
+    } else {
       setErrorTextNetwork('')
       setOpenAlertSnackbar(false)
     }
@@ -116,13 +120,14 @@ export const useErrorMessage: UseErrorMessage = (errorText) => {
   return [openAlertSnackbar, handleCloseAlertSnackbar, errorTextNetwork]
 }
 
-interface UseSuccessSnackbar{
-  ():[
+interface UseSuccessSnackbar {
+  (): [
     boolean,
     React.Dispatch<React.SetStateAction<boolean>>,
     (event?: (React.SyntheticEvent | Event), reason?: string) => void
   ]
 }
+
 export const useSuccessSnackbar: UseSuccessSnackbar = () => {
   const [openSuccessSnackbar, setOpenSuccessSnackbar] = React.useState(false)
   const handleCloseAlertSnackbarCreator = (setOpenState: (value: boolean) => void) =>
