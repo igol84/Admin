@@ -1,5 +1,6 @@
 {
   "itemsEditor": {
+    "title": "Items Editor",
     "temId": "Item Id",
     "name": "Name",
     "quantity": "Quantity",

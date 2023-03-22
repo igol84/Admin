@@ -1,5 +1,6 @@
 {
   "itemsEditor": {
+    "title": "Редактор продуктів",
     "temId": "Id",
     "name": "Назва",
     "quantity": "Кількість",
