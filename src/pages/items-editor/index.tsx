@@ -1,9 +1,8 @@
 import React from 'react';
 import Header from "../../components/Header";
 import {Box} from "@mui/material";
-import {useDictionary, useDictionaryTranslate} from "../../hooks/pages";
+import {useDictionaryTranslate} from "../../hooks/pages";
 import ItemsEdit from "../../components/items-editor/ItemsEditor";
-
 
 
 const Items = () => {
