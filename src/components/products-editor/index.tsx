@@ -6,7 +6,8 @@ import {fetchProductsEditor} from "../../store/actions/products-editor";
 import {useAppSelector, useStoreId} from "../../hooks/redux";
 import LoadingCircular from "../LoadingCircular";
 import {Module} from "./types";
-import SimpleProducts from "./modules/SimpleProducts";
+import SimpleProducts from "./modules/SimpleProductRow/SimpleProduct";
+import SimpleProductFormRow from "./modules/SimpleProductRow/SimpleProductFormRow";
 
 
 const ProductsEditor = () => {
@@ -17,7 +18,7 @@ const ProductsEditor = () => {
   const showLoading = useIsLoadingDisplay(isLoading)
 
   const [selectedRowId, setSelectedRowId] = useState<number | null>(null)
-  const onSelected = (rowIdx: number) => () => {
+  const onSelect = (rowIdx: number) => () => {
     setSelectedRowId(rowIdx)
   }
   const isSelected = (rowIdx: number) => rowIdx === selectedRowId
@@ -31,10 +32,11 @@ const ProductsEditor = () => {
         {productsData.map((product, rowId) => {
           switch (product.module) {
             case Module.product:
-              return (
-                <SimpleProducts key={rowId} data={product} selected={isSelected(rowId)} onSelected={onSelected(rowId)}
-                                resetFormData={resetFormData}/>
-              )
+              if (!isSelected(rowId)) {
+                return <SimpleProducts key={rowId} data={product} onSelect={onSelect(rowId)}/>
+              } else {
+                return <SimpleProductFormRow key={rowId} data={product} resetFormData={resetFormData}/>
+              }
           }
         })}
 
