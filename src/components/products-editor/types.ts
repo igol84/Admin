@@ -1,7 +1,12 @@
-import {Product} from "../../schemas/products-editor";
+import {Product as ProductBase} from "../../schemas/products-editor";
 
-export interface ViewProduct extends Product {
+export enum Module {
+  product = 'product',
+  shoes = 'shoes'
+}
 
+export interface ViewSimpleProduct extends ProductBase {
+  module: Module.product
 }
 
 export interface ViewSize {
@@ -23,7 +28,16 @@ export interface ViewColor {
 }
 
 export interface ViewShoes {
+  module: Module.shoes
   type: string
   name: string
   colors: ViewColor[]
 }
+
+export type ViewProduct = ViewSimpleProduct | ViewShoes
+
+export const isSimpleProduct = (product: ViewProduct): product is ViewSimpleProduct => {
+  return product.module === Module.product
+}
+
+

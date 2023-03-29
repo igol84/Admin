@@ -1,7 +1,7 @@
 import _ from "lodash";
 import {Item} from "../../schemas/items-editor";
 import {Product} from "../../schemas/products-editor";
-import {ViewColor, ViewProduct, ViewShoes, ViewSize, ViewWidth} from "./types";
+import {Module, ViewColor, ViewProduct, ViewShoes, ViewSize, ViewWidth} from "./types";
 
 export const getRowsForm = (items: Item[]) => {
 
@@ -40,7 +40,7 @@ export const getRowsForm = (items: Item[]) => {
 
   const sortedProducts = _.orderBy(products, [nameSorter, colorSorter, withSorter, 'product.shoes?.size'])
 
-  const groupedProducts: Array<ViewProduct | ViewShoes> = []
+  const groupedProducts: (ViewProduct)[] = []
   sortedProducts.forEach(product => {
     if (product.type === 'shoes') {
       const size = product.shoes?.size ?? 0
@@ -54,7 +54,9 @@ export const getRowsForm = (items: Item[]) => {
       const viewColor: ViewColor = {color, widths: Array(viewWidth)}
       if (lastItemType !== 'shoes' ||
         (lastItemType === 'shoes' && lastProduct.name.toLowerCase() != product.name.toLowerCase())) {
-        const viewShoes: ViewShoes = {name: product.name, type: product.type, colors: Array(viewColor)}
+        const viewShoes: ViewShoes = {
+          module: Module.shoes, name: product.name, type: product.type, colors: Array(viewColor)
+        }
         groupedProducts.push(viewShoes)
       } else if (lastItemType === 'shoes' && lastProduct.name === product.name && product.shoes) {
         const shoes = groupedProducts.slice(-1)[0]
@@ -71,7 +73,7 @@ export const getRowsForm = (items: Item[]) => {
         }
       }
     } else {
-      groupedProducts.push(product)
+      groupedProducts.push({module: Module.product, ...product})
     }
   })
   return groupedProducts
