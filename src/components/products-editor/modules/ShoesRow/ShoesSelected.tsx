@@ -16,12 +16,12 @@ interface ShoesSelected {
 
 const ShoesForm = (props: ShoesSelected) => {
   const {data, resetFormData} = props
-  const [selectedColorRow] = useState(null)
-  const isSelected = (idRow: number) => idRow === selectedColorRow
-
   const [
     formShoesData, useError, onNameFieldChange, onPriceFieldChange, disabledButtonSave, onConfirm
   ] = useForm(data, resetFormData)
+
+  const [selectedColorRow, setSelectedColorRow] = useState(null)
+  const isSelected = (idRow: number) => idRow === selectedColorRow
 
   const nameField =
     <SimpleField

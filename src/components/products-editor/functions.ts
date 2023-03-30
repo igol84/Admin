@@ -19,14 +19,15 @@ export const getRowsForm = (items: Item[]) => {
               length: item.product.shoes.length ?? 0
             }
           }
-          products.push({
+          const product = {
             id: item.product.id,
             type: item.product.type,
             name: item.product.name,
             price: item.product.price,
             qty: item.qty,
             shoes: shoes
-          })
+          }
+          products.push(product)
           ids.push(item.prod_id)
         } else {
           products[products.findIndex(product => product.id === item.prod_id)].qty += item.qty
@@ -40,28 +41,32 @@ export const getRowsForm = (items: Item[]) => {
 
   const sortedProducts = _.orderBy(products, [nameSorter, colorSorter, withSorter, 'product.shoes?.size'])
 
+  const isShoes = (product:  ViewProduct | undefined): boolean => {
+    if(product !== undefined)
+      return product.module === Module.shoes
+    return false
+  }
+  const isSimple = (a: string, b: string) => a.toLowerCase() === b.toLowerCase()
   const groupedProducts: (ViewProduct)[] = []
   sortedProducts.forEach(product => {
     if (product.type === Module.shoes) {
       const size = product.shoes?.size ?? 0
       const length = product.shoes?.length ?? 0
       const width = product.shoes?.width ?? 'Medium'
-      const lastItemType = !!groupedProducts.length ? groupedProducts[groupedProducts.length - 1].module : null
       const lastProduct = groupedProducts.slice(-1)[0]
       const viewSize: ViewSize = {prod_id: product.id, size, length, price: product.price, qty: product.qty}
       const viewWidth: ViewWidth = {width, sizes: Array(viewSize)}
       const color = product.shoes?.color ?? ''
       const viewColor: ViewColor = {color, widths: Array(viewWidth)}
-      if (lastItemType !== Module.shoes ||
-        (lastItemType === Module.shoes && lastProduct.name.toLowerCase() != product.name.toLowerCase())) {
+      if (!isShoes(lastProduct) || (isShoes(lastProduct) && !isSimple(lastProduct.name, product.name))) {
         const viewShoes: ViewShoes = {
           module: Module.shoes, name: product.name, type: product.type, colors: Array(viewColor)
         }
         groupedProducts.push(viewShoes)
-      } else if (lastItemType === Module.shoes && lastProduct.name === product.name && product.shoes) {
+      } else if (isShoes(lastProduct) && isSimple(lastProduct.name, product.name) && product.shoes) {
         const shoes = groupedProducts.slice(-1)[0]
         if ('colors' in shoes) {
-          if (shoes.colors.slice(-1)[0].color.toLowerCase() !== product.shoes.color.toLowerCase()) {
+          if (!isSimple(shoes.colors.slice(-1)[0].color, product.shoes.color)) {
             shoes.colors.push(viewColor)
           } else {
             if (shoes.colors.slice(-1)[0].widths.slice(-1)[0].width !== product.shoes.width) {

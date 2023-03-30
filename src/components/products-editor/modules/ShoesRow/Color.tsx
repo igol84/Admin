@@ -10,7 +10,7 @@ const Color = (props: ColorSelected) => {
   const {data} = props
 
   const onSelect = () => {
-
+    console.log(data)
   }
 
   return (
