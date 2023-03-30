@@ -42,23 +42,23 @@ export const getRowsForm = (items: Item[]) => {
 
   const groupedProducts: (ViewProduct)[] = []
   sortedProducts.forEach(product => {
-    if (product.type === 'shoes') {
+    if (product.type === Module.shoes) {
       const size = product.shoes?.size ?? 0
       const length = product.shoes?.length ?? 0
       const width = product.shoes?.width ?? 'Medium'
-      const lastItemType = !!groupedProducts.length ? groupedProducts[groupedProducts.length - 1].type : null
+      const lastItemType = !!groupedProducts.length ? groupedProducts[groupedProducts.length - 1].module : null
       const lastProduct = groupedProducts.slice(-1)[0]
       const viewSize: ViewSize = {prod_id: product.id, size, length, price: product.price, qty: product.qty}
       const viewWidth: ViewWidth = {width, sizes: Array(viewSize)}
       const color = product.shoes?.color ?? ''
       const viewColor: ViewColor = {color, widths: Array(viewWidth)}
-      if (lastItemType !== 'shoes' ||
-        (lastItemType === 'shoes' && lastProduct.name.toLowerCase() != product.name.toLowerCase())) {
+      if (lastItemType !== Module.shoes ||
+        (lastItemType === Module.shoes && lastProduct.name.toLowerCase() != product.name.toLowerCase())) {
         const viewShoes: ViewShoes = {
           module: Module.shoes, name: product.name, type: product.type, colors: Array(viewColor)
         }
         groupedProducts.push(viewShoes)
-      } else if (lastItemType === 'shoes' && lastProduct.name === product.name && product.shoes) {
+      } else if (lastItemType === Module.shoes && lastProduct.name === product.name && product.shoes) {
         const shoes = groupedProducts.slice(-1)[0]
         if ('colors' in shoes) {
           if (shoes.colors.slice(-1)[0].color.toLowerCase() !== product.shoes.color.toLowerCase()) {
@@ -73,7 +73,13 @@ export const getRowsForm = (items: Item[]) => {
         }
       }
     } else {
-      groupedProducts.push({module: Module.product, ...product})
+      groupedProducts.push({
+        id: product.id,
+        name: product.name,
+        qty: product.qty,
+        price: product.price,
+        module: Module.product
+      })
     }
   })
   return groupedProducts

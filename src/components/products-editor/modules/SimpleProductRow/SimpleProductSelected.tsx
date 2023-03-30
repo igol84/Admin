@@ -2,7 +2,7 @@ import {ViewSimpleProduct} from "../../types"
 import {Box, Paper} from "@mui/material"
 import {SimpleField} from "../../../Form"
 import React from "react"
-import SaveButton from "./SaveButton";
+import SaveButton from "../../../Form/SaveButton";
 import CloseIcon from "@mui/icons-material/Close";
 import {GridActionsCellItem} from "@mui/x-data-grid";
 import {useForm} from "./hooks";
@@ -12,7 +12,7 @@ interface Product {
   resetFormData: () => void
 }
 
-const SimpleProductFormRow = (props: Product) => {
+const SimpleProductSelected = (props: Product) => {
   const {data, resetFormData} = props
   const [
     formData, useError, onNameFieldChange, onPriceFieldChange, disabledButtonSave, onConfirm
@@ -44,4 +44,4 @@ const SimpleProductFormRow = (props: Product) => {
   )
 }
 
-export default SimpleProductFormRow
+export default SimpleProductSelected

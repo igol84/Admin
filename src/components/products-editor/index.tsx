@@ -7,11 +7,13 @@ import {useAppSelector, useStoreId} from "../../hooks/redux";
 import LoadingCircular from "../LoadingCircular";
 import {Module} from "./types";
 import SimpleProducts from "./modules/SimpleProductRow/SimpleProduct";
-import SimpleProductFormRow from "./modules/SimpleProductRow/SimpleProductFormRow";
+import SimpleProductSelected from "./modules/SimpleProductRow/SimpleProductSelected";
+import Shoes from "./modules/ShoesRow/Shoes";
+import ShoesForm from "./modules/ShoesRow/ShoesSelected";
 
 
 const ProductsEditor = () => {
-  const style = useStyle()
+  const style: any = useStyle()
   const storeId = useStoreId()
   useLoaderAccess(fetchProductsEditor, {storeId})
   const {productsData, isLoading} = useAppSelector(state => state.productsEditorSlice)
@@ -35,8 +37,15 @@ const ProductsEditor = () => {
               if (!isSelected(rowId)) {
                 return <SimpleProducts key={rowId} data={product} onSelect={onSelect(rowId)}/>
               } else {
-                return <SimpleProductFormRow key={rowId} data={product} resetFormData={resetFormData}/>
+                return <SimpleProductSelected key={rowId} data={product} resetFormData={resetFormData}/>
               }
+            case Module.shoes:
+              if (!isSelected(rowId)) {
+                return <Shoes key={rowId} data={product} onSelect={onSelect(rowId)}/>
+              } else {
+                return <ShoesForm key={rowId} data={product} resetFormData={resetFormData}/>
+              }
+
           }
         })}
 

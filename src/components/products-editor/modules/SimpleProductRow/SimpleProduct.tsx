@@ -11,7 +11,6 @@ interface Product {
 
 export const SimpleProduct = (props: Product) => {
   const {data, onSelect} = props
-
   return (
     <Paper sx={{p: 1}} onClick={onSelect}>
       <Box sx={{display: 'flex', justifyContent: 'space-between', gap: 1}}>

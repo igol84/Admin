@@ -28,6 +28,14 @@ export const useStyle = () => {
     },
     '& .MuiPaper-root.selected': {
       backgroundColor: colors.blueAccent[800],
+    },
+    '& .color': {
+      p: 1,
+      mt: 1,
+      minHeight: 36,
+    },
+    '& .color:not(:last-child)': {
+      mb: 1,
     }
   }
 }

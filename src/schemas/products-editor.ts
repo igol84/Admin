@@ -37,5 +37,5 @@ export interface EditColor {
 export interface EditShoes {
   name: string
   new_name: string
-  price_for_sale: number
+  price_for_sale: number | null
 }

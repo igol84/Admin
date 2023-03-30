@@ -1,7 +1,7 @@
 import {GridActionsCellItem} from "@mui/x-data-grid";
 import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
 import React from "react";
-import {useDictionaryTranslate} from "../../../../hooks/pages";
+import {useDictionaryTranslate} from "../../hooks/pages";
 
 interface SaveButtonType {
   disabled?: boolean

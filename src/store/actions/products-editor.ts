@@ -4,7 +4,7 @@ import {productsEditorSlice} from "../slices/productsEditorSlice";
 import {Item} from "../../schemas/items-editor";
 import {getRowsForm} from "../../components/products-editor/functions";
 import {authSlice} from "../slices/authSlice";
-import {EditSimpleProduct} from "../../schemas/products-editor";
+import {EditShoes, EditSimpleProduct} from "../../schemas/products-editor";
 
 
 export const fetchProductsEditor = (access_token: string, {storeId}: any = null) => {
@@ -38,3 +38,20 @@ export const updateSimpleProduct = (access_token: string, productData: EditSimpl
   }
 }
 
+
+export const updateShoes = (access_token: string, shoesData: EditShoes) => {
+  const secureApi = secureApiCreate(access_token)
+  return async (dispatch: AppDispatch) => {
+    try {
+      const url = 'handler_product_price_editor/edit_shoes'
+      const updatedShoes: EditShoes = await secureApi.put(url, {json: shoesData}).json()
+      dispatch(productsEditorSlice.actions.updateShoes({changedShoes: updatedShoes}))
+    } catch (err) {
+      const errors = err as Error;
+      const errorText = errors.message
+      if (errorText) {
+        dispatch(authSlice.actions.loginFail({errorText}))
+      }
+    }
+  }
+}
