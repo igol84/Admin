@@ -18,9 +18,8 @@ const ShoesForm = (props: ShoesSelected) => {
   const [
     formShoesData, useError, onNameFieldChange, onPriceFieldChange, disabledButtonSave, onConfirm
   ] = useForm(data, resetFormData)
-
-  const [selectedColor, setSelectedColor] = useState(null)
-  const isSelected = (idRow: number) => idRow === selectedColor
+  const [selectedColor, setSelectedColor] = useState<string | null>(null)
+  const isSelected = (idRow: string) => idRow === selectedColor
 
   const nameField =
     <SimpleField
@@ -45,7 +44,8 @@ const ShoesForm = (props: ShoesSelected) => {
         <Box sx={{width: '100px'}}>{buttonsCell}</Box>
       </Box>
       {data.colors.map((color, idRow) => {
-        return <Color key={idRow} name={data.name} data={color} selected={!isSelected(idRow)}/>
+        return <Color key={idRow} name={data.name} data={color} selected={isSelected(color.color)}
+                      setSelectedColor={setSelectedColor}/>
       })}
     </Paper>
   )

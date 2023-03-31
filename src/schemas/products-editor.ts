@@ -24,14 +24,14 @@ export interface EditSize {
   id: number
   size: number
   length: number
-  price_for_sale: number
+  price_for_sale: number | null
 }
 
 export interface EditColor {
   name: string
   color: string
   new_color: string
-  price_for_sale: number
+  price_for_sale: number | null
 }
 
 export interface EditShoes {

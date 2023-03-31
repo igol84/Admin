@@ -4,7 +4,7 @@ import {productsEditorSlice} from "../slices/productsEditorSlice";
 import {Item} from "../../schemas/items-editor";
 import {getRowsForm} from "../../components/products-editor/functions";
 import {authSlice} from "../slices/authSlice";
-import {EditShoes, EditSimpleProduct} from "../../schemas/products-editor";
+import {EditColor, EditShoes, EditSimpleProduct} from "../../schemas/products-editor";
 
 
 export const fetchProductsEditor = (access_token: string, {storeId}: any = null) => {
@@ -46,6 +46,23 @@ export const updateShoes = (access_token: string, shoesData: EditShoes) => {
       const url = 'handler_product_price_editor/edit_shoes'
       const updatedShoes: EditShoes = await secureApi.put(url, {json: shoesData}).json()
       dispatch(productsEditorSlice.actions.updateShoes({changedShoes: updatedShoes}))
+    } catch (err) {
+      const errors = err as Error;
+      const errorText = errors.message
+      if (errorText) {
+        dispatch(authSlice.actions.loginFail({errorText}))
+      }
+    }
+  }
+}
+
+export const updateColor = (access_token: string, colorData: EditColor) => {
+  const secureApi = secureApiCreate(access_token)
+  return async (dispatch: AppDispatch) => {
+    try {
+      const url = 'handler_product_price_editor/edit_color'
+      const updatedColor: EditColor = await secureApi.put(url, {json: colorData}).json()
+      dispatch(productsEditorSlice.actions.updateColor({changedColor: updatedColor}))
     } catch (err) {
       const errors = err as Error;
       const errorText = errors.message

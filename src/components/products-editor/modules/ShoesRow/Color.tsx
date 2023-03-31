@@ -1,30 +1,30 @@
 import {ViewColor} from "../../types"
-import {Box} from "@mui/material"
-import React, {useState} from "react"
+import React, {Dispatch, SetStateAction} from "react"
 import Width from "./Width";
 
 interface ColorSelected {
   name: string
   data: ViewColor
   selected: boolean
+  setSelectedColor: Dispatch<SetStateAction<string | null>>
 }
 
 const Color = (props: ColorSelected) => {
-  const {name, data, selected} = props
-  const [selectedWidthRow, setSelectedWidthRow] = useState<number | null>(null)
-  const isSelected = (idRow: number) => idRow === selectedWidthRow
-  const onSelect = () => {
-    console.log(name)
-  }
-
+  const {name, data, selected, setSelectedColor} = props
+  const prices: Set<number> = new Set()
+  data.widths.map(color => {
+    return color.sizes.map(size => {
+      prices.add(size.price)
+    })
+  })
+  const price = prices.size === 1 ? [...prices][0].toString() : ''
   return (
-
-    <Box className='color selected'>
-      <Box sx={{width: "250px"}}>{data.color}</Box>
+    <>
       {data.widths.map((width, idRow) => {
-        return <Width key={idRow} name={name} data={width} selected={!isSelected(idRow)}/>
+        return <Width key={idRow} color={data.color} name={name} data={width} selected={selected}
+                      setSelectedColor={setSelectedColor} priceWidth={price}/>
       })}
-    </Box>
+    </>
 
   )
 }

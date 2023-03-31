@@ -36,6 +36,12 @@ export const useStyle = () => {
     },
     '& .color:not(:last-child)': {
       mb: 1,
-    }
+    },
+    '& .color-field': {
+      display: 'flex', justifyContent: 'space-between', gap: 1
+    },
+    '& .color-field:not(.selected):hover': {
+      cursor: 'pointer',
+    },
   }
 }

@@ -27,6 +27,7 @@ export const useForm: UseForm = (data, resetFormData) => {
       })
     })
   })
+
   const price = prices.size === 1 ? [...prices][0].toString() : ''
   const initialFormFields: FormFields = {
     name: {value: data.name, error: ''},
