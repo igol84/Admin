@@ -1,7 +1,6 @@
 import {ViewShoes} from "../../types"
 import {Box, Paper} from "@mui/material"
 import React, {useState} from "react"
-import ColorSelected from "./ColorSelected";
 import Color from "./Color";
 import {SimpleField} from "../../../Form";
 import SaveButton from "../../../Form/SaveButton";
@@ -20,8 +19,8 @@ const ShoesForm = (props: ShoesSelected) => {
     formShoesData, useError, onNameFieldChange, onPriceFieldChange, disabledButtonSave, onConfirm
   ] = useForm(data, resetFormData)
 
-  const [selectedColorRow, setSelectedColorRow] = useState(null)
-  const isSelected = (idRow: number) => idRow === selectedColorRow
+  const [selectedColor, setSelectedColor] = useState(null)
+  const isSelected = (idRow: number) => idRow === selectedColor
 
   const nameField =
     <SimpleField
@@ -43,13 +42,10 @@ const ShoesForm = (props: ShoesSelected) => {
         <Box sx={{width: '250px'}}>{nameField}</Box>
         <Box sx={{flex: '1'}}></Box>
         <Box sx={{width: '100px'}}>{priceField}</Box>
-        <Box sx={{width: '150px'}}>{buttonsCell}</Box>
+        <Box sx={{width: '100px'}}>{buttonsCell}</Box>
       </Box>
       {data.colors.map((color, idRow) => {
-        if (!isSelected(idRow))
-          return <Color key={idRow} data={color}/>
-        else
-          return <ColorSelected key={idRow} data={color}/>
+        return <Color key={idRow} name={data.name} data={color} selected={!isSelected(idRow)}/>
       })}
     </Paper>
   )

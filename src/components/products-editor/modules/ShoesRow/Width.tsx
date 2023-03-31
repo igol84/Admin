@@ -1,32 +1,31 @@
-import {ViewColor} from "../../types"
+import {ViewWidth} from "../../types"
 import {Box} from "@mui/material"
 import React, {useState} from "react"
-import Width from "./Width";
+import Size from "./Size";
 
-interface ColorSelected {
+interface Width {
   name: string
-  data: ViewColor
+  data: ViewWidth
   selected: boolean
 }
 
-const Color = (props: ColorSelected) => {
+const Width = (props: Width) => {
   const {name, data, selected} = props
   const [selectedWidthRow, setSelectedWidthRow] = useState<number | null>(null)
   const isSelected = (idRow: number) => idRow === selectedWidthRow
   const onSelect = () => {
-    console.log(name)
+    console.log(name, data.width)
   }
 
   return (
-
     <Box className='color selected'>
-      <Box sx={{width: "250px"}}>{data.color}</Box>
-      {data.widths.map((width, idRow) => {
-        return <Width key={idRow} name={name} data={width} selected={!isSelected(idRow)}/>
+      <Box sx={{width: "250px"}}>{data.width}</Box>
+      {data.sizes.map((size, idRow) => {
+        return <Size key={idRow} data={size} selected={!isSelected(idRow)}/>
       })}
     </Box>
 
   )
 }
 
-export default Color
+export default Width
