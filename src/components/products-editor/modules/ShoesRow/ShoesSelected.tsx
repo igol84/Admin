@@ -1,12 +1,9 @@
 import {ViewShoes} from "../../types"
-import {Box, Paper} from "@mui/material"
+import {Paper} from "@mui/material"
 import React, {useState} from "react"
 import Color from "./Color";
-import {SimpleField} from "../../../Form";
-import SaveButton from "../../../Form/SaveButton";
-import {GridActionsCellItem} from "@mui/x-data-grid";
-import CloseIcon from "@mui/icons-material/Close";
-import {useForm} from "./ShoesSelected.hooks";
+import NameRow from "./NameRow";
+import NameRowSelected from "./NameRowSelected";
 
 interface ShoesSelected {
   data: ViewShoes
@@ -15,37 +12,42 @@ interface ShoesSelected {
 
 const ShoesForm = (props: ShoesSelected) => {
   const {data, resetFormData} = props
-  const [
-    formShoesData, useError, onNameFieldChange, onPriceFieldChange, disabledButtonSave, onConfirm
-  ] = useForm(data, resetFormData)
+
+  const [selectedNameForm, setSelectedNameForm] = useState<boolean>(false)
   const [selectedColor, setSelectedColor] = useState<string | null>(null)
+
+  const onSelectedNameForm = (flag: boolean) => {
+    setSelectedColor(null)
+    setSelectedNameForm(flag)
+  }
+
+  const onSelectedColor = (color: string | null) => {
+    setSelectedNameForm(false)
+    setSelectedColor(color)
+  }
   const isSelected = (idRow: string) => idRow === selectedColor
 
-  const nameField =
-    <SimpleField
-      name='name' value={formShoesData.name.value} setValue={onNameFieldChange} error={useError('name')}
-      fullWidth={false} variant={'standard'}/>
-  const priceField =
-    <SimpleField
-      type='number' name='price' value={formShoesData.price.value.toString()} setValue={onPriceFieldChange}
-      error={useError('price')} fullWidth={false} variant={'standard'}/>
-  const buttonsCell =
-    <Box sx={{display: 'flex', justifyContent: 'space-around'}}>
-      <SaveButton disabled={disabledButtonSave()} onConfirm={onConfirm}/>
-      <GridActionsCellItem icon={<CloseIcon/>} label={'close'} onClick={resetFormData} color="inherit"/>
-    </Box>
+  const shoesPrices: Set<number> = new Set()
+  data.colors.map(color => {
+    return color.widths.map(width => {
+      return width.sizes.map(size => {
+        shoesPrices.add(size.price)
+      })
+    })
+  })
+
+  const shoesPrice = shoesPrices.size === 1 ? [...shoesPrices][0].toString() : ''
 
   return (
     <Paper className='selected' sx={{p: 1}}>
-      <Box sx={{display: 'flex', justifyContent: 'space-between', gap: 1}}>
-        <Box sx={{width: '250px'}}>{nameField}</Box>
-        <Box sx={{flex: '1'}}></Box>
-        <Box sx={{width: '100px'}}>{priceField}</Box>
-        <Box sx={{width: '100px'}}>{buttonsCell}</Box>
-      </Box>
+
+      {selectedNameForm
+        ? <NameRowSelected data={data} onSelectedNameForm={onSelectedNameForm}/>
+        : <NameRow name={data.name} shoesPrice={shoesPrice} onSelectedNameForm={onSelectedNameForm}
+                   resetFormData={resetFormData}/>}
       {data.colors.map((color, idRow) => {
         return <Color key={idRow} name={data.name} data={color} selected={isSelected(color.color)}
-                      setSelectedColor={setSelectedColor}/>
+                      onSelectedColor={onSelectedColor}/>
       })}
     </Paper>
   )

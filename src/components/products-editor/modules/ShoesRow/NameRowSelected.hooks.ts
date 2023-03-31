@@ -1,4 +1,4 @@
-import {FieldNames, FormFields} from "./ShoesSelected.types";
+import {FieldNames, FormFields} from "./NameRowSelected.types";
 import {useState} from "react";
 import produce from "immer";
 import {useFetchAccess} from "../../../../hooks/pages";
@@ -7,7 +7,7 @@ import {updateShoes} from "../../../../store/actions/products-editor";
 import {EditShoes} from "../../../../schemas/products-editor";
 
 interface UseForm {
-  (data: ViewShoes, resetFormData: () => void): [
+  (data: ViewShoes, onSelectedNameForm: (flag: boolean) => void): [
     formShoesData: FormFields,
     useError: (fieldName: FieldNames) => string,
     onNameFieldChange: (name: string) => void,
@@ -17,7 +17,7 @@ interface UseForm {
   ]
 }
 
-export const useForm: UseForm = (data, resetFormData) => {
+export const useForm: UseForm = (data, onSelectedNameForm) => {
   const useError = (fieldName: FieldNames) => formShoesData[fieldName].error
   const prices: Set<number> = new Set()
   data.colors.map(color => {
@@ -69,9 +69,9 @@ export const useForm: UseForm = (data, resetFormData) => {
         price_for_sale
       }
       await editShoes(updateData)
-      resetFormData()
+      onSelectedNameForm(false)
     } else {
-      resetFormData()
+      onSelectedNameForm(false)
     }
   }
   return [formShoesData, useError, onNameFieldChange, onPriceFieldChange, disabledButtonSave, onConfirm]

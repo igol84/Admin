@@ -1,5 +1,5 @@
 import {FieldNames, FormFields} from "./ColorRowSelected.types";
-import {Dispatch, SetStateAction, useState} from "react";
+import {useState} from "react";
 import produce from "immer";
 import {useFetchAccess} from "../../../../hooks/pages";
 import {updateColor} from "../../../../store/actions/products-editor";
@@ -9,8 +9,8 @@ interface UseForm {
   (
     name: string,
     color: string,
-    priceWidth: string,
-    setSelectedColor: Dispatch<SetStateAction<string | null>>
+    colorPrice: string,
+    onSelectedColor: (value: string | null) => void
   ): [
     formData: FormFields,
     useError: (fieldName: FieldNames) => string,
@@ -22,11 +22,11 @@ interface UseForm {
   ]
 }
 
-export const useForm: UseForm = (name, color, priceWidth, setSelectedColor) => {
+export const useForm: UseForm = (name, color, colorPrice, onSelectedColor) => {
   const useError = (fieldName: FieldNames) => formData[fieldName].error
   const initialFormFields: FormFields = {
     color: {value: color, error: ''},
-    price: {value: priceWidth, error: ''},
+    price: {value: colorPrice, error: ''},
   }
   const [formData, setFormData] = useState<FormFields>(initialFormFields)
 
@@ -43,7 +43,7 @@ export const useForm: UseForm = (name, color, priceWidth, setSelectedColor) => {
       }))
   }
   const formWasEdited = () => {
-    return formData.color.value !== color || formData.price.value !== priceWidth
+    return formData.color.value !== color || formData.price.value !== colorPrice
   }
   const formHasNotErrors = () => {
     return !formData.price.error && !formData.color.error
@@ -62,13 +62,13 @@ export const useForm: UseForm = (name, color, priceWidth, setSelectedColor) => {
         price_for_sale
       }
       await editColor(updateData)
-      setSelectedColor(null)
+      onSelectedColor(null)
     } else {
-      setSelectedColor(null)
+      onSelectedColor(null)
     }
   }
   const onClickClose = () => {
-    setSelectedColor(null)
+    onSelectedColor(null)
   }
   return [formData, useError, onColorFieldChange, onPriceFieldChange, disabledButtonSave, onConfirm, onClickClose]
 }

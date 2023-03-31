@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction} from 'react';
+import React from 'react';
 import {Box} from "@mui/material";
 import {SimpleField} from "../../../Form";
 import SaveButton from "../../../Form/SaveButton";
@@ -12,16 +12,16 @@ interface ColorRowProps {
   name: string
   color: string
   data: ViewWidth
-  setSelectedColor: Dispatch<SetStateAction<string | null>>
-  priceWidth: string
+  onSelectedColor: (value: string | null) => void
+  colorPrice: string
 }
 
 const ColorRowSelected = (props: ColorRowProps) => {
-  const {name, color, data, setSelectedColor, priceWidth} = props
+  const {name, color, data, onSelectedColor, colorPrice} = props
 
   const [
     formData, useError, onColorFieldChange, onPriceFieldChange, disabledButtonSave, onConfirm, onClickClose
-  ] = useForm(name, color, priceWidth, setSelectedColor)
+  ] = useForm(name, color, colorPrice, onSelectedColor)
 
   const colorField =
     <SimpleField

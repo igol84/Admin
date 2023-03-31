@@ -1,6 +1,6 @@
 import {ViewWidth} from "../../types"
 import {Box} from "@mui/material"
-import React, {Dispatch, SetStateAction} from "react"
+import React from "react"
 import Size from "./Size";
 import ColorRow from "./ColorRow";
 import ColorRowSelected from "./ColorRowSelected";
@@ -10,20 +10,20 @@ interface Width {
   color: string
   data: ViewWidth
   selected: boolean
-  setSelectedColor: Dispatch<SetStateAction<string | null>>
-  priceWidth: string
+  onSelectedColor: (value: string | null) => void
+  colorPrice: string
 }
 
 const Width = (props: Width) => {
-  const {name, color, data, selected, setSelectedColor, priceWidth} = props
+  const {name, color, data, selected, onSelectedColor, colorPrice} = props
 
 
   return (
     <Box className='color selected'>
       {selected
-        ? <ColorRowSelected name={name} color={color} data={data} setSelectedColor={setSelectedColor}
-                            priceWidth={priceWidth}/>
-        : <ColorRow color={color} width={data.width} setSelectedColor={setSelectedColor}/>}
+        ? <ColorRowSelected name={name} color={color} data={data} onSelectedColor={onSelectedColor}
+                            colorPrice={colorPrice}/>
+        : <ColorRow color={color} width={data.width} colorPrice={colorPrice} onSelectedColor={onSelectedColor}/>}
       {data.sizes.map((size, idRow) => {
         return <Size key={idRow} data={size}/>
       })}

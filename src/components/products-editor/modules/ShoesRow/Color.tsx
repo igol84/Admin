@@ -1,28 +1,28 @@
 import {ViewColor} from "../../types"
-import React, {Dispatch, SetStateAction} from "react"
+import React from "react"
 import Width from "./Width";
 
 interface ColorSelected {
   name: string
   data: ViewColor
   selected: boolean
-  setSelectedColor: Dispatch<SetStateAction<string | null>>
+  onSelectedColor: (value: string | null) => void
 }
 
 const Color = (props: ColorSelected) => {
-  const {name, data, selected, setSelectedColor} = props
-  const prices: Set<number> = new Set()
+  const {name, data, selected, onSelectedColor} = props
+  const colorPrices: Set<number> = new Set()
   data.widths.map(color => {
     return color.sizes.map(size => {
-      prices.add(size.price)
+      colorPrices.add(size.price)
     })
   })
-  const price = prices.size === 1 ? [...prices][0].toString() : ''
+  const colorPrice = colorPrices.size === 1 ? [...colorPrices][0].toString() : ''
   return (
     <>
       {data.widths.map((width, idRow) => {
         return <Width key={idRow} color={data.color} name={name} data={width} selected={selected}
-                      setSelectedColor={setSelectedColor} priceWidth={price}/>
+                      onSelectedColor={onSelectedColor} colorPrice={colorPrice}/>
       })}
     </>
 
