@@ -8,16 +8,16 @@ import {ViewWidth} from "../../types";
 import {useForm} from "./ColorRowSelected.hooks";
 
 
-interface ColorRowProps {
+interface ColorRowSelectedProps {
   name: string
   color: string
-  data: ViewWidth
+  viewWidth: ViewWidth
   onSelectedColor: (value: string | null) => void
   colorPrice: string
 }
 
-const ColorRowSelected = (props: ColorRowProps) => {
-  const {name, color, data, onSelectedColor, colorPrice} = props
+const ColorRowSelected = (props: ColorRowSelectedProps) => {
+  const {name, color, viewWidth, onSelectedColor, colorPrice} = props
 
   const [
     formData, useError, onColorFieldChange, onPriceFieldChange, disabledButtonSave, onConfirm, onClickClose
@@ -40,7 +40,7 @@ const ColorRowSelected = (props: ColorRowProps) => {
   return (
     <Box className='color-field selected'>
       <Box sx={{width: "150px"}}>{colorField}</Box>
-      <Box sx={{width: "150px"}}>{data.width}</Box>
+      <Box sx={{width: "150px"}}>{viewWidth.width}</Box>
       <Box sx={{flex: 1}}></Box>
       <Box sx={{width: "150px"}}>{priceField}</Box>
       <Box sx={{width: "150px"}}>{buttonsCell}</Box>

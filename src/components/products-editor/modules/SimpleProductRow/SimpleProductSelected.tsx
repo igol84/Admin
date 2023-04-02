@@ -32,7 +32,7 @@ const SimpleProductSelected = (props: Product) => {
     </Box>
 
   return (
-    <Paper className='selected' sx={{p: 1}} onClick={() => undefined}>
+    <Paper className='product selected' onClick={() => undefined}>
       <Box sx={{display: 'flex', justifyContent: 'space-between', gap: 1}}>
         <Box sx={{width: '250px'}}>{nameCell}</Box>
         <Box sx={{width: '80px'}}>{`${data.qty} шт.`}</Box>

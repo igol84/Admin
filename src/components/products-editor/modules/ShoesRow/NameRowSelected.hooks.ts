@@ -7,7 +7,7 @@ import {updateShoes} from "../../../../store/actions/products-editor";
 import {EditShoes} from "../../../../schemas/products-editor";
 
 interface UseForm {
-  (data: ViewShoes, onSelectedNameForm: (flag: boolean) => void): [
+  (viewShoes: ViewShoes, onSelectedNameForm: (flag: boolean) => void): [
     formShoesData: FormFields,
     useError: (fieldName: FieldNames) => string,
     onNameFieldChange: (name: string) => void,

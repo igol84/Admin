@@ -34,18 +34,13 @@ const ProductsEditor = () => {
         {productsData.map((product, rowId) => {
           switch (product.module) {
             case Module.product:
-              if (!isSelected(rowId)) {
-                return <SimpleProducts key={rowId} data={product} onSelect={onSelect(rowId)}/>
-              } else {
-                return <SimpleProductSelected key={rowId} data={product} resetFormData={resetFormData}/>
-              }
+              return isSelected(rowId)
+                ? <SimpleProductSelected key={rowId} data={product} resetFormData={resetFormData}/>
+                : <SimpleProducts key={rowId} data={product} onSelect={onSelect(rowId)}/>
             case Module.shoes:
-              if (!isSelected(rowId)) {
-                return <Shoes key={rowId} data={product} onSelect={onSelect(rowId)}/>
-              } else {
-                return <ShoesForm key={rowId} data={product} resetFormData={resetFormData}/>
-              }
-
+              return isSelected(rowId)
+                ? <ShoesForm key={rowId} viewShoes={product} resetFormData={resetFormData}/>
+                : <Shoes key={rowId} viewShoes={product} onSelect={onSelect(rowId)}/>
           }
         })}
 

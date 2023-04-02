@@ -2,17 +2,19 @@ import {ViewColor} from "../../types"
 import React from "react"
 import Width from "./Width";
 
-interface ColorSelected {
+interface ColorProps {
   name: string
-  data: ViewColor
-  selected: boolean
+  viewColor: ViewColor
+  selectedColor: boolean
   onSelectedColor: (value: string | null) => void
+  onSelectedSize: (idSize: number | null) => void
+  isSelectedSize: (idSize: number) => boolean
 }
 
-const Color = (props: ColorSelected) => {
-  const {name, data, selected, onSelectedColor} = props
+const Color = (props: ColorProps) => {
+  const {name, viewColor, selectedColor, onSelectedColor, onSelectedSize, isSelectedSize} = props
   const colorPrices: Set<number> = new Set()
-  data.widths.map(color => {
+  viewColor.widths.map(color => {
     return color.sizes.map(size => {
       colorPrices.add(size.price)
     })
@@ -20,9 +22,10 @@ const Color = (props: ColorSelected) => {
   const colorPrice = colorPrices.size === 1 ? [...colorPrices][0].toString() : ''
   return (
     <>
-      {data.widths.map((width, idRow) => {
-        return <Width key={idRow} color={data.color} name={name} data={width} selected={selected}
-                      onSelectedColor={onSelectedColor} colorPrice={colorPrice}/>
+      {viewColor.widths.map((width, idRow) => {
+        return <Width key={idRow} color={viewColor.color} name={name} viewWidth={width} selected={selectedColor}
+                      onSelectedColor={onSelectedColor} colorPrice={colorPrice} onSelectedSize={onSelectedSize}
+                      isSelectedSize={isSelectedSize}/>
       })}
     </>
 

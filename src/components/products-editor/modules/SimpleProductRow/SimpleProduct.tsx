@@ -12,7 +12,7 @@ interface Product {
 export const SimpleProduct = (props: Product) => {
   const {data, onSelect} = props
   return (
-    <Paper sx={{p: 1}} onClick={onSelect}>
+    <Paper className='product' onClick={onSelect}>
       <Box sx={{display: 'flex', justifyContent: 'space-between', gap: 1}}>
         <Box sx={{width: '250px'}}>{data.name}</Box>
         <Box sx={{width: '80px'}}>{`${data.qty} шт.`}</Box>

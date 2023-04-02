@@ -1,31 +1,36 @@
 import {ViewWidth} from "../../types"
 import {Box} from "@mui/material"
 import React from "react"
-import Size from "./Size";
+import SizeRow from "./SizeRow";
 import ColorRow from "./ColorRow";
 import ColorRowSelected from "./ColorRowSelected";
+import SizeRowSelected from "./SizeRowSelected";
 
-interface Width {
+interface WidthProps {
   name: string
   color: string
-  data: ViewWidth
+  viewWidth: ViewWidth
   selected: boolean
   onSelectedColor: (value: string | null) => void
   colorPrice: string
+  onSelectedSize: (idSize: number | null) => void
+  isSelectedSize: (idSize: number) => boolean
 }
 
-const Width = (props: Width) => {
-  const {name, color, data, selected, onSelectedColor, colorPrice} = props
+const Width = (props: WidthProps) => {
+  const {name, color, viewWidth, selected, onSelectedColor, colorPrice, onSelectedSize, isSelectedSize} = props
 
 
   return (
     <Box className='color selected'>
       {selected
-        ? <ColorRowSelected name={name} color={color} data={data} onSelectedColor={onSelectedColor}
+        ? <ColorRowSelected name={name} color={color} viewWidth={viewWidth} onSelectedColor={onSelectedColor}
                             colorPrice={colorPrice}/>
-        : <ColorRow color={color} width={data.width} colorPrice={colorPrice} onSelectedColor={onSelectedColor}/>}
-      {data.sizes.map((size, idRow) => {
-        return <Size key={idRow} data={size}/>
+        : <ColorRow color={color} width={viewWidth.width} colorPrice={colorPrice} onSelectedColor={onSelectedColor}/>}
+      {viewWidth.sizes.map((size) => {
+        return isSelectedSize(size.prod_id)
+          ? <SizeRowSelected key={size.prod_id} sizeData={size} onSelectedSize={onSelectedSize}/>
+          : <SizeRow key={size.prod_id} sizeData={size}  onSelectedSize={onSelectedSize}/>
       })}
     </Box>
 

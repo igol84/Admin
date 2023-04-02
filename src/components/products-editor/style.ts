@@ -18,15 +18,18 @@ export const useStyle = () => {
     '& .MuiIconButton-root': {
       py: 0
     },
-    '& .MuiPaper-root:not(.selected)': {
+    '& .product': {
+      p: 1,
+    },
+    '& .product:not(.selected)': {
       backgroundColor: colors.blueAccent[700],
       color: colors.blueAccent[100]
     },
-    '& .MuiPaper-root:not(.selected):hover': {
+    '& .product:not(.selected):hover': {
       backgroundColor: colors.blueAccent[500],
       cursor: 'pointer',
     },
-    '& .MuiPaper-root.selected': {
+    '& .product.selected': {
       backgroundColor: colors.blueAccent[800],
     },
     '& .color': {
@@ -41,6 +44,18 @@ export const useStyle = () => {
       display: 'flex', justifyContent: 'space-between', gap: 1
     },
     '& .color-field:not(.selected):hover': {
+      cursor: 'pointer',
+    },
+    '& .size': {
+      m:1,
+      p:1,
+      backgroundColor: colors.blueAccent[700],
+      display: 'flex',
+      justifyContent: 'space-between',
+      gap: 1
+    },
+    '& .size:not(.selected):hover': {
+      backgroundColor: colors.blueAccent[500],
       cursor: 'pointer',
     },
   }

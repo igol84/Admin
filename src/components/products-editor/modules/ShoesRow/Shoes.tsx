@@ -3,16 +3,16 @@ import {Box, Paper} from "@mui/material"
 import React from "react"
 
 interface Shoes {
-  data: ViewShoes
+  viewShoes: ViewShoes
   onSelect: () => void
 }
 
 const Shoes = (props: Shoes) => {
-  const {data, onSelect} = props
+  const {viewShoes, onSelect} = props
   return (
-    <Paper sx={{p: 1}} onClick={onSelect}>
+    <Paper className='product' onClick={onSelect}>
       <Box sx={{display: 'flex', justifyContent: 'space-between', gap: 1}}>
-        <Box sx={{width: "250px"}}>{data.name}</Box>
+        <Box sx={{width: "250px"}}>{viewShoes.name}</Box>
       </Box>
     </Paper>
   )

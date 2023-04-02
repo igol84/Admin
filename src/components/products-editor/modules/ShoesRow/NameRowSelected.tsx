@@ -7,16 +7,16 @@ import CloseIcon from "@mui/icons-material/Close";
 import {useForm} from "./NameRowSelected.hooks";
 import {ViewShoes} from "../../types";
 
-interface NameRowProps {
-  data: ViewShoes
+interface NameRowSelectedProps {
+  viewShoes: ViewShoes
   onSelectedNameForm: (flag: boolean) => void
 }
 
-const NameRowSelected = (props: NameRowProps) => {
-  const {data, onSelectedNameForm} = props
+const NameRowSelected = (props: NameRowSelectedProps) => {
+  const {viewShoes, onSelectedNameForm} = props
   const [
     formShoesData, useError, onNameFieldChange, onPriceFieldChange, disabledButtonSave, onConfirm
-  ] = useForm(data, onSelectedNameForm)
+  ] = useForm(viewShoes, onSelectedNameForm)
   const nameField =
     <SimpleField
       name='name' value={formShoesData.name.value} setValue={onNameFieldChange} error={useError('name')}
