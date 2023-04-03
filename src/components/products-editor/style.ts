@@ -47,10 +47,12 @@ export const useStyle = () => {
       cursor: 'pointer',
     },
     '& .size': {
+      minHeight: '50px',
       m:1,
       p:1,
       backgroundColor: colors.blueAccent[700],
       display: 'flex',
+      alignItems: 'center',
       justifyContent: 'space-between',
       gap: 1
     },
