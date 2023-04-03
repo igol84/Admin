@@ -24,7 +24,7 @@ export interface EditSize {
   id: number
   size: number
   length: number
-  price_for_sale: number | null
+  price_for_sale: number
 }
 
 export interface EditColor {

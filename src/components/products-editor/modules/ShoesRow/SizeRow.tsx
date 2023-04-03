@@ -15,9 +15,9 @@ const SizeRow = (props: SizeRowProps) => {
   return (
     <Paper className='size' onClick={onClick}>
       <Box sx={{width: "250px"}}>{sizeData.size}</Box>
-      <Box sx={{width: "250px"}}>{sizeData.price}</Box>
-      <Box sx={{width: "250px"}}>{sizeData.qty}</Box>
       <Box sx={{width: "250px"}}>{sizeData.length}</Box>
+      <Box sx={{width: "250px"}}>{sizeData.qty}</Box>
+      <Box sx={{width: "250px"}}>{sizeData.price}</Box>
       <Box sx={{width: "250px"}}></Box>
     </Paper>
   )

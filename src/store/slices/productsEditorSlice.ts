@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {isShoes, isSimpleProduct, ViewProduct} from "../../components/products-editor/types";
-import {EditColor, EditShoes, EditSimpleProduct} from "../../schemas/products-editor";
+import {EditColor, EditShoes, EditSimpleProduct, EditSize} from "../../schemas/products-editor";
 
 
 interface ProductsEditor {
@@ -30,6 +30,11 @@ interface ChangedShoesPayload {
 interface ChangedColorPayload {
   changedColor: EditColor
 }
+
+interface ChangedSizePayload {
+  changedSize: EditSize
+}
+
 
 export const productsEditorSlice = createSlice({
   name: 'ProductsEditor',
@@ -78,8 +83,7 @@ export const productsEditorSlice = createSlice({
               return {...color, widths}
             })
           } : product
-        } else
-          return product
+        } else return product
       })
       state.error = ''
     },
@@ -95,9 +99,7 @@ export const productsEditorSlice = createSlice({
                   const sizes = width.sizes.map(size => {
                     if (changedColor.price_for_sale !== null) {
                       return {...size, price: changedColor.price_for_sale}
-                    } else {
-                      return size
-                    }
+                    } else return size
                   })
                   return {...width, sizes}
                 })
@@ -105,8 +107,27 @@ export const productsEditorSlice = createSlice({
               } else return color
             })
           } : product
-        } else
-          return product
+        } else return product
+      })
+      state.error = ''
+    },
+    updateSize(state, {payload: {changedSize}}: PayloadAction<ChangedSizePayload>) {
+      state.isLoading = false
+      state.productsData = state.productsData.map(product => {
+        if (isShoes(product)) {
+          const colors = product.colors.map(color => {
+            const widths = color.widths.map(width => {
+              const sizes = width.sizes.map(size => {
+                return size.prod_id === changedSize.id
+                  ? {...size, size: changedSize.size, length: changedSize.length, price: changedSize.price_for_sale}
+                  : size
+              })
+              return {...width, sizes}
+            })
+            return {...color, widths}
+          })
+          return {...product, colors}
+        } else return product
       })
       state.error = ''
     },
