@@ -61,7 +61,11 @@ export const useBoxGridTableStyle = () => {
 
 export const useBoxTableStyle = () => {
   const theme = useTheme()
+  console.log(theme.palette.mode)
   const colors = tokens(theme.palette.mode)
+  const colorSVG = theme.palette.mode === 'dark'
+    ? 'invert(97%) sepia(81%) saturate(889%) hue-rotate(83deg) brightness(86%) contrast(86%)'
+    :'invert(20%) sepia(8%) saturate(3833%) hue-rotate(181deg) brightness(90%) contrast(84%)'
   return {
     '& .MuiTableCell-head': {
       backgroundColor: `${colors.blueAccent[700]} !important`,
@@ -92,6 +96,7 @@ export const useBoxTableStyle = () => {
       width: '1em',
       borderRadius: '50em',
       background: 'url(https://pro.fontawesome.com/releases/v5.10.0/svgs/solid/times-circle.svg) no-repeat 50% 50%',
+      filter: colorSVG,
       backgroundSize: 'contain',
       opacity: '0',
       pointerEvents: 'none',

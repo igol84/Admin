@@ -21,6 +21,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
     <TextField
       type="search"
       variant="standard"
+      color='secondary'
       value={search}
       onChange={event=> setSearch(event.target.value)}
     />

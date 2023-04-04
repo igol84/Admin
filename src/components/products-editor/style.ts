@@ -13,7 +13,7 @@ export const useStyle = () => {
       direction: "column",
       justifyContent: "flex-start",
       alignItems: "stretch",
-      gap: "16px"
+      gap: 1
     },
     '& .MuiIconButton-root': {
       py: 0
