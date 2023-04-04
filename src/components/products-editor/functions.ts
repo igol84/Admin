@@ -38,8 +38,9 @@ export const getRowsForm = (items: Item[]) => {
   const nameSorter = (product: Product) => product.name.toLowerCase()
   const colorSorter = (product: Product) => product.shoes?.color.toLowerCase()
   const withSorter = (product: Product) => product.shoes?.width.toLowerCase()
+  const withSize = (product: Product) => product.shoes?.size
 
-  const sortedProducts = _.orderBy(products, [nameSorter, colorSorter, withSorter, 'product.shoes?.size'])
+  const sortedProducts = _.orderBy(products, [nameSorter, colorSorter, withSorter, withSize])
 
   const isShoes = (product:  ViewProduct | undefined): boolean => {
     if(product !== undefined)

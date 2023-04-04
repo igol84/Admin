@@ -11,42 +11,15 @@ import SimpleProductSelected from "./modules/SimpleProductRow/SimpleProductSelec
 import Shoes from "./modules/ShoesRow/Shoes";
 import ShoesForm from "./modules/ShoesRow/ShoesSelected";
 import SearchInput from "../Form/SearchInput";
+import {useProductEditor} from "./hooks";
 
-const ROWS_ON_PAGE = 12
+
 
 const ProductsEditor = () => {
-  const style: any = useStyle()
-  const storeId = useStoreId()
-  useLoaderAccess(fetchProductsEditor, {storeId})
-  const {productsData, isLoading} = useAppSelector(state => state.productsEditorSlice)
-  const showLoading = useIsLoadingDisplay(isLoading)
-
-  const [search, setSearch] = useState<string>('')
-  const searchRowsByName = (row: ViewProduct) => row.name.toUpperCase().includes(search.toUpperCase())
-  const onSearch = (value: string) => {
-    setSearch(value)
-    setPage(1)
-  }
-
-  const searchedProductsData = productsData.slice().filter(searchRowsByName)
-  const countOfRows = searchedProductsData.length
-  const countOfPages = Math.ceil(countOfRows / ROWS_ON_PAGE)
-
-  const [page, setPage] = useState(1)
-  const onChangePage = (event: React.ChangeEvent<unknown>, page: number) => {
-    setPage(page)
-  }
-  const emptyRows = page > 0 ? Math.max(0, (page) * ROWS_ON_PAGE - countOfRows) : 0
-  const filteredProductsDataOfPage = searchedProductsData.slice((page - 1) * ROWS_ON_PAGE, page * ROWS_ON_PAGE)
-
-  const [selectedRowId, setSelectedRowId] = useState<number | null>(null)
-  const onSelect = (rowIdx: number) => () => {
-    setSelectedRowId(rowIdx)
-  }
-  const isSelected = (rowIdx: number) => rowIdx === selectedRowId
-  const resetFormData = () => {
-    setSelectedRowId(null)
-  }
+  const [
+    style, filteredProductsDataOfPage, isSelected, onSelect, resetFormData, search, onSearch, countOfPages, selectedPage,
+    onChangePage, emptyRows, showLoading
+  ] = useProductEditor()
 
 
   return (
@@ -71,7 +44,7 @@ const ProductsEditor = () => {
           )}
         </Stack>
       </Box>
-      {countOfPages > 1 && <Pagination sx={{pt: 1}} count={countOfPages} page={page} onChange={onChangePage}/>}
+      {countOfPages > 1 && <Pagination sx={{pt: 1}} count={countOfPages} page={selectedPage} onChange={onChangePage}/>}
       <LoadingCircular show={showLoading}/>
     </>
   )
