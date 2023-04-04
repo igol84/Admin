@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Box, Stack} from "@mui/material";
+import {Box, Pagination, Stack} from "@mui/material";
 import {useStyle} from "./style";
 import {useIsLoadingDisplay, useLoaderAccess} from "../../hooks/pages";
 import {fetchProductsEditor} from "../../store/actions/products-editor";
@@ -12,6 +12,8 @@ import Shoes from "./modules/ShoesRow/Shoes";
 import ShoesForm from "./modules/ShoesRow/ShoesSelected";
 import SearchInput from "../Form/SearchInput";
 
+const ROWS_ON_PAGE = 12
+
 const ProductsEditor = () => {
   const style: any = useStyle()
   const storeId = useStoreId()
@@ -21,7 +23,21 @@ const ProductsEditor = () => {
 
   const [search, setSearch] = useState<string>('')
   const searchRowsByName = (row: ViewProduct) => row.name.toUpperCase().includes(search.toUpperCase())
+  const onSearch = (value: string) => {
+    setSearch(value)
+    setPage(1)
+  }
 
+  const searchedProductsData = productsData.slice().filter(searchRowsByName)
+  const countOfRows = searchedProductsData.length
+  const countOfPages = Math.ceil(countOfRows / ROWS_ON_PAGE)
+
+  const [page, setPage] = useState(1)
+  const onChangePage = (event: React.ChangeEvent<unknown>, page: number) => {
+    setPage(page)
+  }
+  const emptyRows = page > 0 ? Math.max(0, (page) * ROWS_ON_PAGE - countOfRows) : 0
+  const filteredProductsDataOfPage = searchedProductsData.slice((page - 1) * ROWS_ON_PAGE, page * ROWS_ON_PAGE)
 
   const [selectedRowId, setSelectedRowId] = useState<number | null>(null)
   const onSelect = (rowIdx: number) => () => {
@@ -35,10 +51,10 @@ const ProductsEditor = () => {
 
   return (
     <>
-      <SearchInput value={search} setValue={setSearch}/>
+      <SearchInput value={search} setValue={onSearch}/>
       <Box sx={style}>
         <Stack>
-          {productsData.slice().filter(searchRowsByName).map((product, rowId) => {
+          {filteredProductsDataOfPage.map((product, rowId) => {
             switch (product.module) {
               case Module.product:
                 return isSelected(rowId)
@@ -50,9 +66,13 @@ const ProductsEditor = () => {
                   : <Shoes key={rowId} viewShoes={product} onSelect={onSelect(rowId)}/>
             }
           })}
+          {emptyRows > 0 && (
+            <Box sx={{height: 50 * emptyRows - 4,}}> </Box>
+          )}
         </Stack>
-        <LoadingCircular show={showLoading}/>
       </Box>
+      {countOfPages > 1 && <Pagination sx={{pt: 1}} count={countOfPages} page={page} onChange={onChangePage}/>}
+      <LoadingCircular show={showLoading}/>
     </>
   )
 }
