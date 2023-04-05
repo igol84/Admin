@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box, Pagination, Stack} from "@mui/material";
+import {Box, Pagination, Skeleton, Stack} from "@mui/material";
 import LoadingCircular from "../LoadingCircular";
 import {Module} from "./types";
 import SimpleProducts from "./modules/SimpleProductRow/SimpleProduct";
@@ -8,13 +8,15 @@ import Shoes from "./modules/ShoesRow/Shoes";
 import ShoesForm from "./modules/ShoesRow/ShoesSelected";
 import SearchInput from "../Form/SearchInput";
 import {useProductEditor} from "./hooks";
+import _ from "lodash";
 
 
 const ProductsEditor = () => {
+  const rowsOnPage = 12
   const [
     style, filteredProductsDataOfPage, isSelected, onSelect, resetFormData, search, onSearch, countOfPages, selectedPage,
-    onChangePage, emptyRows, showLoading
-  ] = useProductEditor()
+    onChangePage, emptyRows, showLoading, isLoading
+  ] = useProductEditor(rowsOnPage)
 
 
   return (
@@ -22,24 +24,31 @@ const ProductsEditor = () => {
       <SearchInput value={search} setValue={onSearch}/>
       <Box sx={style}>
         <Stack>
-          {filteredProductsDataOfPage.map((product, rowId) => {
-            switch (product.module) {
-              case Module.product:
-                return isSelected(rowId)
-                  ? <SimpleProductSelected key={rowId} data={product} resetFormData={resetFormData}/>
-                  : <SimpleProducts key={rowId} data={product} onSelect={onSelect(rowId)}/>
-              case Module.shoes:
-                return isSelected(rowId)
-                  ? <ShoesForm key={rowId} viewShoes={product} resetFormData={resetFormData}/>
-                  : <Shoes key={rowId} viewShoes={product} onSelect={onSelect(rowId)}/>
-            }
-          })}
+          {!isLoading ? filteredProductsDataOfPage.map((product, rowId) => {
+              switch (product.module) {
+                case Module.product:
+                  return isSelected(rowId)
+                    ? <SimpleProductSelected key={rowId} data={product} resetFormData={resetFormData}/>
+                    : <SimpleProducts key={rowId} data={product} onSelect={onSelect(rowId)}/>
+                case Module.shoes:
+                  return isSelected(rowId)
+                    ? <ShoesForm key={rowId} viewShoes={product} resetFormData={resetFormData}/>
+                    : <Shoes key={rowId} viewShoes={product} onSelect={onSelect(rowId)}/>
+              }
+            })
+            : isLoading ? [_.times(rowsOnPage).map((index) => (
+              <Skeleton key={index} variant='rounded' height='43px' animation='wave'/>
+            )),
+              <Skeleton sx={{ml: 5}} variant='circular' height={30} width={30} animation='wave'/>
+            ] : null
+          }
           {emptyRows > 0 && (
             <Box sx={{height: 50 * emptyRows - 4,}}> </Box>
           )}
         </Stack>
       </Box>
-      {countOfPages > 1 && <Pagination sx={{pt: 1}} count={countOfPages} page={selectedPage} onChange={onChangePage}/>}
+      {(countOfPages > 1 && !isLoading) &&
+         <Pagination sx={{pt: 1}} count={countOfPages} page={selectedPage} onChange={onChangePage}/>}
       <LoadingCircular show={showLoading}/>
     </>
   )

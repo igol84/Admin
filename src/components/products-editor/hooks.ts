@@ -6,23 +6,24 @@ import React, {useState} from "react";
 import {ViewProduct} from "./types";
 
 interface UseProductEditor {
-  ():[
+  (rowsOnPage: number): [
     style: any,
-    filteredProductsDataOfPage:  ViewProduct[],
-    isSelected: (rowIdx: number)=> boolean,
-    onSelect: (rowIdx: number)=> () => void,
-    resetFormData: ()=>void,
+    filteredProductsDataOfPage: ViewProduct[],
+    isSelected: (rowIdx: number) => boolean,
+    onSelect: (rowIdx: number) => () => void,
+    resetFormData: () => void,
     search: string,
-    onSearch: (value: string)=> void,
+    onSearch: (value: string) => void,
     countOfPages: number,
     page: number,
-    onChangePage: (event: React.ChangeEvent<unknown>, page: number)=> void,
+    onChangePage: (event: React.ChangeEvent<unknown>, page: number) => void,
     emptyRows: number,
-    showLoading: boolean
+    showLoading: boolean,
+    isLoading: boolean
   ]
 }
-const ROWS_ON_PAGE = 12
-export const useProductEditor: UseProductEditor = () => {
+
+export const useProductEditor: UseProductEditor = (rowsOnPage) => {
   const style = useStyle()
   const storeId = useStoreId()
   useLoaderAccess(fetchProductsEditor, {storeId})
@@ -38,15 +39,15 @@ export const useProductEditor: UseProductEditor = () => {
 
   const searchedProductsData = productsData.slice().filter(searchRowsByName)
   const countOfRows = searchedProductsData.length
-  const countOfPages = Math.ceil(countOfRows / ROWS_ON_PAGE)
+  const countOfPages = Math.ceil(countOfRows / rowsOnPage)
 
   const [selectedPage, setSelectedPage] = useState(1)
   const onChangePage = (event: React.ChangeEvent<unknown>, page: number) => {
     setSelectedPage(page)
   }
-  const emptyRows = selectedPage > 0 ? Math.max(0, (selectedPage) * ROWS_ON_PAGE - countOfRows) : 0
-  const startSlice=(selectedPage - 1) * ROWS_ON_PAGE
-  const endSlice=selectedPage * ROWS_ON_PAGE
+  const emptyRows = selectedPage > 0 ? Math.max(0, (selectedPage) * rowsOnPage - countOfRows) : 0
+  const startSlice = (selectedPage - 1) * rowsOnPage
+  const endSlice = selectedPage * rowsOnPage
   const filteredProductsDataOfPage = searchedProductsData.slice(startSlice, endSlice)
 
   const [selectedRowId, setSelectedRowId] = useState<number | null>(null)
@@ -59,6 +60,6 @@ export const useProductEditor: UseProductEditor = () => {
   }
   return [
     style, filteredProductsDataOfPage, isSelected, onSelect, resetFormData, search, onSearch, countOfPages, selectedPage,
-    onChangePage, emptyRows, showLoading
+    onChangePage, emptyRows, showLoading, isLoading
   ]
 }
