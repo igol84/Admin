@@ -1,23 +1,27 @@
 import {FieldNames, FormFields} from "./NameRowSelected.types";
 import {useState} from "react";
 import produce from "immer";
-import {useFetchAccess} from "../../../../hooks/pages";
+import {useDictionaryTranslate, useFetchAccess} from "../../../../hooks/pages";
 import {ViewShoes,} from "../../types";
 import {updateShoes} from "../../../../store/actions/products-editor";
 import {EditShoes} from "../../../../schemas/products-editor";
 
 interface UseForm {
-  (viewShoes: ViewShoes, onSelectedNameForm: (flag: boolean) => void): [
+  (
+    viewShoes: ViewShoes,
+    onSelectedNameForm: (flag: boolean) => void
+  ): [
     formShoesData: FormFields,
     useError: (fieldName: FieldNames) => string,
     onNameFieldChange: (name: string) => void,
     onPriceFieldChange: (price: string) => void,
     disabledButtonSave: () => boolean,
-    onConfirm: () => Promise<void>
+    onConfirm: () => Promise<void>,
   ]
 }
 
 export const useForm: UseForm = (data, onSelectedNameForm) => {
+  const dict = {'required': useDictionaryTranslate('form')('required')}
   const useError = (fieldName: FieldNames) => formShoesData[fieldName].error
   const prices: Set<number> = new Set()
   data.colors.map(color => {
@@ -41,7 +45,7 @@ export const useForm: UseForm = (data, onSelectedNameForm) => {
     }))
     if (name === '')
       setFormShoesData(produce(prevFormData => {
-        prevFormData.name.error = 'required'
+        prevFormData.name.error = dict['required']
       }))
   }
   const onPriceFieldChange = (price: string) => {

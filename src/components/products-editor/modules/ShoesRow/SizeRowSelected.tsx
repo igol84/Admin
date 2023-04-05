@@ -1,11 +1,10 @@
 import {ViewSize} from "../../types"
 import {Box, Paper} from "@mui/material"
 import React from "react"
-import {GridActionsCellItem} from "@mui/x-data-grid";
-import CloseIcon from "@mui/icons-material/Close";
 import {SimpleField} from "../../../Form";
 import SaveButton from "../../../Form/SaveButton";
 import {useSizeForm} from "./SizeRowSelected.hooks";
+import CloseButton from "../../../Form/CloseButton";
 
 interface SizeRowSelectedProps {
   sizeData: ViewSize
@@ -14,9 +13,8 @@ interface SizeRowSelectedProps {
 
 const SizeRowSelected = (props: SizeRowSelectedProps) => {
   const {sizeData, onSelectedSize} = props
-
   const [formSizeData, useError, onSizeFieldChange, onLengthFieldChange, onPriceFieldChange, disabledButtonSave,
-    onConfirm, onClickClose] = useSizeForm(sizeData, onSelectedSize)
+    onConfirm, onClickClose, dict] = useSizeForm(sizeData, onSelectedSize)
 
 
   const sizeField =
@@ -37,13 +35,13 @@ const SizeRowSelected = (props: SizeRowSelectedProps) => {
   const buttonsCell =
     <Box sx={{display: 'flex', justifyContent: 'space-around'}}>
       <SaveButton disabled={disabledButtonSave()} onConfirm={onConfirm}/>
-      <GridActionsCellItem icon={<CloseIcon/>} label={'close'} onClick={onClickClose} color="inherit"/>
+      <CloseButton onClick={onClickClose}/>
     </Box>
   return (
     <Paper className='size selected'>
       <Box sx={{width: "80px"}}>{sizeField}</Box>
       <Box sx={{width: "80px"}}>{lengthField}</Box>
-      <Box sx={{width: "100px"}}>{sizeData.qty}</Box>
+      <Box sx={{width: "100px"}}>{`${sizeData.qty} ${dict('pc')}`}</Box>
       <Box sx={{width: "100px"}}>{priceField}</Box>
       <Box sx={{flex: 1}}></Box>
       <Box sx={{width: "100px"}}>{buttonsCell}</Box>

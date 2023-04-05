@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {Box} from "@mui/material";
-import {GridActionsCellItem} from "@mui/x-data-grid";
-import CloseIcon from "@mui/icons-material/Close";
 import {formatter} from "../../../Form";
+import CloseButton from "../../../Form/CloseButton";
+import {LanguageModeContext} from "../../../../language";
 
 interface NameRowProps {
   name: string
@@ -13,13 +13,14 @@ interface NameRowProps {
 
 const NameRow = (props: NameRowProps) => {
   const {name, shoesPrice, onSelectedNameForm, resetFormData} = props
+  const {language} = useContext(LanguageModeContext)
   const onClick = () => {
     onSelectedNameForm(true)
   }
-  const formatShoesPrice = shoesPrice !== '' ? formatter.format(Number(shoesPrice)) : ''
+  const formatShoesPrice = shoesPrice !== '' ? formatter(language).format(Number(shoesPrice)) : ''
   const buttonsCell =
     <Box sx={{display: 'flex', justifyContent: 'space-around'}}>
-      <GridActionsCellItem icon={<CloseIcon/>} label={'close'} onClick={resetFormData} color="inherit"/>
+      <CloseButton onClick={resetFormData}/>
     </Box>
   return (
     <Box className='color-field' onClick={onClick}>

@@ -1,18 +1,13 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Box, Pagination, Stack} from "@mui/material";
-import {useStyle} from "./style";
-import {useIsLoadingDisplay, useLoaderAccess} from "../../hooks/pages";
-import {fetchProductsEditor} from "../../store/actions/products-editor";
-import {useAppSelector, useStoreId} from "../../hooks/redux";
 import LoadingCircular from "../LoadingCircular";
-import {Module, ViewProduct} from "./types";
+import {Module} from "./types";
 import SimpleProducts from "./modules/SimpleProductRow/SimpleProduct";
 import SimpleProductSelected from "./modules/SimpleProductRow/SimpleProductSelected";
 import Shoes from "./modules/ShoesRow/Shoes";
 import ShoesForm from "./modules/ShoesRow/ShoesSelected";
 import SearchInput from "../Form/SearchInput";
 import {useProductEditor} from "./hooks";
-
 
 
 const ProductsEditor = () => {
@@ -50,4 +45,4 @@ const ProductsEditor = () => {
   )
 }
 
-export default ProductsEditor;
+export default ProductsEditor

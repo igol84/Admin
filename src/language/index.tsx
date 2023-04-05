@@ -42,7 +42,7 @@ export const LanguageModeContext = createContext<LanguageModeType>({
   languageOptions,
   muiLanguage,
   setLanguageMode: (value: LanguageType) => {
-    console.log(value)
+    return value
   }
 })
 

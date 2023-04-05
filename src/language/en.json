@@ -1,4 +1,9 @@
 {
+  "ProductsEditor": {
+    "title": "Products Editor",
+    "pc": "pc.",
+    "cm": "cm."
+  },
   "itemsEditor": {
     "title": "Items Editor",
     "temId": "Item Id",
@@ -74,7 +79,8 @@
     "places": "Places",
     "expenses": "Expenses",
     "newProducts": "New Products",
-    "itemsEditor": "Item editor"
+    "itemsEditor": "Item editor",
+    "productsEditor": "Products Editor"
   },
   "auth": {
     "title": "Authorization",
@@ -89,6 +95,8 @@
     "networkError": "Connection Error"
   },
   "form": {
+    "search": "Search",
+    "close": "Close",
     "active": "Active",
     "delete": "Delete",
     "required": "Required",

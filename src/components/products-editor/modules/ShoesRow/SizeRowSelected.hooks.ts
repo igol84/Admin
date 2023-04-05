@@ -2,7 +2,7 @@ import {ViewSize} from "../../types";
 import {SizeFieldNames, SizeFormFields} from "./SizeRowSelected.types";
 import {useState} from "react";
 import produce from "immer";
-import {useFetchAccess} from "../../../../hooks/pages";
+import {useDictionaryTranslate, useFetchAccess} from "../../../../hooks/pages";
 import {updateSize} from "../../../../store/actions/products-editor";
 import {EditSize} from "../../../../schemas/products-editor";
 
@@ -16,7 +16,8 @@ interface UseSizeForm {
     onPriceFieldChange: (price: string) => void,
     disabledButtonSave: () => boolean,
     onConfirm: () => Promise<void>,
-    onClickClose: () => void
+    onClickClose: () => void,
+    dict: (title: string) => any
   ]
 }
 
@@ -76,6 +77,8 @@ export const useSizeForm: UseSizeForm = (sizeData, onSelectedSize) => {
   const onClickClose = () => {
     onSelectedSize(null)
   }
+  const dict = useDictionaryTranslate('ProductsEditor')
+
   return [formSizeData, useError, onSizeFieldChange, onLengthFieldChange, onPriceFieldChange, disabledButtonSave,
-    onConfirm, onClickClose]
+    onConfirm, onClickClose, dict]
 }

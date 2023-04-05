@@ -2,10 +2,9 @@ import React from 'react';
 import {Box} from "@mui/material";
 import {SimpleField} from "../../../Form";
 import SaveButton from "../../../Form/SaveButton";
-import {GridActionsCellItem} from "@mui/x-data-grid";
-import CloseIcon from "@mui/icons-material/Close";
 import {useForm} from "./NameRowSelected.hooks";
 import {ViewShoes} from "../../types";
+import CloseButton from "../../../Form/CloseButton";
 
 interface NameRowSelectedProps {
   viewShoes: ViewShoes
@@ -28,8 +27,7 @@ const NameRowSelected = (props: NameRowSelectedProps) => {
   const buttonsCell =
     <Box sx={{display: 'flex', justifyContent: 'space-around'}}>
       <SaveButton disabled={disabledButtonSave()} onConfirm={onConfirm}/>
-      <GridActionsCellItem icon={<CloseIcon/>} label={'close'} onClick={() => onSelectedNameForm(false)}
-                           color="inherit"/>
+      <CloseButton onClick={() => onSelectedNameForm(false)}/>
     </Box>
 
   return (

@@ -115,7 +115,7 @@ const SidebarMenu = () => {
               location={location.pathname}
             />
             <Item
-              title={'Products Editor'}
+              title={dict('productsEditor')}
               to='/products-editor'
               icon={<SellOutlinedIcon/>}
               location={location.pathname}

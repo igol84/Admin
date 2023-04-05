@@ -2,10 +2,10 @@ import React from 'react';
 import {Box} from "@mui/material";
 import {SimpleField} from "../../../Form";
 import SaveButton from "../../../Form/SaveButton";
-import {GridActionsCellItem} from "@mui/x-data-grid";
-import CloseIcon from "@mui/icons-material/Close";
+import CloseButton from "../../../Form/CloseButton";
 import {ViewWidth} from "../../types";
 import {useForm} from "./ColorRowSelected.hooks";
+import {useDictionaryTranslate} from "../../../../hooks/pages";
 
 
 interface ColorRowSelectedProps {
@@ -16,9 +16,10 @@ interface ColorRowSelectedProps {
   colorPrice: string
 }
 
+
 const ColorRowSelected = (props: ColorRowSelectedProps) => {
   const {name, color, viewWidth, onSelectedColor, colorPrice} = props
-
+  const dict = useDictionaryTranslate('newProducts')
   const [
     formData, useError, onColorFieldChange, onPriceFieldChange, disabledButtonSave, onConfirm, onClickClose
   ] = useForm(name, color, colorPrice, onSelectedColor)
@@ -34,13 +35,13 @@ const ColorRowSelected = (props: ColorRowSelectedProps) => {
   const buttonsCell =
     <Box sx={{display: 'flex', justifyContent: 'space-around'}}>
       <SaveButton disabled={disabledButtonSave()} onConfirm={onConfirm}/>
-      <GridActionsCellItem icon={<CloseIcon/>} label={'close'} onClick={onClickClose} color="inherit"/>
+      <CloseButton onClick={onClickClose}/>
     </Box>
 
   return (
     <Box className='color-field selected'>
       <Box sx={{width: "150px"}}>{colorField}</Box>
-      <Box sx={{width: "150px"}}>{viewWidth.width}</Box>
+      <Box sx={{width: "150px"}}>{dict(viewWidth.width)}</Box>
       <Box sx={{flex: 1}}></Box>
       <Box sx={{width: "150px"}}>{priceField}</Box>
       <Box sx={{width: "150px"}}>{buttonsCell}</Box>

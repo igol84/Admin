@@ -1,4 +1,9 @@
 {
+  "ProductsEditor": {
+    "title": "Каталог",
+    "pc": "шт.",
+    "cm": "см."
+  },
   "itemsEditor": {
     "title": "Редактор продуктов",
     "temId": "Id",
@@ -74,7 +79,8 @@
     "places": "Магазины",
     "expenses": "Издержки",
     "newProducts": "Новые продукты",
-    "itemsEditor": "Склад"
+    "itemsEditor": "Склад",
+    "productsEditor": "Каталог"
   },
   "auth": {
     "title": "Авторизация",
@@ -89,6 +95,8 @@
     "networkError": "Ошибка подключения"
   },
   "form": {
+    "search": "Поиск",
+    "close": "Закрыть",
     "active": "Активный",
     "delete": "Удалить",
     "required": "Обязательно",

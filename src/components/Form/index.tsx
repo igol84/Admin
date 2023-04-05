@@ -277,8 +277,7 @@ export const SnackBarSuccess = (props: SnackBarSuccessProps) => {
     </Snackbar>
   )
 }
-
-export const formatter = new Intl.NumberFormat('us', { // 'es'
+export const formatter = (language: string) => new Intl.NumberFormat(language == 'en' ? 'es' : 'us', { //
   style: 'currency',
   currency: 'UAH',
 });

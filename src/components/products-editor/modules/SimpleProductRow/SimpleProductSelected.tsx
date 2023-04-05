@@ -3,9 +3,9 @@ import {Box, Paper} from "@mui/material"
 import {SimpleField} from "../../../Form"
 import React from "react"
 import SaveButton from "../../../Form/SaveButton";
-import CloseIcon from "@mui/icons-material/Close";
-import {GridActionsCellItem} from "@mui/x-data-grid";
 import {useForm} from "./hooks";
+import CloseButton from "../../../Form/CloseButton";
+import {useDictionaryTranslate} from "../../../../hooks/pages";
 
 interface Product {
   data: ViewSimpleProduct
@@ -14,6 +14,7 @@ interface Product {
 
 const SimpleProductSelected = (props: Product) => {
   const {data, resetFormData} = props
+  const dict = useDictionaryTranslate('ProductsEditor')
   const [
     formData, useError, onNameFieldChange, onPriceFieldChange, disabledButtonSave, onConfirm
   ] = useForm(data, resetFormData)
@@ -28,14 +29,14 @@ const SimpleProductSelected = (props: Product) => {
   const buttonsCell =
     <Box sx={{display: 'flex', justifyContent: 'space-around'}}>
       <SaveButton disabled={disabledButtonSave()} onConfirm={onConfirm}/>
-      <GridActionsCellItem icon={<CloseIcon/>} label={'close'} onClick={resetFormData} color="inherit"/>
+      <CloseButton onClick={resetFormData}/>
     </Box>
 
   return (
     <Paper className='product selected' onClick={() => undefined}>
       <Box sx={{display: 'flex', justifyContent: 'space-between', gap: 1}}>
         <Box sx={{width: '250px'}}>{nameCell}</Box>
-        <Box sx={{width: '80px'}}>{`${data.qty} шт.`}</Box>
+        <Box sx={{width: '80px'}}>{`${data.qty} ${dict('pc')}`}</Box>
         <Box sx={{flex: '1'}}></Box>
         <Box sx={{width: '100px'}}>{priceCell}</Box>
         <Box sx={{width: '150px'}}>{buttonsCell}</Box>
