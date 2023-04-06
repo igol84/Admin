@@ -6,7 +6,7 @@ export const useStyle = () => {
   const colors = tokens(theme.palette.mode)
   return {
     pr: "8px",
-    maxHeight: "75vh",
+    maxHeight: "60vh",
     overflow: "hidden",
     overflowY: "scroll",
     '& .MuiStack-root': {

@@ -1,10 +1,10 @@
 import {AppDispatch} from "../index";
 import {secureApiCreate} from "../../ky";
 import {productsEditorSlice} from "../slices/productsEditorSlice";
-import {Item} from "../../schemas/items-editor";
 import {getRowsForm} from "../../components/products-editor/functions";
 import {authSlice} from "../slices/authSlice";
 import {EditColor, EditShoes, EditSimpleProduct, EditSize} from "../../schemas/products-editor";
+import {Item} from "../../schemas/base";
 
 
 export const fetchProductsEditor = (access_token: string, {storeId}: any = null) => {

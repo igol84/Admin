@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {Expense} from "../../schemas/expense";
-import {Place} from "../../schemas/place";
+import {Expense, Place} from "../../schemas/base";
+
 
 interface ExpenseState {
   expenses: Expense[]

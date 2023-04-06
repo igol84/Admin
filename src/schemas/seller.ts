@@ -1,15 +1,8 @@
-export interface CreateSeller {
-  store_id: number
-  name: string
-  active: boolean
-}
+import {Seller} from "./base";
 
-export interface Seller extends CreateSeller{
-  id: number
-}
+export type CreateSeller = Omit<Seller, 'id'>
 
-export interface UpdateSeller extends CreateSeller{
-  id: number
+export interface UpdateSeller extends Seller{
 }
 
 export interface SellerWithDetails extends Seller{

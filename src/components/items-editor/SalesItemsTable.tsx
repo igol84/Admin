@@ -1,12 +1,12 @@
 import React from 'react';
 import {Box, Collapse, Table, TableBody, TableCell, TableHead, TableRow, Typography} from "@mui/material";
-import {Sale} from "../../schemas/items-editor";
 import {useDictionaryTranslate} from "../../hooks/pages";
 import {formatData, getComparator} from "../../hooks/form-data";
+import {itemSale} from "../../schemas/items-editor";
 
 interface SalesItemsTableType {
   isItemSelected: boolean
-  itemSales: Sale[]
+  itemSales: itemSale[]
 }
 
 const SalesItemsTable = (props: SalesItemsTableType) => {

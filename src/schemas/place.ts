@@ -1,12 +1,6 @@
-export interface CreatePlace {
-  store_id: number
-  name: string
-  active: boolean
-}
+import {Place} from "./base";
 
-export interface Place extends CreatePlace{
-  id: number
-}
+export type CreatePlace = Omit<Place, 'id'>
 
 export interface PlaceWithDetails extends Place{
   sales: number

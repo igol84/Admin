@@ -36,11 +36,9 @@ const ProductsEditor = () => {
                     : <Shoes key={rowId} viewShoes={product} onSelect={onSelect(rowId)}/>
               }
             })
-            : isLoading ? [_.times(rowsOnPage).map((index) => (
+            : isLoading ? _.times(rowsOnPage).map((index) => (
               <Skeleton key={index} variant='rounded' height='43px' animation='wave'/>
-            )),
-              <Skeleton sx={{ml: 5}} variant='circular' height={30} width={30} animation='wave'/>
-            ] : null
+            )) : null
           }
           {emptyRows > 0 && (
             <Box sx={{height: 50 * emptyRows - 4,}}> </Box>

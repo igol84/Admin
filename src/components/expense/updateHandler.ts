@@ -1,10 +1,11 @@
 import * as yup from "yup";
-import {Expense} from "../../schemas/expense";
+
 import {toTrimTheRow} from "../../hooks/form-data";
 import equal from "fast-deep-equal";
 import React from "react";
 import {useFetchAccess} from "../../hooks/pages";
 import {updateExpense} from "../../store/actions/expenses";
+import {Expense} from "../../schemas/base";
 
 export const useHandlerUpdate = () => {
   const editExpenseAccess = useFetchAccess(updateExpense)

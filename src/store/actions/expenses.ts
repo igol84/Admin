@@ -2,9 +2,9 @@ import {AppDispatch} from "../index";
 import {secureApiCreate} from "../../ky";
 import {expensesSlice} from "../slices/expensesSlice";
 import {authSlice} from "../slices/authSlice";
-import {CreateExpense, Expense, UpdateExpense} from "../../schemas/expense";
-import {Place} from "../../schemas/place";
+import {CreateExpense, UpdateExpense} from "../../schemas/expense";
 import {formatISODate} from "../../hooks/form-data";
+import {Expense, Place} from "../../schemas/base";
 
 
 

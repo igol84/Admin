@@ -1,9 +1,10 @@
 import {AppDispatch} from "../index";
 import {secureApiCreate} from "../../ky";
 import {itemsEditorSlice} from "../slices/itemsEditorSlice";
-import {Item, Sale, UpdatedItem} from "../../schemas/items-editor";
+import {itemSale, UpdatedItem} from "../../schemas/items-editor";
 import {ItemForm} from "../../components/items-editor/types";
 import {authSlice} from "../slices/authSlice";
+import {Item} from "../../schemas/base";
 
 interface GetRowsForm {
   (items: Item[]): ItemForm[]
@@ -55,7 +56,7 @@ export const fetchSalesByItem = (access_token: string, {itemId}: FetchSalesByIte
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(itemsEditorSlice.actions.SalesByItemFetching())
-      const itemSales: Sale[] = await secureApi.get(`handler_items_editor/get_item_sales/${itemId}`).json()
+      const itemSales: itemSale[] = await secureApi.get(`handler_items_editor/get_item_sales/${itemId}`).json()
       dispatch(itemsEditorSlice.actions.SalesByItemFetchingSuccess({itemSales}))
     } catch (err) {
       dispatch(itemsEditorSlice.actions.SalesByItemFetchingError(err as Error))

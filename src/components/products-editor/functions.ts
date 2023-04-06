@@ -1,7 +1,6 @@
 import _ from "lodash";
-import {Item} from "../../schemas/items-editor";
-import {Product} from "../../schemas/products-editor";
 import {Module, ViewColor, ViewProduct, ViewShoes, ViewSize, ViewWidth} from "./types";
+import {Item, Product} from "../../schemas/base";
 
 export const getRowsForm = (items: Item[]) => {
 
@@ -11,7 +10,7 @@ export const getRowsForm = (items: Item[]) => {
       if (item.qty > 0) {
         if (!(ids.includes(item.prod_id))) {
           let shoes = null
-          if (item.product.type === 'shoes') {
+          if (item.product.type === 'shoes' && item.product.shoes) {
             shoes = {
               size: item.product.shoes.size,
               color: item.product.shoes.color,

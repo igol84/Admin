@@ -21,12 +21,12 @@ import {
 import ExpenseDetail from "./ExpenseDetail";
 import {useAppSelector, useStoreId} from "../../hooks/redux";
 import LoadingCircular from "../LoadingCircular";
-import {Expense} from "../../schemas/expense";
 import {renderCellPlace, renderSelectEditInputPlaceCell} from "./PlaceCell";
 import EditToolbar from "./EditToolbar";
 import {useHandlerUpdate} from "./updateHandler";
 import DeleteButton from "./DeleteButton";
 import {formatData} from "../../hooks/form-data";
+import {Expense} from "../../schemas/base";
 
 
 const SORT_MODEL = 'expenses-sort-model'

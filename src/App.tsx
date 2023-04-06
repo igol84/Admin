@@ -11,6 +11,7 @@ import Expenses from "./pages/expenses"
 import NewProducts from "./pages/new-products"
 import Items from "./pages/items-editor"
 import ProductsEditor from "./pages/products-editor"
+import NewSale from "./pages/new-sales";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path='/new-products' element={<NewProducts/>}/>
           <Route path='/items-editor' element={<Items/>}/>
           <Route path='/products-editor' element={<ProductsEditor/>}/>
+          <Route path='/new-sales' element={<NewSale/>}/>
         </Routes>
       </main>
     </div>

@@ -1,14 +1,6 @@
-export interface CreateExpense {
-  place_id: string
-  desc: string
-  date_cost: Date
-  cost: number
-}
+import {Expense} from "./base";
 
-export interface Expense extends CreateExpense{
-  id: number
-}
+export type CreateExpense = Omit<Expense, 'id'>
 
-export interface UpdateExpense extends CreateExpense{
-  id: number
+export interface UpdateExpense extends Expense{
 }

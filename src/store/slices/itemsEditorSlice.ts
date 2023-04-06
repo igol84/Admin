@@ -1,11 +1,11 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {ItemForm} from "../../components/items-editor/types";
-import {Sale, UpdatedItem} from "../../schemas/items-editor";
+import {itemSale, UpdatedItem} from "../../schemas/items-editor";
 
 
 interface ItemsEditor {
   itemsEditor: ItemForm[]
-  itemSales: Sale[]
+  itemSales: itemSale[]
   isLoading: boolean
   error: string
 }
@@ -22,7 +22,7 @@ export interface ItemsEditorPayload {
 }
 
 export interface SalesByItemFetchingPayload {
-  itemSales: Sale[]
+  itemSales: itemSale[]
 }
 
 interface ChangedItemPayload {
