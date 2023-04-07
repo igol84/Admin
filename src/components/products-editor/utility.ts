@@ -10,7 +10,7 @@ export const getRowsForm = (items: Item[]) => {
       if (item.qty > 0) {
         if (!(ids.includes(item.prod_id))) {
           let shoes = null
-          if (item.product.type === 'shoes' && item.product.shoes) {
+          if (item.product.type === 'shoes' && item.product.shoes != null) {
             shoes = {
               size: item.product.shoes.size,
               color: item.product.shoes.color,

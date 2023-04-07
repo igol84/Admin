@@ -6,9 +6,11 @@ import expensesReducer from "./slices/expensesSlice"
 import newProductsSlice from "./slices/newProductsSlice"
 import itemsEditorSlice from "./slices/itemsEditorSlice"
 import productsEditorSlice from "./slices/productsEditorSlice"
+import newSalesSliceSlice from "./slices/newSalesSlice"
 
 const rootReducer = combineReducers({
-  authReducer, sellersReducer, placesReducer, expensesReducer, newProductsSlice, itemsEditorSlice, productsEditorSlice
+  authReducer, sellersReducer, placesReducer, expensesReducer, newProductsSlice, itemsEditorSlice, productsEditorSlice,
+  newSalesSliceSlice
 })
 
 export const setupStore = () => configureStore({

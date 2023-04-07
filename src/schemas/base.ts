@@ -45,3 +45,22 @@ export interface Place {
   name: string
   active: boolean
 }
+
+export interface Sale{
+  id: number
+  date_time: Date
+  sale_line_items: SaleLineItem
+  seller_id: number
+  seller: Seller
+  place_id: number
+  place: Place
+}
+
+export interface SaleLineItem{
+  sale_id: number
+  item_id: number
+  sale_price: number
+  qty: number
+  item: Item
+}
+

@@ -13,8 +13,8 @@ export const fetchExpenses = (access_token: string, {storeId}: any = null) => {
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(expensesSlice.actions.expensesFetching())
-      const expenses: Expense[] = await secureApi.get(`expense/get_by_store_id/${storeId}`).json()
-      const places: Place[] = await secureApi.get(`place/get_by_store_id/${storeId}`).json()
+      const expenses: Expense[] = await secureApi.get(`expense?store_id=${storeId}`).json()
+      const places: Place[] = await secureApi.get(`place?store_id=${storeId}`).json()
       dispatch(expensesSlice.actions.expensesFetchingSuccess({expenses, places}))
     } catch (err) {
       dispatch(expensesSlice.actions.expensesFetchingError(err as Error))

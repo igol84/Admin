@@ -5,7 +5,7 @@ import {useDictionaryTranslate} from "../../hooks/pages";
 
 interface SaveButtonType {
   disabled?: boolean
-  onConfirm: () => Promise<void>
+  onConfirm: () => Promise<void> |  void
 }
 
 const SaveButton = (props: SaveButtonType) => {

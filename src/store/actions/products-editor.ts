@@ -1,7 +1,7 @@
 import {AppDispatch} from "../index";
 import {secureApiCreate} from "../../ky";
 import {productsEditorSlice} from "../slices/productsEditorSlice";
-import {getRowsForm} from "../../components/products-editor/functions";
+import {getRowsForm} from "../../components/products-editor/utility";
 import {authSlice} from "../slices/authSlice";
 import {EditColor, EditShoes, EditSimpleProduct, EditSize} from "../../schemas/products-editor";
 import {Item} from "../../schemas/base";

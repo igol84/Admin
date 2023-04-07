@@ -38,7 +38,7 @@ export const fetchItemsEditor = (access_token: string, {storeId}: any = null) =>
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(itemsEditorSlice.actions.ItemsEditorFetching())
-      const items: Item[] = await secureApi.get(`item/by_store_id/${storeId}`).json()
+      const items: Item[] = await secureApi.get(`item?store_id=${storeId}`).json()
       const itemsEditor = getRowsForm(items)
       dispatch(itemsEditorSlice.actions.ItemsEditorFetchingSuccess({itemsEditor}))
     } catch (err) {

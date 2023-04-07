@@ -1,0 +1,76 @@
+import {useTheme} from "@mui/material";
+import {tokens} from "../../../theme";
+
+export const useStyle = () => {
+  const theme = useTheme()
+  const colors = tokens(theme.palette.mode)
+  return {
+    flex: 1,
+    px: "8px",
+    overflow: "hidden",
+    overflowY: "scroll",
+    maxHeight: "60vh",
+    '& .items': {
+      direction: "column",
+      justifyContent: "flex-start",
+      alignItems: "stretch",
+      gap: 1,
+      minHeight: '65px'
+    },
+    '& .buttons': {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-evenly'
+    },
+    '& .MuiIconButton-root': {
+      py: 0
+    },
+    '& .product': {
+      p: 1,
+      minHeight: "50px",
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      gap: 1,
+    },
+    '& .product:not(.selected)': {
+      backgroundColor: colors.blueAccent[700],
+      color: colors.blueAccent[100]
+    },
+    '& .product:not(.selected):hover': {
+      backgroundColor: colors.blueAccent[500],
+      cursor: 'pointer',
+    },
+    '& .product.selected': {
+      backgroundColor: colors.blueAccent[800],
+    },
+    '& .color': {
+      p: 1,
+      mt: 1,
+      minHeight: 36,
+    },
+    '& .color:not(:last-child)': {
+      mb: 1,
+    },
+    '& .color-row': {
+      display: 'flex', gap: 1
+    },
+    '& .size': {
+      minHeight: '50px',
+      m: 1,
+      p: 1,
+      backgroundColor: colors.blueAccent[700],
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      gap: 1
+    },
+    '& .size:not(.selected):hover': {
+      backgroundColor: colors.blueAccent[500],
+      cursor: 'pointer',
+    },
+    '& .shoes': {
+      backgroundColor: colors.blueAccent[800],
+    },
+  }
+}

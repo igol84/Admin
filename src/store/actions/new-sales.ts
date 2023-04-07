@@ -1,9 +1,7 @@
 import {AppDispatch} from "../index";
 import {secureApiCreate} from "../../ky";
 import {newSalesSlice} from "../slices/newSalesSlice";
-import {Item} from "../../schemas/base";
-
-
+import {Item, Sale} from "../../schemas/base";
 
 
 export const fetchDataForNewSale = (access_token: string, {storeId}: any = null) => {
@@ -11,8 +9,9 @@ export const fetchDataForNewSale = (access_token: string, {storeId}: any = null)
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(newSalesSlice.actions.newSalesFetching())
-      const items: Item[] = await secureApi.get(`item/by_store_id/${storeId}`).json()
-      dispatch(newSalesSlice.actions.newSalesFetchingSuccess({items}))
+      const items: Item[] = await secureApi.get(`item?store_id=${storeId}`).json()
+      const sales: Sale[] = await secureApi.get(`sale?store_id=${storeId}`).json()
+      dispatch(newSalesSlice.actions.newSalesFetchingSuccess({items, sales}))
     } catch (err) {
       dispatch(newSalesSlice.actions.newSalesFetchingError(err as Error))
     }
