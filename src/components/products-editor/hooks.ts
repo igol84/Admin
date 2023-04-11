@@ -35,6 +35,7 @@ export const useProductEditor: UseProductEditor = (rowsOnPage) => {
   const onSearch = (value: string) => {
     setSearch(value)
     setSelectedPage(1)
+    resetSelectedRow()
   }
 
   const searchedProductsData = productsData.slice().filter(searchRowsByName)
@@ -55,11 +56,11 @@ export const useProductEditor: UseProductEditor = (rowsOnPage) => {
     setSelectedRowId(rowIdx)
   }
   const isSelected = (rowIdx: number) => rowIdx === selectedRowId
-  const resetFormData = () => {
+  const resetSelectedRow = () => {
     setSelectedRowId(null)
   }
   return [
-    style, filteredProductsDataOfPage, isSelected, onSelect, resetFormData, search, onSearch, countOfPages, selectedPage,
+    style, filteredProductsDataOfPage, isSelected, onSelect, resetSelectedRow, search, onSearch, countOfPages, selectedPage,
     onChangePage, emptyRows, showLoading, isLoading
   ]
 }

@@ -8,11 +8,11 @@ interface NameRowProps {
   name: string
   shoesPrice: string
   onSelectedNameForm: (flag: boolean) => void
-  resetFormData: () => void
+  resetSelectedRow: () => void
 }
 
 const NameRow = (props: NameRowProps) => {
-  const {name, shoesPrice, onSelectedNameForm, resetFormData} = props
+  const {name, shoesPrice, onSelectedNameForm, resetSelectedRow} = props
   const {language} = useContext(LanguageModeContext)
   const onClick = () => {
     onSelectedNameForm(true)
@@ -20,7 +20,7 @@ const NameRow = (props: NameRowProps) => {
   const formatShoesPrice = shoesPrice !== '' ? formatter(language).format(Number(shoesPrice)) : ''
   const buttonsCell =
     <Box sx={{display: 'flex', justifyContent: 'space-around'}}>
-      <CloseButton onClick={resetFormData}/>
+      <CloseButton onClick={resetSelectedRow}/>
     </Box>
   return (
     <Box className='color-field' onClick={onClick}>

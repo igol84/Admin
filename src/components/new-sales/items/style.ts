@@ -7,10 +7,10 @@ export const useStyle = () => {
   return {
     flex: 1,
     px: "8px",
-    overflow: "hidden",
-    overflowY: "scroll",
-    maxHeight: "60vh",
     '& .items': {
+      overflow: "hidden",
+      overflowY: "scroll",
+      height: "60vh",
       direction: "column",
       justifyContent: "flex-start",
       alignItems: "stretch",
@@ -54,7 +54,9 @@ export const useStyle = () => {
             mb: 1,
           },
           '& .color-row': {
-            display: 'flex', gap: 1
+            minHeight: '36px',
+            display: 'flex',
+            gap: 1
           },
           '& .size': {
             p: 1,
@@ -62,6 +64,10 @@ export const useStyle = () => {
             flexDirection: 'column',
             alignItems: 'center',
             backgroundColor: colors.blueAccent[600],
+            '&.selected': {
+              backgroundColor: colors.blueAccent[700],
+              cursor: 'pointer',
+            },
             '&:not(.selected):hover': {
               backgroundColor: colors.blueAccent[500],
               cursor: 'pointer',

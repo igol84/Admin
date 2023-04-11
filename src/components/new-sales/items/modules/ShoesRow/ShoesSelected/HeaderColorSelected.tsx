@@ -2,23 +2,23 @@ import React from 'react';
 import {Box} from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 import {GridActionsCellItem} from "@mui/x-data-grid";
-import {useForm} from "./HeaderSelected.hooks";
+
 import {SimpleField} from "../../../../../Form";
 import CloseButton from "../../../../../Form/CloseButton";
 import {SelectedSize} from "./index";
+import {useForm} from "./HeaderColorSelected.hooks";
 
 
-interface NameRowSelectedProps {
-  name: string
+interface ColorRowSelectedProps {
+  color: string
+  width: string
   selectedSize: SelectedSize
   onClose: () => void
 }
 
-const HeaderSelected = (props: NameRowSelectedProps) => {
-  const {name, selectedSize, onClose} = props
-  const [
-    formShoesData, useError, onPriceFieldChange, onConfirm
-  ] = useForm(selectedSize, onClose)
+const HeaderColorSelected = (props: ColorRowSelectedProps) => {
+  const {color, width, selectedSize, onClose} = props
+  const [formShoesData, useError, onPriceFieldChange, onConfirm] = useForm(selectedSize, onClose)
 
   const priceField =
     <SimpleField
@@ -31,8 +31,9 @@ const HeaderSelected = (props: NameRowSelectedProps) => {
     </Box>
 
   return (
-    <Box sx={{display: 'flex', justifyContent: 'space-between', gap: 1}}>
-      <Box sx={{width: '250px'}}>{name}</Box>
+    <Box  className='color-row selected'>
+      <Box>{color}</Box>
+      <Box>{width}</Box>
       <Box sx={{flex: '1'}}></Box>
       <Box sx={{width: '100px'}}>{priceField}</Box>
       <Box sx={{width: '100px'}}>{buttonsCell}</Box>
@@ -40,4 +41,4 @@ const HeaderSelected = (props: NameRowSelectedProps) => {
   );
 };
 
-export default HeaderSelected
+export default HeaderColorSelected

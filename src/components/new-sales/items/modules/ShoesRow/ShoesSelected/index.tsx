@@ -1,8 +1,8 @@
 import {ViewShoes} from "../../../types"
 import {Box, Paper} from "@mui/material"
 import React, {useState} from "react"
-import HeaderSelected from "./HeaderSelected";
-import Header from "./Header";
+import HeaderNameSelected from "./HeaderNameSelected";
+import HeaderName from "./HeaderName";
 import Color from "./Color";
 
 
@@ -13,6 +13,7 @@ interface ShoesFormProps {
 
 export interface SelectedSize {
   id: number
+  price: number
 }
 
 const ShoesForm = (props: ShoesFormProps) => {
@@ -24,9 +25,8 @@ const ShoesForm = (props: ShoesFormProps) => {
   const onSelectedSize = (idSize: SelectedSize) => {
     setSelectedSize(idSize)
   }
-  const isSelectedSize = (idSize: number) => idSize === selectedSize?.id
 
-  const onClose = () => {
+  const onResetSize = () => {
     setSelectedSize(null)
   }
 
@@ -34,14 +34,12 @@ const ShoesForm = (props: ShoesFormProps) => {
   return (
     <Paper className='shoes'>
       <Box className='header'>
-        {selectedSize === null
-          ? <Header name={viewShoes.name}/>
-          : <HeaderSelected name={viewShoes.name} selectedSize={selectedSize} onClose={onClose}/>}
+        <HeaderName name={viewShoes.name} onClose={resetFormData}/>
       </Box>
       <Box className='body'>
         {viewShoes.colors.map((color, idRow) => {
-          return <Color key={idRow} viewColor={color} onSelectedSize={onSelectedSize}
-                        isSelectedSize={isSelectedSize}/>
+          return <Color key={idRow} viewColor={color} onSelectedSize={onSelectedSize} selectedSize={selectedSize}
+                        onResetSize={onResetSize}/>
         })}
       </Box>
     </Paper>

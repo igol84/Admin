@@ -1,40 +1,49 @@
-import {Box, Divider, Paper, Stack} from "@mui/material"
+import {Stack} from "@mui/material"
 import React from "react"
 import {ViewWidth} from "../../../types";
 import {SelectedSize} from "./index";
 import Size from "./Size";
+import SizeSelected from "./SizeSelected";
+import HeaderColor from "./HeaderColor";
+import HeaderColorSelected from "./HeaderColorSelected";
 
 
 interface WidthProps {
   color: string
   viewWidth: ViewWidth
   onSelectedSize: (idSize: SelectedSize) => void
-  isSelectedSize: (idSize: number) => boolean
+  selectedSize: SelectedSize | null
+  onResetSize: () => void
 }
 
 const Width = (props: WidthProps) => {
-  const {color, viewWidth, onSelectedSize, isSelectedSize} = props
+  const {color, viewWidth, onSelectedSize, selectedSize, onResetSize} = props
 
-  const onSizeClick = (id: number) => {
-    console.log(id)
+  const isSelectedSize = (idSize: number) => idSize === selectedSize?.id
+
+  const onSizeClick = (selectedSize: SelectedSize) => {
+    onSelectedSize(selectedSize)
   }
+
+  const isSelected = () => viewWidth.sizes.find(size => isSelectedSize(size.prod_id))
 
   return (
     <Stack className='color selected'>
-      <Box className='color-row'>
-        <Box>{color}</Box>
-        <Box>{viewWidth.width}</Box>
-      </Box>
+      {selectedSize && isSelected()
+        ? <HeaderColorSelected width={viewWidth.width} color={color} onClose={onResetSize} selectedSize={selectedSize}/>
+        : <HeaderColor width={viewWidth.width} color={color}/>
+      }
       <Stack
         direction="row"
-        spacing={1}
+        gap={1}
+        flexWrap='wrap'
       >
         {viewWidth.sizes.map((viewSize) => {
           return isSelectedSize(viewSize.prod_id)
-            ? <Box>{viewSize.size}: {viewSize.qty}</Box>
+            ? <SizeSelected key={viewSize.prod_id} size={viewSize.size}
+                            qty={viewSize.qty} onResetSize={onResetSize}/>
             : <Size key={viewSize.prod_id} id={viewSize.prod_id} size={viewSize.size}
-                    qty={viewSize.qty} onSizeClick={onSizeClick}/>
-
+                    qty={viewSize.qty} price={viewSize.price} onSizeClick={onSizeClick}/>
         })}
       </Stack>
     </Stack>

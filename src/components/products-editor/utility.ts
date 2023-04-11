@@ -2,7 +2,7 @@ import _ from "lodash";
 import {Module, ViewColor, ViewProduct, ViewShoes, ViewSize, ViewWidth} from "./types";
 import {Item, Product} from "../../schemas/base";
 
-export const getRowsForm = (items: Item[]) => {
+export const getRowsForm = (items: Item[]): ViewProduct[] => {
 
   const products: Product[] = []
   const ids: number[] = []
@@ -47,7 +47,7 @@ export const getRowsForm = (items: Item[]) => {
     return false
   }
   const isSimple = (a: string, b: string) => a.toLowerCase() === b.toLowerCase()
-  const groupedProducts: (ViewProduct)[] = []
+  const groupedProducts: ViewProduct[] = []
   sortedProducts.forEach(product => {
     if (product.type === Module.shoes) {
       const size = product.shoes?.size ?? 0

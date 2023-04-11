@@ -1,18 +1,20 @@
 import React from 'react';
 import {Box, Divider, Paper} from "@mui/material";
+import {SelectedSize} from "./index";
 
 interface SizeProps {
   id: number
   size: number
+  price: number
   qty: number
-  onSizeClick: (id: number) => void
+  onSizeClick: (selectedSize: SelectedSize) => void
 }
 
 const Size = (props: SizeProps) => {
-  const {id, qty, size, onSizeClick} = props
+  const {id, qty, size, price, onSizeClick} = props
 
   const onClick = () => {
-    onSizeClick(id)
+    onSizeClick({id, price})
   }
 
   return (

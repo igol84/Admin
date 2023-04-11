@@ -2,6 +2,10 @@ import {useState} from "react";
 import produce from "immer";
 import {Field} from "../../../../../Form/types";
 import {SelectedSize} from "./index";
+import {useAppDispatch} from "../../../../../../hooks/redux";
+import {putOnSale} from "../../../../../../store/actions/new-sales";
+import {PutOnSale} from "../../../../../../schemas/new-sale";
+import {useFetchAccess} from "../../../../../../hooks/pages";
 
 interface FormFields {
   price: Field<string>
@@ -34,14 +38,15 @@ export const useForm: UseForm = (selectedSize, onClose) => {
         prevFormData.price.value = price
       }))
   }
-
-
+  const dispatch = useAppDispatch()
   const onConfirm = () => {
-    const saleData = {
-      id: selectedSize.id,
-      price: formShoesData.price.value
+
+    const saleData: PutOnSale = {
+      productId: selectedSize.id,
+      salePrice: Number(formShoesData.price.value),
+      qty: 1
     }
-    console.log(saleData)
+    dispatch(putOnSale(saleData))
     onClose()
   }
   return [formShoesData, useError, onPriceFieldChange, onConfirm]

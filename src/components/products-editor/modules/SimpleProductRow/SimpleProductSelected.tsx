@@ -9,15 +9,15 @@ import {useDictionaryTranslate} from "../../../../hooks/pages";
 
 interface Product {
   data: ViewSimpleProduct
-  resetFormData: () => void
+  resetSelectedRow: () => void
 }
 
 const SimpleProductSelected = (props: Product) => {
-  const {data, resetFormData} = props
+  const {data, resetSelectedRow} = props
   const dict = useDictionaryTranslate('ProductsEditor')
   const [
     formData, useError, onNameFieldChange, onPriceFieldChange, disabledButtonSave, onConfirm
-  ] = useForm(data, resetFormData)
+  ] = useForm(data, resetSelectedRow)
   const nameCell =
     <SimpleField
       name='name' value={formData.name.value} setValue={onNameFieldChange} error={useError('name')} fullWidth={false}
@@ -29,7 +29,7 @@ const SimpleProductSelected = (props: Product) => {
   const buttonsCell =
     <Box sx={{display: 'flex', justifyContent: 'space-around'}}>
       <SaveButton disabled={disabledButtonSave()} onConfirm={onConfirm}/>
-      <CloseButton onClick={resetFormData}/>
+      <CloseButton onClick={resetSelectedRow}/>
     </Box>
 
   return (

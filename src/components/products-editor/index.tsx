@@ -14,7 +14,7 @@ import _ from "lodash";
 const ProductsEditor = () => {
   const rowsOnPage = 12
   const [
-    style, filteredProductsDataOfPage, isSelected, onSelect, resetFormData, search, onSearch, countOfPages, selectedPage,
+    style, filteredProductsDataOfPage, isSelected, onSelect, resetSelectedRow, search, onSearch, countOfPages, selectedPage,
     onChangePage, emptyRows, showLoading, isLoading
   ] = useProductEditor(rowsOnPage)
 
@@ -28,11 +28,11 @@ const ProductsEditor = () => {
               switch (product.module) {
                 case Module.product:
                   return isSelected(rowId)
-                    ? <SimpleProductSelected key={rowId} data={product} resetFormData={resetFormData}/>
+                    ? <SimpleProductSelected key={rowId} data={product} resetSelectedRow={resetSelectedRow}/>
                     : <SimpleProducts key={rowId} data={product} onSelect={onSelect(rowId)}/>
                 case Module.shoes:
                   return isSelected(rowId)
-                    ? <ShoesSelected key={rowId} viewShoes={product} resetFormData={resetFormData}/>
+                    ? <ShoesSelected key={rowId} viewShoes={product} resetSelectedRow={resetSelectedRow}/>
                     : <Shoes key={rowId} viewShoes={product} onSelect={onSelect(rowId)}/>
               }
             })

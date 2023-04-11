@@ -7,11 +7,11 @@ import NameRowSelected from "./NameRowSelected";
 
 interface ShoesFormProps {
   viewShoes: ViewShoes
-  resetFormData: () => void
+  resetSelectedRow: () => void
 }
 
 const ShoesForm = (props: ShoesFormProps) => {
-  const {viewShoes, resetFormData} = props
+  const {viewShoes, resetSelectedRow} = props
 
   const [selectedNameForm, setSelectedNameForm] = useState<boolean>(false)
   const [selectedColor, setSelectedColor] = useState<string | null>(null)
@@ -55,7 +55,7 @@ const ShoesForm = (props: ShoesFormProps) => {
       {selectedNameForm
         ? <NameRowSelected viewShoes={viewShoes} onSelectedNameForm={onSelectedNameForm}/>
         : <NameRow name={viewShoes.name} shoesPrice={shoesPrice} onSelectedNameForm={onSelectedNameForm}
-                   resetFormData={resetFormData}/>}
+                   resetSelectedRow={resetSelectedRow}/>}
       {viewShoes.colors.map((color, idRow) => {
         return <Color key={idRow} name={viewShoes.name} viewColor={color} selectedColor={isSelectedColor(color.color)}
                       onSelectedColor={onSelectedColor} onSelectedSize={onSelectedSize}
