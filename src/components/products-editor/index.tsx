@@ -5,7 +5,7 @@ import {Module} from "./types";
 import SimpleProducts from "./modules/SimpleProductRow/SimpleProduct";
 import SimpleProductSelected from "./modules/SimpleProductRow/SimpleProductSelected";
 import Shoes from "./modules/ShoesRow/Shoes";
-import ShoesForm from "./modules/ShoesRow/ShoesSelected";
+import ShoesSelected from "./modules/ShoesRow/ShoesSelected";
 import SearchInput from "../Form/SearchInput";
 import {useProductEditor} from "./hooks";
 import _ from "lodash";
@@ -32,7 +32,7 @@ const ProductsEditor = () => {
                     : <SimpleProducts key={rowId} data={product} onSelect={onSelect(rowId)}/>
                 case Module.shoes:
                   return isSelected(rowId)
-                    ? <ShoesForm key={rowId} viewShoes={product} resetFormData={resetFormData}/>
+                    ? <ShoesSelected key={rowId} viewShoes={product} resetFormData={resetFormData}/>
                     : <Shoes key={rowId} viewShoes={product} onSelect={onSelect(rowId)}/>
               }
             })

@@ -37,7 +37,7 @@ export const convertItems = (items: Item[]) => {
   )
   const nameSorter = (product: Product) => product.name.toLowerCase()
   const colorSorter = (product: Product) => product.shoes?.color.toLowerCase()
-  const withSorter = (product: Product) => product.shoes?.width.toLowerCase()
+  const withSorter = (product: Product) => product.shoes?.width
   const withSize = (product: Product) => product.shoes?.size
 
   const sortedProducts = _.orderBy(products, [nameSorter, colorSorter, withSorter, withSize])
@@ -47,7 +47,6 @@ export const convertItems = (items: Item[]) => {
       return product.module === Module.shoes
     return false
   }
-  const isSimple = (a: string, b: string) => a.toLowerCase() === b.toLowerCase()
   const groupedProducts: (ViewProduct)[] = []
   sortedProducts.forEach(product => {
     if (product.type === Module.shoes) {
@@ -58,15 +57,15 @@ export const convertItems = (items: Item[]) => {
       const viewWidth: ViewWidth = {width, sizes: Array(viewSize)}
       const color = product.shoes?.color ?? ''
       const viewColor: ViewColor = {color, widths: Array(viewWidth)}
-      if (!isShoes(lastProduct) || (isShoes(lastProduct) && !isSimple(lastProduct.name, product.name))) {
+      if (!isShoes(lastProduct) || (isShoes(lastProduct) && lastProduct.name !== product.name)) {
         const viewShoes: ViewShoes = {
           module: Module.shoes, name: product.name, type: product.type, colors: Array(viewColor)
         }
         groupedProducts.push(viewShoes)
-      } else if (isShoes(lastProduct) && isSimple(lastProduct.name, product.name) && product.shoes) {
+      } else if (isShoes(lastProduct) && lastProduct.name === product.name && product.shoes) {
         const shoes = groupedProducts.slice(-1)[0]
         if ('colors' in shoes) {
-          if (!isSimple(shoes.colors.slice(-1)[0].color, product.shoes.color)) {
+          if (shoes.colors.slice(-1)[0].color !== product.shoes.color) {
             shoes.colors.push(viewColor)
           } else {
             if (shoes.colors.slice(-1)[0].widths.slice(-1)[0].width !== product.shoes.width) {

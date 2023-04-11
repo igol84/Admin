@@ -13,7 +13,6 @@ interface ShoesFormProps {
 
 export interface SelectedSize {
   id: number
-  price: number
 }
 
 const ShoesForm = (props: ShoesFormProps) => {

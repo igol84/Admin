@@ -49,7 +49,7 @@ export interface Place {
 export interface Sale{
   id: number
   date_time: Date
-  sale_line_items: SaleLineItem
+  sale_line_items: SaleLineItem[]
   seller_id: number
   seller: Seller
   place_id: number

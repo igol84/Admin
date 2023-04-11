@@ -24,7 +24,8 @@ export const addNewProducts = (access_token: string, newProducts: Types) => {
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(newProductsSlice.actions.NewProductsFetching())
-      const outputItems: OutputItems = await secureApi.put('handler_receiving_the_item/receiving_the_items', {json: newProducts}).json()
+      const outputItems: OutputItems = await secureApi.put('handler_receiving_the_item/receiving_the_items',
+        {json: newProducts}).json()
       const products = outputItems.products ? outputItems.products : []
       dispatch(newProductsSlice.actions.NewProductsFetchingSuccess({products}))
     } catch (err) {

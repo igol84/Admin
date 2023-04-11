@@ -2,6 +2,7 @@ import {Box, Divider, Paper, Stack} from "@mui/material"
 import React from "react"
 import {ViewWidth} from "../../../types";
 import {SelectedSize} from "./index";
+import Size from "./Size";
 
 
 interface WidthProps {
@@ -13,6 +14,10 @@ interface WidthProps {
 
 const Width = (props: WidthProps) => {
   const {color, viewWidth, onSelectedSize, isSelectedSize} = props
+
+  const onSizeClick = (id: number) => {
+    console.log(id)
+  }
 
   return (
     <Stack className='color selected'>
@@ -27,13 +32,8 @@ const Width = (props: WidthProps) => {
         {viewWidth.sizes.map((viewSize) => {
           return isSelectedSize(viewSize.prod_id)
             ? <Box>{viewSize.size}: {viewSize.qty}</Box>
-            :
-            <Paper key={viewSize.prod_id}
-                   sx={{display: 'flex', flexDirection: 'column', alignItems: 'center', p: 1, backgroundColor: 'gray'}}>
-              <Box>{viewSize.size}</Box>
-              <Divider orientation="horizontal" flexItem/>
-              <Box>{viewSize.qty}</Box>
-            </Paper>
+            : <Size key={viewSize.prod_id} id={viewSize.prod_id} size={viewSize.size}
+                    qty={viewSize.qty} onSizeClick={onSizeClick}/>
 
         })}
       </Stack>
