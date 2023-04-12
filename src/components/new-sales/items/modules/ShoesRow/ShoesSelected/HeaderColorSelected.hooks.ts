@@ -5,7 +5,7 @@ import {SelectedSize} from "./index";
 import {useAppDispatch} from "../../../../../../hooks/redux";
 import {putOnSale} from "../../../../../../store/actions/new-sales";
 import {PutOnSale} from "../../../../../../schemas/new-sale";
-import {useFetchAccess} from "../../../../../../hooks/pages";
+
 
 interface FormFields {
   price: Field<string>

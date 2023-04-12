@@ -37,10 +37,10 @@ export interface ViewShoes {
 
 export type ViewProduct = ViewSimpleProduct | ViewShoes
 
-export const isSimpleProduct = (product: ViewProduct): product is ViewSimpleProduct => {
-  return product.module === Module.product
-}
 
-export const isShoes = (product: ViewProduct): product is ViewShoes => {
-  return product.module === Module.shoes
+export interface ViewSaleLineItem {
+  prod_id: number
+  name: string
+  price: number
+  qty: number
 }

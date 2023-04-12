@@ -1,10 +1,10 @@
 import {Item, Product} from "../../../schemas/base";
 import _ from "lodash";
-import {Module, ViewColor, ViewProduct, ViewShoes, ViewSize, ViewWidth} from "./types";
+import {Module, ViewColor, ViewProduct, ViewSaleLineItem, ViewShoes, ViewSize, ViewWidth} from "./types";
+import {NewSaleLineItem} from "../../../schemas/new-sale";
 
 
-export const convertItems = (items: Item[]) => {
-
+export const convertItems = (items: Item[]): ViewProduct[] => {
   const products: Product[] = []
   const ids: number[] = []
   items.forEach(item => {
@@ -87,4 +87,52 @@ export const convertItems = (items: Item[]) => {
     }
   })
   return groupedProducts
+}
+
+interface ConvertSaleLineItems {
+  (items: Item[], newSaleLineItems: NewSaleLineItem[]): ViewSaleLineItem[]
+}
+
+const findItemById = (itemId: number, items: Item[]) => {
+  return items.find(item => item.id === itemId)
+}
+
+const findProductInSaleLineItems = (vewSaleLineItems: ViewSaleLineItem[], prodId: number, price: number) => {
+  return vewSaleLineItems.find(vewSaleLineItem =>
+    vewSaleLineItem.prod_id === prodId && vewSaleLineItem.price === price
+  )
+}
+
+export const convertSaleLineItems: ConvertSaleLineItems = (items, newSaleLineItems) => {
+
+  let vewSaleLineItems: ViewSaleLineItem[] = []
+  newSaleLineItems.forEach(newSaleLineItem => {
+    const item = findItemById(newSaleLineItem.itemId, items)
+
+    if (item) {
+      const prod = findProductInSaleLineItems(vewSaleLineItems, item.prod_id, newSaleLineItem.salePrice)
+      if (prod) {
+        vewSaleLineItems = vewSaleLineItems.map(vewSaleLineItem => {
+          if (vewSaleLineItem.prod_id === item.prod_id && vewSaleLineItem.price === newSaleLineItem.salePrice)
+            return {...vewSaleLineItem, qty: vewSaleLineItem.qty + newSaleLineItem.qty}
+          else
+            return vewSaleLineItem
+        })
+
+      } else {
+        const name = item.product.shoes
+          ? `${item.product.name} ${item.product.shoes.color} ${item.product.shoes.width} ${item.product.shoes.size}`
+          : item.product.name
+        const viewSaleLineItem: ViewSaleLineItem = {
+          prod_id: item.prod_id,
+          name: name,
+          price: newSaleLineItem.salePrice,
+          qty: newSaleLineItem.qty
+        }
+        vewSaleLineItems.push(viewSaleLineItem)
+      }
+
+    }
+  })
+  return vewSaleLineItems
 }

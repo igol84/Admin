@@ -1,11 +1,13 @@
 import {useState} from "react";
 import produce from "immer";
 import {FieldNames, FormFields, ViewSimpleProduct} from "./types";
-
+import {PutOnSale} from "../../../../../schemas/new-sale";
+import {putOnSale} from "../../../../../store/actions/new-sales";
+import {useAppDispatch} from "../../../../../hooks/redux";
 
 
 interface UseForm {
-  (viewSimpleProduct: ViewSimpleProduct, resetFormData: () => void): [
+  (viewSimpleProduct: ViewSimpleProduct, resetSelectedRow: () => void): [
     formData: FormFields,
     useError: (fieldName: FieldNames) => string,
     onQtyFieldChange: (qty: string) => void,
@@ -14,7 +16,7 @@ interface UseForm {
   ]
 }
 
-export const useForm: UseForm = (viewSimpleProduct, resetFormData) => {
+export const useForm: UseForm = (viewSimpleProduct, resetSelectedRow) => {
 
   const useError = (fieldName: FieldNames) => formData[fieldName].error
   const initialFormFields: FormFields = {
@@ -34,15 +36,15 @@ export const useForm: UseForm = (viewSimpleProduct, resetFormData) => {
         prevFormData.price.value = price
       }))
   }
-
-  const onConfirm =  () => {
-      const saleData = {
-        id: viewSimpleProduct.id,
-        qty: formData.qty.value,
-        price: Number(formData.price.value)
-      }
-      console.log(saleData)
-      resetFormData()
+  const dispatch = useAppDispatch()
+  const onConfirm = () => {
+    const saleData: PutOnSale = {
+      productId: viewSimpleProduct.id,
+      salePrice: Number(formData.price.value),
+      qty: Number(formData.qty.value)
+    }
+    dispatch(putOnSale(saleData))
+    resetSelectedRow()
   }
 
   return [formData, useError, onQtyFieldChange, onPriceFieldChange, onConfirm]

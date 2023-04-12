@@ -9,15 +9,15 @@ import React from "react";
 
 interface Product {
   viewSimpleProduct: ViewSimpleProduct
-  resetFormData: () => void
+  resetSelectedRow: () => void
 }
 
 const SimpleProductSelected = (props: Product) => {
-  const {viewSimpleProduct, resetFormData} = props
+  const {viewSimpleProduct, resetSelectedRow} = props
 
   const [
     formData, useError, onQtyFieldChange, onPriceFieldChange, onConfirm
-  ] = useForm(viewSimpleProduct, resetFormData)
+  ] = useForm(viewSimpleProduct, resetSelectedRow)
   const qtyCell =
     <SimpleField
       type='number' name='qty' value={formData.qty.value} setValue={onQtyFieldChange} error={useError('qty')}
@@ -29,7 +29,7 @@ const SimpleProductSelected = (props: Product) => {
   const buttonsCell =
     <>
       <GridActionsCellItem icon={<CheckIcon/>} label={'Check'} onClick={onConfirm}/>
-      <CloseButton onClick={resetFormData}/>
+      <CloseButton onClick={resetSelectedRow}/>
     </>
 
   return (

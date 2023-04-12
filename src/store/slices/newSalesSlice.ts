@@ -1,11 +1,12 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {Item, Sale} from "../../schemas/base";
 import produce from "immer";
-import {PutOnSale} from "../../schemas/new-sale";
+import {NewSaleLineItem, PutOnSale} from "../../schemas/new-sale";
 
 
 interface NewSalesState {
   items: Item[]
+  newSaleLineItems: NewSaleLineItem[]
   sales: Sale[]
   isLoading: boolean
   error: string
@@ -13,6 +14,7 @@ interface NewSalesState {
 
 const initialState: NewSalesState = {
   items: [],
+  newSaleLineItems: [],
   sales: [],
   isLoading: false,
   error: ''
@@ -25,7 +27,6 @@ export interface NewSalesPayload {
 
 export interface PutOnSalePayload {
   putOnSale: PutOnSale
-
 }
 
 export const newSalesSlice = createSlice({
@@ -53,7 +54,25 @@ export const newSalesSlice = createSlice({
             if (qtyNeedToAdd > 0) {
               const sliQty = qtyNeedToAdd > item.qty ? item.qty : qtyNeedToAdd
               item.qty -= sliQty
+
+              let added = false
+              state.newSaleLineItems = produce(state.newSaleLineItems, draftData => {
+                draftData.map(sli => {
+                  if(sli.itemId === item.id && sli.salePrice === putOnSale.salePrice){
+                    sli.qty += sliQty
+                    added = true
+                  }
+                })
+              })
+
+              if (!added) {
+                const newSaleLineItem: NewSaleLineItem = {
+                  itemId: item.id, qty: sliQty, salePrice: putOnSale.salePrice
+                }
+                state.newSaleLineItems.push(newSaleLineItem)
+              }
               qtyNeedToAdd -= sliQty
+
             }
           }
         })

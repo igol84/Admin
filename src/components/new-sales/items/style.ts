@@ -6,8 +6,8 @@ export const useStyle = () => {
   const colors = tokens(theme.palette.mode)
   return {
     flex: 1,
-    px: "8px",
     '& .items': {
+      pr: 1,
       overflow: "hidden",
       overflowY: "scroll",
       height: "60vh",

@@ -1,7 +1,6 @@
 import {ViewShoes} from "../../../types"
 import {Box, Paper} from "@mui/material"
 import React, {useState} from "react"
-import HeaderNameSelected from "./HeaderNameSelected";
 import HeaderName from "./HeaderName";
 import Color from "./Color";
 
