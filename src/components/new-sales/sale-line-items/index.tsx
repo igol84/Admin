@@ -1,29 +1,37 @@
-import React from 'react';
-import {Box, Paper, Stack} from "@mui/material";
-import {ViewSaleLineItem} from "../items/types";
+import React, {useState} from 'react';
+import {Box, Stack} from "@mui/material";
 import {useStyle} from "./style";
+import NewSaleLineItemRow from "./NewSaleLineItemRow/NewSaleLineItemRow";
+import NewSaleLineItemRowSelected from "./NewSaleLineItemRow/NewSaleLineItemRowSelected";
+import {ViewNewSaleLineItem} from "./types";
 
 
 interface SaleLineItemsProps {
-  viewSaleLineItems: ViewSaleLineItem[]
+  viewNewSaleLineItems: ViewNewSaleLineItem[]
 }
 
 const SaleLineItems = (props: SaleLineItemsProps) => {
-  const {viewSaleLineItems} = props
+  const {viewNewSaleLineItems} = props
   const style = useStyle()
+  const [selectedRowId, setSelectedRowId] = useState<number | null>(null)
+  const omSelectedRow = (rowId: number) => () => {
+    setSelectedRowId(rowId)
+  }
+  const isSelected = (rowId: number) => rowId === selectedRowId
+  const resetSelectedRow = () => {
+    setSelectedRowId(null)
+  }
+
   return (
     <Box sx={style}>
       <Stack className='items'>
-        {viewSaleLineItems.map((viewProduct, rowId) => (
-            <Paper key={rowId} className='product'>
-              <Box sx={{width: '250px'}}>{viewProduct.name}</Box>
-              <Box sx={{width: '80px'}}>{`${viewProduct.qty} `}</Box>
-              <Box sx={{flex: '1'}}></Box>
-              <Box sx={{width: '100px'}}>{viewProduct.price}</Box>
-              <Box sx={{width: '150px'}}></Box>
-            </Paper>
-          )
-        )}
+        {viewNewSaleLineItems.map((viewNewSaleLineItem, rowId) => {
+          return isSelected(rowId)
+            ? <NewSaleLineItemRowSelected key={rowId} viewNewSaleLineItem={viewNewSaleLineItem}
+                                          resetSelectedRow={resetSelectedRow}/>
+            : <NewSaleLineItemRow key={rowId} viewNewSaleLineItem={viewNewSaleLineItem}
+                                  omSelectedRow={omSelectedRow(rowId)}/>
+        })}
       </Stack>
     </Box>
   );

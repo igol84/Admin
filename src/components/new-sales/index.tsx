@@ -14,7 +14,7 @@ const NewSales = () => {
 
   const {isLoading, items, newSaleLineItems} = useAppSelector(state => state.newSalesSliceSlice)
   const viewProducts = convertItems(items)
-  const viewSaleLineItems = convertSaleLineItems(items, newSaleLineItems)
+  const viewNewSaleLineItems = convertSaleLineItems(items, newSaleLineItems)
   useEffect(() => {
     console.log(newSaleLineItems)
   }, [newSaleLineItems])
@@ -23,7 +23,7 @@ const NewSales = () => {
 
   return (
     <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
-      <SaleLineItems viewSaleLineItems={viewSaleLineItems}/>
+      <SaleLineItems viewNewSaleLineItems={viewNewSaleLineItems}/>
       <Items viewProducts={viewProducts}/>
       <LoadingCircular show={showLoading}/>
     </Box>

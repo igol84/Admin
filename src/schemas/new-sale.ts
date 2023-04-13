@@ -1,5 +1,3 @@
-import {Item, SaleLineItem} from "./base";
-
 export interface PutOnSale {
   productId: number
   salePrice: number
@@ -25,4 +23,15 @@ export interface CreateSale {
 
 export interface EndSale {
   sale: CreateSale
+}
+
+export interface UpdatedNewSaleItem {
+  prodId: number
+  qty: number
+  newPrice: number
+}
+
+export interface RemovedNewSaleItem {
+  prodId: number
+  price: number
 }

@@ -2,7 +2,7 @@ import {AppDispatch} from "../index";
 import {secureApiCreate} from "../../ky";
 import {newSalesSlice} from "../slices/newSalesSlice";
 import {Item, Sale} from "../../schemas/base";
-import {PutOnSale} from "../../schemas/new-sale";
+import {PutOnSale, RemovedNewSaleItem, UpdatedNewSaleItem} from "../../schemas/new-sale";
 
 
 export const fetchDataForNewSale = (access_token: string, {storeId}: any = null) => {
@@ -22,5 +22,17 @@ export const fetchDataForNewSale = (access_token: string, {storeId}: any = null)
 export const putOnSale = (putOnSale: PutOnSale) => {
   return (dispatch: AppDispatch) => {
     dispatch(newSalesSlice.actions.putOnSale({putOnSale}))
+  }
+}
+
+export const updateNewSaleItem = (updatedNewSaleItem: UpdatedNewSaleItem) => {
+  return (dispatch: AppDispatch) => {
+    dispatch(newSalesSlice.actions.updateNewSaleItem({updatedNewSaleItem}))
+  }
+}
+
+export const removeNewSaleItem = (removedNewSaleItem: RemovedNewSaleItem) => {
+  return (dispatch: AppDispatch) => {
+    dispatch(newSalesSlice.actions.removeNewSaleItem({removedNewSaleItem}))
   }
 }

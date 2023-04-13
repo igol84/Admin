@@ -1,7 +1,7 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {Item, Sale} from "../../schemas/base";
 import produce from "immer";
-import {NewSaleLineItem, PutOnSale} from "../../schemas/new-sale";
+import {NewSaleLineItem, PutOnSale, RemovedNewSaleItem, UpdatedNewSaleItem} from "../../schemas/new-sale";
 
 
 interface NewSalesState {
@@ -29,6 +29,15 @@ export interface PutOnSalePayload {
   putOnSale: PutOnSale
 }
 
+export interface UpdateNewSaleItemPayload {
+  updatedNewSaleItem: UpdatedNewSaleItem
+}
+
+export interface RemoveNewSaleItemPayload {
+  removedNewSaleItem: RemovedNewSaleItem
+}
+
+
 export const newSalesSlice = createSlice({
   name: 'newSales',
   initialState,
@@ -39,6 +48,7 @@ export const newSalesSlice = createSlice({
     newSalesFetchingSuccess(state, action: PayloadAction<NewSalesPayload>) {
       state.items = action.payload.items
       state.sales = action.payload.sales
+      state.newSaleLineItems = []
       state.isLoading = false
       state.error = ''
     },
@@ -58,27 +68,57 @@ export const newSalesSlice = createSlice({
               let added = false
               state.newSaleLineItems = produce(state.newSaleLineItems, draftData => {
                 draftData.map(sli => {
-                  if(sli.itemId === item.id && sli.salePrice === putOnSale.salePrice){
+                  if (sli.itemId === item.id && sli.salePrice === putOnSale.salePrice) {
                     sli.qty += sliQty
                     added = true
                   }
                 })
               })
-
-              if (!added) {
+              if (!added && sliQty > 0) {
                 const newSaleLineItem: NewSaleLineItem = {
                   itemId: item.id, qty: sliQty, salePrice: putOnSale.salePrice
                 }
                 state.newSaleLineItems.push(newSaleLineItem)
               }
               qtyNeedToAdd -= sliQty
-
             }
           }
         })
       })
     },
+    updateNewSaleItem(state, {payload: {updatedNewSaleItem}}: PayloadAction<UpdateNewSaleItemPayload>) {
+      state.newSaleLineItems = produce(state.newSaleLineItems, draftData => {
+        draftData.map(sli => {
+          const item = state.items.find(item => item.id === sli.itemId)
+          if (item !== undefined && item.prod_id === updatedNewSaleItem.prodId && sli.qty === updatedNewSaleItem.qty) {
+            sli.salePrice = updatedNewSaleItem.newPrice
+          }
+        })
+      })
+    },
+    removeNewSaleItem(state, {payload: {removedNewSaleItem}}: PayloadAction<RemoveNewSaleItemPayload>) {
 
+      state.items = state.items.map(item => {
+        if (item.prod_id === removedNewSaleItem.prodId) {
+          const deletedNewSaleLineItems = state.newSaleLineItems.filter(sli => sli.itemId === item.id)
+
+          const qty = deletedNewSaleLineItems.reduce((qty, sli) => qty + sli.qty, 0)
+          console.log(qty)
+
+          return {...item, qty: item.qty + qty}
+        }
+        return item
+      })
+
+      state.items.forEach(item => {
+        if (item.prod_id === removedNewSaleItem.prodId) {
+          state.newSaleLineItems = state.newSaleLineItems.filter(
+            sli => !(sli.itemId === item.id && sli.salePrice === removedNewSaleItem.price)
+          )
+        }
+      })
+
+    },
 
   }
 })

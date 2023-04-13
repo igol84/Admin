@@ -1,7 +1,8 @@
 import {Item, Product} from "../../../schemas/base";
 import _ from "lodash";
-import {Module, ViewColor, ViewProduct, ViewSaleLineItem, ViewShoes, ViewSize, ViewWidth} from "./types";
+import {Module, ViewColor, ViewProduct, ViewShoes, ViewSize, ViewWidth} from "./types";
 import {NewSaleLineItem} from "../../../schemas/new-sale";
+import {ViewNewSaleLineItem} from "../sale-line-items/types";
 
 
 export const convertItems = (items: Item[]): ViewProduct[] => {
@@ -90,14 +91,14 @@ export const convertItems = (items: Item[]): ViewProduct[] => {
 }
 
 interface ConvertSaleLineItems {
-  (items: Item[], newSaleLineItems: NewSaleLineItem[]): ViewSaleLineItem[]
+  (items: Item[], newSaleLineItems: NewSaleLineItem[]): ViewNewSaleLineItem[]
 }
 
 const findItemById = (itemId: number, items: Item[]) => {
   return items.find(item => item.id === itemId)
 }
 
-const findProductInSaleLineItems = (vewSaleLineItems: ViewSaleLineItem[], prodId: number, price: number) => {
+const findProductInSaleLineItems = (vewSaleLineItems: ViewNewSaleLineItem[], prodId: number, price: number) => {
   return vewSaleLineItems.find(vewSaleLineItem =>
     vewSaleLineItem.prod_id === prodId && vewSaleLineItem.price === price
   )
@@ -105,7 +106,7 @@ const findProductInSaleLineItems = (vewSaleLineItems: ViewSaleLineItem[], prodId
 
 export const convertSaleLineItems: ConvertSaleLineItems = (items, newSaleLineItems) => {
 
-  let vewSaleLineItems: ViewSaleLineItem[] = []
+  let vewSaleLineItems: ViewNewSaleLineItem[] = []
   newSaleLineItems.forEach(newSaleLineItem => {
     const item = findItemById(newSaleLineItem.itemId, items)
 
@@ -123,7 +124,7 @@ export const convertSaleLineItems: ConvertSaleLineItems = (items, newSaleLineIte
         const name = item.product.shoes
           ? `${item.product.name} ${item.product.shoes.color} ${item.product.shoes.width} ${item.product.shoes.size}`
           : item.product.name
-        const viewSaleLineItem: ViewSaleLineItem = {
+        const viewSaleLineItem: ViewNewSaleLineItem = {
           prod_id: item.prod_id,
           name: name,
           price: newSaleLineItem.salePrice,
