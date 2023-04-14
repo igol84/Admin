@@ -100,24 +100,21 @@ export const newSalesSlice = createSlice({
 
       state.items = state.items.map(item => {
         if (item.prod_id === removedNewSaleItem.prodId) {
-          const deletedNewSaleLineItems = state.newSaleLineItems.filter(sli => sli.itemId === item.id)
-
-          const qty = deletedNewSaleLineItems.reduce((qty, sli) => qty + sli.qty, 0)
-          console.log(qty)
-
-          return {...item, qty: item.qty + qty}
+          const newSaleLineItemsQty = state.newSaleLineItems.find(sli =>
+            sli.itemId === item.id && sli.salePrice === removedNewSaleItem.price
+          )?.qty ?? 0
+          return {...item, qty: item.qty + newSaleLineItemsQty}
         }
         return item
       })
 
       state.items.forEach(item => {
         if (item.prod_id === removedNewSaleItem.prodId) {
-          state.newSaleLineItems = state.newSaleLineItems.filter(
-            sli => !(sli.itemId === item.id && sli.salePrice === removedNewSaleItem.price)
+          state.newSaleLineItems = state.newSaleLineItems.filter(sli =>
+            !(sli.itemId === item.id && sli.salePrice === removedNewSaleItem.price)
           )
         }
       })
-
     },
 
   }
