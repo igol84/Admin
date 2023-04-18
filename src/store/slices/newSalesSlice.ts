@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {Item, Sale} from "../../schemas/base";
+import {Item, Place, Sale, Seller} from "../../schemas/base";
 import produce from "immer";
 import {NewSaleLineItem, PutOnSale, RemovedNewSaleItem, UpdatedNewSaleItem} from "../../schemas/new-sale";
 
@@ -8,6 +8,8 @@ interface NewSalesState {
   items: Item[]
   newSaleLineItems: NewSaleLineItem[]
   sales: Sale[]
+  sellers: Seller[]
+  places: Place[]
   isLoading: boolean
   error: string
 }
@@ -16,6 +18,8 @@ const initialState: NewSalesState = {
   items: [],
   newSaleLineItems: [],
   sales: [],
+  sellers: [],
+  places: [],
   isLoading: false,
   error: ''
 }
@@ -23,6 +27,8 @@ const initialState: NewSalesState = {
 export interface NewSalesPayload {
   items: Item[]
   sales: Sale[]
+  sellers: Seller[]
+  places: Place[]
 }
 
 export interface PutOnSalePayload {
@@ -48,6 +54,8 @@ export const newSalesSlice = createSlice({
     newSalesFetchingSuccess(state, action: PayloadAction<NewSalesPayload>) {
       state.items = action.payload.items
       state.sales = action.payload.sales
+      state.sellers = action.payload.sellers
+      state.places = action.payload.places
       state.newSaleLineItems = []
       state.isLoading = false
       state.error = ''

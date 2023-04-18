@@ -1,8 +1,8 @@
-import {Item, Product} from "../../../schemas/base";
+import {Item, Place, Product, Seller} from "../../../schemas/base";
 import _ from "lodash";
 import {Module, ViewColor, ViewProduct, ViewShoes, ViewSize, ViewWidth} from "./types";
 import {NewSaleLineItem} from "../../../schemas/new-sale";
-import {ViewNewSaleLineItem} from "../sale-line-items/types";
+import {ViewNewSaleLineItem, ViewPlace, ViewSeller, ViewSellersAndPlaces} from "../sale-line-items/types";
 
 
 export const convertItems = (items: Item[]): ViewProduct[] => {
@@ -136,4 +136,32 @@ export const convertSaleLineItems: ConvertSaleLineItems = (items, newSaleLineIte
     }
   })
   return vewSaleLineItems
+}
+
+interface ConvertSellersAndPlaces {
+  (sellers: Seller[], places: Place[]): ViewSellersAndPlaces
+}
+
+export const convertSellersAndPlaces: ConvertSellersAndPlaces = (sellers, places) => {
+  const viewSellers: ViewSeller[] = []
+  sellers.forEach(seller => {
+    if (seller.active) {
+      const viewSeller: ViewSeller = {id: seller.id, name: seller.name}
+      viewSellers.push(viewSeller)
+    }
+  })
+  const viewPlaces: ViewPlace[] = []
+  places.forEach(place => {
+    if (place.active) {
+      const viewPlace: ViewPlace = {id: place.id, name: place.name}
+      viewPlaces.push(viewPlace)
+    }
+  })
+  const convertSaleLineItems: ViewSellersAndPlaces = {
+    selectedPlaceId: viewSellers.length == 1 ? viewSellers[0].id.toString() : '-1',
+    sellers: viewSellers,
+    selectedSellerId : viewPlaces.length == 1 ? viewPlaces[0].id.toString() : '-1',
+    places: viewPlaces
+  }
+  return convertSaleLineItems
 }

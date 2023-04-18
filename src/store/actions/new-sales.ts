@@ -1,7 +1,7 @@
 import {AppDispatch} from "../index";
 import {secureApiCreate} from "../../ky";
 import {newSalesSlice} from "../slices/newSalesSlice";
-import {Item, Sale} from "../../schemas/base";
+import {Item, Place, Sale, Seller} from "../../schemas/base";
 import {PutOnSale, RemovedNewSaleItem, UpdatedNewSaleItem} from "../../schemas/new-sale";
 
 
@@ -12,7 +12,9 @@ export const fetchDataForNewSale = (access_token: string, {storeId}: any = null)
       dispatch(newSalesSlice.actions.newSalesFetching())
       const items: Item[] = await secureApi.get(`item?store_id=${storeId}`).json()
       const sales: Sale[] = await secureApi.get(`sale?store_id=${storeId}`).json()
-      dispatch(newSalesSlice.actions.newSalesFetchingSuccess({items, sales}))
+      const sellers: Seller[] = await secureApi.get(`seller/?store_id=${storeId}`).json()
+      const places: Place[] = await secureApi.get(`place/?store_id=${storeId}`).json()
+      dispatch(newSalesSlice.actions.newSalesFetchingSuccess({items, sales, sellers, places}))
     } catch (err) {
       dispatch(newSalesSlice.actions.newSalesFetchingError(err as Error))
     }

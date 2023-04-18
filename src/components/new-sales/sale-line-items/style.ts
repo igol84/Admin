@@ -5,6 +5,9 @@ export const useStyle = () => {
   const theme = useTheme()
   const colors = tokens(theme.palette.mode)
   return {
+    '& ::-webkit-calendar-picker-indicator': {
+      filter: theme.palette.mode === 'dark' ? 'invert(1)' : 'none'
+    },
     flex: 1,
     pr: 1,
     '& .items': {
