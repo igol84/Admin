@@ -2,7 +2,7 @@ import {AppDispatch} from "../index";
 import {secureApiCreate} from "../../ky";
 import {newSalesSlice} from "../slices/newSalesSlice";
 import {Item, Place, Sale, Seller} from "../../schemas/base";
-import {PutOnSale, RemovedNewSaleItem, UpdatedNewSaleItem} from "../../schemas/new-sale";
+import {EndSale, OutputEndSale, PutOnSale, RemovedNewSaleItem, UpdatedNewSaleItem} from "../../schemas/new-sale";
 
 
 export const fetchDataForNewSale = (access_token: string, {storeId}: any = null) => {
@@ -36,5 +36,19 @@ export const updateNewSaleItem = (updatedNewSaleItem: UpdatedNewSaleItem) => {
 export const removeNewSaleItem = (removedNewSaleItem: RemovedNewSaleItem) => {
   return (dispatch: AppDispatch) => {
     dispatch(newSalesSlice.actions.removeNewSaleItem({removedNewSaleItem}))
+  }
+}
+
+export const saveNewSale = (access_token: string, endSale: EndSale) => {
+  const secureApi = secureApiCreate(access_token)
+  return async (dispatch: AppDispatch) => {
+    try {
+      dispatch(newSalesSlice.actions.newSalesFetching())
+      const outputEndSale: OutputEndSale = await secureApi.put('handler_sale_registration/end_sale',
+        {json: endSale}).json()
+      dispatch(newSalesSlice.actions.saveNewSaleSuccess({outputEndSale}))
+    } catch (err) {
+      dispatch(newSalesSlice.actions.newSalesFetchingError(err as Error))
+    }
   }
 }

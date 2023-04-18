@@ -5,11 +5,19 @@ export const useStyle = () => {
   const theme = useTheme()
   const colors = tokens(theme.palette.mode)
   return {
+
+    flex: 1,
+    pr: 1,
     '& ::-webkit-calendar-picker-indicator': {
       filter: theme.palette.mode === 'dark' ? 'invert(1)' : 'none'
     },
-    flex: 1,
-    pr: 1,
+    '& .saleForm': {
+      py: 1,
+      pr: 2,
+      '& .buttonConfirm': {
+        px: 5
+      }
+    },
     '& .items': {
       pr: 1,
       overflow: "hidden",

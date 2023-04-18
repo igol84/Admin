@@ -5,7 +5,7 @@ import {useForm} from "./NewSaleLineItemRowSelected.hooks";
 import {SimpleField} from "../../../Form";
 import {GridActionsCellItem} from "@mui/x-data-grid";
 import CheckIcon from "@mui/icons-material/Check";
-import RemoveIcon from '@mui/icons-material/Remove';
+import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import CloseButton from "../../../Form/CloseButton";
 
 interface NewSaleLineItemRowSelected {
@@ -21,11 +21,13 @@ const NewSaleLineItemRowSelected = (props: NewSaleLineItemRowSelected) => {
       type='number' name='price' value={formData.price.value.toString()} setValue={onPriceFieldChange}
       error={useError('price')} fullWidth={false} variant={'standard'}/>
   const buttonsCell =
-    <>
-      <GridActionsCellItem icon={<CheckIcon/>} label={'Check'} onClick={onConfirm}/>
-      <GridActionsCellItem icon={<RemoveIcon/>} label={'Remove'} onClick={onRemove}/>
+    <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
+      <Box>
+        <GridActionsCellItem icon={<CheckIcon/>} label={'Check'} onClick={onConfirm}/>
+        <GridActionsCellItem icon={<DeleteIcon/>} label={'Remove'} onClick={onRemove}/>
+      </Box>
       <CloseButton onClick={resetSelectedRow}/>
-    </>
+    </Box>
   return (
     <Paper className='product selected'>
       <Box sx={{width: '250px'}}>{viewNewSaleLineItem.name}</Box>

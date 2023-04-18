@@ -1,3 +1,5 @@
+import {Place, SaleLineItem, Seller} from "./base";
+
 export interface PutOnSale {
   productId: number
   salePrice: number
@@ -18,6 +20,9 @@ export interface CreateSaleLineItemForSale {
 }
 
 export interface CreateSale {
+  place_id: number
+  seller_id: number
+  date_time: string
   sale_line_items: CreateSaleLineItemForSale[]
 }
 
@@ -34,4 +39,15 @@ export interface UpdatedNewSaleItem {
 export interface RemovedNewSaleItem {
   prodId: number
   price: number
+}
+
+
+export interface OutputEndSale {
+  sale: ShowSaleWithSLIs
+}
+
+export interface ShowSaleWithSLIs {
+  sale_line_items: SaleLineItem[]
+  seller: Seller
+  place: Place
 }

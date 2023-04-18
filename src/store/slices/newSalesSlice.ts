@@ -1,7 +1,13 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {Item, Place, Sale, Seller} from "../../schemas/base";
 import produce from "immer";
-import {NewSaleLineItem, PutOnSale, RemovedNewSaleItem, UpdatedNewSaleItem} from "../../schemas/new-sale";
+import {
+  NewSaleLineItem,
+  OutputEndSale,
+  PutOnSale,
+  RemovedNewSaleItem,
+  UpdatedNewSaleItem
+} from "../../schemas/new-sale";
 
 
 interface NewSalesState {
@@ -41,6 +47,10 @@ export interface UpdateNewSaleItemPayload {
 
 export interface RemoveNewSaleItemPayload {
   removedNewSaleItem: RemovedNewSaleItem
+}
+
+export interface SaveNewSalePayload {
+  outputEndSale: OutputEndSale
 }
 
 
@@ -123,6 +133,12 @@ export const newSalesSlice = createSlice({
           )
         }
       })
+    },
+    saveNewSaleSuccess(state, action: PayloadAction<SaveNewSalePayload>) {
+      console.log(action.payload.outputEndSale)
+      state.newSaleLineItems = []
+      state.isLoading = false
+      state.error = ''
     },
 
   }

@@ -95,7 +95,8 @@ interface FieldType {
   autoFocus?: boolean
   tabIndex?: number
   fullWidth?: boolean
-  variant?: "outlined" | "standard" | "filled" | undefined
+  variant?: "outlined" | "standard" | "filled" | undefined,
+  onClick?: () => void
 }
 
 export const SimpleField = (props: FieldType) => {
@@ -113,7 +114,8 @@ export const SimpleField = (props: FieldType) => {
     autoFocus = false,
     tabIndex = undefined,
     fullWidth = true,
-    variant = 'outlined'
+    variant = 'outlined',
+    onClick = () => undefined
   } = props
   return (
     <TextField
@@ -138,6 +140,7 @@ export const SimpleField = (props: FieldType) => {
       }}
       autoFocus={autoFocus}
       tabIndex={tabIndex}
+      onClick={onClick}
     />
   );
 };
@@ -148,11 +151,12 @@ interface FormSelectType {
   setValue: (value: any) => void
   label: string
   children: any[]
+  onOpen?: () => void
 }
 
 export const SimpleSelect = (props: FormSelectType) => {
-  const {label, setValue} = props;
-  const filteredProps = _.omit(props, ['setValue'])
+  const {label, setValue, onOpen = () => undefined} = props;
+  const filteredProps = _.omit(props, ['setValue', 'onOpen'])
   return (
     <FormControl fullWidth>
       <InputLabel color='secondary'>{label}</InputLabel>
@@ -163,6 +167,7 @@ export const SimpleSelect = (props: FormSelectType) => {
         onChange={(event: SelectChangeEvent) => {
           setValue(event.target.value);
         }}
+        onOpen={onOpen}
         {...filteredProps}
       />
     </FormControl>
