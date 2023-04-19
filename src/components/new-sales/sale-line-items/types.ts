@@ -1,5 +1,3 @@
-import {Item, Place, Seller} from "../../../schemas/base";
-
 export interface ViewNewSaleLineItem {
   prod_id: number
   name: string
@@ -26,14 +24,14 @@ export interface ViewPlace {
   name: string
 }
 
-export interface ViewSale{
+export interface ViewSale {
   id: number
   seller: string
   place: string
   salLineItems: SaleLineItem[]
 }
 
-export interface SaleLineItem{
+export interface SaleLineItem {
   itemId: number
   name: string
   salePrice: number

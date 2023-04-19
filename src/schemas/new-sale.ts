@@ -1,4 +1,4 @@
-import {Place, SaleLineItem, Seller} from "./base";
+import {Place, Sale, SaleLineItem, Seller} from "./base";
 
 export interface PutOnSale {
   productId: number
@@ -43,11 +43,5 @@ export interface RemovedNewSaleItem {
 
 
 export interface OutputEndSale {
-  sale: ShowSaleWithSLIs
-}
-
-export interface ShowSaleWithSLIs {
-  sale_line_items: SaleLineItem[]
-  seller: Seller
-  place: Place
+  sale: Sale
 }

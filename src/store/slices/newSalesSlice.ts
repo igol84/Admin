@@ -121,8 +121,8 @@ export const newSalesSlice = createSlice({
         })
       })
     },
-    removeNewSaleItem(state, {payload: {removedNewSaleItem}}: PayloadAction<RemoveNewSaleItemPayload>) {
 
+    removeNewSaleItem(state, {payload: {removedNewSaleItem}}: PayloadAction<RemoveNewSaleItemPayload>) {
       state.items = state.items.map(item => {
         if (item.prod_id === removedNewSaleItem.prodId) {
           const newSaleLineItemsQty = state.newSaleLineItems.find(sli =>
@@ -132,7 +132,6 @@ export const newSalesSlice = createSlice({
         }
         return item
       })
-
       state.items.forEach(item => {
         if (item.prod_id === removedNewSaleItem.prodId) {
           state.newSaleLineItems = state.newSaleLineItems.filter(sli =>
@@ -141,8 +140,9 @@ export const newSalesSlice = createSlice({
         }
       })
     },
+
     saveNewSaleSuccess(state, action: PayloadAction<SaveNewSalePayload>) {
-      console.log(action.payload.outputEndSale)
+      state.sales.push(action.payload.outputEndSale.sale)
       state.newSaleLineItems = []
       state.isLoading = false
       state.error = ''
