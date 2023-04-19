@@ -1,3 +1,5 @@
+import {Item, Place, Seller} from "../../../schemas/base";
+
 export interface ViewNewSaleLineItem {
   prod_id: number
   name: string
@@ -5,11 +7,13 @@ export interface ViewNewSaleLineItem {
   qty: number
 }
 
-export interface ViewSellersAndPlaces {
+export interface ViewFormData {
   selectedSellerId: string
   sellers: ViewSeller[]
   selectedPlaceId: string
   places: ViewPlace[]
+  selectedDate: string
+  onSetSelectedDate: (date: string) => void
 }
 
 export interface ViewSeller {
@@ -20,4 +24,18 @@ export interface ViewSeller {
 export interface ViewPlace {
   id: number
   name: string
+}
+
+export interface ViewSale{
+  id: number
+  seller: string
+  place: string
+  salLineItems: SaleLineItem[]
+}
+
+export interface SaleLineItem{
+  itemId: number
+  name: string
+  salePrice: number
+  qty: number
 }

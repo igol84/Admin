@@ -32,9 +32,12 @@ const initialState: NewSalesState = {
 
 export interface NewSalesPayload {
   items: Item[]
-  sales: Sale[]
   sellers: Seller[]
   places: Place[]
+}
+
+export interface SalesPayload {
+  sales: Sale[]
 }
 
 export interface PutOnSalePayload {
@@ -63,10 +66,14 @@ export const newSalesSlice = createSlice({
     },
     newSalesFetchingSuccess(state, action: PayloadAction<NewSalesPayload>) {
       state.items = action.payload.items
-      state.sales = action.payload.sales
       state.sellers = action.payload.sellers
       state.places = action.payload.places
       state.newSaleLineItems = []
+      state.isLoading = false
+      state.error = ''
+    },
+    fetchSalesSuccess(state, action: PayloadAction<SalesPayload>) {
+      state.sales = action.payload.sales
       state.isLoading = false
       state.error = ''
     },

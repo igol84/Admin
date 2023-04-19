@@ -1,27 +1,36 @@
-import React, {useEffect} from 'react';
+import React, {useState} from 'react';
 import {Box} from "@mui/material";
 import SaleLineItems from "./sale-line-items";
 import Items from "./items";
 import {useAppSelector, useStoreId} from "../../hooks/redux";
-import {useIsLoadingDisplay, useLoaderAccess} from "../../hooks/pages";
-import {fetchDataForNewSale} from "../../store/actions/new-sales";
+import {useFetchAccess, useIsLoadingDisplay, useLoaderAccess} from "../../hooks/pages";
+import {fetchDataForNewSale, fetchSales} from "../../store/actions/new-sales";
 import LoadingCircular from "../LoadingCircular";
-import {convertItems, convertSaleLineItems, convertSellersAndPlaces} from "./items/utility";
+import {convertFormData, convertItems, convertSaleLineItems, convertSales} from "./items/utility";
+import {formatISODate} from "../../hooks/form-data";
 
 const NewSales = () => {
-  const storeId = useStoreId()
-  useLoaderAccess(fetchDataForNewSale, {storeId})
 
-  const {isLoading, items, newSaleLineItems, sellers, places} = useAppSelector(state => state.newSalesSliceSlice)
+  const [selectedDate, setSelectedDate] = useState(formatISODate(new Date()).toString())
+  const getSales = useFetchAccess(fetchSales)
+  const storeId = useStoreId()
+  useLoaderAccess(fetchDataForNewSale, {storeId, selectedDate})
+  useLoaderAccess(fetchSales, {storeId, selectedDate})
+  const onSetSelectedDate = (selectedDate: string) => {
+    setSelectedDate(selectedDate)
+    getSales({storeId, selectedDate})
+  }
+  const {isLoading, items, newSaleLineItems, sellers, places, sales} = useAppSelector(state => state.newSalesSliceSlice)
   const viewProducts = convertItems(items)
   const viewNewSaleLineItems = convertSaleLineItems(items, newSaleLineItems)
-  const viewSellersAndPlaces = convertSellersAndPlaces(sellers, places)
-
+  const viewFormData = convertFormData(sellers, places, selectedDate, onSetSelectedDate)
+  const viewOldSales = convertSales(sales)
   const showLoading = useIsLoadingDisplay(isLoading)
 
   return (
     <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
-      <SaleLineItems viewNewSaleLineItems={viewNewSaleLineItems} viewSellersAndPlaces={viewSellersAndPlaces}/>
+      <SaleLineItems viewNewSaleLineItems={viewNewSaleLineItems} viewFormData={viewFormData}
+                     viewOldSales={viewOldSales}/>
       <Items viewProducts={viewProducts}/>
       <LoadingCircular show={showLoading}/>
     </Box>

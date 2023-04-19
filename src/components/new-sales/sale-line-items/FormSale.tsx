@@ -1,16 +1,16 @@
 import React from 'react';
 import {Button, MenuItem, Stack} from "@mui/material";
-import {SimpleField, SimpleSelect} from "../../../Form";
-import {ViewSellersAndPlaces} from "../types";
-import {useAppSelector} from "../../../../hooks/redux";
+import {SimpleField, SimpleSelect} from "../../Form";
+import {ViewFormData} from "./types";
+import {useAppSelector} from "../../../hooks/redux";
 import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
-import {CreateSale, CreateSaleLineItemForSale, EndSale} from "../../../../schemas/new-sale";
-import {useFetchAccess} from "../../../../hooks/pages";
-import {saveNewSale} from "../../../../store/actions/new-sales";
+import {CreateSale, CreateSaleLineItemForSale, EndSale} from "../../../schemas/new-sale";
+import {useFetchAccess} from "../../../hooks/pages";
+import {saveNewSale} from "../../../store/actions/new-sales";
 import {formatISO} from "date-fns";
 
 interface FormSaleProps {
-  viewSellersAndPlaces: ViewSellersAndPlaces
+  viewSellersAndPlaces: ViewFormData
   resetSelectedRow: () => void
   selectedDate: string
   onSetSelectedDate: (date: string) => void

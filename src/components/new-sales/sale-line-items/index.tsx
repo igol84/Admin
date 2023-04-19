@@ -3,28 +3,26 @@ import {Box, Stack} from "@mui/material";
 import {useStyle} from "./style";
 import NewSaleLineItemRow from "./NewSaleLineItemRow/NewSaleLineItemRow";
 import NewSaleLineItemRowSelected from "./NewSaleLineItemRow/NewSaleLineItemRowSelected";
-import {ViewNewSaleLineItem, ViewSellersAndPlaces} from "./types";
+import {ViewFormData, ViewNewSaleLineItem, ViewSale} from "./types";
 import FormSale from "./FormSale";
-import {formatISODate} from "../../../hooks/form-data";
+import OldSale from "./OldSale";
 
 
 interface SaleLineItemsProps {
   viewNewSaleLineItems: ViewNewSaleLineItem[]
-  viewSellersAndPlaces: ViewSellersAndPlaces
+  viewFormData: ViewFormData
+  viewOldSales: ViewSale[]
 }
 
 const SaleLineItems = (props: SaleLineItemsProps) => {
-  const {viewNewSaleLineItems, viewSellersAndPlaces} = props
+  const {viewNewSaleLineItems, viewFormData, viewOldSales} = props
   const style = useStyle()
-  const [selectedDate, setSelectedDate] = useState(formatISODate(new Date()).toString())
-  const onSetSelectedDate = (date: string) => {
-    setSelectedDate(date)
-  }
-  const [selectedSeller, setSelectedSeller] = useState(viewSellersAndPlaces.selectedSellerId)
+
+  const [selectedSeller, setSelectedSeller] = useState(viewFormData.selectedSellerId)
   const onSetSelectedSeller = (seller: string) => {
     setSelectedSeller(seller)
   }
-  const [selectedPlace, setSelectedPlace] = useState(viewSellersAndPlaces.selectedPlaceId)
+  const [selectedPlace, setSelectedPlace] = useState(viewFormData.selectedPlaceId)
   const onSetSelectedPlace = (place: string) => {
     setSelectedPlace(place)
   }
@@ -40,8 +38,8 @@ const SaleLineItems = (props: SaleLineItemsProps) => {
   return (
     <Box sx={style}>
       <FormSale
-        viewSellersAndPlaces={viewSellersAndPlaces} resetSelectedRow={resetSelectedRow}
-        selectedDate={selectedDate} onSetSelectedDate={onSetSelectedDate}
+        viewSellersAndPlaces={viewFormData} resetSelectedRow={resetSelectedRow}
+        selectedDate={viewFormData.selectedDate} onSetSelectedDate={viewFormData.onSetSelectedDate}
         selectedSeller={selectedSeller} onSetSelectedSeller={onSetSelectedSeller}
         selectedPlace={selectedPlace} onSetSelectedPlace={onSetSelectedPlace}
       />
@@ -53,7 +51,15 @@ const SaleLineItems = (props: SaleLineItemsProps) => {
             : <NewSaleLineItemRow key={rowId} viewNewSaleLineItem={viewNewSaleLineItem}
                                   omSelectedRow={omSelectedRow(rowId)}/>
         })}
+        <Stack className='sales'>
+          {viewOldSales.map((viewSale) => {
+            return (
+              <OldSale key={viewSale.id} viewSale={viewSale}/>
+            )
+          })}
+        </Stack>
       </Stack>
+
     </Box>
   );
 };

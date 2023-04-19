@@ -4,17 +4,37 @@ import {newSalesSlice} from "../slices/newSalesSlice";
 import {Item, Place, Sale, Seller} from "../../schemas/base";
 import {EndSale, OutputEndSale, PutOnSale, RemovedNewSaleItem, UpdatedNewSaleItem} from "../../schemas/new-sale";
 
+interface fetchDataForNewSaleProps {
+  storeId: any
+}
 
-export const fetchDataForNewSale = (access_token: string, {storeId}: any = null) => {
+export const fetchDataForNewSale = (access_token: string, {storeId}: fetchDataForNewSaleProps) => {
   const secureApi = secureApiCreate(access_token)
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(newSalesSlice.actions.newSalesFetching())
       const items: Item[] = await secureApi.get(`item?store_id=${storeId}`).json()
-      const sales: Sale[] = await secureApi.get(`sale?store_id=${storeId}`).json()
       const sellers: Seller[] = await secureApi.get(`seller/?store_id=${storeId}`).json()
       const places: Place[] = await secureApi.get(`place/?store_id=${storeId}`).json()
-      dispatch(newSalesSlice.actions.newSalesFetchingSuccess({items, sales, sellers, places}))
+      dispatch(newSalesSlice.actions.newSalesFetchingSuccess({items, sellers, places}))
+    } catch (err) {
+      dispatch(newSalesSlice.actions.newSalesFetchingError(err as Error))
+    }
+  }
+}
+
+interface fetchSalesProps {
+  storeId: any
+  selectedDate: string
+}
+
+export const fetchSales = (access_token: string, {storeId, selectedDate}: fetchSalesProps) => {
+  const secureApi = secureApiCreate(access_token)
+  return async (dispatch: AppDispatch) => {
+    try {
+      dispatch(newSalesSlice.actions.newSalesFetching())
+      const sales: Sale[] = await secureApi.get(`sale?store_id=${storeId}&date=${selectedDate}`).json()
+      dispatch(newSalesSlice.actions.fetchSalesSuccess({sales}))
     } catch (err) {
       dispatch(newSalesSlice.actions.newSalesFetchingError(err as Error))
     }

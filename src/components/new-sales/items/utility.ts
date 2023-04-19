@@ -1,8 +1,15 @@
-import {Item, Place, Product, Seller} from "../../../schemas/base";
+import {Item, Place, Product, Sale, Seller} from "../../../schemas/base";
 import _ from "lodash";
 import {Module, ViewColor, ViewProduct, ViewShoes, ViewSize, ViewWidth} from "./types";
 import {NewSaleLineItem} from "../../../schemas/new-sale";
-import {ViewNewSaleLineItem, ViewPlace, ViewSeller, ViewSellersAndPlaces} from "../sale-line-items/types";
+import {
+  SaleLineItem,
+  ViewFormData,
+  ViewNewSaleLineItem,
+  ViewPlace,
+  ViewSale,
+  ViewSeller
+} from "../sale-line-items/types";
 
 
 export const convertItems = (items: Item[]): ViewProduct[] => {
@@ -138,11 +145,12 @@ export const convertSaleLineItems: ConvertSaleLineItems = (items, newSaleLineIte
   return vewSaleLineItems
 }
 
-interface ConvertSellersAndPlaces {
-  (sellers: Seller[], places: Place[]): ViewSellersAndPlaces
+interface ConvertFormData {
+  (sellers: Seller[], places: Place[], selectedDate: string, onSetSelectedDate: (date: string) => void):
+    ViewFormData
 }
 
-export const convertSellersAndPlaces: ConvertSellersAndPlaces = (sellers, places) => {
+export const convertFormData: ConvertFormData = (sellers, places, selectedDate, onSetSelectedDate) => {
   const viewSellers: ViewSeller[] = []
   sellers.forEach(seller => {
     if (seller.active) {
@@ -157,11 +165,30 @@ export const convertSellersAndPlaces: ConvertSellersAndPlaces = (sellers, places
       viewPlaces.push(viewPlace)
     }
   })
-  const convertSaleLineItems: ViewSellersAndPlaces = {
+  const convertSaleLineItems: ViewFormData = {
     selectedPlaceId: viewSellers.length == 1 ? viewSellers[0].id.toString() : '-1',
     sellers: viewSellers,
-    selectedSellerId : viewPlaces.length == 1 ? viewPlaces[0].id.toString() : '-1',
-    places: viewPlaces
+    selectedSellerId: viewPlaces.length == 1 ? viewPlaces[0].id.toString() : '-1',
+    places: viewPlaces,
+    selectedDate,
+    onSetSelectedDate
   }
   return convertSaleLineItems
+}
+
+interface ConvertSales {
+  (sales: Sale[]): ViewSale[]
+}
+
+export const convertSales: ConvertSales = (sales) => {
+  const viewSale: ViewSale[] = sales.map(sale => {
+    const salLineItems: SaleLineItem[] = sale.sale_line_items.map(sli => {
+      const name = sli.item.product.shoes
+        ? `${sli.item.product.name} ${sli.item.product.shoes.color} ${sli.item.product.shoes.width} ${sli.item.product.shoes.size}`
+        : sli.item.product.name
+      return {itemId: sli.item_id, name, qty: sli.qty, salePrice: sli.sale_price}
+    })
+    return {id: sale.id, place: sale.place.name, seller: sale.seller.name, salLineItems}
+  })
+  return viewSale
 }

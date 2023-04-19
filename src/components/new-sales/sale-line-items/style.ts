@@ -16,8 +16,9 @@ export const useStyle = () => {
       pr: 2,
       '& .buttonConfirm': {
         px: 5
-      }
+      },
     },
+
     '& .items': {
       pr: 1,
       overflow: "hidden",
@@ -47,6 +48,32 @@ export const useStyle = () => {
           backgroundColor: colors.blueAccent[800],
         },
       },
-    }
+      '& .sales': {
+        gap: 1,
+        '& .sale': {
+          '& .header': {
+            borderRadius: '4px 4px 0 0',
+            p: 1,
+            gap: 1,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            backgroundColor: colors.greenAccent[700],
+          },
+          '& .item': {
+            p: 1,
+            gap: 1,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            backgroundColor: colors.blueAccent[700],
+          },
+          '& .item:last-child': {
+            borderRadius: '0 0 4px 4px',
+          }
+        }
+      },
+    },
+
   }
 }
