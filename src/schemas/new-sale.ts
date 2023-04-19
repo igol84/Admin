@@ -1,4 +1,4 @@
-import {Place, Sale, SaleLineItem, Seller} from "./base";
+import {Sale} from "./base";
 
 export interface PutOnSale {
   productId: number
