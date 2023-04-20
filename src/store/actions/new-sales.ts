@@ -80,13 +80,16 @@ export const saveNewSale = (access_token: string, endSale: EndSale) => {
   }
 }
 
-export const editSLIPrice = (access_token: string, editPriceData: EditSLIPrice) => {
+export const editSLIPrice = (access_token: string, editPriceData: EditSLIPrice[]) => {
   const secureApi = secureApiCreate(access_token)
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(newSalesSlice.actions.newSalesFetching())
-      await secureApi.put('handler_sale_registration/edit_sli_price',
-        {json: editPriceData}).json()
+      editPriceData.forEach(data => {
+        secureApi.put('handler_sale_registration/edit_sli_price',
+          {json: data}).json()
+      })
+
       dispatch(newSalesSlice.actions.editSLIPriceSuccess({editPriceData}))
     } catch (err) {
       dispatch(newSalesSlice.actions.newSalesFetchingError(err as Error))

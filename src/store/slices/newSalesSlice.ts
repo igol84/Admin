@@ -58,7 +58,7 @@ export interface SaveNewSalePayload {
 }
 
 export interface EditSLIPricePayload {
-  editPriceData: EditSLIPrice
+  editPriceData: EditSLIPrice[]
 }
 
 
@@ -154,17 +154,20 @@ export const newSalesSlice = createSlice({
     },
 
     editSLIPriceSuccess(state, action: PayloadAction<EditSLIPricePayload>) {
-      const oldSLI = action.payload.editPriceData.old_sli
-      const newSLI = action.payload.editPriceData.new_sli
-      state.sales = state.sales.map(sale=>{
-        const sale_line_items = sale.sale_line_items.map(sli=>{
-          if(sli.item_id===oldSLI.item_id && sli.sale_price===oldSLI.sale_price && sli.qty === oldSLI.qty){
-            return {...sli, sale_price: newSLI.sale_price}
-          }
-          return sli
+      action.payload.editPriceData.forEach(editPriceData => {
+        const oldSLI = editPriceData.old_sli
+        const newSLI = editPriceData.new_sli
+        state.sales = state.sales.map(sale => {
+          const sale_line_items = sale.sale_line_items.map(sli => {
+            if (sli.item_id === oldSLI.item_id && sli.sale_price === oldSLI.sale_price && sli.qty === oldSLI.qty) {
+              return {...sli, sale_price: newSLI.sale_price}
+            }
+            return sli
+          })
+          return {...sale, sale_line_items}
         })
-        return {...sale, sale_line_items}
       })
+
       state.newSaleLineItems = []
       state.isLoading = false
       state.error = ''

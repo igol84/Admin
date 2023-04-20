@@ -105,6 +105,7 @@ const findItemById = (itemId: number, items: Item[]) => {
   return items.find(item => item.id === itemId)
 }
 
+
 const findProductInSaleLineItems = (vewSaleLineItems: ViewNewSaleLineItem[], prodId: number, price: number) => {
   return vewSaleLineItems.find(vewSaleLineItem =>
     vewSaleLineItem.prod_id === prodId && vewSaleLineItem.price === price
@@ -209,3 +210,5 @@ export const convertSales: ConvertSales = (sales) => {
   })
   return viewSale
 }
+
+

@@ -2,6 +2,10 @@ import {useState} from "react";
 import produce from "immer";
 import {FieldNames, FormFields} from "./SaleLineItemRowSelected.types";
 import {ViewSaleLineItem} from "../types";
+import {useFetchAccess} from "../../../../hooks/pages";
+import {editSLIPrice} from "../../../../store/actions/new-sales";
+import {useAppSelector} from "../../../../hooks/redux";
+import {EditSLIPrice} from "../../../../schemas/new-sale";
 
 
 interface UseForm {
@@ -28,26 +32,38 @@ export const useForm: UseForm = (viewSaleLineItem, resetSelectedRow) => {
         prevFormData.price.value = price
       }))
   }
-  // const dispatchEditSLIPrice = useFetchAccess(editSLIPrice)
-  // const onConfirm = async () => {
-  //   const updatedNewSaleItem: EditSLIPrice = {
-  //     old_sli: {
-  //       sale_id: viewSaleLineItem.saleId,
-  //       item_id: viewSaleLineItem.itemId,
-  //       sale_price: viewSaleLineItem.salePrice,
-  //       qty: viewSaleLineItem.qty
-  //     },
-  //     new_sli: {
-  //       sale_id: viewSaleLineItem.saleId,
-  //       item_id: viewSaleLineItem.itemId,
-  //       sale_price: Number(formData.price.value),
-  //       qty: viewSaleLineItem.qty
-  //     }
-  //   }
-  //   await dispatchEditSLIPrice(updatedNewSaleItem)
-  //   resetSelectedRow()
-  // }
-  const onConfirm = () => null
+  const dispatchEditSLIPrice = useFetchAccess(editSLIPrice)
+  const {sales} = useAppSelector(state => state.newSalesSliceSlice)
+  const onConfirm = async () => {
+    const sale = sales.find(sale => sale.id === viewSaleLineItem.saleId)
+    if (sale) {
+      const updatedNewSaleItem: EditSLIPrice[] = []
+      sale.sale_line_items.forEach(sale_line_item => {
+          if (sale_line_item.item.prod_id === viewSaleLineItem.productId
+            && sale_line_item.sale_price === viewSaleLineItem.salePrice) {
+            updatedNewSaleItem.push({
+              old_sli: {
+                sale_id: viewSaleLineItem.saleId,
+                item_id: sale_line_item.item_id,
+                sale_price: viewSaleLineItem.salePrice,
+                qty: sale_line_item.qty
+              },
+              new_sli: {
+                sale_id: viewSaleLineItem.saleId,
+                item_id: sale_line_item.item_id,
+                sale_price: Number(formData.price.value),
+                qty: sale_line_item.qty
+              }
+            })
+          }
+        }
+      )
+
+      await dispatchEditSLIPrice(updatedNewSaleItem)
+      resetSelectedRow()
+    }
+  }
+
   const onRemove = () => null
 
   return [formData, useError, onPriceFieldChange, onConfirm, onRemove]
