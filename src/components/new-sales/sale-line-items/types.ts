@@ -28,10 +28,11 @@ export interface ViewSale {
   id: number
   seller: string
   place: string
-  salLineItems: SaleLineItem[]
+  salLineItems: viewSaleLineItem[]
 }
 
-export interface SaleLineItem {
+export interface viewSaleLineItem {
+  saleId: number
   itemId: number
   name: string
   salePrice: number

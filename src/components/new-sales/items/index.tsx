@@ -41,8 +41,8 @@ const Items = (props: ItemsProps) => {
           switch (viewProduct.module) {
             case Module.product:
               return isSelected(rowId)
-                ?
-                <SimpleProductSelected key={rowId} viewSimpleProduct={viewProduct} resetSelectedRow={resetSelectedRow}/>
+                ? <SimpleProductSelected key={rowId} viewSimpleProduct={viewProduct}
+                                         resetSelectedRow={resetSelectedRow}/>
                 : <SimpleProduct key={rowId} viewSimpleProduct={viewProduct} onSelect={onSelect(rowId)}/>
             case Module.shoes:
               return isSelected(rowId)

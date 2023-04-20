@@ -97,7 +97,6 @@ const FormSale = (props: FormSaleProps) => {
               disabled={isDisableButton()} onClick={onSave}>
         Save
       </Button>
-
     </Stack>
   );
 };

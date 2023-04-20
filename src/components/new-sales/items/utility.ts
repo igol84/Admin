@@ -3,11 +3,11 @@ import _ from "lodash";
 import {Module, ViewColor, ViewProduct, ViewShoes, ViewSize, ViewWidth} from "./types";
 import {NewSaleLineItem} from "../../../schemas/new-sale";
 import {
-  SaleLineItem,
   ViewFormData,
   ViewNewSaleLineItem,
   ViewPlace,
   ViewSale,
+  viewSaleLineItem,
   ViewSeller
 } from "../sale-line-items/types";
 
@@ -182,11 +182,12 @@ interface ConvertSales {
 
 export const convertSales: ConvertSales = (sales) => {
   const viewSale: ViewSale[] = sales.map(sale => {
-    const salLineItems: SaleLineItem[] = sale.sale_line_items.map(sli => {
+    const salLineItems: viewSaleLineItem[] = sale.sale_line_items.map(sli => {
       const name = sli.item.product.shoes
-        ? `${sli.item.product.name} ${sli.item.product.shoes.color} ${sli.item.product.shoes.width} ${sli.item.product.shoes.size}`
+        ? `${sli.item.product.name} ${sli.item.product.shoes.color} ${sli.item.product.shoes.width}
+         ${sli.item.product.shoes.size}`
         : sli.item.product.name
-      return {itemId: sli.item_id, name, qty: sli.qty, salePrice: sli.sale_price}
+      return {saleId: sli.sale_id, itemId: sli.item_id, name, qty: sli.qty, salePrice: sli.sale_price}
     })
     return {id: sale.id, place: sale.place.name, seller: sale.seller.name, salLineItems}
   })

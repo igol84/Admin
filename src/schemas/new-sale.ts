@@ -1,4 +1,4 @@
-import {Sale} from "./base";
+import {Sale, SaleLineItem} from "./base";
 
 export interface PutOnSale {
   productId: number
@@ -44,4 +44,11 @@ export interface RemovedNewSaleItem {
 
 export interface OutputEndSale {
   sale: Sale
+}
+
+
+
+export interface EditSLIPrice {
+  old_sli: Omit<SaleLineItem, 'item'>
+  new_sli: Omit<SaleLineItem, 'item'>
 }

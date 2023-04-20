@@ -1,18 +1,20 @@
 import React from 'react';
 import {Box} from "@mui/material";
+import {viewSaleLineItem} from "../types";
 
-interface SaleLineItemRowProps{
-  name: string
-  salePrice: number
-  qty: number
+interface SaleLineItemRowProps {
+  viewSaleLineItem: viewSaleLineItem
+  omSelectedRow: () => void
 }
 
-const SaleLineItemRow = ({name, salePrice, qty}: SaleLineItemRowProps) => {
+const SaleLineItemRow = ({viewSaleLineItem, omSelectedRow}: SaleLineItemRowProps) => {
   return (
-    <Box className='item'>
-      <Box width='300px'>{name}</Box>
-      <Box width='50px'>{salePrice}</Box>
-      <Box width='50px'>{qty}</Box>
+    <Box className='item' onClick={omSelectedRow}>
+      <Box width='300px'>{viewSaleLineItem.name}</Box>
+      <Box width='100px'>{viewSaleLineItem.salePrice}</Box>
+      <Box width='50px'>{viewSaleLineItem.qty}</Box>
+      <Box flex={1}></Box>
+      <Box width='150px'></Box>
     </Box>
   );
 };

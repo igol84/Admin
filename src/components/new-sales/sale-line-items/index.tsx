@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Box, Stack} from "@mui/material";
 import {useStyle} from "./style";
 import NewSaleLineItemRow from "./NewSaleLineItemRow/NewSaleLineItemRow";
@@ -34,7 +34,11 @@ const SaleLineItems = (props: SaleLineItemsProps) => {
   const resetSelectedRow = () => {
     setSelectedRowId(null)
   }
+  useEffect(() => {
 
+  }, [])
+
+  let nextRowId = viewNewSaleLineItems.length
   return (
     <Box sx={style}>
       <FormSale
@@ -52,10 +56,11 @@ const SaleLineItems = (props: SaleLineItemsProps) => {
                                   omSelectedRow={omSelectedRow(rowId)}/>
         })}
         <Stack className='sales'>
-          {viewOldSales.map((viewSale) => {
-            return (
-              <OldSale key={viewSale.id} viewSale={viewSale}/>
-            )
+          {viewOldSales.map((viewSale, rowKey) => {
+            const startRowId = nextRowId
+            nextRowId += viewSale.salLineItems.length
+            return <OldSale key={rowKey} viewSale={viewSale} startRowId={startRowId} omSelectedRow={omSelectedRow}
+                       isSelected={isSelected} resetSelectedRow={resetSelectedRow}/>
           })}
         </Stack>
       </Stack>

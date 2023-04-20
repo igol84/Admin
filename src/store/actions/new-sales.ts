@@ -2,7 +2,14 @@ import {AppDispatch} from "../index";
 import {secureApiCreate} from "../../ky";
 import {newSalesSlice} from "../slices/newSalesSlice";
 import {Item, Place, Sale, Seller} from "../../schemas/base";
-import {EndSale, OutputEndSale, PutOnSale, RemovedNewSaleItem, UpdatedNewSaleItem} from "../../schemas/new-sale";
+import {
+  EditSLIPrice,
+  EndSale,
+  OutputEndSale,
+  PutOnSale,
+  RemovedNewSaleItem,
+  UpdatedNewSaleItem
+} from "../../schemas/new-sale";
 
 interface fetchDataForNewSaleProps {
   storeId: any
@@ -67,6 +74,20 @@ export const saveNewSale = (access_token: string, endSale: EndSale) => {
       const outputEndSale: OutputEndSale = await secureApi.put('handler_sale_registration/end_sale',
         {json: endSale}).json()
       dispatch(newSalesSlice.actions.saveNewSaleSuccess({outputEndSale}))
+    } catch (err) {
+      dispatch(newSalesSlice.actions.newSalesFetchingError(err as Error))
+    }
+  }
+}
+
+export const editSLIPrice = (access_token: string, editPriceData: EditSLIPrice) => {
+  const secureApi = secureApiCreate(access_token)
+  return async (dispatch: AppDispatch) => {
+    try {
+      dispatch(newSalesSlice.actions.newSalesFetching())
+      await secureApi.put('handler_sale_registration/edit_sli_price',
+        {json: editPriceData}).json()
+      dispatch(newSalesSlice.actions.editSLIPriceSuccess({editPriceData}))
     } catch (err) {
       dispatch(newSalesSlice.actions.newSalesFetchingError(err as Error))
     }

@@ -67,10 +67,22 @@ export const useStyle = () => {
             alignItems: 'center',
             justifyContent: 'space-between',
             backgroundColor: colors.blueAccent[700],
+            '&:last-child': {
+              borderRadius: '0 0 4px 4px',
+            },
+            '&:not(.selected)': {
+              backgroundColor: colors.blueAccent[700],
+              color: colors.blueAccent[100]
+            },
+            '&:not(.selected):hover': {
+              backgroundColor: colors.blueAccent[500],
+              cursor: 'pointer',
+            },
+            '&.selected': {
+              backgroundColor: colors.blueAccent[800],
+            },
           },
-          '& .item:last-child': {
-            borderRadius: '0 0 4px 4px',
-          }
+
         }
       },
     },
