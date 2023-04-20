@@ -47,7 +47,6 @@ export interface OutputEndSale {
 }
 
 
-
 export interface EditSLIPrice {
   old_sli: Omit<SaleLineItem, 'item'>
   new_sli: Omit<SaleLineItem, 'item'>

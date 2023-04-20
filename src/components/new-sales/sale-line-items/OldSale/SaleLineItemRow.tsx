@@ -1,9 +1,9 @@
 import React from 'react';
 import {Box} from "@mui/material";
-import {viewSaleLineItem} from "../types";
+import {ViewSaleLineItem} from "../types";
 
 interface SaleLineItemRowProps {
-  viewSaleLineItem: viewSaleLineItem
+  viewSaleLineItem: ViewSaleLineItem
   omSelectedRow: () => void
 }
 

@@ -7,7 +7,7 @@ import {
   ViewNewSaleLineItem,
   ViewPlace,
   ViewSale,
-  viewSaleLineItem,
+  ViewSaleLineItem,
   ViewSeller
 } from "../sale-line-items/types";
 
@@ -182,13 +182,29 @@ interface ConvertSales {
 
 export const convertSales: ConvertSales = (sales) => {
   const viewSale: ViewSale[] = sales.map(sale => {
-    const salLineItems: viewSaleLineItem[] = sale.sale_line_items.map(sli => {
-      const name = sli.item.product.shoes
-        ? `${sli.item.product.name} ${sli.item.product.shoes.color} ${sli.item.product.shoes.width}
+    const salLineItemsMap = new Map<string, ViewSaleLineItem>()
+    sale.sale_line_items.forEach(sli => {
+      const saleLineItemKey = `${sli.item.prod_id} - ${sli.sale_price}`
+      const viewSaleLineItem = salLineItemsMap.get(saleLineItemKey)
+      if (viewSaleLineItem) {
+        const newViewSaleLineItem: ViewSaleLineItem = {...viewSaleLineItem, qty: viewSaleLineItem.qty + sli.qty}
+        salLineItemsMap.set(saleLineItemKey, newViewSaleLineItem)
+      } else {
+        const name = sli.item.product.shoes
+          ? `${sli.item.product.name} ${sli.item.product.shoes.color} ${sli.item.product.shoes.width}
          ${sli.item.product.shoes.size}`
-        : sli.item.product.name
-      return {saleId: sli.sale_id, itemId: sli.item_id, name, qty: sli.qty, salePrice: sli.sale_price}
+          : sli.item.product.name
+        const viewSaleLineItem: ViewSaleLineItem = {
+          saleId: sli.sale_id,
+          productId: sli.item.prod_id,
+          name,
+          qty: sli.qty,
+          salePrice: sli.sale_price
+        }
+        salLineItemsMap.set(saleLineItemKey, viewSaleLineItem)
+      }
     })
+    const salLineItems = [...salLineItemsMap.values()]
     return {id: sale.id, place: sale.place.name, seller: sale.seller.name, salLineItems}
   })
   return viewSale

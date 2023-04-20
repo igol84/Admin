@@ -6,11 +6,11 @@ import {GridActionsCellItem} from "@mui/x-data-grid";
 import CheckIcon from "@mui/icons-material/Check";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import CloseButton from "../../../Form/CloseButton";
-import {viewSaleLineItem} from "../types";
+import {ViewSaleLineItem} from "../types";
 
 
 interface SaleLineItemRowSelectedProps {
-  viewSaleLineItem: viewSaleLineItem
+  viewSaleLineItem: ViewSaleLineItem
   resetSelectedRow: () => void
 }
 

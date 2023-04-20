@@ -18,10 +18,9 @@ const OldSale = ({viewSale, startRowId, omSelectedRow, isSelected, resetSelected
     <Paper className='sale'>
       <Header id={viewSale.id} seller={viewSale.seller} place={viewSale.place}/>
       {viewSale.salLineItems.map((sli, index) => {
-        const rowId = index + startRowId
+        const rowId: number = index + startRowId
         return isSelected(rowId)
-          ? <SaleLineItemRowSelected key={rowId} viewSaleLineItem={sli} omSelectedRow={omSelectedRow(rowId)}
-                                     resetSelectedRow={resetSelectedRow}/>
+          ? <SaleLineItemRowSelected key={rowId} viewSaleLineItem={sli} resetSelectedRow={resetSelectedRow}/>
           : <SaleLineItemRow key={rowId} viewSaleLineItem={sli} omSelectedRow={omSelectedRow(rowId)}/>
       })}
     </Paper>
