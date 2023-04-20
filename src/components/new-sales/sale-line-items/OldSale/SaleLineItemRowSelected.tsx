@@ -11,12 +11,11 @@ import {viewSaleLineItem} from "../types";
 
 interface SaleLineItemRowSelectedProps {
   viewSaleLineItem: viewSaleLineItem
-  omSelectedRow: () => void
   resetSelectedRow: () => void
 }
 
 const SaleLineItemRowSelected = (props: SaleLineItemRowSelectedProps) => {
-  const {viewSaleLineItem, omSelectedRow, resetSelectedRow} = props
+  const {viewSaleLineItem, resetSelectedRow} = props
   const [formData, useError, onPriceFieldChange, onConfirm, onRemove] = useForm(viewSaleLineItem, resetSelectedRow)
   const priceCell =
     <SimpleField
