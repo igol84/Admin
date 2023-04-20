@@ -19,6 +19,8 @@ const SearchInput = (props: SearchInputProps) => {
   }
   return (
     <TextField
+      className='search'
+      size='small'
       sx={{mb: 1}}
       fullWidth
       variant="outlined"

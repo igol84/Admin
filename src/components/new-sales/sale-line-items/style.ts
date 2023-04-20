@@ -61,6 +61,7 @@ export const useStyle = () => {
             backgroundColor: colors.greenAccent[700],
           },
           '& .item': {
+            minHeight: "50px",
             p: 1,
             gap: 1,
             display: 'flex',

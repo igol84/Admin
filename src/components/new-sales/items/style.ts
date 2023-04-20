@@ -5,7 +5,11 @@ export const useStyle = () => {
   const theme = useTheme()
   const colors = tokens(theme.palette.mode)
   return {
+    pt: 1,
     flex: 1,
+    '& .search': {
+      pr: 2,
+    },
     '& .items': {
       pr: 1,
       overflow: "hidden",
