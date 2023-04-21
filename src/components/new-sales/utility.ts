@@ -1,15 +1,16 @@
-import {Item, Place, Product, Sale, Seller} from "../../../schemas/base";
+import {Item, Place, Product, Sale, Seller} from "../../schemas/base";
 import _ from "lodash";
-import {Module, ViewColor, ViewProduct, ViewShoes, ViewSize, ViewWidth} from "./types";
-import {NewSaleLineItem} from "../../../schemas/new-sale";
+import {Module, ViewColor, ViewProduct, ViewShoes, ViewSize, ViewWidth} from "./items/types";
+import {NewSaleLineItem} from "../../schemas/new-sale";
 import {
   ViewFormData,
   ViewNewSaleLineItem,
   ViewPlace,
   ViewSale,
   ViewSaleLineItem,
-  ViewSeller
-} from "../sale-line-items/types";
+  ViewSeller,
+  ViewTotal
+} from "./sale-line-items/types";
 
 
 export const convertItems = (items: Item[]): ViewProduct[] => {
@@ -97,10 +98,6 @@ export const convertItems = (items: Item[]): ViewProduct[] => {
   return groupedProducts
 }
 
-interface ConvertSaleLineItems {
-  (items: Item[], newSaleLineItems: NewSaleLineItem[]): ViewNewSaleLineItem[]
-}
-
 const findItemById = (itemId: number, items: Item[]) => {
   return items.find(item => item.id === itemId)
 }
@@ -110,6 +107,10 @@ const findProductInSaleLineItems = (vewSaleLineItems: ViewNewSaleLineItem[], pro
   return vewSaleLineItems.find(vewSaleLineItem =>
     vewSaleLineItem.prod_id === prodId && vewSaleLineItem.price === price
   )
+}
+
+interface ConvertSaleLineItems {
+  (items: Item[], newSaleLineItems: NewSaleLineItem[]): ViewNewSaleLineItem[]
 }
 
 export const convertSaleLineItems: ConvertSaleLineItems = (items, newSaleLineItems) => {
@@ -209,6 +210,37 @@ export const convertSales: ConvertSales = (sales) => {
     return {id: sale.id, place: sale.place.name, seller: sale.seller.name, salLineItems}
   })
   return viewSale
+}
+
+
+const getItemPrice = (itemId: number, items: Item[]) => {
+  const item = items.find(item => item.id === itemId) as Item
+  return item.buy_price
+}
+
+interface GetTotal {
+  (sales: Sale[], newSaleLineItems: NewSaleLineItem[], items: Item[]): ViewTotal
+}
+
+export const getTotal: GetTotal = (sales, newSaleLineItems, items) => {
+  const proceedsOldSales = sales.reduce(
+    (total, sale) => total + sale.sale_line_items.reduce(
+      (total, sli) => total + sli.sale_price * sli.qty
+      , 0)
+    , 0)
+  const proceedNewSale = newSaleLineItems.reduce((total, sale) => total + sale.salePrice * sale.qty, 0)
+
+  const incomeOldSales = sales.reduce(
+    (total, sale) => total + sale.sale_line_items.reduce(
+      (total, sli) => total + (sli.sale_price - sli.item.buy_price) * sli.qty
+      , 0)
+    , 0)
+  const incomeNewSale = newSaleLineItems.reduce(
+    (total, sale) => total + (sale.salePrice - getItemPrice(sale.itemId, items)) * sale.qty
+    , 0)
+  const proceeds = proceedsOldSales + proceedNewSale
+  const income = incomeOldSales + incomeNewSale
+  return {proceeds, income}
 }
 
 

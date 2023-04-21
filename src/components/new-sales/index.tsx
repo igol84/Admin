@@ -6,7 +6,7 @@ import {useAppSelector, useStoreId} from "../../hooks/redux";
 import {useFetchAccess, useIsLoadingDisplay, useLoaderAccess} from "../../hooks/pages";
 import {fetchDataForNewSale, fetchSales} from "../../store/actions/new-sales";
 import LoadingCircular from "../LoadingCircular";
-import {convertFormData, convertItems, convertSaleLineItems, convertSales} from "./items/utility";
+import {convertFormData, convertItems, convertSaleLineItems, convertSales, getTotal} from "./utility";
 import {formatISODate} from "../../hooks/form-data";
 
 const NewSales = () => {
@@ -26,11 +26,13 @@ const NewSales = () => {
   const viewFormData = convertFormData(sellers, places, selectedDate, onSetSelectedDate)
   const viewOldSales = convertSales(sales)
   const showLoading = useIsLoadingDisplay(isLoading)
+  const viewTotal = getTotal(sales, newSaleLineItems, items)
+
 
   return (
     <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
       <SaleLineItems viewNewSaleLineItems={viewNewSaleLineItems} viewFormData={viewFormData}
-                     viewOldSales={viewOldSales}/>
+                     viewOldSales={viewOldSales} viewTotal={viewTotal}/>
       <Items viewProducts={viewProducts}/>
       <LoadingCircular show={showLoading}/>
     </Box>

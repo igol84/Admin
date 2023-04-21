@@ -32,7 +32,7 @@ export interface EndSale {
 
 export interface UpdatedNewSaleItem {
   prodId: number
-  qty: number
+  oldPrice: number
   newPrice: number
 }
 

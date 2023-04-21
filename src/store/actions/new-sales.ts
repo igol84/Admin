@@ -32,7 +32,7 @@ export const fetchDataForNewSale = (access_token: string, {storeId}: fetchDataFo
 }
 
 interface fetchSalesProps {
-  storeId: any
+  storeId: number
   selectedDate: string
 }
 

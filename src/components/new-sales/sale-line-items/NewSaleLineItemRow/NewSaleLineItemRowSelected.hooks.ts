@@ -35,7 +35,7 @@ export const useForm: UseForm = (viewNewSaleLineItem, resetSelectedRow) => {
   const onConfirm = () => {
     const updatedNewSaleItem: UpdatedNewSaleItem = {
       prodId: viewNewSaleLineItem.prod_id,
-      qty: viewNewSaleLineItem.qty,
+      oldPrice: viewNewSaleLineItem.price,
       newPrice: Number(formData.price.value)
     }
     dispatch(updateNewSaleItem(updatedNewSaleItem))

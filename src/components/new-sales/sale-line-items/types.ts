@@ -38,3 +38,8 @@ export interface ViewSaleLineItem {
   salePrice: number
   qty: number
 }
+
+export interface ViewTotal{
+  proceeds: number
+  income: number
+}

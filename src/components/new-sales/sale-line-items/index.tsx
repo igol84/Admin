@@ -1,21 +1,23 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Box, Stack} from "@mui/material";
 import {useStyle} from "./style";
 import NewSaleLineItemRow from "./NewSaleLineItemRow/NewSaleLineItemRow";
 import NewSaleLineItemRowSelected from "./NewSaleLineItemRow/NewSaleLineItemRowSelected";
-import {ViewFormData, ViewNewSaleLineItem, ViewSale} from "./types";
+import {ViewFormData, ViewNewSaleLineItem, ViewSale, ViewTotal} from "./types";
 import FormSale from "./FormSale";
 import OldSale from "./OldSale";
+import Total from "./Total";
 
 
 interface SaleLineItemsProps {
   viewNewSaleLineItems: ViewNewSaleLineItem[]
   viewFormData: ViewFormData
   viewOldSales: ViewSale[]
+  viewTotal: ViewTotal
 }
 
 const SaleLineItems = (props: SaleLineItemsProps) => {
-  const {viewNewSaleLineItems, viewFormData, viewOldSales} = props
+  const {viewNewSaleLineItems, viewFormData, viewOldSales, viewTotal} = props
   const style = useStyle()
 
   const [selectedSeller, setSelectedSeller] = useState(viewFormData.selectedSellerId)
@@ -34,9 +36,6 @@ const SaleLineItems = (props: SaleLineItemsProps) => {
   const resetSelectedRow = () => {
     setSelectedRowId(null)
   }
-  useEffect(() => {
-
-  }, [])
 
   let nextRowId = viewNewSaleLineItems.length
   return (
@@ -60,11 +59,11 @@ const SaleLineItems = (props: SaleLineItemsProps) => {
             const startRowId = nextRowId
             nextRowId += viewSale.salLineItems.length
             return <OldSale key={rowKey} viewSale={viewSale} startRowId={startRowId} omSelectedRow={omSelectedRow}
-                       isSelected={isSelected} resetSelectedRow={resetSelectedRow}/>
+                            isSelected={isSelected} resetSelectedRow={resetSelectedRow}/>
           })}
         </Stack>
       </Stack>
-
+      <Total viewTotal={viewTotal}/>
     </Box>
   );
 };

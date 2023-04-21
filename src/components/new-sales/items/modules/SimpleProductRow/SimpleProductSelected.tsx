@@ -35,7 +35,7 @@ const SimpleProductSelected = (props: Product) => {
   return (
     <Paper className='product selected' onClick={() => undefined}>
       <Box sx={{width: '250px'}}>{viewSimpleProduct.name}</Box>
-      <Box sx={{width: '80px'}}>{qtyCell}</Box>
+      <Box sx={{width: '80px', whiteSpace: 'nowrap'}}>{qtyCell} of {viewSimpleProduct.qty}</Box>
       <Box sx={{flex: '1'}}></Box>
       <Box sx={{width: '100px'}}>{priceCell}</Box>
       <Box sx={{width: '150px'}} className='buttons'>{buttonsCell}</Box>
