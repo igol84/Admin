@@ -6,6 +6,7 @@ import {
   EditSLIPrice,
   EndSale,
   OutputEndSale,
+  PutItemToOldSale,
   PutOnSale,
   RemovedNewSaleItem,
   UpdatedNewSaleItem
@@ -87,10 +88,22 @@ export const editSLIPrice = (access_token: string, editPriceData: EditSLIPrice[]
       dispatch(newSalesSlice.actions.newSalesFetching())
       editPriceData.forEach(data => {
         secureApi.put('handler_sale_registration/edit_sli_price',
-          {json: data}).json()
+          {json: data})
       })
-
       dispatch(newSalesSlice.actions.editSLIPriceSuccess({editPriceData}))
+    } catch (err) {
+      dispatch(newSalesSlice.actions.newSalesFetchingError(err as Error))
+    }
+  }
+}
+
+export const removeProductInOldSale = (access_token: string, putItemToOldSale: PutItemToOldSale) => {
+  const secureApi = secureApiCreate(access_token)
+  return async (dispatch: AppDispatch) => {
+    try {
+      dispatch(newSalesSlice.actions.newSalesFetching())
+      await secureApi.put('handler_sale_registration/put_item_from_old_sale', {json: putItemToOldSale})
+      dispatch(newSalesSlice.actions.removeProductInOldSale({putItemToOldSale}))
     } catch (err) {
       dispatch(newSalesSlice.actions.newSalesFetchingError(err as Error))
     }

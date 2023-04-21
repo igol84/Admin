@@ -5,6 +5,7 @@ import {
   EditSLIPrice,
   NewSaleLineItem,
   OutputEndSale,
+  PutItemToOldSale,
   PutOnSale,
   RemovedNewSaleItem,
   UpdatedNewSaleItem
@@ -59,6 +60,10 @@ export interface SaveNewSalePayload {
 
 export interface EditSLIPricePayload {
   editPriceData: EditSLIPrice[]
+}
+
+export interface RemoveProductInOldSalePayload {
+  putItemToOldSale: PutItemToOldSale
 }
 
 
@@ -128,14 +133,15 @@ export const newSalesSlice = createSlice({
     },
 
     removeNewSaleItem(state, {payload: {removedNewSaleItem}}: PayloadAction<RemoveNewSaleItemPayload>) {
-      state.items = state.items.map(item => {
-        if (item.prod_id === removedNewSaleItem.prodId) {
-          const newSaleLineItemsQty = state.newSaleLineItems.find(sli =>
-            sli.itemId === item.id && sli.salePrice === removedNewSaleItem.price
-          )?.qty ?? 0
-          return {...item, qty: item.qty + newSaleLineItemsQty}
-        }
-        return item
+      state.items = produce(state.items, draftData => {
+        draftData.map(item => {
+          if (item.prod_id === removedNewSaleItem.prodId) {
+            const newSaleLineItemsQty = state.newSaleLineItems.find(sli =>
+              sli.itemId === item.id && sli.salePrice === removedNewSaleItem.price
+            )?.qty ?? 0
+            item.qty = item.qty + newSaleLineItemsQty
+          }
+        })
       })
       state.items.forEach(item => {
         if (item.prod_id === removedNewSaleItem.prodId) {
@@ -157,18 +163,46 @@ export const newSalesSlice = createSlice({
       action.payload.editPriceData.forEach(editPriceData => {
         const oldSLI = editPriceData.old_sli
         const newSLI = editPriceData.new_sli
-        state.sales = state.sales.map(sale => {
-          const sale_line_items = sale.sale_line_items.map(sli => {
-            if (sli.item_id === oldSLI.item_id && sli.sale_price === oldSLI.sale_price && sli.qty === oldSLI.qty) {
-              return {...sli, sale_price: newSLI.sale_price}
-            }
-            return sli
+        state.sales = produce(state.sales, draftData => {
+          draftData.map(sale => {
+            sale.sale_line_items = produce(sale.sale_line_items, draftData => {
+              draftData.map(sli => {
+                if (sli.item_id === oldSLI.item_id && sli.sale_price === oldSLI.sale_price && sli.qty === oldSLI.qty) {
+                  sli.sale_price = newSLI.sale_price
+                }
+              })
+            })
           })
-          return {...sale, sale_line_items}
         })
       })
 
-      state.newSaleLineItems = []
+      state.isLoading = false
+      state.error = ''
+    },
+
+    removeProductInOldSale(state, action: PayloadAction<RemoveProductInOldSalePayload>) {
+      const putItemToOldSale = action.payload.putItemToOldSale
+      const delSLIs = action.payload.putItemToOldSale.list_del_sli
+      const updateItems = action.payload.putItemToOldSale.list_update_items
+      if (putItemToOldSale.delete) {
+        state.sales = state.sales.filter(sale => sale.id !== putItemToOldSale.sale_id)
+      } else {
+        const sale = state.sales.find(sale => sale.id === putItemToOldSale.sale_id) as Sale
+        delSLIs.forEach(delSLI => {
+          sale.sale_line_items = sale.sale_line_items.filter(sli =>
+            !(sli.item_id === delSLI.item_id && sli.sale_price === delSLI.sale_price)
+          )
+        })
+      }
+      updateItems.forEach(updateItem => {
+        state.items = produce(state.items, draftData => {
+          draftData.map(item => {
+            if (item.id === updateItem.id) {
+              item.qty = updateItem.qty
+            }
+          })
+        })
+      })
       state.isLoading = false
       state.error = ''
     },

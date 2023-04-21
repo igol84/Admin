@@ -3,9 +3,10 @@ import produce from "immer";
 import {FieldNames, FormFields} from "./SaleLineItemRowSelected.types";
 import {ViewSaleLineItem} from "../types";
 import {useFetchAccess} from "../../../../hooks/pages";
-import {editSLIPrice} from "../../../../store/actions/new-sales";
-import {useAppSelector} from "../../../../hooks/redux";
-import {EditSLIPrice} from "../../../../schemas/new-sale";
+import {editSLIPrice, removeProductInOldSale} from "../../../../store/actions/new-sales";
+import {useAppSelector, useStoreId} from "../../../../hooks/redux";
+import {CreateItem, EditSLIPrice, PutItemToOldSale, SaleLineItemKeys, UpdateItem} from "../../../../schemas/new-sale";
+import {Sale} from "../../../../schemas/base";
 
 
 interface UseForm {
@@ -33,7 +34,8 @@ export const useForm: UseForm = (viewSaleLineItem, resetSelectedRow) => {
       }))
   }
   const dispatchEditSLIPrice = useFetchAccess(editSLIPrice)
-  const {sales} = useAppSelector(state => state.newSalesSliceSlice)
+  const {sales, items} = useAppSelector(state => state.newSalesSliceSlice)
+  const storeId = useStoreId()
   const onConfirm = async () => {
     const sale = sales.find(sale => sale.id === viewSaleLineItem.saleId)
     if (sale) {
@@ -63,8 +65,51 @@ export const useForm: UseForm = (viewSaleLineItem, resetSelectedRow) => {
       resetSelectedRow()
     }
   }
-
-  const onRemove = () => null
+  const dispatchRemoveProductInOldSale = useFetchAccess(removeProductInOldSale)
+  const onRemove = async () => {
+    const sale = sales.find(sale => sale.id === viewSaleLineItem.saleId) as Sale
+    const listDeleteSLIs: SaleLineItemKeys[] = []
+    const listNewItems: CreateItem[] = []
+    const listUpdateItems: UpdateItem[] = []
+    sale.sale_line_items.forEach(sale_line_item => {
+      if (sale_line_item.item.prod_id === viewSaleLineItem.productId
+        && sale_line_item.sale_price === viewSaleLineItem.salePrice) {
+        listDeleteSLIs.push({
+          sale_id: viewSaleLineItem.saleId,
+          item_id: sale_line_item.item_id,
+          sale_price: viewSaleLineItem.salePrice
+        })
+        const item = items.find(item => item.id === sale_line_item.item_id)
+        if (!item) {
+          listNewItems.push({
+            prod_id: viewSaleLineItem.productId,
+            store_id: storeId as number,
+            qty: sale_line_item.qty,
+            buy_price: sale_line_item.sale_price,
+            date_buy: sale_line_item.item.date_buy
+          })
+        } else {
+          listUpdateItems.push({
+            id: sale_line_item.item_id,
+            prod_id: viewSaleLineItem.productId,
+            store_id: storeId as number,
+            qty: item.qty + sale_line_item.qty,
+            buy_price: sale_line_item.sale_price,
+            date_buy: sale_line_item.item.date_buy
+          })
+        }
+      }
+    })
+    const putItemToOldSale: PutItemToOldSale = {
+      sale_id: viewSaleLineItem.saleId,
+      list_del_sli: listDeleteSLIs,
+      list_new_items: listNewItems,
+      list_update_items: listUpdateItems,
+      delete: sale.sale_line_items.length === listDeleteSLIs.length
+    }
+    await dispatchRemoveProductInOldSale(putItemToOldSale)
+    resetSelectedRow()
+  }
 
   return [formData, useError, onPriceFieldChange, onConfirm, onRemove]
 }
