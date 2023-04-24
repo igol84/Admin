@@ -6,6 +6,7 @@ import Size from "./Size";
 import SizeSelected from "./SizeSelected";
 import HeaderColor from "./HeaderColor";
 import HeaderColorSelected from "./HeaderColorSelected";
+import {useDictionaryTranslate} from "../../../../../../hooks/pages";
 
 
 interface WidthProps {
@@ -26,12 +27,12 @@ const Width = (props: WidthProps) => {
   }
 
   const isSelected = () => viewWidth.sizes.find(size => isSelectedSize(size.prod_id))
-
+  const d = useDictionaryTranslate('NewSales')
   return (
     <Stack className='color selected'>
       {selectedSize && isSelected()
-        ? <HeaderColorSelected width={viewWidth.width} color={color} onClose={onResetSize} selectedSize={selectedSize}/>
-        : <HeaderColor width={viewWidth.width} color={color}/>
+        ? <HeaderColorSelected width={d(viewWidth.width)} color={color} onClose={onResetSize} selectedSize={selectedSize}/>
+        : <HeaderColor width={d(viewWidth.width)} color={color}/>
       }
       <Stack
         direction="row"

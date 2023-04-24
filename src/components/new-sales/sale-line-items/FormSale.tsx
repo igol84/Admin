@@ -5,7 +5,7 @@ import {ViewFormData} from "./types";
 import {useAppSelector} from "../../../hooks/redux";
 import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
 import {CreateSale, CreateSaleLineItemForSale, EndSale} from "../../../schemas/new-sale";
-import {useFetchAccess} from "../../../hooks/pages";
+import {useDictionaryTranslate, useFetchAccess} from "../../../hooks/pages";
 import {saveNewSale} from "../../../store/actions/new-sales";
 import {formatISO} from "date-fns";
 
@@ -32,7 +32,7 @@ const FormSale = (props: FormSaleProps) => {
     onSetSelectedPlace
   } = props
   const {newSaleLineItems} = useAppSelector(state => state.newSalesSliceSlice)
-
+  const d = useDictionaryTranslate('NewSales')
   const isDisableButton = () => {
     return !(newSaleLineItems.length > 0 && Number(selectedSeller) > 0 && Number(selectedPlace) > 0)
   }
@@ -63,7 +63,7 @@ const FormSale = (props: FormSaleProps) => {
     <Stack spacing={1} className='saleForm' direction={{xs: 'column', sm: 'row'}}>
       <SimpleField
         name="date"
-        label="Date of sale"
+        label={d('Date')}
         type="date"
         value={selectedDate}
         setValue={onSetSelectedDate}
@@ -71,7 +71,7 @@ const FormSale = (props: FormSaleProps) => {
       />
       <SimpleSelect
         name='place'
-        label='place'
+        label={d('Place')}
         value={selectedPlace}
         setValue={onSetSelectedPlace}
         onOpen={resetSelectedRow}
@@ -83,7 +83,7 @@ const FormSale = (props: FormSaleProps) => {
       </SimpleSelect>
       <SimpleSelect
         name='seller'
-        label='seller'
+        label={d('Seller')}
         value={selectedSeller}
         setValue={onSetSelectedSeller}
         onOpen={resetSelectedRow}
@@ -95,7 +95,7 @@ const FormSale = (props: FormSaleProps) => {
       </SimpleSelect>
       <Button className='buttonConfirm' variant="contained" color='secondary' endIcon={<SaveRoundedIcon/>}
               disabled={isDisableButton()} onClick={onSave}>
-        Save
+        {d('Save')}
       </Button>
     </Stack>
   );

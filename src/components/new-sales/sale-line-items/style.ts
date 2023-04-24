@@ -15,7 +15,7 @@ export const useStyle = () => {
       py: 1,
       pr: 2,
       '& .buttonConfirm': {
-        px: 5
+        px: 8
       },
     },
 

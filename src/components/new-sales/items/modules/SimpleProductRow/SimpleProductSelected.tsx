@@ -6,6 +6,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import CloseButton from "../../../../Form/CloseButton";
 import {GridActionsCellItem} from "@mui/x-data-grid";
 import React from "react";
+import {useDictionaryTranslate} from "../../../../../hooks/pages";
 
 interface Product {
   viewSimpleProduct: ViewSimpleProduct
@@ -18,6 +19,7 @@ const SimpleProductSelected = (props: Product) => {
   const [
     formData, useError, onQtyFieldChange, onPriceFieldChange, onConfirm
   ] = useForm(viewSimpleProduct, resetSelectedRow)
+  const d = useDictionaryTranslate('NewSales')
   const qtyCell =
     <SimpleField
       type='number' name='qty' value={formData.qty.value} setValue={onQtyFieldChange} error={useError('qty')}
@@ -35,7 +37,7 @@ const SimpleProductSelected = (props: Product) => {
   return (
     <Paper className='product selected' onClick={() => undefined}>
       <Box sx={{width: '250px'}}>{viewSimpleProduct.name}</Box>
-      <Box sx={{width: '80px', whiteSpace: 'nowrap'}}>{qtyCell} of {viewSimpleProduct.qty}</Box>
+      <Box sx={{width: '80px', whiteSpace: 'nowrap'}}>{qtyCell} {d('of')} {viewSimpleProduct.qty}</Box>
       <Box sx={{flex: '1'}}></Box>
       <Box sx={{width: '100px'}}>{priceCell}</Box>
       <Box sx={{width: '150px'}} className='buttons'>{buttonsCell}</Box>

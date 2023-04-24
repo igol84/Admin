@@ -122,7 +122,7 @@ const SidebarMenu = () => {
               location={location.pathname}
             />
             <Item
-              title={'Mew Sale'}
+              title={dict('newSales')}
               to='/new-sales'
               icon={<PointOfSaleOutlinedIcon/>}
               location={location.pathname}

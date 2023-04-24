@@ -192,8 +192,9 @@ export const convertSales: ConvertSales = (sales) => {
         const newViewSaleLineItem: ViewSaleLineItem = {...viewSaleLineItem, qty: viewSaleLineItem.qty + sli.qty}
         salLineItemsMap.set(saleLineItemKey, newViewSaleLineItem)
       } else {
+        const width = sli.item.product.shoes?.width === "Medium" ? "" : sli.item.product.shoes?.width
         const name = sli.item.product.shoes
-          ? `${sli.item.product.name} ${sli.item.product.shoes.color} ${sli.item.product.shoes.width}
+          ? `${sli.item.product.name} ${sli.item.product.shoes.color} ${width}
          ${sli.item.product.shoes.size}`
           : sli.item.product.name
         const viewSaleLineItem: ViewSaleLineItem = {

@@ -1,4 +1,16 @@
 {
+  "NewSales": {
+    "title": "Новые продажи",
+    "of": "из",
+    "Medium": "",
+    "Wide": "Широкая",
+    "Date": "Дата продажи",
+    "Place": "Где продали",
+    "Seller": "Продавец",
+    "Save": "Сахранить",
+    "Proceeds": "Выручка",
+    "Income": "Доход"
+  },
   "ProductsEditor": {
     "title": "Каталог",
     "pc": "шт.",
@@ -80,7 +92,8 @@
     "expenses": "Издержки",
     "newProducts": "Новые продукты",
     "itemsEditor": "Склад",
-    "productsEditor": "Каталог"
+    "productsEditor": "Каталог",
+    "newSales": "Новые продажи"
   },
   "auth": {
     "title": "Авторизация",

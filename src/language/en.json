@@ -1,4 +1,16 @@
 {
+  "NewSales": {
+    "title": "New Sales",
+    "of": "of",
+    "Medium": "Medium",
+    "Wide": "Wide",
+    "Date": "Date of sale",
+    "Place": "Place",
+    "Seller": "Seller",
+    "Save": "Save",
+    "Proceeds": "Proceeds",
+    "Income": "Income"
+  },
   "ProductsEditor": {
     "title": "Products Editor",
     "pc": "pc.",
@@ -80,7 +92,8 @@
     "expenses": "Expenses",
     "newProducts": "New Products",
     "itemsEditor": "Item editor",
-    "productsEditor": "Products Editor"
+    "productsEditor": "Products Editor",
+    "newSales": "New Sales"
   },
   "auth": {
     "title": "Authorization",

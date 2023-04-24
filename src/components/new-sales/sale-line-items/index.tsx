@@ -63,7 +63,7 @@ const SaleLineItems = (props: SaleLineItemsProps) => {
           })}
         </Stack>
       </Stack>
-      <Total viewTotal={viewTotal}/>
+      {viewTotal.proceeds ? <Total viewTotal={viewTotal}/> : null}
     </Box>
   );
 };
