@@ -4,9 +4,9 @@ import {useForm} from "./SaleLineItemRowSelected.hooks";
 import {SimpleField} from "../../../Form";
 import {GridActionsCellItem} from "@mui/x-data-grid";
 import CheckIcon from "@mui/icons-material/Check";
-import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import CloseButton from "../../../Form/CloseButton";
 import {ViewSaleLineItem} from "../types";
+import DeleteButton from "../../../Form/DeleteButton";
 
 
 interface SaleLineItemRowSelectedProps {
@@ -25,7 +25,7 @@ const SaleLineItemRowSelected = (props: SaleLineItemRowSelectedProps) => {
     <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
       <Box>
         <GridActionsCellItem icon={<CheckIcon/>} label={'Check'} onClick={onConfirm}/>
-        <GridActionsCellItem icon={<DeleteIcon/>} label={'Remove'} onClick={onRemove}/>
+        <DeleteButton deletable={true} onRemove={onRemove}/>
       </Box>
       <CloseButton onClick={resetSelectedRow}/>
     </Box>

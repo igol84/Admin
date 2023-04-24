@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
-import {useDialogStyle} from "../Form/style";
+import {useDialogStyle} from "./style";
 import CloseIcon from '@mui/icons-material/Close';
 import {GridActionsCellItem} from "@mui/x-data-grid";
 import {useDictionaryTranslate} from "../../hooks/pages";
@@ -15,7 +15,6 @@ interface DeleteDialogType {
 }
 
 export default function DeleteDialog(props: DeleteDialogType) {
-  const dict = useDictionaryTranslate('itemsEditor')
   const dictForm = useDictionaryTranslate('form')
   const style = useDialogStyle()
   const {isOpen, handleConfirm, handleClose} = props
@@ -28,7 +27,7 @@ export default function DeleteDialog(props: DeleteDialogType) {
       onClose={handleClose}
     >
       <DialogTitle id="alert-dialog-title">
-        {dict('youSure')}
+        {dictForm('youSure')}
         <GridActionsCellItem
           icon={<CloseIcon/>}
           label={'close'}

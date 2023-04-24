@@ -1,25 +1,23 @@
-import {useDictionaryTranslate, useFetchAccess} from "../../hooks/pages";
 import {GridActionsCellItem} from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import React, {useState} from "react";
-import {delItem} from "../../store/actions/items-editor";
-import DeleteDialog from "../Form/Dialog";
+import {useDictionaryTranslate} from "../../hooks/pages";
+import DeleteDialog from "./Dialog";
+
 
 interface DeleteButtonType {
-  itemID: number
   deletable: boolean
+  onRemove: ()=> void
 }
 
-const DeleteButton = (props: DeleteButtonType) => {
+const DeleteButton = ({deletable, onRemove} : DeleteButtonType) => {
   const dict = useDictionaryTranslate('form')
   const [dialogOpen, setDialogOpen] = useState<boolean>(false)
-  const {itemID, deletable} = props
-  const deletePlaceAccess = useFetchAccess(delItem)
   const onClick = () => {
     setDialogOpen(true)
   }
-  const handleConfirm = async () => {
-    await deletePlaceAccess(itemID)
+  const handleConfirm = () => {
+    onRemove()
   }
   return (
     <>
