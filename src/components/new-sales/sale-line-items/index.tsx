@@ -20,14 +20,6 @@ const SaleLineItems = (props: SaleLineItemsProps) => {
   const {viewNewSaleLineItems, viewFormData, viewOldSales, viewTotal} = props
   const style = useStyle()
 
-  const [selectedSeller, setSelectedSeller] = useState(viewFormData.selectedSellerId)
-  const onSetSelectedSeller = (seller: string) => {
-    setSelectedSeller(seller)
-  }
-  const [selectedPlace, setSelectedPlace] = useState(viewFormData.selectedPlaceId)
-  const onSetSelectedPlace = (place: string) => {
-    setSelectedPlace(place)
-  }
   const [selectedRowId, setSelectedRowId] = useState<number | null>(null)
   const omSelectedRow = (rowId: number) => () => {
     setSelectedRowId(rowId)
@@ -40,12 +32,11 @@ const SaleLineItems = (props: SaleLineItemsProps) => {
   let nextRowId = viewNewSaleLineItems.length
   return (
     <Box sx={style}>
-      <FormSale
-        viewSellersAndPlaces={viewFormData} resetSelectedRow={resetSelectedRow}
-        selectedDate={viewFormData.selectedDate} onSetSelectedDate={viewFormData.onSetSelectedDate}
-        selectedSeller={selectedSeller} onSetSelectedSeller={onSetSelectedSeller}
-        selectedPlace={selectedPlace} onSetSelectedPlace={onSetSelectedPlace}
-      />
+         <FormSale
+            viewSellersAndPlaces={viewFormData} resetSelectedRow={resetSelectedRow}
+            selectedDate={viewFormData.selectedDate} onSetSelectedDate={viewFormData.onSetSelectedDate}
+         />
+
       <Stack className='items'>
         {viewNewSaleLineItems.map((viewNewSaleLineItem, rowId) => {
           return isSelected(rowId)

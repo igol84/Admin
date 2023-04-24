@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, MenuItem, Stack} from "@mui/material";
 import {SimpleField, SimpleSelect} from "../../Form";
 import {ViewFormData} from "./types";
@@ -14,23 +14,25 @@ interface FormSaleProps {
   resetSelectedRow: () => void
   selectedDate: string
   onSetSelectedDate: (date: string) => void
-  selectedSeller: string
-  onSetSelectedSeller: (seller: string) => void
-  selectedPlace: string
-  onSetSelectedPlace: (place: string) => void
 }
 
 const FormSale = (props: FormSaleProps) => {
-  const {
-    viewSellersAndPlaces,
-    resetSelectedRow,
-    selectedDate,
-    onSetSelectedDate,
-    selectedSeller,
-    onSetSelectedSeller,
-    selectedPlace,
-    onSetSelectedPlace
-  } = props
+  const {viewSellersAndPlaces, resetSelectedRow, selectedDate, onSetSelectedDate} = props
+  const [selectedSeller, setSelectedSeller] = useState(viewSellersAndPlaces.selectedSellerId)
+  const onSetSelectedSeller = (seller: string) => {
+    setSelectedSeller(seller)
+  }
+  const [selectedPlace, setSelectedPlace] = useState(viewSellersAndPlaces.selectedPlaceId)
+  const onSetSelectedPlace = (place: string) => {
+    setSelectedPlace(place)
+  }
+  useEffect(()=>{
+    if(selectedSeller === '-1'  && viewSellersAndPlaces.selectedSellerId!=='-1')
+      setSelectedSeller(viewSellersAndPlaces.selectedSellerId)
+    if(selectedPlace === '-1'  && viewSellersAndPlaces.selectedPlaceId!=='-1')
+      setSelectedPlace(viewSellersAndPlaces.selectedPlaceId)
+  })
+
   const {newSaleLineItems} = useAppSelector(state => state.newSalesSliceSlice)
   const d = useDictionaryTranslate('NewSales')
   const isDisableButton = () => {

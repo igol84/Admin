@@ -169,9 +169,9 @@ export const convertFormData: ConvertFormData = (sellers, places, selectedDate, 
     }
   })
   const convertSaleLineItems: ViewFormData = {
-    selectedPlaceId: viewSellers.length == 1 ? viewSellers[0].id.toString() : '-1',
+    selectedSellerId: viewSellers.length === 1 ? viewSellers[0].id.toString() : '-1',
     sellers: viewSellers,
-    selectedSellerId: viewPlaces.length == 1 ? viewPlaces[0].id.toString() : '-1',
+    selectedPlaceId: viewPlaces.length === 1 ? viewPlaces[0].id.toString() : '-1',
     places: viewPlaces,
     selectedDate,
     onSetSelectedDate

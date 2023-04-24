@@ -161,6 +161,7 @@ export const SimpleSelect = (props: FormSelectType) => {
     <FormControl fullWidth>
       <InputLabel color='secondary'>{label}</InputLabel>
       <Select
+        defaultValue='-1'
         color='secondary'
         size='small'
         sx={{width: "100%"}}

@@ -7,6 +7,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import CloseButton from "../../../Form/CloseButton";
 import {ViewSaleLineItem} from "../types";
 import DeleteButton from "../../../Form/DeleteButton";
+import {useDictionaryTranslate} from "../../../../hooks/pages";
 
 
 interface SaleLineItemRowSelectedProps {
@@ -17,6 +18,7 @@ interface SaleLineItemRowSelectedProps {
 const SaleLineItemRowSelected = (props: SaleLineItemRowSelectedProps) => {
   const {viewSaleLineItem, resetSelectedRow} = props
   const [formData, useError, onPriceFieldChange, onConfirm, onRemove] = useForm(viewSaleLineItem, resetSelectedRow)
+  const d = useDictionaryTranslate('NewSales')
   const priceCell =
     <SimpleField
       type='number' name='price' value={formData.price.value.toString()} setValue={onPriceFieldChange}
@@ -32,8 +34,8 @@ const SaleLineItemRowSelected = (props: SaleLineItemRowSelectedProps) => {
   return (
     <Box className='item selected'>
       <Box width='300px'>{viewSaleLineItem.name}</Box>
-      <Box width='150px'>{priceCell}</Box>
-      <Box width='50px'>{viewSaleLineItem.qty}</Box>
+      <Box width='100px'>{priceCell}</Box>
+      <Box width='50px'>{viewSaleLineItem.qty} {d('pc')}</Box>
       <Box flex={1}></Box>
       <Box width='150px'>{buttonsCell}</Box>
     </Box>

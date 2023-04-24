@@ -28,7 +28,6 @@ const NewSales = () => {
   const showLoading = useIsLoadingDisplay(isLoading)
   const viewTotal = getTotal(sales, newSaleLineItems, items)
 
-
   return (
     <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
       <SaleLineItems viewNewSaleLineItems={viewNewSaleLineItems} viewFormData={viewFormData}
