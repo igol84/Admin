@@ -1,4 +1,4 @@
-import {useState} from "react";
+import React, {useState} from "react";
 import produce from "immer";
 import {Field} from "../../../../../Form/types";
 import {SelectedSize} from "./index";
@@ -21,6 +21,7 @@ interface UseForm {
     formShoesData: FormFields,
     useError: (fieldName: FieldNames) => string,
     onPriceFieldChange: (price: string) => void,
+    onKeyDown: (name: string, event: React.KeyboardEvent<HTMLDivElement>) => void,
     onConfirm: () => Promise<void> | void,
   ]
 }
@@ -38,6 +39,11 @@ export const useForm: UseForm = (selectedSize, onClose) => {
         prevFormData.price.value = price
       }))
   }
+  const onKeyDown = (name: string, event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "Enter") {
+      onConfirm()
+    }
+  }
   const dispatch = useAppDispatch()
   const onConfirm = () => {
 
@@ -49,5 +55,5 @@ export const useForm: UseForm = (selectedSize, onClose) => {
     dispatch(putOnSale(saleData))
     onClose()
   }
-  return [formShoesData, useError, onPriceFieldChange, onConfirm]
+  return [formShoesData, useError, onPriceFieldChange, onKeyDown, onConfirm]
 }

@@ -9,7 +9,8 @@
     "Seller": "Продавец",
     "Save": "Сахранить",
     "Proceeds": "Выручка",
-    "Income": "Доход"
+    "Income": "Доход",
+    "pc": "шт."
   },
   "ProductsEditor": {
     "title": "Каталог",

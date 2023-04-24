@@ -14,7 +14,7 @@ export const useStyle = () => {
       pr: 1,
       overflow: "hidden",
       overflowY: "scroll",
-      height: "60vh",
+      height: "70vh",
       direction: "column",
       justifyContent: "flex-start",
       alignItems: "stretch",

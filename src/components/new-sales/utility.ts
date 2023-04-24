@@ -130,8 +130,9 @@ export const convertSaleLineItems: ConvertSaleLineItems = (items, newSaleLineIte
         })
 
       } else {
+        const width = item.product.shoes?.width === "Medium" ? "" : item.product.shoes?.width
         const name = item.product.shoes
-          ? `${item.product.name} ${item.product.shoes.color} ${item.product.shoes.width} ${item.product.shoes.size}`
+          ? `${item.product.name} ${item.product.shoes.color} ${width} ${item.product.shoes.size}`
           : item.product.name
         const viewSaleLineItem: ViewNewSaleLineItem = {
           prod_id: item.prod_id,

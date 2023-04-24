@@ -17,9 +17,10 @@ const SimpleProductSelected = (props: Product) => {
   const {viewSimpleProduct, resetSelectedRow} = props
 
   const [
-    formData, useError, onQtyFieldChange, onPriceFieldChange, onConfirm
+    formData, useError, onQtyFieldChange, onPriceFieldChange, onKeyDown, onConfirm
   ] = useForm(viewSimpleProduct, resetSelectedRow)
   const d = useDictionaryTranslate('NewSales')
+
   const qtyCell =
     <SimpleField
       type='number' name='qty' value={formData.qty.value} setValue={onQtyFieldChange} error={useError('qty')}
@@ -27,7 +28,7 @@ const SimpleProductSelected = (props: Product) => {
   const priceCell =
     <SimpleField
       type='number' name='price' value={formData.price.value.toString()} setValue={onPriceFieldChange}
-      error={useError('price')} fullWidth={false} variant={'standard'}/>
+      error={useError('price')} fullWidth={false} variant={'standard'} autoFocus focusText onKeyDown={onKeyDown}/>
   const buttonsCell =
     <>
       <GridActionsCellItem icon={<CheckIcon/>} label={'Check'} onClick={onConfirm}/>

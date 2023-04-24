@@ -91,7 +91,7 @@ interface FieldType {
   error?: string
   inputProps?: any
   disabled?: boolean
-  onKeyDown?: (value: any) => void
+  onKeyDown?: (value: any, event: React.KeyboardEvent<HTMLDivElement>) => void
   autoFocus?: boolean
   tabIndex?: number
   fullWidth?: boolean
@@ -110,7 +110,7 @@ export const SimpleField = (props: FieldType) => {
     error = '',
     inputProps = {},
     disabled = false,
-    onKeyDown = (_) => true,
+    onKeyDown = (name, event) => [name, event],
     autoFocus = false,
     tabIndex = undefined,
     fullWidth = true,
@@ -135,8 +135,8 @@ export const SimpleField = (props: FieldType) => {
       }}
       inputProps={inputProps}
       disabled={disabled}
-      onKeyDown={() => {
-        onKeyDown(name)
+      onKeyDown={(event) => {
+        onKeyDown(name, event)
       }}
       autoFocus={autoFocus}
       tabIndex={tabIndex}
@@ -255,10 +255,6 @@ export const fieldPositive = (value: number) => {
   return ''
 }
 
-export const isFieldPositive = (value: number) => {
-  return !(!!fieldPositive(value))
-}
-
 export const fieldPositiveNotNull = (value: number) => {
   if (value <= 0) {
     return 'positive, more than zero'
@@ -285,4 +281,5 @@ export const SnackBarSuccess = (props: SnackBarSuccessProps) => {
 export const formatter = (language: string) => new Intl.NumberFormat(language == 'en' ? 'es' : 'us', { //
   style: 'currency',
   currency: 'UAH',
+  minimumFractionDigits: 0
 });

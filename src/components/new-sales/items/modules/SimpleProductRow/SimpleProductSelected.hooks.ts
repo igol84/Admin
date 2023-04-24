@@ -1,4 +1,4 @@
-import {useState} from "react";
+import React, {useState} from "react";
 import produce from "immer";
 import {FieldNames, FormFields, ViewSimpleProduct} from "./types";
 import {PutOnSale} from "../../../../../schemas/new-sale";
@@ -12,6 +12,7 @@ interface UseForm {
     useError: (fieldName: FieldNames) => string,
     onQtyFieldChange: (qty: string) => void,
     onPriceFieldChange: (price: string) => void,
+    onKeyDown: (name: string, event: React.KeyboardEvent<HTMLDivElement>) => void,
     onConfirm: () => void
   ]
 }
@@ -36,6 +37,11 @@ export const useForm: UseForm = (viewSimpleProduct, resetSelectedRow) => {
         prevFormData.price.value = price
       }))
   }
+  const onKeyDown = (name: string, event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "Enter") {
+      onConfirm()
+    }
+  }
   const dispatch = useAppDispatch()
   const onConfirm = () => {
     const saleData: PutOnSale = {
@@ -47,5 +53,5 @@ export const useForm: UseForm = (viewSimpleProduct, resetSelectedRow) => {
     resetSelectedRow()
   }
 
-  return [formData, useError, onQtyFieldChange, onPriceFieldChange, onConfirm]
+  return [formData, useError, onQtyFieldChange, onPriceFieldChange, onKeyDown, onConfirm]
 }

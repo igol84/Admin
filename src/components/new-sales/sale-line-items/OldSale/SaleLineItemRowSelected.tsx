@@ -32,7 +32,7 @@ const SaleLineItemRowSelected = (props: SaleLineItemRowSelectedProps) => {
   return (
     <Box className='item selected'>
       <Box width='300px'>{viewSaleLineItem.name}</Box>
-      <Box width='100px'>{priceCell}</Box>
+      <Box width='150px'>{priceCell}</Box>
       <Box width='50px'>{viewSaleLineItem.qty}</Box>
       <Box flex={1}></Box>
       <Box width='150px'>{buttonsCell}</Box>
