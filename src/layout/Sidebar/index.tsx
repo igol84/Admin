@@ -17,27 +17,31 @@ import {Item} from "./Item";
 import {useAppSelector} from "../../hooks/redux";
 import {useDictionaryTranslate} from "../../hooks/pages";
 
+interface SidebarMenuProps{
+  width: number
+  toggleOpenBar: ()=> void
+}
 
-const SidebarMenu = () => {
+const SidebarMenu = ({width, toggleOpenBar}: SidebarMenuProps) => {
   const dict = useDictionaryTranslate('sidebar')
   const location = useLocation()
   const theme = useTheme()
   const colors = tokens(theme.palette.mode)
   const {collapsed, collapseSidebar} = useProSidebar();
-  const style = {
-    display: 'flex', minHeight: '400px'
-  } as const;
   const userName = useAppSelector(state => state.authReducer.username)
   const isAuthenticated = useAppSelector(state => state.authReducer.isAuthenticated)
   return (
-    <Box sx={style}>
+    <Box sx={{display: 'flex', height: '100%',   width: `${width}px`, position: 'fixed'}}>
       <Sidebar
         backgroundColor={colors.primary[400]}
         rootStyles={{borderColor: colors.primary[900]}}
       >
         <Menu menuItemStyles={menuItemStyles()}>
           <MenuItem
-            onClick={() => collapseSidebar()}
+            onClick={() => {
+              collapseSidebar()
+              toggleOpenBar()
+            }}
             icon={collapsed ? <MenuOutlinedIcon/> : undefined}
             style={{
               margin: "10px 0 20px 0",

@@ -176,6 +176,18 @@ const AddNewProductForm = () => {
   return (
     <>
       <Box sx={{display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center', pb: '20px'}}>
+        <Box width={150}>
+          <SimpleSelect
+            name='productType'
+            label={d['productType']}
+            value={formData.productType.value.toString()}
+            setValue={onTypeChange}
+          >
+            {Object.values(ProductType).map((productType, id) => (
+              <MenuItem key={id} value={productType}>{d[productType] ?? productType}</MenuItem>
+            ))}
+          </SimpleSelect>
+        </Box>
         <Box sx={{width: '300px'}}>
           <SimpleAutocomplete
             name='name'
@@ -213,18 +225,7 @@ const AddNewProductForm = () => {
             disabled={formData.name.selected !== ''}
           />
         </Box>
-        <Box width={150}>
-          <SimpleSelect
-            name='productType'
-            label={d['productType']}
-            value={formData.productType.value.toString()}
-            setValue={onTypeChange}
-          >
-            {Object.values(ProductType).map((productType, id) => (
-              <MenuItem key={id} value={productType}>{d[productType] ?? productType}</MenuItem>
-            ))}
-          </SimpleSelect>
-        </Box>
+
       </Box>
       <Box
         sx={{
