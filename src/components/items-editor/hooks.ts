@@ -24,6 +24,7 @@ export interface UsePages {
   (countOfRows: number):
     [
       page: number,
+      setPage: (value: number) => void,
       rowsPerPage: number,
       handleChangePage: (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => void,
       handleChangeRowsPerPage: (event: React.ChangeEvent<HTMLInputElement>) => void,
@@ -46,7 +47,7 @@ export const usePages: UsePages = (countOfRows) => {
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - countOfRows) : 0
 
-  return [page, rowsPerPage, handleChangePage, handleChangeRowsPerPage, emptyRows]
+  return [page, setPage, rowsPerPage, handleChangePage, handleChangeRowsPerPage, emptyRows]
 }
 
 

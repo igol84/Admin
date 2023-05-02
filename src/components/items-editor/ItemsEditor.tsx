@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import {Box, Table, TableBody, TableCell, TableContainer, TablePagination, TableRow} from "@mui/material"
 import {useDictionaryTranslate, useIsLoadingDisplay, useLoaderAccess} from "../../hooks/pages"
-
+import {AnimatePresence, motion} from "framer-motion"
 import {useAppSelector, useStoreId} from "../../hooks/redux"
 import {fetchItemsEditor} from "../../store/actions/items-editor"
 import {useBoxTableStyle} from "../Form/style"
@@ -45,10 +45,15 @@ const ItemsEdit = () => {
   const showLoading = useIsLoadingDisplay(isLoading)
   const [order, orderBy, handleRequestSort] = useOrder()
 
-  const [page, rowsPerPage, handleChangePage, handleChangeRowsPerPage, emptyRows] = usePages(countOfRows)
+  const [page, setPage, rowsPerPage, handleChangePage, handleChangeRowsPerPage, emptyRows] = usePages(countOfRows)
   const [
     formData, isSelected, onQtyFieldChange, onPriceFieldChange, resetFormData, useError, handleClick, formWasEdited
   ] = useForm()
+
+  const onSetSearch = (value: string) => {
+    setSearch(value)
+    setPage(0)
+  }
 
   return (
     <Box sx={boxTableStyle}>
@@ -64,7 +69,7 @@ const ItemsEdit = () => {
             onRequestSort={handleRequestSort}
             headCells={headCells}
             search={search}
-            setSearch={setSearch}
+            setSearch={onSetSearch}
           />
           <TableBody>
             {rows.slice().filter(searchRowsByName)
@@ -96,29 +101,26 @@ const ItemsEdit = () => {
                   /> : row.buy_price
 
                 const buttons = isItemSelected &&
-                   <Box display={'flex'} justifyContent={'space-between'}>
-                      <SaveButton
-                         disabled={!formWasEdited(row.qty, row.buy_price)}
-                         id={row.id}
-                         qty={Number(formData.qty.value)}
-                         price={Number(formData.price.value)}
-                         resetFormData={resetFormData}
-                      />
-                      <DeleteButton deletable={!isItemWithSales} itemID={row.id}/>
-                      <GridActionsCellItem
-                         icon={<CloseIcon/>}
-                         label={'close'}
-                         onClick={resetFormData}
-                         color="inherit"
-                      />
-                   </Box>
-
-                const salesRow = isItemSelected && isItemWithSales &&
-                   <TableRow>
-                      <SalesItemsTable isItemSelected={isItemSelected} itemSales={itemSales}/>
-                   </TableRow>
-
-
+                  <Box display={'flex'} justifyContent={'space-between'}>
+                    <SaveButton
+                      disabled={!formWasEdited(row.qty, row.buy_price)}
+                      id={row.id}
+                      qty={Number(formData.qty.value)}
+                      price={Number(formData.price.value)}
+                      resetFormData={resetFormData}
+                    />
+                    <DeleteButton deletable={!isItemWithSales} itemID={row.id}/>
+                    <GridActionsCellItem
+                      icon={<CloseIcon/>}
+                      label={'close'}
+                      onClick={resetFormData}
+                      color="inherit"
+                    />
+                  </Box>
+                const variants = {
+                  hidden: {height: 0, opacity: 0},
+                  showing: {height: 'auto', opacity: 1},
+                }
                 return (
                   <React.Fragment key={row.id}>
                     <TableRow
@@ -134,7 +136,23 @@ const ItemsEdit = () => {
                       <TableCell>{formatData(row.date_buy)}</TableCell>
                       <TableCell>{buttons}</TableCell>
                     </TableRow>
-                    {salesRow}
+                    <AnimatePresence initial={false}>
+                      {isItemSelected && isItemWithSales &&
+                        <tr>
+                          <td colSpan={5}>
+                            <motion.div
+                              style={{overflow: 'hidden'}}
+                              initial='hidden'
+                              variants={variants}
+                              animate='showing'
+                              exit='hidden'
+                            >
+                              <SalesItemsTable itemSales={itemSales}/>
+                            </motion.div>
+                          </td>
+                        </tr>
+                      }
+                    </AnimatePresence>
                   </React.Fragment>
                 )
               })}

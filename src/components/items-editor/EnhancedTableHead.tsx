@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction} from "react";
+import React from "react";
 import {ItemForm} from "./types";
 import {TableCell, TableHead, TableRow, TableSortLabel, TextField} from "@mui/material";
 import {HeadCell, Order} from "../../hooks/form-data";
@@ -9,7 +9,7 @@ interface EnhancedTableProps {
   orderBy: keyof ItemForm
   headCells: readonly HeadCell<ItemForm>[]
   search: string
-  setSearch: Dispatch<SetStateAction<string>>
+  setSearch: (value: string) => void
 }
 
 function EnhancedTableHead(props: EnhancedTableProps) {
