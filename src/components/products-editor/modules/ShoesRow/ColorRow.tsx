@@ -23,8 +23,7 @@ const ColorRow = (props: ColorRowProps) => {
     <Box className='color-field' onClick={onClick}>
       <Box sx={{width: "150px"}}>{color}</Box>
       <Box sx={{width: "150px"}}>{dict(width)}</Box>
-      <Box sx={{flex: 1}}></Box>
-      <Box sx={{width: "150px"}}>{formatColorPrice}</Box>
+      <Box sx={{width: "150px"}} className='push'>{formatColorPrice}</Box>
     </Box>
   );
 };

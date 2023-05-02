@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {Route, Routes} from "react-router-dom";
-import {animated, useSpring} from '@react-spring/web'
+import {motion} from "framer-motion"
 
 import SidebarMenu from "./layout/Sidebar"
 import TopBar from "./layout/topBar"
@@ -19,18 +19,15 @@ function App() {
   const toggleOpenBar = () => {
     setOpenBar(prev => !prev)
   }
-  const width = 30 + (openBar ? 170 : 0)
-  const style = useSpring({
-    marginLeft: !openBar ? 80 : 250,
-    config: {
-      mass: 1, tension: 220, friction: 25
-    },
-  })
+
   return (
     <div className='app'>
-      <SidebarMenu width={width} toggleOpenBar={toggleOpenBar}/>
+      <SidebarMenu width={openBar ? 200 : 30} toggleOpenBar={toggleOpenBar}/>
       <main className='content'>
-        <animated.div style={style}>
+        <motion.div
+          layout style={{marginLeft: openBar ? "250px" : "80px"}}
+          transition={{bounce: 0, duration: 0.2, ease: 'linear'}}
+        >
           <TopBar/>
           <Routes>
             <Route path='/' element={<Dashboard/>}/>
@@ -43,7 +40,7 @@ function App() {
             <Route path='/products-editor' element={<ProductsEditor/>}/>
             <Route path='/new-sales' element={<NewSale/>}/>
           </Routes>
-        </animated.div>
+        </motion.div>
       </main>
     </div>
   )

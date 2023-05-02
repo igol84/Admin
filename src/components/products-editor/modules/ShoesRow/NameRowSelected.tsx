@@ -33,8 +33,7 @@ const NameRowSelected = (props: NameRowSelectedProps) => {
   return (
     <Box sx={{display: 'flex', justifyContent: 'space-between', gap: 1}}>
       <Box sx={{width: '250px'}}>{nameField}</Box>
-      <Box sx={{flex: '1'}}></Box>
-      <Box sx={{width: '100px'}}>{priceField}</Box>
+      <Box sx={{width: '100px'}} className='push'>{priceField}</Box>
       <Box sx={{width: '100px'}}>{buttonsCell}</Box>
     </Box>
   );

@@ -43,8 +43,7 @@ const SizeRowSelected = (props: SizeRowSelectedProps) => {
       <Box sx={{width: "80px"}}>{lengthField}</Box>
       <Box sx={{width: "100px"}}>{`${sizeData.qty} ${dict('pc')}`}</Box>
       <Box sx={{width: "100px"}}>{priceField}</Box>
-      <Box sx={{flex: 1}}></Box>
-      <Box sx={{width: "100px"}}>{buttonsCell}</Box>
+      <Box sx={{width: "100px"}} className='push'>{buttonsCell}</Box>
     </Paper>
   )
 }

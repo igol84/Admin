@@ -42,8 +42,7 @@ const ColorRowSelected = (props: ColorRowSelectedProps) => {
     <Box className='color-field selected'>
       <Box sx={{width: "150px"}}>{colorField}</Box>
       <Box sx={{width: "150px"}}>{dict(viewWidth.width)}</Box>
-      <Box sx={{flex: 1}}></Box>
-      <Box sx={{width: "150px"}}>{priceField}</Box>
+      <Box sx={{width: "150px"}} className='push'>{priceField}</Box>
       <Box sx={{width: "150px"}}>{buttonsCell}</Box>
     </Box>
   );

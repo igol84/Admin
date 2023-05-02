@@ -37,8 +37,7 @@ const SimpleProductSelected = (props: Product) => {
       <Box sx={{display: 'flex', justifyContent: 'space-between', gap: 1}}>
         <Box sx={{width: '250px'}}>{nameCell}</Box>
         <Box sx={{width: '80px'}}>{`${data.qty} ${dict('pc')}`}</Box>
-        <Box sx={{flex: '1'}}></Box>
-        <Box sx={{width: '100px'}}>{priceCell}</Box>
+        <Box sx={{width: '100px'}} className='push'>{priceCell}</Box>
         <Box sx={{width: '150px'}}>{buttonsCell}</Box>
       </Box>
     </Paper>
