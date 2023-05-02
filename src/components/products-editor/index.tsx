@@ -3,9 +3,7 @@ import {Box, Pagination, Skeleton, Stack} from "@mui/material";
 import LoadingCircular from "../LoadingCircular";
 import {Module} from "./types";
 import SimpleProducts from "./modules/SimpleProductRow/SimpleProduct";
-import SimpleProductSelected from "./modules/SimpleProductRow/SimpleProductSelected";
 import Shoes from "./modules/ShoesRow/Shoes";
-import ShoesSelected from "./modules/ShoesRow/ShoesSelected";
 import SearchInput from "../Form/SearchInput";
 import {useProductEditor} from "./hooks";
 import _ from "lodash";
@@ -27,13 +25,11 @@ const ProductsEditor = () => {
           {!isLoading ? filteredProductsDataOfPage.map((product, rowId) => {
               switch (product.module) {
                 case Module.product:
-                  return isSelected(rowId)
-                    ? <SimpleProductSelected key={rowId} data={product} resetSelectedRow={resetSelectedRow}/>
-                    : <SimpleProducts key={rowId} data={product} onSelect={onSelect(rowId)}/>
+                  return <SimpleProducts key={rowId} selected={isSelected(rowId)} data={product}
+                                         onSelect={onSelect(rowId)} resetSelectedRow={resetSelectedRow}/>
                 case Module.shoes:
-                  return isSelected(rowId)
-                    ? <ShoesSelected key={rowId} viewShoes={product} resetSelectedRow={resetSelectedRow}/>
-                    : <Shoes key={rowId} viewShoes={product} onSelect={onSelect(rowId)}/>
+                  return <Shoes key={rowId} selected={isSelected(rowId)} viewShoes={product} onSelect={onSelect(rowId)}
+                                resetSelectedRow={resetSelectedRow}/>
               }
             })
             : isLoading ? _.times(rowsOnPage).map((index) => (
@@ -46,7 +42,7 @@ const ProductsEditor = () => {
         </Stack>
       </Box>
       {(countOfPages > 1 && !isLoading) &&
-         <Pagination sx={{pt: 1}} count={countOfPages} page={selectedPage} onChange={onChangePage}/>}
+        <Pagination sx={{pt: 1}} count={countOfPages} page={selectedPage} onChange={onChangePage}/>}
       <LoadingCircular show={showLoading}/>
     </>
   )

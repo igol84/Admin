@@ -23,7 +23,7 @@ const NameRow = (props: NameRowProps) => {
       <CloseButton onClick={resetSelectedRow}/>
     </Box>
   return (
-    <Box className='color-field' onClick={onClick}>
+    <Box className='name-field' onClick={onClick}>
       <Box sx={{width: "150px"}}>{name}</Box>
       <Box sx={{width: "150px"}} className='push'>{formatShoesPrice}</Box>
       <Box>{buttonsCell}</Box>

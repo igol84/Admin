@@ -1,6 +1,6 @@
-import {ViewSize} from "../../types"
-import {Box, Paper} from "@mui/material"
 import React from "react"
+import {Box, Paper} from "@mui/material"
+import {ViewSize} from "../../types"
 import {SimpleField} from "../../../Form";
 import SaveButton from "../../../Form/SaveButton";
 import {useSizeForm} from "./SizeRowSelected.hooks";
@@ -15,7 +15,6 @@ const SizeRowSelected = (props: SizeRowSelectedProps) => {
   const {sizeData, onSelectedSize} = props
   const [formSizeData, useError, onSizeFieldChange, onLengthFieldChange, onPriceFieldChange, disabledButtonSave,
     onConfirm, onClickClose, dict] = useSizeForm(sizeData, onSelectedSize)
-
 
   const sizeField =
     <SimpleField

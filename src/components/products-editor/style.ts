@@ -9,29 +9,29 @@ export const useStyle = () => {
     maxHeight: "60vh",
     overflow: "hidden",
     overflowY: "scroll",
+    '.paper': {
+      borderRadius: '4px',
+      backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05))',
+      boxShadow: '0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)',
+      p: 1,
+    },
     '& .MuiStack-root': {
       direction: "column",
       justifyContent: "flex-start",
       alignItems: "stretch",
       gap: 1
     },
-    '& .MuiIconButton-root': {
-      py: 0
-    },
     '& .product': {
-      p: 1,
+
     },
     '& .product:not(.selected)': {
       backgroundColor: colors.blueAccent[700],
       color: colors.blueAccent[100]
     },
     '& .product:not(.selected):hover': {
-      backgroundColor: colors.blueAccent[500],
       cursor: 'pointer',
     },
-    '& .product.selected': {
-      backgroundColor: colors.blueAccent[800],
-    },
+
     '& .color': {
       p: 1,
       mt: 1,
@@ -40,24 +40,36 @@ export const useStyle = () => {
     '& .color:not(:last-child)': {
       mb: 1,
     },
+    '& .name-field': {
+      minHeight: 46,
+      display: 'flex',
+      justifyContent: 'space-between',
+      gap: 1
+    },
     '& .color-field': {
-      display: 'flex', justifyContent: 'space-between', gap: 1
+      minHeight: 46,
+      display: 'flex',
+      justifyContent: 'space-between',
+      gap: 1
     },
     '& .color-field:not(.selected):hover': {
       cursor: 'pointer',
     },
     '& .size': {
-      minHeight: '50px',
-      m:1,
-      p:1,
-      backgroundColor: colors.blueAccent[700],
+      borderRadius: '4px',
+      minHeight: '60px',
+      m: 1,
+      backgroundColor: colors.greenAccent[800],
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
       gap: 1
+    }, '& .size.selected': {
+      backgroundColor: colors.greenAccent[600],
     },
+
     '& .size:not(.selected):hover': {
-      backgroundColor: colors.blueAccent[500],
+      backgroundColor: colors.greenAccent[600],
       cursor: 'pointer',
     },
   }
