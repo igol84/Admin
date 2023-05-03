@@ -32,10 +32,10 @@ const SaleLineItems = (props: SaleLineItemsProps) => {
   let nextRowId = viewNewSaleLineItems.length
   return (
     <Box sx={style}>
-         <FormSale
-            viewSellersAndPlaces={viewFormData} resetSelectedRow={resetSelectedRow}
-            selectedDate={viewFormData.selectedDate} onSetSelectedDate={viewFormData.onSetSelectedDate}
-         />
+      <FormSale
+        viewSellersAndPlaces={viewFormData} resetSelectedRow={resetSelectedRow}
+        selectedDate={viewFormData.selectedDate} onSetSelectedDate={viewFormData.onSetSelectedDate}
+      />
 
       <Stack className='items'>
         {viewNewSaleLineItems.map((viewNewSaleLineItem, rowId) => {
@@ -54,7 +54,7 @@ const SaleLineItems = (props: SaleLineItemsProps) => {
           })}
         </Stack>
       </Stack>
-      {viewTotal.proceeds ? <Total viewTotal={viewTotal}/> : null}
+      {(viewTotal.proceeds || viewTotal.income) ? <Total viewTotal={viewTotal}/> : null}
     </Box>
   );
 };

@@ -10,6 +10,12 @@ export const useStyle = () => {
     '& .search': {
       pr: 2,
     },
+    '.paper': {
+      borderRadius: '4px',
+      backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05))',
+      boxShadow: '0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)',
+      px: 1,
+    },
     '& .items': {
       pr: 1,
       overflow: "hidden",
@@ -25,12 +31,8 @@ export const useStyle = () => {
         alignItems: 'center',
         justifyContent: 'space-evenly'
       },
-      '& .MuiIconButton-root': {
-        py: 0
-      },
       '& .product': {
-        p: 1,
-        minHeight: "50px",
+        minHeight: "46px",
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -51,14 +53,22 @@ export const useStyle = () => {
       '& .shoes': {
         p: 1,
         backgroundColor: colors.blueAccent[800],
+        '&:not(.selected):hover': {
+          cursor: 'pointer',
+        },
+        '& .header': {
+          display: 'flex',
+          justifyContent: 'space-between',
+          gap: 1
+        },
         '& .color': {
           py: 1,
-          minHeight: 36,
+          minHeight: 46,
           '&:not(:last-child)': {
             mb: 1,
           },
           '& .color-row': {
-            minHeight: '36px',
+            minHeight: '46px',
             display: 'flex',
             gap: 1
           },

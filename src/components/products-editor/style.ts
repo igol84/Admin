@@ -21,9 +21,7 @@ export const useStyle = () => {
       alignItems: "stretch",
       gap: 1
     },
-    '& .product': {
-
-    },
+    '& .product': {},
     '& .product:not(.selected)': {
       backgroundColor: colors.blueAccent[700],
       color: colors.blueAccent[100]
@@ -36,25 +34,31 @@ export const useStyle = () => {
       p: 1,
       mt: 1,
       minHeight: 36,
+      '&:not(:last-child)': {
+        mb: 1,
+      },
     },
-    '& .color:not(:last-child)': {
-      mb: 1,
-    },
+
     '& .name-field': {
       minHeight: 46,
       display: 'flex',
       justifyContent: 'space-between',
-      gap: 1
+      gap: 1,
+      '&:not(.selected):hover': {
+        cursor: 'pointer',
+      },
     },
+
     '& .color-field': {
       minHeight: 46,
       display: 'flex',
       justifyContent: 'space-between',
-      gap: 1
+      gap: 1,
+      '&:not(.selected):hover': {
+        cursor: 'pointer',
+      },
     },
-    '& .color-field:not(.selected):hover': {
-      cursor: 'pointer',
-    },
+
     '& .size': {
       borderRadius: '4px',
       minHeight: '60px',
@@ -63,14 +67,17 @@ export const useStyle = () => {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
-      gap: 1
-    }, '& .size.selected': {
-      backgroundColor: colors.greenAccent[600],
+      gap: 1,
+      '&.selected': {
+        p: 1,
+        backgroundColor: colors.greenAccent[600],
+      },
+      '&:not(.selected):hover': {
+        backgroundColor: colors.greenAccent[600],
+        cursor: 'pointer',
+      },
     },
 
-    '& .size:not(.selected):hover': {
-      backgroundColor: colors.greenAccent[600],
-      cursor: 'pointer',
-    },
+
   }
 }

@@ -1,13 +1,14 @@
 import React, {useState} from 'react';
-import {Box, Stack} from "@mui/material";
+import {Box, Stack, useTheme} from "@mui/material";
+import {motion} from "framer-motion";
 import {ViewProduct} from "./types";
 import {Module} from "../../products-editor/types";
 import {useStyle} from "./style";
 import SimpleProduct from "./modules/SimpleProductRow/SimpleProduct";
 import SimpleProductSelected from "./modules/SimpleProductRow/SimpleProductSelected";
 import Shoes from "./modules/ShoesRow/Shoes";
-import ShoesSelected from "./modules/ShoesRow/ShoesSelected";
 import SearchInput from "../../Form/SearchInput";
+import {tokens} from "../../../theme";
 
 
 interface ItemsProps {
@@ -16,7 +17,8 @@ interface ItemsProps {
 
 const Items = (props: ItemsProps) => {
   const {viewProducts} = props
-
+  const theme = useTheme()
+  const colors = tokens(theme.palette.mode)
   const style = useStyle()
   const [selectedRowId, setSelectedRowId] = useState<number | null>(null)
   const [search, setSearch] = useState<string>('')
@@ -33,6 +35,11 @@ const Items = (props: ItemsProps) => {
     setSearch(value)
     resetSelectedRow()
   }
+  const variantsColors = {
+    blue: {backgroundColor: colors.blueAccent[700]},
+    darkBlue: {backgroundColor: colors.blueAccent[800]},
+    hover: {x: 3, backgroundColor: colors.blueAccent[800]}
+  }
   return (
     <Box sx={style}>
       <SearchInput value={search} setValue={onSearch}/>
@@ -43,12 +50,26 @@ const Items = (props: ItemsProps) => {
               return isSelected(rowId)
                 ? <SimpleProductSelected key={rowId} viewSimpleProduct={viewProduct}
                                          resetSelectedRow={resetSelectedRow}/>
-                : <SimpleProduct key={rowId} viewSimpleProduct={viewProduct} onSelect={onSelect(rowId)}/>
+                : <SimpleProduct key={rowId} viewSimpleProduct={viewProduct}/>
             case Module.shoes:
-              return isSelected(rowId)
-                ? <ShoesSelected key={rowId} viewShoes={viewProduct} resetFormData={resetSelectedRow}/>
-                : <Shoes key={rowId} viewShoes={viewProduct} onSelect={onSelect(rowId)}/>
+              return <Shoes key={rowId} selected={isSelected(rowId)} viewShoes={viewProduct}
+                                    resetFormData={resetSelectedRow}/>
+
           }
+        }).map((component, rowId) => {
+          const componentName = searchedProductsData[rowId].module === Module.shoes ? 'shoes' : 'product'
+          const className = `paper ${componentName}${isSelected(rowId) ? ' selected' : ''}`
+          return (
+            <motion.div
+              key={rowId} className={className} onClick={isSelected(rowId) ? () => undefined : onSelect(rowId)}
+              variants={variantsColors}
+              initial={isSelected(rowId) ? {} : 'darkBlue'}
+              animate={isSelected(rowId) ? {} : 'blue'}
+              whileHover={isSelected(rowId) ? {} : 'hover'}
+            >
+              {component}
+            </motion.div>
+          )
         })}
       </Stack>
     </Box>

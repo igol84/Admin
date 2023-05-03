@@ -6,7 +6,7 @@ import {SimpleField} from "../../../Form";
 import {GridActionsCellItem} from "@mui/x-data-grid";
 import CheckIcon from "@mui/icons-material/Check";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
-import CloseButton from "../../../Form/CloseButton";
+import CloseIcon from "@mui/icons-material/Close";
 
 interface NewSaleLineItemRowSelected {
   viewNewSaleLineItem: ViewNewSaleLineItem
@@ -26,7 +26,7 @@ const NewSaleLineItemRowSelected = (props: NewSaleLineItemRowSelected) => {
         <GridActionsCellItem icon={<CheckIcon/>} label={'Check'} onClick={onConfirm}/>
         <GridActionsCellItem icon={<DeleteIcon/>} label={'Remove'} onClick={onRemove}/>
       </Box>
-      <CloseButton onClick={resetSelectedRow}/>
+      <GridActionsCellItem icon={<CloseIcon/>} label={'Remove'} onClick={resetSelectedRow}/>
     </Box>
   return (
     <Paper className='product selected'>

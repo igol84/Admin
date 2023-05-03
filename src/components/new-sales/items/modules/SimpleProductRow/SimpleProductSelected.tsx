@@ -1,7 +1,7 @@
 import {ViewSimpleProduct} from "./types";
 import {useForm} from "./SimpleProductSelected.hooks";
 import {SimpleField} from "../../../../Form";
-import {Box, Paper} from "@mui/material";
+import {Box} from "@mui/material";
 import CheckIcon from '@mui/icons-material/Check';
 import CloseButton from "../../../../Form/CloseButton";
 import {GridActionsCellItem} from "@mui/x-data-grid";
@@ -36,14 +36,13 @@ const SimpleProductSelected = (props: Product) => {
     </>
 
   return (
-    <Paper className='product selected' onClick={() => undefined}>
+    <>
       <Box sx={{width: '250px'}}>{viewSimpleProduct.name}</Box>
       <Box sx={{width: '80px', whiteSpace: 'nowrap'}}>{qtyCell} {d('of')} {viewSimpleProduct.qty}</Box>
       <Box sx={{flex: '1'}}></Box>
       <Box sx={{width: '100px'}}>{priceCell}</Box>
       <Box sx={{width: '150px'}} className='buttons'>{buttonsCell}</Box>
-
-    </Paper>
+    </>
   )
 }
 

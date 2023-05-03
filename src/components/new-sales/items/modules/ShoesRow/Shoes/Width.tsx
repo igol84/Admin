@@ -1,9 +1,9 @@
 import {Stack} from "@mui/material"
+import {AnimatePresence} from "framer-motion";
 import React from "react"
 import {ViewWidth} from "../../../types";
 import {SelectedSize} from "./index";
 import Size from "./Size";
-import SizeSelected from "./SizeSelected";
 import HeaderColor from "./HeaderColor";
 import HeaderColorSelected from "./HeaderColorSelected";
 import {useDictionaryTranslate} from "../../../../../../hooks/pages";
@@ -31,21 +31,20 @@ const Width = (props: WidthProps) => {
   return (
     <Stack className='color selected'>
       {selectedSize && isSelected()
-        ? <HeaderColorSelected width={d(viewWidth.width)} color={color} onClose={onResetSize} selectedSize={selectedSize}/>
+        ? <HeaderColorSelected width={d(viewWidth.width)} color={color} onClose={onResetSize}
+                               selectedSize={selectedSize}/>
         : <HeaderColor width={d(viewWidth.width)} color={color}/>
       }
-      <Stack
-        direction="row"
-        gap={1}
-        flexWrap='wrap'
-      >
-        {viewWidth.sizes.map((viewSize) => {
-          return isSelectedSize(viewSize.prod_id)
-            ? <SizeSelected key={viewSize.prod_id} size={viewSize.size}
-                            qty={viewSize.qty} onResetSize={onResetSize}/>
-            : <Size key={viewSize.prod_id} id={viewSize.prod_id} size={viewSize.size}
-                    qty={viewSize.qty} price={viewSize.price} onSizeClick={onSizeClick}/>
-        })}
+      <Stack direction="row" gap={1} flexWrap='wrap'>
+        <AnimatePresence>
+          {viewWidth.sizes.map((viewSize) => {
+            return <Size
+              key={viewSize.prod_id} selected={isSelectedSize(viewSize.prod_id)} id={viewSize.prod_id}
+              size={viewSize.size} qty={viewSize.qty} price={viewSize.price} onSizeClick={onSizeClick}
+              onResetSize={onResetSize}
+            />
+          })}
+        </AnimatePresence>
       </Stack>
     </Stack>
 
