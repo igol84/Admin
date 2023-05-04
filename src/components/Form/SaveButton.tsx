@@ -16,8 +16,9 @@ const SaveButton = (props: SaveButtonType) => {
     event.stopPropagation()
   }
   return (
-    <IconButton aria-label={dict('save').toLowerCase()} color="inherit" onClick={onClickHandler} disabled={disabled}>
-      <SaveRoundedIcon/>
+    <IconButton aria-label={dict('save').toLowerCase()} color="inherit" onClick={onClickHandler} disabled={disabled}
+                sx={{height: '30px', width: '30px'}}>
+      <SaveRoundedIcon sx={{height: '25px', width: '25px'}}/>
     </IconButton>
   )
 }

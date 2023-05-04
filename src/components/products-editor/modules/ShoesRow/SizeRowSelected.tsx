@@ -32,7 +32,7 @@ const SizeRowSelected = (props: SizeRowSelectedProps) => {
       error={useError('price')} fullWidth={false} variant={'standard'}
     />
   const buttonsCell =
-    <Box sx={{display: 'flex', justifyContent: 'space-around'}}>
+    <Box sx={{display: 'flex', justifyContent: 'space-around', alignItems: 'center'}}>
       <SaveButton disabled={disabledButtonSave()} onConfirm={onConfirm}/>
       <CloseButton onClick={onClickClose}/>
     </Box>

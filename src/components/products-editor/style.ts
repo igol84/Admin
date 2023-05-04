@@ -40,7 +40,7 @@ export const useStyle = () => {
     },
 
     '& .name-field': {
-      minHeight: 46,
+      minHeight: 32,
       display: 'flex',
       justifyContent: 'space-between',
       gap: 1,
@@ -50,7 +50,7 @@ export const useStyle = () => {
     },
 
     '& .color-field': {
-      minHeight: 46,
+      minHeight: 32,
       display: 'flex',
       justifyContent: 'space-between',
       gap: 1,
@@ -61,7 +61,7 @@ export const useStyle = () => {
 
     '& .size': {
       borderRadius: '4px',
-      minHeight: '60px',
+      minHeight: '48px',
       m: 1,
       backgroundColor: colors.greenAccent[800],
       display: 'flex',

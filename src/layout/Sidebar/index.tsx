@@ -87,7 +87,7 @@ const SidebarMenu = ({width, toggleOpenBar}: SidebarMenuProps) => {
               color={colors.grey[200]}
               sx={{m: '10px 0 5px 20px'}}
             >
-              {dict('data')}
+              v1.1
             </Typography>
             <Item
               title={dict('sellers')}
