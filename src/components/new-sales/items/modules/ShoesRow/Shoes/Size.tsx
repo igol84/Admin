@@ -25,15 +25,17 @@ const Size = (props: SizeProps) => {
   const className = `paper size${selected ? ' selected' : ''}`
   const variantsColors = {
     default: {backgroundColor: colors.blueAccent[700]},
-    selected: {y: -3, backgroundColor: colors.blueAccent[600]},
-    hover: {y: -3, backgroundColor: colors.blueAccent[500]}
+    selected: {y: -3, backgroundColor: colors.blueAccent[700]},
+    hover: {y: -3, backgroundColor: colors.blueAccent[600]}
   }
   return (
-    <motion.div className={className} onClick={onClick} key={id} layoutId={id.toString()}
-                variants={variantsColors}
-                initial={selected ? {} : 'default'}
-                animate={selected ? {} : 'selected'}
-                whileHover={selected ? {} : 'hover'}
+    <motion.div
+      className={className} onClick={onClick} key={`size-${id}`} layoutId={id.toString()}
+      variants={variantsColors}
+      initial={selected ? {} : 'default'}
+      animate={selected ? {} : 'selected'}
+      whileHover={selected ? {} : 'hover'}
+      exit={{opacity: 0}}
     >
       <Box>{size}</Box>
       <Divider orientation="horizontal" flexItem/>

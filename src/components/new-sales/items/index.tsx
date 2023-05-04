@@ -53,7 +53,7 @@ const Items = (props: ItemsProps) => {
                 : <SimpleProduct key={rowId} viewSimpleProduct={viewProduct}/>
             case Module.shoes:
               return <Shoes key={rowId} selected={isSelected(rowId)} viewShoes={viewProduct}
-                                    resetFormData={resetSelectedRow}/>
+                            resetFormData={resetSelectedRow}/>
 
           }
         }).map((component, rowId) => {
@@ -63,8 +63,8 @@ const Items = (props: ItemsProps) => {
             <motion.div
               key={rowId} className={className} onClick={isSelected(rowId) ? () => undefined : onSelect(rowId)}
               variants={variantsColors}
-              initial={isSelected(rowId) ? {} : 'darkBlue'}
-              animate={isSelected(rowId) ? {} : 'blue'}
+              initial={isSelected(rowId) ? 'blue' : 'darkBlue'}
+              animate={isSelected(rowId) ? 'darkBlue' : 'blue'}
               whileHover={isSelected(rowId) ? {} : 'hover'}
             >
               {component}

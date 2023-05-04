@@ -3,7 +3,6 @@ import {ViewSale} from "../types";
 import {Paper} from "@mui/material";
 import Header from "./Header";
 import SaleLineItemRow from "./SaleLineItemRow";
-import SaleLineItemRowSelected from "./SaleLineItemRowSelected";
 
 interface OldSaleProps {
   viewSale: ViewSale
@@ -19,9 +18,8 @@ const OldSale = ({viewSale, startRowId, omSelectedRow, isSelected, resetSelected
       <Header id={viewSale.id} seller={viewSale.seller} place={viewSale.place}/>
       {viewSale.salLineItems.map((sli, index) => {
         const rowId: number = index + startRowId
-        return isSelected(rowId)
-          ? <SaleLineItemRowSelected key={rowId} viewSaleLineItem={sli} resetSelectedRow={resetSelectedRow}/>
-          : <SaleLineItemRow key={rowId} viewSaleLineItem={sli} omSelectedRow={omSelectedRow(rowId)}/>
+        return <SaleLineItemRow key={rowId} selected={isSelected(rowId)} omSelectedRow={omSelectedRow(rowId)}
+                                viewSaleLineItem={sli} resetSelectedRow={resetSelectedRow}/>
       })}
     </Paper>
   )

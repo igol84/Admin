@@ -25,13 +25,13 @@ const HeaderColorSelected = (props: ColorRowSelectedProps) => {
       type='number' name='price' value={formShoesData.price.value.toString()} setValue={onPriceFieldChange}
       error={useError('price')} fullWidth={false} variant={'standard'} autoFocus focusText onKeyDown={onKeyDown}/>
   const buttonsCell =
-    <Box sx={{display: 'flex', justifyContent: 'space-around'}}>
-      <GridActionsCellItem icon={<CheckIcon/>} label={'Check'} onClick={onConfirm}/>
+    <Box sx={{display: 'flex', justifyContent: 'space-around', alignItems: 'center'}}>
+      <GridActionsCellItem icon={<CheckIcon/>} label={'Check'} onClick={onConfirm} sx={{height: '30px'}}/>
       <CloseButton onClick={onClose}/>
     </Box>
 
   return (
-    <Box  className='color-row selected'>
+    <Box className='color-row selected'>
       <Box>{color}</Box>
       <Box>{width}</Box>
       <Box sx={{flex: '1'}}></Box>

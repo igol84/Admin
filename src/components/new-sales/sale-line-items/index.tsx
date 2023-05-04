@@ -2,11 +2,11 @@ import React, {useState} from 'react';
 import {Box, Stack} from "@mui/material";
 import {useStyle} from "./style";
 import NewSaleLineItemRow from "./NewSaleLineItemRow/NewSaleLineItemRow";
-import NewSaleLineItemRowSelected from "./NewSaleLineItemRow/NewSaleLineItemRowSelected";
 import {ViewFormData, ViewNewSaleLineItem, ViewSale, ViewTotal} from "./types";
 import FormSale from "./FormSale";
 import OldSale from "./OldSale";
 import Total from "./Total";
+import {AnimatePresence} from "framer-motion";
 
 
 interface SaleLineItemsProps {
@@ -21,7 +21,7 @@ const SaleLineItems = (props: SaleLineItemsProps) => {
   const style = useStyle()
 
   const [selectedRowId, setSelectedRowId] = useState<number | null>(null)
-  const omSelectedRow = (rowId: number) => () => {
+  const onSelectedRow = (rowId: number) => () => {
     setSelectedRowId(rowId)
   }
   const isSelected = (rowId: number) => rowId === selectedRowId
@@ -38,18 +38,19 @@ const SaleLineItems = (props: SaleLineItemsProps) => {
       />
 
       <Stack className='items'>
-        {viewNewSaleLineItems.map((viewNewSaleLineItem, rowId) => {
-          return isSelected(rowId)
-            ? <NewSaleLineItemRowSelected key={rowId} viewNewSaleLineItem={viewNewSaleLineItem}
-                                          resetSelectedRow={resetSelectedRow}/>
-            : <NewSaleLineItemRow key={rowId} viewNewSaleLineItem={viewNewSaleLineItem}
-                                  omSelectedRow={omSelectedRow(rowId)}/>
-        })}
+        <AnimatePresence>
+          {viewNewSaleLineItems.map((viewNewSaleLineItem, rowId) => {
+            return <NewSaleLineItemRow
+              key={rowId} selected={isSelected(rowId)} viewNewSaleLineItem={viewNewSaleLineItem}
+              resetSelectedRow={resetSelectedRow} onSelectedRow={onSelectedRow(rowId)}/>
+
+          })}
+        </AnimatePresence>
         <Stack className='sales'>
           {viewOldSales.map((viewSale, rowKey) => {
             const startRowId = nextRowId
             nextRowId += viewSale.salLineItems.length
-            return <OldSale key={rowKey} viewSale={viewSale} startRowId={startRowId} omSelectedRow={omSelectedRow}
+            return <OldSale key={rowKey} viewSale={viewSale} startRowId={startRowId} omSelectedRow={onSelectedRow}
                             isSelected={isSelected} resetSelectedRow={resetSelectedRow}/>
           })}
         </Stack>

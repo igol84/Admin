@@ -1,7 +1,7 @@
 import {useState} from "react";
 import produce from "immer";
 import {ViewNewSaleLineItem} from "../types";
-import {FieldNames, FormFields} from "./NewSaleLineItemRowSelected.types";
+import {FieldNames, FormFields} from "./NewSaleLineItemRow.types";
 import {useAppDispatch} from "../../../../hooks/redux";
 import {RemovedNewSaleItem, UpdatedNewSaleItem} from "../../../../schemas/new-sale";
 import {removeNewSaleItem, updateNewSaleItem} from "../../../../store/actions/new-sales";

@@ -52,7 +52,7 @@ export const useStyle = () => {
 
       '& .shoes': {
         p: 1,
-        backgroundColor: colors.blueAccent[800],
+        backgroundColor: colors.blueAccent[500],
         '&:not(.selected):hover': {
           cursor: 'pointer',
         },
@@ -64,6 +64,7 @@ export const useStyle = () => {
         '& .color': {
           py: 1,
           minHeight: 46,
+
           '&:not(:last-child)': {
             mb: 1,
           },
