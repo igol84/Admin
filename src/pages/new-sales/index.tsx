@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from "../../components/Header";
 import {Box} from "@mui/material";
-import NewSales from "../../components/new-sales";
+import NewSales from "../../components/new-sales/NewSales";
 import {useDictionaryTranslate} from "../../hooks/pages";
 
 const NewSale = () => {

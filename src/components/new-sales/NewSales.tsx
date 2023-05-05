@@ -10,7 +10,6 @@ import {convertFormData, convertItems, convertSaleLineItems, convertSales, getTo
 import {formatISODate} from "../../hooks/form-data";
 
 const NewSales = () => {
-
   const [selectedDate, setSelectedDate] = useState(formatISODate(new Date()).toString())
   const getSales = useFetchAccess(fetchSales)
   const storeId = useStoreId()

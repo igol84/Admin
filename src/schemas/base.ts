@@ -26,9 +26,9 @@ export interface Shoes {
 
 export interface Expense {
   id: number
-  place_id: string
+  place_id: number
   desc: string
-  date_cost: Date
+  date_cost: string
   cost: number
 }
 
@@ -46,7 +46,7 @@ export interface Place {
   active: boolean
 }
 
-export interface Sale{
+export interface Sale {
   id: number
   date_time: string
   sale_line_items: SaleLineItem[]
@@ -56,7 +56,7 @@ export interface Sale{
   place: Place
 }
 
-export interface SaleLineItem{
+export interface SaleLineItem {
   sale_id: number
   item_id: number
   sale_price: number
