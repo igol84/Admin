@@ -1,12 +1,12 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {Expense, Place, Sale} from "../../schemas/base";
-import {Interval, PlaceView, Report} from "../../schemas/report";
-import {getPlacesView, getReportView} from "./reportUtility";
+import {PlaceView, ReportData} from "../../schemas/reportData";
+import {getPlacesView} from "../../components/Report/utility";
 
 
 interface SellerState {
   sales: Sale[]
-  report: Report[]
+  report: ReportData[]
   placesView: PlaceView[]
   expenses: Expense[]
   isLoading: boolean
@@ -28,11 +28,6 @@ export interface SalesPayload {
   expenses: Expense[]
 }
 
-export interface GetReport {
-  interval: Interval
-  filterPlaceId: number
-}
-
 export const reportSlice = createSlice({
   name: 'report',
   initialState,
@@ -50,11 +45,6 @@ export const reportSlice = createSlice({
     reportFetchingError(state, action: PayloadAction<Error>) {
       state.isLoading = false
       state.error = action.payload.message
-    },
-    getReport(state, {payload: {filterPlaceId, interval}}: PayloadAction<GetReport>) {
-      state.report = getReportView(state.sales, state.expenses, interval, filterPlaceId)
-      state.isLoading = false
-      state.error = ''
     },
   }
 })

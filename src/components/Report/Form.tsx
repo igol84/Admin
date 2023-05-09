@@ -1,8 +1,9 @@
 import React from 'react';
 import {MenuItem, Stack} from "@mui/material";
 
-import {Interval, PlaceView} from "../../schemas/report";
+import {Interval, PlaceView} from "../../schemas/reportData";
 import {SimpleSelect} from "../Form";
+import {useDictionaryTranslate} from "../../hooks/pages";
 
 
 interface Props {
@@ -21,11 +22,12 @@ const Form = (props: Props) => {
     filterPlaceId,
     setFilterPlaceId,
   } = props
+  const d = useDictionaryTranslate('report')
   return (
     <Stack spacing={1} className='saleForm' direction={{xs: 'column', sm: 'row'}} sx={{width: 400}}>
       <SimpleSelect
         name='place'
-        label={'Place'}
+        label={d('place')}
         value={filterPlaceId}
         setValue={setFilterPlaceId}
       >
@@ -37,12 +39,12 @@ const Form = (props: Props) => {
 
       <SimpleSelect
         name='interval'
-        label={'Interval'}
+        label={d('interval')}
         value={interval}
         setValue={setInterval}
       >
-        <MenuItem key={'month'} value={'month'}>{'month'}</MenuItem>
-        <MenuItem key={'year'} value={'year'}>{'year'}</MenuItem>
+        <MenuItem key={'month'} value={'month'}>{d('month')}</MenuItem>
+        <MenuItem key={'year'} value={'year'}>{d('year')}</MenuItem>
       </SimpleSelect>
     </Stack>
   );

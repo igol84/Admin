@@ -41,7 +41,7 @@ export const addNewExpense = (access_token: string, expense: CreateExpense) => {
 }
 
 export const updateExpense = (access_token: string, expense: UpdateExpense) => {
-  const updated = {...expense, date_cost: formatISODate(expense.date_cost)}
+  const updated = {...expense, date_cost: formatISODate(new Date(expense.date_cost))}
   const secureApi = secureApiCreate(access_token)
   return async (dispatch: AppDispatch) => {
     try {

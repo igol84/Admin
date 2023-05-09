@@ -1,5 +1,5 @@
 import {Expense, Place, Sale} from "../../schemas/base";
-import {Interval, PlaceView, Report} from "../../schemas/report";
+import {Interval, PlaceView, ReportData} from "../../schemas/reportData";
 import _ from "lodash";
 
 export const getPlacesView = (places: Place[]): PlaceView[] => {
@@ -15,7 +15,7 @@ export interface GetReportView {
     interval: Interval,
     filterPlaceId: number,
   )
-    : Report[]
+    : ReportData[]
 }
 
 
@@ -65,7 +65,7 @@ export const getReportView: GetReportView = (sales, expenses, interval, filterPl
   })
 
 
-  const result: Report[] = []
+  const result: ReportData[] = []
   groupData.forEach((value, key) => {
     const expenses = expensesGroupData.has(key) ? expensesGroupData.get(key).cost : 0
     result.push({data: key, proceeds: value.proceeds, costs: value.costs + expenses})

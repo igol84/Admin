@@ -1,4 +1,17 @@
 {
+  "report": {
+    "title": "Report",
+    "table": "Table",
+    "chart": "Chart",
+    "place": "Place",
+    "interval": "Interval",
+    "month": "month",
+    "year": "year",
+    "date": "Date",
+    "proceeds": "Proceeds",
+    "costs": "Costs",
+    "profit": "Profit"
+  },
   "NewSales": {
     "title": "New Sales",
     "of": "of",
@@ -94,7 +107,8 @@
     "newProducts": "New Products",
     "itemsEditor": "Item editor",
     "productsEditor": "Products Editor",
-    "newSales": "New Sales"
+    "newSales": "New Sales",
+    "report": "Report"
   },
   "auth": {
     "title": "Authorization",
