@@ -1,4 +1,17 @@
 {
+  "report": {
+    "title": "Звіт",
+    "table": "Table",
+    "chart": "Графік",
+    "place": "Де",
+    "interval": "Інтервал",
+    "month": "Місяць",
+    "year": "Рік",
+    "date": "Дата",
+    "proceeds": "Виторг",
+    "costs": "Витрати",
+    "profit": "Прибуток"
+  },
   "NewSales": {
     "title": "Новий продаж",
     "of": "з",
@@ -94,7 +107,8 @@
     "newProducts": "Нові продукти",
     "itemsEditor": "Склад",
     "productsEditor": "Каталог",
-    "newSales": "Новий продаж"
+    "newSales": "Новий продаж",
+    "report": "Звіт"
   },
   "auth": {
     "title": "Авторизація",

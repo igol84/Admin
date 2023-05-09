@@ -1,35 +1,57 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {Report} from "../../schemas/report";
-import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
+import {Box} from "@mui/material";
+import {useBoxGridTableStyle} from "../Form/style";
+import {DataGrid, GridColumns, GridValueFormatterParams, GridValueGetterParams} from "@mui/x-data-grid";
+import {useDictionaryTranslate, useMuiLanguage} from "../../hooks/pages";
+import {LanguageModeContext} from "../../language";
+import {formatter} from "../Form";
 
 interface Props {
-  report: Report[]
+  data: Report[]
 }
 
-const ReportTable = ({report}: Props) => {
+const ReportTable = ({data}: Props) => {
+  const d = useDictionaryTranslate('report')
+  const boxTableStyle = useBoxGridTableStyle()
+  const muiLanguage = useMuiLanguage()
+  const {language} = useContext(LanguageModeContext)
+  const formatMany = (value: string) => formatter(language).format(Number(value))
+  const columns: GridColumns = [
+    {
+      field: 'data', headerName: d('date'), minWidth: 80, flex: 1,
+      valueFormatter: (params: GridValueFormatterParams<string>) => {
+        if (params.value.length === 7) {
+          const dataSplit = params.value.split('-')
+          return `${dataSplit[1]}.${dataSplit[0]}`
+        } else {
+          return params.value
+        }
+      }
+    },
+    {
+      field: 'proceeds', headerName: d('proceeds'), minWidth: 120, flex: 1,
+      valueFormatter: (params: GridValueFormatterParams<string>) => formatMany(params.value)
+    },
+    {
+      field: 'costs', headerName: d('costs'), minWidth: 120, flex: 1,
+      valueFormatter: (params: GridValueFormatterParams<string>) => formatMany(params.value)
+    },
+    {
+      field: 'profit', headerName: d('profit'), minWidth: 120, flex: 1,
+      valueGetter: (params: GridValueGetterParams) => params.row.proceeds - params.row.costs,
+      valueFormatter: (params: GridValueFormatterParams<string>) => formatMany(params.value)
+    },
+  ]
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{minWidth: 650}} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Date</TableCell>
-            <TableCell align="right">Proceeds</TableCell>
-            <TableCell align="right">Costs</TableCell>
-            <TableCell align="right">Profit</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {report.map(row => (
-            <TableRow key={row.data} sx={{'&:last-child td, &:last-child th': {border: 0}}}>
-              <TableCell component="th" scope="row"> {row.data} </TableCell>
-              <TableCell align="right">{row.proceeds}</TableCell>
-              <TableCell align="right">{row.costs}</TableCell>
-              <TableCell align="right">{row.proceeds - row.costs}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <Box height="60vh" sx={boxTableStyle}>
+      <DataGrid
+        columns={columns}
+        rows={data}
+        getRowId={(row) => row.data}
+        localeText={muiLanguage.components.MuiDataGrid.defaultProps.localeText}
+      />
+    </Box>
   )
 }
 

@@ -10,7 +10,7 @@ import LibraryAddOutlinedIcon from '@mui/icons-material/LibraryAddOutlined';
 import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
 import SellOutlinedIcon from '@mui/icons-material/SellOutlined';
 import PointOfSaleOutlinedIcon from '@mui/icons-material/PointOfSaleOutlined';
-import ShowChartIcon from '@mui/icons-material/ShowChart';
+import BarChartIcon from '@mui/icons-material/BarChart';
 import {tokens} from "../../theme";
 import {menuItemStyles} from "./Sidebar.theme";
 import {useLocation} from "react-router-dom";
@@ -133,9 +133,9 @@ const SidebarMenu = ({width, toggleOpenBar}: SidebarMenuProps) => {
               location={location.pathname}
             />
             <Item
-              title='Report'
+              title={dict('report')}
               to='/report'
-              icon={<ShowChartIcon/>}
+              icon={<BarChartIcon/>}
               location={location.pathname}
             />
           </Box>
