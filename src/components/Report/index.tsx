@@ -55,7 +55,6 @@ const Report = () => {
           ? <ReportTable data={report}/>
           : <ReportChart data={report}/>)
       }
-
       <LoadingCircular show={showLoading}/>
     </Box>
   );
