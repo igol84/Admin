@@ -1,7 +1,6 @@
 import React from 'react';
 import {Avatar, Box, IconButton, Typography, useTheme} from "@mui/material";
 import {Menu, MenuItem, Sidebar, useProSidebar} from "react-pro-sidebar";
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import StorefrontOutlinedIcon from '@mui/icons-material/StorefrontOutlined';
@@ -76,20 +75,6 @@ const SidebarMenu = ({width, toggleOpenBar}: SidebarMenuProps) => {
             paddingLeft={collapsed ? undefined : '10%'}
             hidden={!isAuthenticated}
           >
-            <Item
-              title={dict('dashboard')}
-              to='/'
-              icon={<HomeOutlinedIcon/>}
-              location={location.pathname}
-            />
-
-            <Typography
-              variant='h6'
-              color={colors.grey[200]}
-              sx={{m: '10px 0 5px 20px'}}
-            >
-              v1.1
-            </Typography>
             <Item
               title={dict('sellers')}
               to='/sellers'

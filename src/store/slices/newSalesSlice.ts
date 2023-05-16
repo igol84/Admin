@@ -18,7 +18,8 @@ interface NewSalesState {
   sales: Sale[]
   sellers: Seller[]
   places: Place[]
-  isLoading: boolean
+  isLoadingSales: boolean
+  isLoadingItems: boolean
   error: string
 }
 
@@ -28,7 +29,8 @@ const initialState: NewSalesState = {
   sales: [],
   sellers: [],
   places: [],
-  isLoading: false,
+  isLoadingSales: false,
+  isLoadingItems: false,
   error: ''
 }
 
@@ -72,23 +74,26 @@ export const newSalesSlice = createSlice({
   initialState,
   reducers: {
     newSalesFetching(state) {
-      state.isLoading = true
+      state.isLoadingSales = true
+    },
+    newSalesItemsFetching(state) {
+      state.isLoadingItems = true
     },
     newSalesFetchingSuccess(state, action: PayloadAction<NewSalesPayload>) {
       state.items = action.payload.items
       state.sellers = action.payload.sellers
       state.places = action.payload.places
       state.newSaleLineItems = []
-      state.isLoading = false
+      state.isLoadingItems = false
       state.error = ''
     },
     fetchSalesSuccess(state, action: PayloadAction<SalesPayload>) {
       state.sales = action.payload.sales
-      state.isLoading = false
+      state.isLoadingSales = false
       state.error = ''
     },
     newSalesFetchingError(state, action: PayloadAction<Error>) {
-      state.isLoading = false
+      state.isLoadingSales = false
       state.error = action.payload.message
     },
     putOnSale(state, {payload: {putOnSale}}: PayloadAction<PutOnSalePayload>) {
@@ -148,7 +153,7 @@ export const newSalesSlice = createSlice({
     saveNewSaleSuccess(state, action: PayloadAction<SaveNewSalePayload>) {
       state.sales.push(action.payload.outputEndSale.sale)
       state.newSaleLineItems = []
-      state.isLoading = false
+      state.isLoadingSales = false
       state.error = ''
     },
 
@@ -163,7 +168,7 @@ export const newSalesSlice = createSlice({
           sli.sale_price = newSLI.sale_price
         })
       })
-      state.isLoading = false
+      state.isLoadingSales = false
       state.error = ''
     },
 
@@ -187,7 +192,7 @@ export const newSalesSlice = createSlice({
           item.qty = updateItem.qty
         })
       })
-      state.isLoading = false
+      state.isLoadingSales = false
       state.error = ''
     },
 

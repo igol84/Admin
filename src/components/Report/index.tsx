@@ -27,11 +27,9 @@ const Report = () => {
   const onSetFilterPlaceId = (value: number) => {
     setFilterPlaceId(value)
   }
-
   useEffect(() => {
     setReport(getReportView(sales, expenses, interval, filterPlaceId))
   }, [sales, interval, filterPlaceId])
-  console.log(isLoading)
   const showLoading = useIsLoadingDisplay(isLoading)
   const [page, setPage] = useState(0)
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {

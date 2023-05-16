@@ -19,12 +19,12 @@ const NewSales = () => {
     setSelectedDate(selectedDate)
     getSales({storeId, selectedDate})
   }
-  const {isLoading, items, newSaleLineItems, sellers, places, sales} = useAppSelector(state => state.newSalesSliceSlice)
+  const {isLoadingSales, isLoadingItems, items, newSaleLineItems, sellers, places, sales} = useAppSelector(state => state.newSalesSliceSlice)
   const viewProducts = convertItems(items)
   const viewNewSaleLineItems = convertSaleLineItems(items, newSaleLineItems)
   const viewFormData = convertFormData(sellers, places, selectedDate, onSetSelectedDate)
   const viewOldSales = convertSales(sales)
-  const showLoading = useIsLoadingDisplay(isLoading)
+  const showLoading = useIsLoadingDisplay(isLoadingSales || isLoadingItems)
   const viewTotal = getTotal(sales, newSaleLineItems, items)
 
   return (

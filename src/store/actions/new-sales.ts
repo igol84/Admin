@@ -20,7 +20,7 @@ export const fetchDataForNewSale = (access_token: string, {storeId}: fetchDataFo
   const secureApi = secureApiCreate(access_token)
   return async (dispatch: AppDispatch) => {
     try {
-      dispatch(newSalesSlice.actions.newSalesFetching())
+      dispatch(newSalesSlice.actions.newSalesItemsFetching())
       const items: Item[] = await secureApi.get(`item?store_id=${storeId}`).json()
       const sellers: Seller[] = await secureApi.get(`seller/?store_id=${storeId}`).json()
       const places: Place[] = await secureApi.get(`place/?store_id=${storeId}`).json()
