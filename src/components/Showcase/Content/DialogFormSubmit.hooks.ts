@@ -26,7 +26,7 @@ export const useFormSubmit: UseFormSubmit = () => {
       desc: formData.desc,
       url: formData.url.value,
       active: true,
-      youtube: ''
+      youtube: '',
     }
     await addItemAccess(newItem)
   }
@@ -38,9 +38,9 @@ export const useFormSubmit: UseFormSubmit = () => {
       desc: formData.desc,
       url: formData.url.value,
       active: true,
-      youtube: ''
+      youtube: '',
     }
-    await editItemAccess(updatedItem)
+    await editItemAccess([updatedItem, formData.file])
   }
 
 

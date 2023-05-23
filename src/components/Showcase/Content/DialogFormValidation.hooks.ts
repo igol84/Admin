@@ -17,6 +17,7 @@ interface UseFormValidation {
       onTitleFieldChange: (title: string) => void,
       onDescFieldChange: (desc: string) => void,
       onUrlFieldChange: (url: string) => void,
+      onFileChange: (file: File[]) => void,
       checkForm: () => boolean
     ]
 }
@@ -49,6 +50,11 @@ export const useFormValidation: UseFormValidation = (formData, setFormData, isAd
       prevFormData.url.error = fieldRequired(url)
     }))
   }
+  const onFileChange = (file: File[]) => {
+    setFormData(produce(prevFormData => {
+      prevFormData.file = file
+    }))
+  }
 
   const showcaseWithoutSelf = isShowcase(showcaseItem)
     ? showcase.filter(item => item.name != showcaseItem.name)
@@ -73,5 +79,5 @@ export const useFormValidation: UseFormValidation = (formData, setFormData, isAd
   }
 
 
-  return [onNameFieldChange, onTitleFieldChange, onDescFieldChange, onUrlFieldChange, checkForm]
+  return [onNameFieldChange, onTitleFieldChange, onDescFieldChange, onUrlFieldChange, onFileChange, checkForm]
 }

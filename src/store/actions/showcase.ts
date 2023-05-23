@@ -46,14 +46,21 @@ export const addNewItem = (access_token: string, showcaseItem: CreateShowcase) =
   }
 }
 
-export const updateShowcase = (access_token: string, showcaseItem: UpdateShowcase) => {
+export const updateShowcase = (access_token: string, [showcaseItem, file]: [UpdateShowcase, File[] | undefined]) => {
   const secureApi = secureApiCreate(access_token)
   return async (dispatch: AppDispatch) => {
     try {
-      dispatch(showcaseSlice.actions.showcaseFetching())
-      const changedItem: Showcase = await secureApi.put('showcase', {json: showcaseItem}).json()
-      dispatch(showcaseSlice.actions.updateItem({changedItem}))
-      return changedItem
+      // dispatch(showcaseSlice.actions.showcaseFetching())
+      // const changedItem: Showcase = await secureApi.put('showcase', {json: showcaseItem}).json()
+      if(file) {
+        console.log(showcaseItem)
+        const formData = new FormData()
+        formData.append('file', file[0])
+        const response = await secureApi.post(`showcase/files/${showcaseItem.name}`, {body: formData}).json()
+        console.log(response)
+      }
+      // dispatch(showcaseSlice.actions.updateItem({changedItem}))
+      return showcaseItem
     } catch (err) {
       const errors = err as Error;
       const errorText = errors.message

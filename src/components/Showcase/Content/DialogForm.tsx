@@ -12,6 +12,7 @@ import DeleteButton from "../../Form/DeleteButton";
 import {useFormValidation} from "./DialogFormValidation.hooks";
 import {useFormSubmit} from "./DialogFormSubmit.hooks";
 import {useFormInitial} from "./DialogFormInitial.hooks";
+import {MuiFileInput} from "mui-file-input";
 
 interface DialogFormProps {
   open: boolean
@@ -25,7 +26,7 @@ const DialogForm = ({open, onCloseDialog, showcaseItem}: DialogFormProps) => {
   const isAddMode = showcaseItem === null
   const [formData, setFormData, resetFormData, itemsNames] = useFormInitial(showcase, showcaseItem, isAddMode, productsNames)
   const [
-    onNameFieldChange, onTitleFieldChange, onDescFieldChange, onUrlFieldChange, checkForm
+    onNameFieldChange, onTitleFieldChange, onDescFieldChange, onUrlFieldChange, onFileChange, checkForm
   ] = useFormValidation(formData, setFormData, isAddMode, showcase, showcaseItem)
 
   const [submitAdd, submitEdit, deleteItem] = useFormSubmit()
@@ -77,11 +78,11 @@ const DialogForm = ({open, onCloseDialog, showcaseItem}: DialogFormProps) => {
                      maxRows={4}/>
         <SimpleField name='url' label='url' value={formData.url.value} error={formData.url.error}
                      setValue={onUrlFieldChange}/>
+        <MuiFileInput multiple value={formData.file} onChange={onFileChange} hideSizeText />
       </DialogContent>
       <DialogActions>
         <Button variant='contained' onClick={onCloseDialog}>Close</Button>
         <Button variant='contained' color='secondary' onClick={submitForm}>{isAddMode ? 'Add' : 'Edit'}</Button>
-
       </DialogActions>
     </Dialog>
   )
