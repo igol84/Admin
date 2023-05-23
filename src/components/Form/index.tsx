@@ -3,7 +3,8 @@ import {
   Alert,
   Autocomplete,
   colors,
-  FormControl, FormHelperText,
+  FormControl,
+  FormHelperText,
   InputLabel,
   Select,
   SelectChangeEvent,
@@ -118,7 +119,7 @@ export const SimpleField = (props: FieldType) => {
     tabIndex = undefined,
     fullWidth = true,
     multiline = false,
-    maxRows=1,
+    maxRows = 1,
     variant = 'outlined',
     onClick = () => undefined,
     onBlur = () => undefined
@@ -163,14 +164,14 @@ interface FormSelectType {
   onOpen?: () => void
   error?: string
   defaultValue?: string
-  disabled?:boolean
+  disabled?: boolean
 }
 
 export const SimpleSelect = (props: FormSelectType) => {
-  const {label, setValue, onOpen = () => undefined, error='', defaultValue='-1', disabled=false} = props;
+  const {label, setValue, onOpen = () => undefined, error = '', defaultValue = '-1', disabled = false} = props;
   const filteredProps = _.omit(props, ['setValue', 'onOpen', 'error', 'defaultValue', 'disabled'])
   return (
-    <FormControl fullWidth sx={{ '.input-label[data-shrink="false"]': {top: '-8px'}}} error={!!error}>
+    <FormControl fullWidth sx={{'.input-label[data-shrink="false"]': {top: '-8px'}}} error={!!error}>
       <InputLabel className='input-label' color='secondary'>{label}</InputLabel>
       <Select
         disabled={disabled}
@@ -190,6 +191,7 @@ export const SimpleSelect = (props: FormSelectType) => {
 }
 
 interface AutocompleteType {
+  freeSolo?: boolean
   name: string
   value: string
   setValue: (value: any) => void
@@ -201,10 +203,12 @@ interface AutocompleteType {
   setItem: (value: any) => void
   blurOnSelect?: boolean
   autoFocus?: boolean
+  disabled?: boolean
 }
 
 export const SimpleAutocomplete = (props: AutocompleteType) => {
   const {
+    freeSolo = true,
     name,
     value,
     setValue,
@@ -214,12 +218,14 @@ export const SimpleAutocomplete = (props: AutocompleteType) => {
     items = [],
     setItem,
     blurOnSelect = false,
-    autoFocus = false
+    autoFocus = false,
+    disabled = false
   } = props
   return (
     <Autocomplete
+      disabled={disabled}
       value={value}
-      freeSolo
+      freeSolo={freeSolo}
       color="secondary"
       sx={{width: "100%"}}
       size="small"
