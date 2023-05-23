@@ -3,7 +3,7 @@ import {
   Alert,
   Autocomplete,
   colors,
-  FormControl,
+  FormControl, FormHelperText,
   InputLabel,
   Select,
   SelectChangeEvent,
@@ -93,10 +93,13 @@ interface FieldType {
   disabled?: boolean
   onKeyDown?: (value: any, event: React.KeyboardEvent<HTMLDivElement>) => void
   autoFocus?: boolean
+  multiline?: boolean
+  maxRows?: number
   tabIndex?: number
   fullWidth?: boolean
   variant?: "outlined" | "standard" | "filled" | undefined,
   onClick?: () => void
+  onBlur?: () => void
 }
 
 export const SimpleField = (props: FieldType) => {
@@ -114,14 +117,19 @@ export const SimpleField = (props: FieldType) => {
     autoFocus = false,
     tabIndex = undefined,
     fullWidth = true,
+    multiline = false,
+    maxRows=1,
     variant = 'outlined',
-    onClick = () => undefined
+    onClick = () => undefined,
+    onBlur = () => undefined
   } = props
   return (
     <TextField
       type={type}
       name={name}
       label={label}
+      multiline={multiline}
+      maxRows={maxRows}
       onFocus={focusText ? (event) => event.target.select() : () => null}
       color="secondary"
       sx={fullWidth ? {width: "100%"} : null}
@@ -141,6 +149,7 @@ export const SimpleField = (props: FieldType) => {
       autoFocus={autoFocus}
       tabIndex={tabIndex}
       onClick={onClick}
+      onBlur={onBlur}
     />
   );
 };
@@ -152,16 +161,20 @@ interface FormSelectType {
   label: string
   children: any[]
   onOpen?: () => void
+  error?: string
+  defaultValue?: string
+  disabled?:boolean
 }
 
 export const SimpleSelect = (props: FormSelectType) => {
-  const {label, setValue, onOpen = () => undefined} = props;
-  const filteredProps = _.omit(props, ['setValue', 'onOpen'])
+  const {label, setValue, onOpen = () => undefined, error='', defaultValue='-1', disabled=false} = props;
+  const filteredProps = _.omit(props, ['setValue', 'onOpen', 'error', 'defaultValue', 'disabled'])
   return (
-    <FormControl fullWidth>
-      <InputLabel color='secondary'>{label}</InputLabel>
+    <FormControl fullWidth sx={{ '.input-label[data-shrink="false"]': {top: '-8px'}}} error={!!error}>
+      <InputLabel className='input-label' color='secondary'>{label}</InputLabel>
       <Select
-        defaultValue='-1'
+        disabled={disabled}
+        defaultValue={defaultValue}
         color='secondary'
         size='small'
         sx={{width: "100%"}}
@@ -171,6 +184,7 @@ export const SimpleSelect = (props: FormSelectType) => {
         onOpen={onOpen}
         {...filteredProps}
       />
+      {!!error && <FormHelperText>{error}</FormHelperText>}
     </FormControl>
   )
 }
@@ -243,7 +257,7 @@ export const SimpleAutocomplete = (props: AutocompleteType) => {
 }
 
 export const fieldRequired = (value: string) => {
-  if (value === '') {
+  if (value.trim() === '') {
     return 'required'
   }
   return ''

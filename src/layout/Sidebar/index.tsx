@@ -10,20 +10,22 @@ import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
 import SellOutlinedIcon from '@mui/icons-material/SellOutlined';
 import PointOfSaleOutlinedIcon from '@mui/icons-material/PointOfSaleOutlined';
 import BarChartIcon from '@mui/icons-material/BarChart';
+import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
 import {tokens} from "../../theme";
 import {menuItemStyles} from "./Sidebar.theme";
 import {useLocation} from "react-router-dom";
 import {Item} from "./Item";
-import {useAppSelector} from "../../hooks/redux";
+import {useAppSelector, useIsAdmin} from "../../hooks/redux";
 import {useDictionaryTranslate} from "../../hooks/pages";
 
-interface SidebarMenuProps{
+interface SidebarMenuProps {
   width: number
-  toggleOpenBar: ()=> void
+  toggleOpenBar: () => void
 }
 
 const SidebarMenu = ({width, toggleOpenBar}: SidebarMenuProps) => {
   const dict = useDictionaryTranslate('sidebar')
+  const isAdmin = useIsAdmin()
   const location = useLocation()
   const theme = useTheme()
   const colors = tokens(theme.palette.mode)
@@ -31,7 +33,7 @@ const SidebarMenu = ({width, toggleOpenBar}: SidebarMenuProps) => {
   const userName = useAppSelector(state => state.authReducer.username)
   const isAuthenticated = useAppSelector(state => state.authReducer.isAuthenticated)
   return (
-    <Box sx={{display: 'flex', height: '100%',   width: `${width}px`, position: 'fixed'}}>
+    <Box sx={{display: 'flex', height: '100%', width: `${width}px`, position: 'fixed'}}>
       <Sidebar
         backgroundColor={colors.primary[400]}
         rootStyles={{borderColor: colors.primary[900]}}
@@ -123,6 +125,23 @@ const SidebarMenu = ({width, toggleOpenBar}: SidebarMenuProps) => {
               icon={<BarChartIcon/>}
               location={location.pathname}
             />
+            {isAdmin &&
+              <>
+                <Typography
+                  variant='h6'
+                  color={colors.grey[200]}
+                  sx={{m: '10px 0 5px 20px'}}
+                >
+                  Site
+                </Typography>
+                <Item
+                  title='products'
+                  to='/site-products'
+                  icon={<ImageOutlinedIcon/>}
+                  location={location.pathname}
+                />
+              </>
+            }
           </Box>
         </Menu>
       </Sidebar>

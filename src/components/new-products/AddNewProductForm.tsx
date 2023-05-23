@@ -12,7 +12,7 @@ import produce from "immer";
 import TableSizes from "./TableSizes";
 import _ from "lodash";
 import {getDefaultSeizesLength, ProductType, WidthType} from "./types";
-import {addNewProducts, requestProducts} from "../../store/actions/new-products";
+import {addNewProducts, requestProducts} from "../../store/actions/newProducts";
 import {
   useDictionary,
   useFetchAccess,

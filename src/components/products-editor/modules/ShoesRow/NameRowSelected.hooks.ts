@@ -3,7 +3,7 @@ import {useState} from "react";
 import produce from "immer";
 import {useDictionaryTranslate, useFetchAccess} from "../../../../hooks/pages";
 import {ViewShoes,} from "../../types";
-import {updateShoes} from "../../../../store/actions/products-editor";
+import {updateShoes} from "../../../../store/actions/productsEditor";
 import {EditShoes} from "../../../../schemas/products-editor";
 
 interface UseForm {

@@ -14,6 +14,7 @@ import Items from "./pages/items-editor"
 import ProductsEditor from "./pages/products-editor"
 import NewSale from "./pages/new-sales";
 import ReportPage from "./pages/report";
+import ShowcasePage from "./pages/showcase";
 
 function App() {
   const [openBar, setOpenBar] = useState(true)
@@ -41,6 +42,7 @@ function App() {
             <Route path='/products-editor' element={<ProductsEditor/>}/>
             <Route path='/new-sales' element={<NewSale/>}/>
             <Route path='/report' element={<ReportPage/>}/>
+            <Route path='/site-products' element={<ShowcasePage/>}/>
           </Routes>
         </motion.div>
       </main>

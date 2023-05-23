@@ -2,7 +2,7 @@ import {useDictionaryTranslate, useFetchAccess} from "../../hooks/pages";
 import {GridActionsCellItem} from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import React, {useState} from "react";
-import {delItem} from "../../store/actions/items-editor";
+import {delItem} from "../../store/actions/itemsEditor";
 import DeleteDialog from "../Form/Dialog";
 
 interface DeleteButtonType {

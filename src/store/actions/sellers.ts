@@ -3,7 +3,7 @@ import {secureApiCreate} from "../../ky";
 import {sellersSlice} from "../slices/sellersSlice";
 import {authSlice} from "../slices/authSlice";
 import _ from "lodash";
-import {SellerWithDetails, UpdateSeller} from "../../schemas/seller";
+import {CreateSeller, SellerWithDetails} from "../../schemas/seller";
 import {Seller} from "../../schemas/base";
 
 
@@ -20,7 +20,7 @@ export const fetchSellers = (access_token: string, {storeId}: any = null) => {
   }
 }
 
-export const addNewSeller = (access_token: string, seller: UpdateSeller) => {
+export const addNewSeller = (access_token: string, seller: CreateSeller) => {
   const secureApi = secureApiCreate(access_token)
   return async (dispatch: AppDispatch) => {
     try {

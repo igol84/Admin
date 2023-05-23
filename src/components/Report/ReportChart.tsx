@@ -1,7 +1,7 @@
 import React from 'react';
 import {BarDatum, ResponsiveBar} from '@nivo/bar'
 import {Box} from "@mui/material";
-import {ReportData} from "../../schemas/reportData";
+import {ReportData} from "../../schemas/report-data";
 import {useDictionaryTranslate} from "../../hooks/pages";
 import {useChartStyle} from "./style";
 

@@ -2,7 +2,7 @@ import {useDictionaryTranslate, useFetchAccess} from "../../hooks/pages";
 import {GridActionsCellItem} from "@mui/x-data-grid";
 import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
 import React from "react";
-import {updateItem} from "../../store/actions/items-editor";
+import {updateItem} from "../../store/actions/itemsEditor";
 import {UpdatedItem} from "../../schemas/items-editor";
 
 interface SaveButtonType {

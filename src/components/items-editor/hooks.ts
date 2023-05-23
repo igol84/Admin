@@ -3,7 +3,7 @@ import {FieldNames, FormFields, ItemForm} from "./types";
 import {Order, UseOrder} from "../../hooks/form-data";
 import produce from "immer";
 import {useFetchAccess} from "../../hooks/pages";
-import {fetchSalesByItem} from "../../store/actions/items-editor";
+import {fetchSalesByItem} from "../../store/actions/itemsEditor";
 
 
 export const useOrder: UseOrder<ItemForm> = () => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import {MenuItem, Stack} from "@mui/material";
 
-import {Interval, PlaceView} from "../../schemas/reportData";
+import {Interval, PlaceView} from "../../schemas/report-data";
 import {SimpleSelect} from "../Form";
 import {useDictionaryTranslate} from "../../hooks/pages";
 

@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {Expense, Place, Sale} from "../../schemas/base";
-import {PlaceView, ReportData} from "../../schemas/reportData";
+import {PlaceView, ReportData} from "../../schemas/report-data";
 import {getPlacesView} from "../../components/Report/utility";
 
 

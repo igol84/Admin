@@ -1,7 +1,7 @@
 import {useStyle} from "./style";
 import {useAppSelector, useStoreId} from "../../hooks/redux";
 import {useIsLoadingDisplay, useLoaderAccess} from "../../hooks/pages";
-import {fetchProductsEditor} from "../../store/actions/products-editor";
+import {fetchProductsEditor} from "../../store/actions/productsEditor";
 import React, {useState} from "react";
 import {ViewProduct} from "./types";
 

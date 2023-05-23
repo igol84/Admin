@@ -7,7 +7,7 @@ import TableRowsIcon from '@mui/icons-material/TableRows';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import Form from "./Form";
 import LoadingCircular from "../LoadingCircular";
-import {Interval, ReportData} from "../../schemas/reportData";
+import {Interval, ReportData} from "../../schemas/report-data";
 import {useTabStyle} from "./style";
 import ReportTable from "./ReportTable";
 import ReportChart from "./ReportChart";

@@ -1,5 +1,5 @@
 import {Expense, Place, Sale} from "../../schemas/base";
-import {Interval, PlaceView, ReportData} from "../../schemas/reportData";
+import {Interval, PlaceView, ReportData} from "../../schemas/report-data";
 import _ from "lodash";
 
 export const getPlacesView = (places: Place[]): PlaceView[] => {

@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {ReportData} from "../../schemas/reportData";
+import {ReportData} from "../../schemas/report-data";
 import {Box} from "@mui/material";
 import {useBoxGridTableStyle} from "../Form/style";
 import {DataGrid, GridColumns, GridValueFormatterParams, GridValueGetterParams} from "@mui/x-data-grid";

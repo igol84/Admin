@@ -3,7 +3,7 @@ import {Box, Table, TableBody, TableCell, TableContainer, TablePagination, Table
 import {useDictionaryTranslate, useIsLoadingDisplay, useLoaderAccess} from "../../hooks/pages"
 import {AnimatePresence, motion} from "framer-motion"
 import {useAppSelector, useStoreId} from "../../hooks/redux"
-import {fetchItemsEditor} from "../../store/actions/items-editor"
+import {fetchItemsEditor} from "../../store/actions/itemsEditor"
 import {useBoxTableStyle} from "../Form/style"
 import {ItemForm} from "./types"
 import {useForm, useOrder, usePages} from "./hooks";

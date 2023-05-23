@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import produce from "immer";
 import {ViewSimpleProduct} from "../../types";
 import {useFetchAccess} from "../../../../hooks/pages";
-import {updateSimpleProduct} from "../../../../store/actions/products-editor";
+import {updateSimpleProduct} from "../../../../store/actions/productsEditor";
 import {EditSimpleProduct} from "../../../../schemas/products-editor";
 
 interface UseForm {

@@ -64,3 +64,11 @@ export interface SaleLineItem {
   item: Item
 }
 
+export interface Showcase {
+  name: string
+  title: string
+  desc: string
+  url: string
+  youtube: string
+  active: boolean
+}
