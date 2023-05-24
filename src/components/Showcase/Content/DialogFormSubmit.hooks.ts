@@ -21,26 +21,32 @@ export const useFormSubmit: UseFormSubmit = () => {
 
   const submitAdd = async (formData: FormData) => {
     const newItem: CreateShowcase = {
-      name: formData.name.value,
-      title: formData.title.value,
-      desc: formData.desc,
-      url: formData.url.value,
-      active: true,
-      youtube: '',
+      showcaseItem:{
+        name: formData.name.value,
+        title: formData.title.value,
+        desc: formData.desc,
+        url: formData.url.value,
+        active: true,
+        youtube: '',
+      },
+      files: formData.files
     }
     await addItemAccess(newItem)
   }
 
   const submitEdit = async (formData: FormData) => {
     const updatedItem: UpdateShowcase = {
-      name: formData.name.value,
-      title: formData.title.value,
-      desc: formData.desc,
-      url: formData.url.value,
-      active: true,
-      youtube: '',
+      showcaseItem: {
+        name: formData.name.value,
+        title: formData.title.value,
+        desc: formData.desc,
+        url: formData.url.value,
+        active: true,
+        youtube: '',
+      },
+      files: formData.files
     }
-    await editItemAccess([updatedItem, formData.file])
+    await editItemAccess(updatedItem)
   }
 
 

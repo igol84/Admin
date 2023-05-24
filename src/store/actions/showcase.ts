@@ -5,6 +5,7 @@ import {showcaseSlice} from "../slices/showcaseSlice";
 import {CreateShowcase, UpdateShowcase} from "../../schemas/showcase";
 import {Item, Showcase} from "../../schemas/base";
 import _ from "lodash";
+import {generate_url} from "../../utilite";
 
 
 export const fetchItems = (access_token: string) => {
@@ -19,7 +20,7 @@ export const fetchItems = (access_token: string) => {
       })
       const productNames = filteredItems.map(item => item.product.name)
       const uniqProductNames = _.uniq(productNames)
-      const orderedProductNames = _.orderBy(uniqProductNames, value=> value.toLowerCase())
+      const orderedProductNames = _.orderBy(uniqProductNames, value => value.toLowerCase())
 
       dispatch(showcaseSlice.actions.showcaseFetchingSuccess({showcase, productsNames: orderedProductNames}))
     } catch (err) {
@@ -28,12 +29,21 @@ export const fetchItems = (access_token: string) => {
   }
 }
 
-export const addNewItem = (access_token: string, showcaseItem: CreateShowcase) => {
+export const addNewItem = (access_token: string, data: CreateShowcase) => {
+  const {showcaseItem, files} = data
   const secureApi = secureApiCreate(access_token)
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(showcaseSlice.actions.showcaseFetching())
       const newShowcaseItem: Showcase = await secureApi.post('showcase', {json: showcaseItem}).json()
+      if (files) {
+        const formData = new FormData()
+        files.forEach(file => {
+          formData.append('files', file)
+        })
+        const dirName = generate_url(showcaseItem.name)
+        const response = await secureApi.post(`showcase/files/${dirName}`, {body: formData}).json()
+      }
       dispatch(showcaseSlice.actions.addNewItem({newShowcaseItem}))
       return newShowcaseItem
     } catch (err) {
@@ -46,21 +56,24 @@ export const addNewItem = (access_token: string, showcaseItem: CreateShowcase) =
   }
 }
 
-export const updateShowcase = (access_token: string, [showcaseItem, file]: [UpdateShowcase, File[] | undefined]) => {
+
+export const updateShowcase = (access_token: string, data: UpdateShowcase) => {
+  const {showcaseItem, files} = data
   const secureApi = secureApiCreate(access_token)
   return async (dispatch: AppDispatch) => {
     try {
-      // dispatch(showcaseSlice.actions.showcaseFetching())
-      // const changedItem: Showcase = await secureApi.put('showcase', {json: showcaseItem}).json()
-      if(file) {
-        console.log(showcaseItem)
+      dispatch(showcaseSlice.actions.showcaseFetching())
+      const changedItem: Showcase = await secureApi.put('showcase', {json: showcaseItem}).json()
+      if (files) {
         const formData = new FormData()
-        formData.append('file', file[0])
-        const response = await secureApi.post(`showcase/files/${showcaseItem.name}`, {body: formData}).json()
-        console.log(response)
+        files.forEach(file => {
+          formData.append('files', file)
+        })
+        const dirName = generate_url(showcaseItem.name)
+        const response = await secureApi.post(`showcase/files/${dirName}`, {body: formData}).json()
       }
-      // dispatch(showcaseSlice.actions.updateItem({changedItem}))
-      return showcaseItem
+      dispatch(showcaseSlice.actions.updateItem({changedItem}))
+      return changedItem
     } catch (err) {
       const errors = err as Error;
       const errorText = errors.message
@@ -77,6 +90,8 @@ export const delShowcase = (access_token: string, name: string) => {
     try {
       dispatch(showcaseSlice.actions.showcaseFetching())
       await secureApi.delete(`showcase/${name}`)
+      const dirName = generate_url(name)
+      await secureApi.delete(`showcase/dir/${dirName}`).json()
       dispatch(showcaseSlice.actions.delItem(name))
     } catch (err) {
       const errors = err as Error;

@@ -13,6 +13,8 @@ import {useFormValidation} from "./DialogFormValidation.hooks";
 import {useFormSubmit} from "./DialogFormSubmit.hooks";
 import {useFormInitial} from "./DialogFormInitial.hooks";
 import {MuiFileInput} from "mui-file-input";
+import {useIsLoadingDisplay} from "../../../hooks/pages";
+import LoadingCircular from "../../LoadingCircular";
 
 interface DialogFormProps {
   open: boolean
@@ -21,7 +23,8 @@ interface DialogFormProps {
 }
 
 const DialogForm = ({open, onCloseDialog, showcaseItem}: DialogFormProps) => {
-  const {showcase, productsNames} = useAppSelector(state => state.showcaseSlice)
+  const {showcase, productsNames, isLoading} = useAppSelector(state => state.showcaseSlice)
+  const showLoading = useIsLoadingDisplay(isLoading)
   const style = useModalStyle()
   const isAddMode = showcaseItem === null
   const [formData, setFormData, resetFormData, itemsNames] = useFormInitial(showcase, showcaseItem, isAddMode, productsNames)
@@ -78,12 +81,15 @@ const DialogForm = ({open, onCloseDialog, showcaseItem}: DialogFormProps) => {
                      maxRows={4}/>
         <SimpleField name='url' label='url' value={formData.url.value} error={formData.url.error}
                      setValue={onUrlFieldChange}/>
-        <MuiFileInput multiple value={formData.file} onChange={onFileChange} hideSizeText />
+        <MuiFileInput multiple value={formData.files} onChange={onFileChange} hideSizeText color='secondary'/>
       </DialogContent>
       <DialogActions>
         <Button variant='contained' onClick={onCloseDialog}>Close</Button>
-        <Button variant='contained' color='secondary' onClick={submitForm}>{isAddMode ? 'Add' : 'Edit'}</Button>
+        <Button variant='contained' color='secondary' onClick={submitForm} disabled={isLoading}>
+          {isAddMode ? 'Add' : 'Edit'}
+        </Button>
       </DialogActions>
+      <LoadingCircular show={showLoading}/>
     </Dialog>
   )
 }

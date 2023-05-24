@@ -1,5 +1,12 @@
 import {Showcase} from "./base";
 
-export type CreateShowcase = Showcase
-export type UpdateShowcase = Showcase
+export interface CreateShowcase{
+  showcaseItem: Showcase
+  files: File[] | undefined
+}
+
+export interface UpdateShowcase{
+  showcaseItem: Showcase
+  files: File[] | undefined
+}
 

@@ -52,7 +52,7 @@ export const useFormValidation: UseFormValidation = (formData, setFormData, isAd
   }
   const onFileChange = (file: File[]) => {
     setFormData(produce(prevFormData => {
-      prevFormData.file = file
+      prevFormData.files = file
     }))
   }
 
