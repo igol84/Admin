@@ -3,6 +3,7 @@ import {fieldRequired} from "../../Form";
 import {FormData} from "./types";
 import React from "react";
 import {Showcase} from "../../../schemas/base";
+import {generate_url} from "../../../utilite";
 
 interface UseFormValidation {
   (
@@ -46,7 +47,7 @@ export const useFormValidation: UseFormValidation = (formData, setFormData, isAd
 
   const onUrlFieldChange = (url: string) => {
     setFormData(produce(prevFormData => {
-      prevFormData.url.value = url
+      prevFormData.url.value = generate_url(url)
       prevFormData.url.error = fieldRequired(url)
     }))
   }

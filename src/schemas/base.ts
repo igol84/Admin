@@ -72,3 +72,12 @@ export interface Showcase {
   youtube: string
   active: boolean
 }
+
+export interface ShowcaseDirs {
+  name: string
+  images: string[]
+}
+
+export interface ShowcaseWithImages extends Showcase {
+  images: string[]
+}

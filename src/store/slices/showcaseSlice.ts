@@ -1,10 +1,10 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {Showcase} from "../../schemas/base";
+import {Showcase, ShowcaseWithImages} from "../../schemas/base";
 import _ from "lodash";
 
 
 interface ShowcaseState {
-  showcase: Showcase[]
+  showcase: ShowcaseWithImages[]
   productsNames: string[]
   isLoading: boolean
   error: string
@@ -18,16 +18,17 @@ const initialState: ShowcaseState = {
 }
 
 export interface ItemsPayload {
-  showcase: Showcase[]
+  showcase: ShowcaseWithImages[]
   productsNames: string[]
 }
 
 interface NewItemPayload {
-  newShowcaseItem: Showcase
+  newShowcaseItem: ShowcaseWithImages
 }
 
 interface ChangedItemPayload {
   changedItem: Showcase
+  fileNames: string[] | null
 }
 
 export const showcaseSlice = createSlice({
@@ -49,16 +50,19 @@ export const showcaseSlice = createSlice({
     },
     addNewItem(state, {payload: {newShowcaseItem}}: PayloadAction<NewItemPayload>) {
       state.isLoading = false
-      state.productsNames = state.productsNames.filter(name=>{
+      state.productsNames = state.productsNames.filter(name => {
         return name !== newShowcaseItem.name
       })
       state.showcase.unshift(newShowcaseItem)
       state.error = ''
     },
-    updateItem(state, {payload: {changedItem}}: PayloadAction<ChangedItemPayload>) {
+    updateItem(state, {payload: {changedItem, fileNames}}: PayloadAction<ChangedItemPayload>) {
       state.isLoading = false
+
       state.showcase = state.showcase.map(item => {
-        return item.name == changedItem.name ? changedItem : item
+        const itemImages = fileNames ? fileNames : item.images
+        const showcaseWithImages: ShowcaseWithImages = {...changedItem, images: itemImages}
+        return item.name == changedItem.name ? showcaseWithImages : item
       })
       state.error = ''
     },
@@ -68,7 +72,7 @@ export const showcaseSlice = createSlice({
         return item.name !== delName
       })
       state.productsNames.push(delName)
-      state.productsNames = _.orderBy(state.productsNames, value=> value.toLowerCase())
+      state.productsNames = _.orderBy(state.productsNames, value => value.toLowerCase())
       state.error = ''
     }
 
