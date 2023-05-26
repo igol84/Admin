@@ -18,6 +18,7 @@ const DeleteButton = ({deletable, onRemove} : DeleteButtonType) => {
   }
   const handleConfirm = () => {
     onRemove()
+    setDialogOpen(false)
   }
   return (
     <>

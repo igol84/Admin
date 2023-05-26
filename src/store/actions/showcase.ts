@@ -2,7 +2,7 @@ import {AppDispatch} from "../index";
 import {secureApiCreate} from "../../ky";
 import {authSlice} from "../slices/authSlice";
 import {showcaseSlice} from "../slices/showcaseSlice";
-import {CreateShowcase, UpdateShowcase} from "../../schemas/showcase";
+import {CreateShowcase, DelImgShowcase, UpdateShowcase} from "../../schemas/showcase";
 import {Item, Showcase, ShowcaseDirs, ShowcaseWithImages} from "../../schemas/base";
 import _ from "lodash";
 import {generate_url} from "../../utilite";
@@ -18,7 +18,8 @@ export const fetchItems = (access_token: string) => {
       const dirs: ShowcaseDirs[] = await secureApi.get('showcase/dir').json()
       const showcaseWithImages: ShowcaseWithImages[] = showcase.map(item => {
         const dir = dirs.find(dir => dir.name === generate_url(item.name))
-        return {...item, images: dir ? dir.images : []}
+        const images = dir ? dir.images : []
+        return {...item, images: images.sort()}
       })
       const filteredItems = items.filter(item => {
         return !(!!showcase.find(showcaseItem => showcaseItem.name === item.product.name)) && item.qty > 0
@@ -104,8 +105,25 @@ export const delShowcase = (access_token: string, name: string) => {
       dispatch(showcaseSlice.actions.showcaseFetching())
       await secureApi.delete(`showcase/${name}`)
       const dirName = generate_url(name)
-      await secureApi.delete(`showcase/dir/${dirName}`).json()
+      await secureApi.delete(`showcase/dir/${dirName}`)
       dispatch(showcaseSlice.actions.delItem(name))
+    } catch (err) {
+      const errors = err as Error;
+      const errorText = errors.message
+      if (errorText) {
+        dispatch(authSlice.actions.loginFail({errorText}))
+      }
+    }
+  }
+}
+
+export const delImg = (access_token: string, delImgShowcase: DelImgShowcase) => {
+  const secureApi = secureApiCreate(access_token)
+  return async (dispatch: AppDispatch) => {
+    try {
+      dispatch(showcaseSlice.actions.showcaseFetching())
+      await secureApi.delete(`showcase/img`, {json: delImgShowcase})
+      dispatch(showcaseSlice.actions.delImg(delImgShowcase))
     } catch (err) {
       const errors = err as Error;
       const errorText = errors.message

@@ -10,3 +10,8 @@ export interface UpdateShowcase{
   files: File[] | undefined
 }
 
+export interface DelImgShowcase{
+  nameItem: string
+  dirName: string
+  imgName: string
+}

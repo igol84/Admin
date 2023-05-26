@@ -5,37 +5,37 @@ import {useAppSelector} from "../../../hooks/redux";
 import {useIsLoadingDisplay} from "../../../hooks/pages";
 import LoadingCircular from "../../LoadingCircular";
 import DialogForm from "./DialogForm";
-import {Showcase} from "../../../schemas/base";
 import ShowcaseItem from "./ShowcaseItem";
 
 const Content = () => {
   const {isLoading, showcase} = useAppSelector(state => state.showcaseSlice)
   const showLoading = useIsLoadingDisplay(isLoading)
   const [open, setOpen] = useState(false)
-  const [selectedShowcase, setSelectedShowcase] = useState<Showcase | null>(null)
+  const [selectedShowcaseName, setSelectedShowcaseName] = useState<string | null>(null)
   const onCloseDialog = () => {
     setOpen(false)
-    setSelectedShowcase(null)
+    setSelectedShowcaseName(null)
   }
   const onClickAddShowcase = () => {
     setOpen(true)
-    setSelectedShowcase(null)
+    setSelectedShowcaseName(null)
   }
-  const onClickShowcase = (showcase: Showcase) => {
+  const onClickShowcase = (showcaseName: string) => {
     setOpen(true)
-    setSelectedShowcase(showcase)
+    setSelectedShowcaseName(showcaseName)
   }
-
+  const selectedShowcase = showcase.find(item => item.name === selectedShowcaseName)
   return (
     <Box>
       <AddNew onOpenDialog={onClickAddShowcase}/>
-      <ImageList variant="masonry" cols={6} gap={8}>
+      <ImageList cols={6} gap={8}>
         {showcase.map((showcaseItem) => (
-          <ShowcaseItem key={showcaseItem.name} showcaseItem={showcaseItem} onClickShowcase={onClickShowcase}/>
+          <ShowcaseItem key={showcaseItem.name} showcaseItem={showcaseItem} onClickShowcaseName={onClickShowcase}/>
         ))}
       </ImageList>
 
-      <DialogForm open={open} onCloseDialog={onCloseDialog} showcaseItem={selectedShowcase}/>
+      <DialogForm open={open} onCloseDialog={onCloseDialog}
+                  selectedShowcaseItem={selectedShowcase ? selectedShowcase : null}/>
       <LoadingCircular show={showLoading}/>
     </Box>
   );

@@ -1,6 +1,8 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {Showcase, ShowcaseWithImages} from "../../schemas/base";
 import _ from "lodash";
+import {DelImgShowcase} from "../../schemas/showcase";
+import produce from "immer";
 
 
 interface ShowcaseState {
@@ -60,7 +62,7 @@ export const showcaseSlice = createSlice({
       state.isLoading = false
 
       state.showcase = state.showcase.map(item => {
-        const itemImages = fileNames ? fileNames : item.images
+        const itemImages = fileNames ? _.uniq([...fileNames, ...item.images]).sort() : item.images
         const showcaseWithImages: ShowcaseWithImages = {...changedItem, images: itemImages}
         return item.name == changedItem.name ? showcaseWithImages : item
       })
@@ -73,6 +75,16 @@ export const showcaseSlice = createSlice({
       })
       state.productsNames.push(delName)
       state.productsNames = _.orderBy(state.productsNames, value => value.toLowerCase())
+      state.error = ''
+    },
+    delImg(state, {payload: {nameItem, imgName}}: PayloadAction<DelImgShowcase>) {
+      state.isLoading = false
+      state.showcase = produce(state.showcase, draftData => {
+        draftData.map(showcaseItem => {
+          if (showcaseItem.name === nameItem)
+            showcaseItem.images = showcaseItem.images.filter(image => image !== imgName)
+        })
+      })
       state.error = ''
     }
 
