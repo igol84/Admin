@@ -1,7 +1,7 @@
-import {FormData} from "./types";
-import {CreateShowcase, DelImgShowcase, UpdateShowcase} from "../../../schemas/showcase";
+import {convertFromFormDataToShowcase, FormData} from "./types";
+import {DelImgShowcase} from "../../../schemas/showcase";
 import {useFetchAccess} from "../../../hooks/pages";
-import {addNewItem, delShowcase, updateShowcase, delImg} from "../../../store/actions/showcase";
+import {addNewItem, delImg, delShowcase, updateShowcase} from "../../../store/actions/showcase";
 
 
 interface UseFormSubmit {
@@ -21,33 +21,11 @@ export const useFormSubmit: UseFormSubmit = () => {
   const deleteImageAccess = useFetchAccess(delImg)
 
   const submitAdd = async (formData: FormData) => {
-    const newItem: CreateShowcase = {
-      showcaseItem:{
-        name: formData.name.value,
-        title: formData.title.value,
-        desc: formData.desc,
-        url: formData.url.value,
-        active: true,
-        youtube: '',
-      },
-      files: formData.files
-    }
-    await addItemAccess(newItem)
+    await addItemAccess(convertFromFormDataToShowcase(formData))
   }
 
   const submitEdit = async (formData: FormData) => {
-    const updatedItem: UpdateShowcase = {
-      showcaseItem: {
-        name: formData.name.value,
-        title: formData.title.value,
-        desc: formData.desc,
-        url: formData.url.value,
-        active: true,
-        youtube: '',
-      },
-      files: formData.files
-    }
-    await editItemAccess(updatedItem)
+    await editItemAccess(convertFromFormDataToShowcase(formData))
   }
 
   const deleteItem = async (name: string) => {

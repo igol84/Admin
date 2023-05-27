@@ -67,7 +67,9 @@ export interface SaleLineItem {
 export interface Showcase {
   name: string
   title: string
+  title_ua: string
   desc: string
+  desc_ua: string
   url: string
   youtube: string
   active: boolean

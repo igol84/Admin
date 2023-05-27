@@ -23,7 +23,8 @@ export const useFormInitial: UseFormInitial = (showcase, showcaseItem, isAddMode
 
   const isShowcase = (showcaseItem: Showcase | null): showcaseItem is Showcase => !isAddMode
   const initialFormData: FormData = {
-    name: {value: '', error: ''}, title: {value: '', error: ''}, desc: '', url: {value: '', error: ''}, files: undefined
+    name: {value: '', error: ''}, title: {value: '', error: ''}, titleUa: {value: '', error: ''}, desc: '', descUa: '',
+    active: true, url: {value: '', error: ''},  files: undefined
   }
 
   const [formData, setFormData] = useState<FormData>(initialFormData)
@@ -34,8 +35,11 @@ export const useFormInitial: UseFormInitial = (showcase, showcaseItem, isAddMode
     const changedFormData: FormData = !isShowcase(showcaseItem) ? initialFormData : {
       name: {value: showcaseItem.name, error: ''},
       title: {value: showcaseItem.title, error: ''},
+      titleUa: {value: showcaseItem.title_ua, error: ''},
       desc: showcaseItem.desc,
+      descUa: showcaseItem.desc_ua,
       url: {value: showcaseItem.url, error: ''},
+      active: showcaseItem.active,
       files: undefined
     }
     setFormData(changedFormData)

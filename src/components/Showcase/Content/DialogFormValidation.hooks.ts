@@ -16,8 +16,11 @@ interface UseFormValidation {
     [
       onNameFieldChange: (title: string) => void,
       onTitleFieldChange: (title: string) => void,
+      onTitleUaFieldChange: (title: string) => void,
       onDescFieldChange: (desc: string) => void,
+      onDescUaFieldChange: (desc: string) => void,
       onUrlFieldChange: (url: string) => void,
+      onActiveChange: (active: boolean) => void,
       onFileChange: (file: File[]) => void,
       checkForm: () => boolean
     ]
@@ -39,16 +42,33 @@ export const useFormValidation: UseFormValidation = (formData, setFormData, isAd
     }))
   }
 
+  const onTitleUaFieldChange = (title: string) => {
+    setFormData(produce(prevFormData => {
+      prevFormData.titleUa.value = title
+      prevFormData.titleUa.error = fieldRequired(title)
+    }))
+  }
+
   const onDescFieldChange = (desc: string) => {
     setFormData(produce(prevFormData => {
       prevFormData.desc = desc
     }))
   }
 
+  const onDescUaFieldChange = (desc: string) => {
+    setFormData(produce(prevFormData => {
+      prevFormData.descUa = desc
+    }))
+  }
   const onUrlFieldChange = (url: string) => {
     setFormData(produce(prevFormData => {
       prevFormData.url.value = generate_url(url)
       prevFormData.url.error = fieldRequired(url)
+    }))
+  }
+  const onActiveChange = (active: boolean) => {
+    setFormData(produce(prevFormData => {
+      prevFormData.active = active
     }))
   }
   const onFileChange = (file: File[]) => {
@@ -80,5 +100,8 @@ export const useFormValidation: UseFormValidation = (formData, setFormData, isAd
   }
 
 
-  return [onNameFieldChange, onTitleFieldChange, onDescFieldChange, onUrlFieldChange, onFileChange, checkForm]
+  return [
+    onNameFieldChange, onTitleFieldChange, onTitleUaFieldChange, onDescFieldChange, onDescUaFieldChange,
+    onUrlFieldChange, onActiveChange, onFileChange, checkForm
+  ]
 }

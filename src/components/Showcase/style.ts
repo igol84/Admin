@@ -14,6 +14,10 @@ export const useModalStyle = () => {
   const theme = useTheme()
   const colors = tokens(theme.palette.mode)
   return {
+    '.MuiDialog-paper':{
+      maxWidth: '900px',
+      width: '900px',
+    },
     '.title': {
       fontSize: '24px'
     },
@@ -24,9 +28,14 @@ export const useModalStyle = () => {
       color: colors.grey[500],
     },
     '.form': {
-      width: '600px',
+      mr: '8px',
       display: 'flex',
       flexDirection: 'column',
+      gap: '8px'
+    },
+    '& .flexFields': {
+      display: 'flex',
+      alignItems: 'center',
       gap: '8px'
     }
 

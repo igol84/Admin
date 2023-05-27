@@ -12,7 +12,7 @@ interface DialogFormImagesProps {
 
 const DialogFormImages = ({selectedShowcaseItem, onClickDelImg}: DialogFormImagesProps) => {
   return (
-    <ImageList cols={3} gap={8}>
+    <ImageList cols={9} gap={8}>
       {selectedShowcaseItem.images.map(imgName => {
         const hostPictures = import.meta.env.VITE_PICTURES_URL
         const dirName = generate_url(selectedShowcaseItem.name)
