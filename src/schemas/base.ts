@@ -83,3 +83,18 @@ export interface ShowcaseDirs {
 export interface ShowcaseWithImages extends Showcase {
   images: string[]
 }
+
+export interface Brand {
+  id: number
+  name: string
+  title: string
+  title_ua: string
+  desc: string
+  desc_ua: string
+  url: string
+  active: boolean
+}
+
+export interface BrandWithImage extends Brand {
+  image: string | undefined
+}

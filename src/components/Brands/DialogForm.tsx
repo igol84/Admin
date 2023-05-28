@@ -4,40 +4,37 @@ import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogActions from "@mui/material/DialogActions";
 import CloseIcon from "@mui/icons-material/Close";
-import {useModalStyle} from "../style";
-import {SimpleAutocomplete, SimpleField} from "../../Form";
-import {useAppSelector} from "../../../hooks/redux";
-import {Showcase, ShowcaseWithImages} from "../../../schemas/base";
-import DeleteButton from "../../Form/DeleteButton";
-import {useFormValidation} from "./DialogFormValidation.hooks";
-import {useFormSubmit} from "./DialogFormSubmit.hooks";
-import {useFormInitial} from "./DialogFormInitial.hooks";
+import {useModalStyle} from "./style";
 import {MuiFileInput} from "mui-file-input";
-import {useIsLoadingDisplay} from "../../../hooks/pages";
-import LoadingCircular from "../../LoadingCircular";
-import DialogFormImages from "./DialogFormImages";
+import {Brand, BrandWithImage} from "../../schemas/base";
+import DeleteButton from "../Form/DeleteButton";
+import {SimpleField} from "../Form";
+import {useFormInitial} from "./DialogFormInitial.hooks";
+import {makeId} from "../../utilite";
+import {useFormValidation} from "./DialogFormValidation.hooks";
+import {useAppSelector} from "../../hooks/redux";
+import LoadingCircular from "../LoadingCircular";
+import {useIsLoadingDisplay} from "../../hooks/pages";
+import {useFormSubmit} from "./DialogFormSubmit.hooks";
 
 interface DialogFormProps {
   open: boolean
   onCloseDialog: () => void
-  selectedShowcaseItem: ShowcaseWithImages | null
+  selectedBrand: BrandWithImage | null
 }
 
-const DialogForm = ({open, onCloseDialog, selectedShowcaseItem}: DialogFormProps) => {
-  const {showcase, productsNames, isLoading} = useAppSelector(state => state.showcaseSlice)
-  const showLoading = useIsLoadingDisplay(isLoading)
+const DialogForm = ({open, onCloseDialog, selectedBrand}: DialogFormProps) => {
+  const {isLoading, brands} = useAppSelector(state => state.brandSlice)
   const style = useModalStyle()
-  const isAddMode = selectedShowcaseItem === null
-  const [formData, setFormData, resetFormData, itemsNames] = useFormInitial(selectedShowcaseItem, isAddMode,
-    productsNames)
-
+  const showLoading = useIsLoadingDisplay(isLoading)
+  const isAddMode = selectedBrand === null
+  const isBrand = (brand: Brand | null): brand is Brand => !isAddMode
+  const [formData, setFormData, resetFormData] = useFormInitial(selectedBrand, isAddMode)
   const [
     onNameFieldChange, onTitleFieldChange, onTitleUaFieldChange, onDescFieldChange, onDescUaFieldChange,
     onUrlFieldChange, onActiveChange, onFileChange, checkForm
-  ] = useFormValidation(formData, setFormData, isAddMode, showcase, selectedShowcaseItem)
-
-  const [submitAdd, submitEdit, deleteItem, deleteImage] = useFormSubmit()
-  const isShowcase = (showcaseItem: Showcase | null): showcaseItem is Showcase => !isAddMode
+  ] = useFormValidation(formData, setFormData, isAddMode, brands, selectedBrand)
+  const [submitAdd, submitEdit, deleteBrand] = useFormSubmit()
   const submitForm = async () => {
     if (checkForm()) {
       if (isAddMode)
@@ -49,24 +46,25 @@ const DialogForm = ({open, onCloseDialog, selectedShowcaseItem}: DialogFormProps
     }
   }
   const onClickDelete = async () => {
-    await deleteItem(formData.name.value)
+    await deleteBrand(formData.id,)
     onCloseDialog()
     resetFormData()
   }
-
+  const hostPictures = import.meta.env.VITE_BRANDS_URL
   return (
     <Dialog open={open} onClose={onCloseDialog} sx={style} className='myDialog'>
-      <DialogTitle className='title'>{isAddMode ? 'Add' : 'Edit'} Item</DialogTitle>
+      <DialogTitle className='title'>{isAddMode ? 'Add Item' : `Edit Item ${selectedBrand.id}`}</DialogTitle>
+
       <IconButton aria-label="close" onClick={onCloseDialog} className='dialog-x'>
         <CloseIcon/>
       </IconButton>
       <DialogContent className='form'>
         <Box className='flexFields'>
-          <SimpleAutocomplete
-            disabled={!isAddMode} freeSolo={false} name='color' label={'name'} value={formData.name.value}
-            setValue={onNameFieldChange} items={itemsNames} setItem={onNameFieldChange} error={formData.name.error}
-            blurOnSelect focusText
-          />
+          {(isBrand(selectedBrand) && selectedBrand.image) &&
+            <img width='60px' src={`${hostPictures}/${selectedBrand.image}?${makeId(5)}`} alt={selectedBrand.title}/>
+          }
+          <SimpleField name='name' label='name' value={formData.name.value} error={formData.name.error}
+                       setValue={onNameFieldChange}/>
           <Switch color='secondary' checked={formData.active}
                   onChange={(event) => onActiveChange(event.target.checked)}/>
           {!isAddMode &&
@@ -88,12 +86,10 @@ const DialogForm = ({open, onCloseDialog, selectedShowcaseItem}: DialogFormProps
         <Box className='flexFields'>
           <SimpleField name='url' label='url' value={formData.url.value} error={formData.url.error}
                        setValue={onUrlFieldChange}/>
-          <MuiFileInput size='small' multiple value={formData.files} onChange={onFileChange} hideSizeText
+          <MuiFileInput size='small' value={formData.file} onChange={onFileChange} hideSizeText
                         color='secondary'/>
         </Box>
-        {(isShowcase(selectedShowcaseItem) && selectedShowcaseItem.images) &&
-          <DialogFormImages selectedShowcaseItem={selectedShowcaseItem} onClickDelImg={deleteImage}/>
-        }
+
 
       </DialogContent>
       <DialogActions>

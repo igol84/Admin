@@ -6,8 +6,7 @@ import _ from "lodash";
 
 interface UseFormInitial {
   (
-    showcase: Showcase[],
-    showcaseItem: Showcase | null,
+    selectedShowcaseItem: Showcase | null,
     isAddMode: boolean,
     productsNames: string[]
   ):
@@ -19,7 +18,7 @@ interface UseFormInitial {
     ]
 }
 
-export const useFormInitial: UseFormInitial = (showcase, showcaseItem, isAddMode, productsNames) => {
+export const useFormInitial: UseFormInitial = (selectedShowcaseItem, isAddMode, productsNames) => {
 
   const isShowcase = (showcaseItem: Showcase | null): showcaseItem is Showcase => !isAddMode
   const initialFormData: FormData = {
@@ -32,20 +31,20 @@ export const useFormInitial: UseFormInitial = (showcase, showcaseItem, isAddMode
     setFormData(initialFormData)
   }
   useLayoutEffect(() => {
-    const changedFormData: FormData = !isShowcase(showcaseItem) ? initialFormData : {
-      name: {value: showcaseItem.name, error: ''},
-      title: {value: showcaseItem.title, error: ''},
-      titleUa: {value: showcaseItem.title_ua, error: ''},
-      desc: showcaseItem.desc,
-      descUa: showcaseItem.desc_ua,
-      url: {value: showcaseItem.url, error: ''},
-      active: showcaseItem.active,
+    const changedFormData: FormData = !isShowcase(selectedShowcaseItem) ? initialFormData : {
+      name: {value: selectedShowcaseItem.name, error: ''},
+      title: {value: selectedShowcaseItem.title, error: ''},
+      titleUa: {value: selectedShowcaseItem.title_ua, error: ''},
+      desc: selectedShowcaseItem.desc,
+      descUa: selectedShowcaseItem.desc_ua,
+      url: {value: selectedShowcaseItem.url, error: ''},
+      active: selectedShowcaseItem.active,
       files: undefined
     }
     setFormData(changedFormData)
-  }, [showcaseItem])
-  const itemsNames = isShowcase(showcaseItem)
-    ? ["", showcaseItem.name, ...productsNames]
+  }, [selectedShowcaseItem])
+  const itemsNames = isShowcase(selectedShowcaseItem)
+    ? ["", selectedShowcaseItem.name, ...productsNames]
     : _.orderBy(_.uniq([formData.name.value, ...productsNames]), value => value.toLowerCase())
   return [formData, setFormData, resetFormData, itemsNames]
 }

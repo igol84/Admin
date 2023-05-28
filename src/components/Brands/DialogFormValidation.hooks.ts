@@ -1,17 +1,17 @@
 import produce from "immer";
-import {fieldRequired} from "../../Form";
+import {fieldRequired} from "../Form";
 import {FormData} from "./types";
 import React from "react";
-import {Showcase} from "../../../schemas/base";
-import {generate_url} from "../../../utilite";
+import {Brand} from "../../schemas/base";
+import {generate_url} from "../../utilite";
 
 interface UseFormValidation {
   (
     formData: FormData,
     setFormData: React.Dispatch<React.SetStateAction<FormData>>,
     isAddMode: boolean,
-    showcase: Showcase[],
-    showcaseItem: Showcase | null,
+    brands: Brand[],
+    selectedBrand: Brand | null,
   ):
     [
       onNameFieldChange: (title: string) => void,
@@ -21,14 +21,14 @@ interface UseFormValidation {
       onDescUaFieldChange: (desc: string) => void,
       onUrlFieldChange: (url: string) => void,
       onActiveChange: (active: boolean) => void,
-      onFileChange: (files: File[]) => void,
+      onFileChange: (file: File | null) => void,
       checkForm: () => boolean
     ]
 }
 
 
-export const useFormValidation: UseFormValidation = (formData, setFormData, isAddMode, showcase, showcaseItem) => {
-  const isShowcase = (showcaseItem: Showcase | null): showcaseItem is Showcase => !isAddMode
+export const useFormValidation: UseFormValidation = (formData, setFormData, isAddMode, brands, selectedBrand) => {
+  const isBrand = (brand: Brand | null): brand is Brand => !isAddMode
   const onNameFieldChange = (name: string) => {
     setFormData(produce(prevFormData => {
       prevFormData.name.value = name
@@ -71,20 +71,19 @@ export const useFormValidation: UseFormValidation = (formData, setFormData, isAd
       prevFormData.active = active
     }))
   }
-  const onFileChange = (files: File[]) => {
+  const onFileChange = (file: File | null) => {
     setFormData(produce(prevFormData => {
-      prevFormData.files = files
+      prevFormData.file = file
     }))
   }
-
-  const showcaseWithoutSelf = isShowcase(showcaseItem)
-    ? showcase.filter(item => item.name != showcaseItem.name)
-    : showcase
-  const urlExist = (url: string) => showcaseWithoutSelf.find(item => item.url === url.trim())
+  const brandsWithoutSelf = isBrand(selectedBrand)
+    ? brands.filter(brand => brand.id !== selectedBrand.id)
+    : brands
+  const urlExist = (url: string) => brandsWithoutSelf.find(brand => brand.url === url.trim())
 
   const checkForm = () => {
-    if (fieldRequired(formData.name.value) || fieldRequired(formData.title.value)
-      || fieldRequired(formData.titleUa.value) || fieldRequired(formData.url.value)) {
+    if (fieldRequired(formData.name.value) || fieldRequired(formData.title.value) ||
+      fieldRequired(formData.titleUa.value) || fieldRequired(formData.url.value)) {
       setFormData(produce(prevFormData => {
         prevFormData.name.error = fieldRequired(formData.name.value)
         prevFormData.title.error = fieldRequired(formData.title.value)
