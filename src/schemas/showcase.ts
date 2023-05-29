@@ -15,3 +15,8 @@ export interface DelImgShowcase{
   dirName: string
   imgName: string
 }
+
+export interface BrandsNames{
+  id: number
+  name: string
+}

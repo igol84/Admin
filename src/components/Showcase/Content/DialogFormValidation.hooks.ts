@@ -15,6 +15,7 @@ interface UseFormValidation {
   ):
     [
       onNameFieldChange: (title: string) => void,
+      onBrandFieldChange: (brand: string) => void,
       onTitleFieldChange: (title: string) => void,
       onTitleUaFieldChange: (title: string) => void,
       onDescFieldChange: (desc: string) => void,
@@ -33,6 +34,11 @@ export const useFormValidation: UseFormValidation = (formData, setFormData, isAd
     setFormData(produce(prevFormData => {
       prevFormData.name.value = name
       prevFormData.name.error = fieldRequired(name)
+    }))
+  }
+  const onBrandFieldChange = (brand: string) => {
+    setFormData(produce(prevFormData => {
+      prevFormData.brand_id = brand !== '-1' ? Number(brand) : null
     }))
   }
   const onTitleFieldChange = (title: string) => {
@@ -103,7 +109,7 @@ export const useFormValidation: UseFormValidation = (formData, setFormData, isAd
 
 
   return [
-    onNameFieldChange, onTitleFieldChange, onTitleUaFieldChange, onDescFieldChange, onDescUaFieldChange,
+    onNameFieldChange, onBrandFieldChange, onTitleFieldChange, onTitleUaFieldChange, onDescFieldChange, onDescUaFieldChange,
     onUrlFieldChange, onActiveChange, onFileChange, checkForm
   ]
 }

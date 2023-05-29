@@ -3,7 +3,7 @@ import {secureApiCreate} from "../../ky";
 import {authSlice} from "../slices/authSlice";
 import {showcaseSlice} from "../slices/showcaseSlice";
 import {CreateShowcase, DelImgShowcase, UpdateShowcase} from "../../schemas/showcase";
-import {Item, Showcase, ShowcaseDirs, ShowcaseWithImages} from "../../schemas/base";
+import {Brand, Item, Showcase, ShowcaseDirs, ShowcaseWithImages} from "../../schemas/base";
 import _ from "lodash";
 import {generate_url} from "../../utilite";
 
@@ -16,6 +16,7 @@ export const fetchItems = (access_token: string) => {
       const items: Item[] = await secureApi.get(`item`).json()
       const showcase: Showcase[] = await secureApi.get('showcase').json()
       const dirs: ShowcaseDirs[] = await secureApi.get('showcase/dir').json()
+      const brands: Brand[] = await secureApi.get(`brand`).json()
       const showcaseWithImages: ShowcaseWithImages[] = showcase.map(item => {
         const dir = dirs.find(dir => dir.name === generate_url(item.name))
         const images = dir ? dir.images : []
@@ -30,7 +31,8 @@ export const fetchItems = (access_token: string) => {
 
       dispatch(showcaseSlice.actions.showcaseFetchingSuccess({
         showcase: showcaseWithImages,
-        productsNames: orderedProductNames
+        productsNames: orderedProductNames,
+        brandNames: brands.map(brand => ({id: brand.id, name: brand.name}))
       }))
     } catch (err) {
       dispatch(showcaseSlice.actions.showcaseFetchingError(err as Error))

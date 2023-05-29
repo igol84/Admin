@@ -22,8 +22,8 @@ export const useFormInitial: UseFormInitial = (selectedShowcaseItem, isAddMode, 
 
   const isShowcase = (showcaseItem: Showcase | null): showcaseItem is Showcase => !isAddMode
   const initialFormData: FormData = {
-    name: {value: '', error: ''}, title: {value: '', error: ''}, titleUa: {value: '', error: ''}, desc: '', descUa: '',
-    active: true, url: {value: '', error: ''},  files: undefined
+    name: {value: '', error: ''}, brand_id: null, title: {value: '', error: ''}, titleUa: {value: '', error: ''},
+    desc: '', descUa: '', active: true, url: {value: '', error: ''},  files: undefined
   }
 
   const [formData, setFormData] = useState<FormData>(initialFormData)
@@ -33,13 +33,14 @@ export const useFormInitial: UseFormInitial = (selectedShowcaseItem, isAddMode, 
   useLayoutEffect(() => {
     const changedFormData: FormData = !isShowcase(selectedShowcaseItem) ? initialFormData : {
       name: {value: selectedShowcaseItem.name, error: ''},
+      brand_id: selectedShowcaseItem.brand_id,
       title: {value: selectedShowcaseItem.title, error: ''},
       titleUa: {value: selectedShowcaseItem.title_ua, error: ''},
       desc: selectedShowcaseItem.desc,
       descUa: selectedShowcaseItem.desc_ua,
       url: {value: selectedShowcaseItem.url, error: ''},
       active: selectedShowcaseItem.active,
-      files: undefined
+      files: undefined,
     }
     setFormData(changedFormData)
   }, [selectedShowcaseItem])

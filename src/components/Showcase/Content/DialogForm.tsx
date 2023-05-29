@@ -1,11 +1,11 @@
 import React from 'react'
-import {Box, Button, DialogContent, IconButton, Switch} from "@mui/material"
+import {Box, Button, DialogContent, IconButton, MenuItem, Switch} from "@mui/material"
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogActions from "@mui/material/DialogActions";
 import CloseIcon from "@mui/icons-material/Close";
 import {useModalStyle} from "../style";
-import {SimpleAutocomplete, SimpleField} from "../../Form";
+import {SimpleAutocomplete, SimpleField, SimpleSelect} from "../../Form";
 import {useAppSelector} from "../../../hooks/redux";
 import {Showcase, ShowcaseWithImages} from "../../../schemas/base";
 import DeleteButton from "../../Form/DeleteButton";
@@ -24,7 +24,7 @@ interface DialogFormProps {
 }
 
 const DialogForm = ({open, onCloseDialog, selectedShowcaseItem}: DialogFormProps) => {
-  const {showcase, productsNames, isLoading} = useAppSelector(state => state.showcaseSlice)
+  const {showcase, productsNames, brandNames, isLoading} = useAppSelector(state => state.showcaseSlice)
   const showLoading = useIsLoadingDisplay(isLoading)
   const style = useModalStyle()
   const isAddMode = selectedShowcaseItem === null
@@ -32,8 +32,8 @@ const DialogForm = ({open, onCloseDialog, selectedShowcaseItem}: DialogFormProps
     productsNames)
 
   const [
-    onNameFieldChange, onTitleFieldChange, onTitleUaFieldChange, onDescFieldChange, onDescUaFieldChange,
-    onUrlFieldChange, onActiveChange, onFileChange, checkForm
+    onNameFieldChange, onBrandFieldChange, onTitleFieldChange, onTitleUaFieldChange, onDescFieldChange,
+    onDescUaFieldChange, onUrlFieldChange, onActiveChange, onFileChange, checkForm
   ] = useFormValidation(formData, setFormData, isAddMode, showcase, selectedShowcaseItem)
 
   const [submitAdd, submitEdit, deleteItem, deleteImage] = useFormSubmit()
@@ -67,6 +67,15 @@ const DialogForm = ({open, onCloseDialog, selectedShowcaseItem}: DialogFormProps
             setValue={onNameFieldChange} items={itemsNames} setItem={onNameFieldChange} error={formData.name.error}
             blurOnSelect focusText
           />
+
+          <SimpleSelect name='brand' label='brand' value={formData.brand_id ? formData.brand_id : '-1'}
+            setValue={onBrandFieldChange}>
+            <MenuItem value='-1'></MenuItem>
+            {brandNames.map((brand) => (
+              <MenuItem key={brand.id} value={brand.id}>{brand.name}</MenuItem>
+            ))}
+          </SimpleSelect>
+
           <Switch color='secondary' checked={formData.active}
                   onChange={(event) => onActiveChange(event.target.checked)}/>
           {!isAddMode &&

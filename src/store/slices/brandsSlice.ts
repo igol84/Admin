@@ -51,8 +51,7 @@ export const brandSlice = createSlice({
     updateBrand(state, {payload: {changedBrand, fileName}}: PayloadAction<ChangedItemPayload>) {
       state.isLoading = false
       state.brands = state.brands.map(brand => {
-        const brandWithImages: BrandWithImage = {...changedBrand, image: fileName}
-        return brand.id == changedBrand.id ? brandWithImages : brand
+        return brand.id == changedBrand.id ?  {...changedBrand, image: fileName ? fileName : brand.image} : brand
       })
       state.error = ''
     },

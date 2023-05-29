@@ -1,13 +1,14 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {Showcase, ShowcaseWithImages} from "../../schemas/base";
 import _ from "lodash";
-import {DelImgShowcase} from "../../schemas/showcase";
+import {BrandsNames, DelImgShowcase} from "../../schemas/showcase";
 import produce from "immer";
 
 
 interface ShowcaseState {
   showcase: ShowcaseWithImages[]
   productsNames: string[]
+  brandNames: BrandsNames[]
   isLoading: boolean
   error: string
 }
@@ -15,6 +16,7 @@ interface ShowcaseState {
 const initialState: ShowcaseState = {
   showcase: [],
   productsNames: [],
+  brandNames: [],
   isLoading: false,
   error: ''
 }
@@ -22,6 +24,7 @@ const initialState: ShowcaseState = {
 export interface ItemsPayload {
   showcase: ShowcaseWithImages[]
   productsNames: string[]
+  brandNames: BrandsNames[]
 }
 
 interface NewItemPayload {
@@ -43,6 +46,7 @@ export const showcaseSlice = createSlice({
     showcaseFetchingSuccess(state, action: PayloadAction<ItemsPayload>) {
       state.showcase = action.payload.showcase
       state.productsNames = action.payload.productsNames
+      state.brandNames = action.payload.brandNames
       state.isLoading = false
       state.error = ''
     },
