@@ -22,7 +22,9 @@
     "titleUa": "Title Ua",
     "desc": "Description",
     "descUa": "Description Ua",
-    "close": "Close"
+    "close": "Close",
+    "filters": "Filters",
+    "all": "All"
   },
   "report": {
     "title": "Report",

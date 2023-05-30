@@ -68,15 +68,13 @@ const DialogForm = ({open, onCloseDialog, selectedShowcaseItem}: DialogFormProps
             setValue={onNameFieldChange} items={itemsNames} setItem={onNameFieldChange} error={formData.name.error}
             blurOnSelect focusText
           />
-
           <SimpleSelect name='brand' label={d('brand')} value={formData.brand_id ? formData.brand_id : '-1'}
-            setValue={onBrandFieldChange}>
+                        setValue={onBrandFieldChange}>
             <MenuItem value='-1'></MenuItem>
             {brandNames.map((brand) => (
               <MenuItem key={brand.id} value={brand.id}>{brand.name}</MenuItem>
             ))}
           </SimpleSelect>
-
           <Switch color='secondary' checked={formData.active}
                   onChange={(event) => onActiveChange(event.target.checked)}/>
           {!isAddMode &&
