@@ -1,6 +1,7 @@
 import React from 'react'
 import {Fab} from "@mui/material"
 import AddIcon from '@mui/icons-material/Add';
+import {useDictionaryTranslate} from "../../hooks/pages";
 
 
 interface AddNewProps {
@@ -8,8 +9,9 @@ interface AddNewProps {
 }
 
 const AddNew = ({onOpenDialog}: AddNewProps) => {
+  const d = useDictionaryTranslate('brand')
   return (
-    <Fab color="secondary" aria-label="add" onClick={onOpenDialog}>
+    <Fab color="secondary" aria-label={d('add')} onClick={onOpenDialog}>
       <AddIcon/>
     </Fab>
   )

@@ -13,7 +13,7 @@ import {useFormValidation} from "./DialogFormValidation.hooks";
 import {useFormSubmit} from "./DialogFormSubmit.hooks";
 import {useFormInitial} from "./DialogFormInitial.hooks";
 import {MuiFileInput} from "mui-file-input";
-import {useIsLoadingDisplay} from "../../../hooks/pages";
+import {useDictionaryTranslate, useIsLoadingDisplay} from "../../../hooks/pages";
 import LoadingCircular from "../../LoadingCircular";
 import DialogFormImages from "./DialogFormImages";
 
@@ -25,6 +25,7 @@ interface DialogFormProps {
 
 const DialogForm = ({open, onCloseDialog, selectedShowcaseItem}: DialogFormProps) => {
   const {showcase, productsNames, brandNames, isLoading} = useAppSelector(state => state.showcaseSlice)
+  const d = useDictionaryTranslate('showcase')
   const showLoading = useIsLoadingDisplay(isLoading)
   const style = useModalStyle()
   const isAddMode = selectedShowcaseItem === null
@@ -56,19 +57,19 @@ const DialogForm = ({open, onCloseDialog, selectedShowcaseItem}: DialogFormProps
 
   return (
     <Dialog open={open} onClose={onCloseDialog} sx={style} className='myDialog'>
-      <DialogTitle className='title'>{isAddMode ? 'Add' : 'Edit'} Item</DialogTitle>
+      <DialogTitle className='title'>{isAddMode ? d('add') : d('edit')} {d('item')}</DialogTitle>
       <IconButton aria-label="close" onClick={onCloseDialog} className='dialog-x'>
         <CloseIcon/>
       </IconButton>
       <DialogContent className='form'>
         <Box className='flexFields'>
           <SimpleAutocomplete
-            disabled={!isAddMode} freeSolo={false} name='color' label={'name'} value={formData.name.value}
+            disabled={!isAddMode} freeSolo={false} name='color' label={d('name')} value={formData.name.value}
             setValue={onNameFieldChange} items={itemsNames} setItem={onNameFieldChange} error={formData.name.error}
             blurOnSelect focusText
           />
 
-          <SimpleSelect name='brand' label='brand' value={formData.brand_id ? formData.brand_id : '-1'}
+          <SimpleSelect name='brand' label={d('brand')} value={formData.brand_id ? formData.brand_id : '-1'}
             setValue={onBrandFieldChange}>
             <MenuItem value='-1'></MenuItem>
             {brandNames.map((brand) => (
@@ -83,15 +84,15 @@ const DialogForm = ({open, onCloseDialog, selectedShowcaseItem}: DialogFormProps
           }
         </Box>
         <Box className='flexFields'>
-          <SimpleField name='title' label='title' value={formData.title.value} error={formData.title.error}
+          <SimpleField name='title' label={d('title')} value={formData.title.value} error={formData.title.error}
                        setValue={onTitleFieldChange}/>
-          <SimpleField name='titleUa' label='title UA' value={formData.titleUa.value} error={formData.titleUa.error}
+          <SimpleField name='titleUa' label={d('titleUa')} value={formData.titleUa.value} error={formData.titleUa.error}
                        setValue={onTitleUaFieldChange}/>
         </Box>
         <Box sx={{display: 'flex', alignItems: 'center', gap: '8px'}}>
-          <SimpleField name='desc' label='desc' value={formData.desc} setValue={onDescFieldChange} multiline={true}
+          <SimpleField name='desc' label={d('desc')} value={formData.desc} setValue={onDescFieldChange} multiline={true}
                        maxRows={4}/>
-          <SimpleField name='descUa' label='desc UA' value={formData.descUa} setValue={onDescUaFieldChange}
+          <SimpleField name='descUa' label={d('descUa')} value={formData.descUa} setValue={onDescUaFieldChange}
                        multiline={true} maxRows={4}/>
         </Box>
         <Box className='flexFields'>
@@ -106,9 +107,9 @@ const DialogForm = ({open, onCloseDialog, selectedShowcaseItem}: DialogFormProps
 
       </DialogContent>
       <DialogActions>
-        <Button variant='contained' onClick={onCloseDialog}>Close</Button>
+        <Button variant='contained' onClick={onCloseDialog}>{d('close')}</Button>
         <Button variant='contained' color='secondary' onClick={submitForm} disabled={isLoading}>
-          {isAddMode ? 'Add' : 'Edit'}
+          {isAddMode ? d('add') : d('edit')}
         </Button>
       </DialogActions>
       <LoadingCircular show={showLoading}/>

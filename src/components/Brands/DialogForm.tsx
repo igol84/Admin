@@ -14,7 +14,7 @@ import {makeId} from "../../utilite";
 import {useFormValidation} from "./DialogFormValidation.hooks";
 import {useAppSelector} from "../../hooks/redux";
 import LoadingCircular from "../LoadingCircular";
-import {useIsLoadingDisplay} from "../../hooks/pages";
+import {useDictionaryTranslate, useIsLoadingDisplay} from "../../hooks/pages";
 import {useFormSubmit} from "./DialogFormSubmit.hooks";
 
 interface DialogFormProps {
@@ -25,6 +25,7 @@ interface DialogFormProps {
 
 const DialogForm = ({open, onCloseDialog, selectedBrand}: DialogFormProps) => {
   const {isLoading, brands} = useAppSelector(state => state.brandSlice)
+  const d = useDictionaryTranslate('brand')
   const style = useModalStyle()
   const showLoading = useIsLoadingDisplay(isLoading)
   const isAddMode = selectedBrand === null
@@ -53,7 +54,9 @@ const DialogForm = ({open, onCloseDialog, selectedBrand}: DialogFormProps) => {
   const hostPictures = import.meta.env.VITE_BRANDS_URL
   return (
     <Dialog open={open} onClose={onCloseDialog} sx={style} className='myDialog'>
-      <DialogTitle className='title'>{isAddMode ? 'Add Item' : `Edit Item ${selectedBrand.id}`}</DialogTitle>
+      <DialogTitle className='title'>
+        {isAddMode ? d('add') : d('edit')} {d('brand')} id:{!isAddMode && selectedBrand.id}
+      </DialogTitle>
 
       <IconButton aria-label="close" onClick={onCloseDialog} className='dialog-x'>
         <CloseIcon/>
@@ -63,7 +66,7 @@ const DialogForm = ({open, onCloseDialog, selectedBrand}: DialogFormProps) => {
           {(isBrand(selectedBrand) && selectedBrand.image) &&
             <img width='60px' src={`${hostPictures}/${selectedBrand.image}?${makeId(5)}`} alt={selectedBrand.title}/>
           }
-          <SimpleField name='name' label='name' value={formData.name.value} error={formData.name.error}
+          <SimpleField name='name' label={d('name')} value={formData.name.value} error={formData.name.error}
                        setValue={onNameFieldChange}/>
           <Switch color='secondary' checked={formData.active}
                   onChange={(event) => onActiveChange(event.target.checked)}/>
@@ -72,15 +75,15 @@ const DialogForm = ({open, onCloseDialog, selectedBrand}: DialogFormProps) => {
           }
         </Box>
         <Box className='flexFields'>
-          <SimpleField name='title' label='title' value={formData.title.value} error={formData.title.error}
+          <SimpleField name='title' label={d('title')} value={formData.title.value} error={formData.title.error}
                        setValue={onTitleFieldChange}/>
-          <SimpleField name='titleUa' label='title UA' value={formData.titleUa.value} error={formData.titleUa.error}
+          <SimpleField name='titleUa' label={d('titleUa')} value={formData.titleUa.value} error={formData.titleUa.error}
                        setValue={onTitleUaFieldChange}/>
         </Box>
         <Box sx={{display: 'flex', alignItems: 'center', gap: '8px'}}>
-          <SimpleField name='desc' label='desc' value={formData.desc} setValue={onDescFieldChange} multiline={true}
+          <SimpleField name='desc' label={d('desc')} value={formData.desc} setValue={onDescFieldChange} multiline={true}
                        maxRows={4}/>
-          <SimpleField name='descUa' label='desc UA' value={formData.descUa} setValue={onDescUaFieldChange}
+          <SimpleField name='descUa' label={d('descUa')} value={formData.descUa} setValue={onDescUaFieldChange}
                        multiline={true} maxRows={4}/>
         </Box>
         <Box className='flexFields'>
@@ -93,9 +96,9 @@ const DialogForm = ({open, onCloseDialog, selectedBrand}: DialogFormProps) => {
 
       </DialogContent>
       <DialogActions>
-        <Button variant='contained' onClick={onCloseDialog}>Close</Button>
+        <Button variant='contained' onClick={onCloseDialog}>{d('close')}</Button>
         <Button variant='contained' color='secondary' onClick={submitForm} disabled={isLoading}>
-          {isAddMode ? 'Add' : 'Edit'}
+          {isAddMode ? d('add') : d('edit')}
         </Button>
       </DialogActions>
       <LoadingCircular show={showLoading}/>

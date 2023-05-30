@@ -1,4 +1,29 @@
 {
+  "brand": {
+    "brands": "brands",
+    "add": "Add",
+    "edit": "Edit",
+    "brand": "brand",
+    "name": "name",
+    "title": "title",
+    "titleUa": "title Ua",
+    "desc": "desc",
+    "descUa": "desc Ua",
+    "close": "Close"
+  },
+  "showcase": {
+    "products": "Products",
+    "add": "Add",
+    "edit": "Edit",
+    "item": "item",
+    "name": "Name",
+    "brand": "Brand",
+    "title": "Title",
+    "titleUa": "Title Ua",
+    "desc": "Description",
+    "descUa": "Description Ua",
+    "close": "Close"
+  },
   "report": {
     "title": "Report",
     "table": "Table",
@@ -108,7 +133,10 @@
     "itemsEditor": "Item editor",
     "productsEditor": "Products Editor",
     "newSales": "New Sales",
-    "report": "Report"
+    "report": "Report",
+    "site": "Site",
+    "siteProducts": "Products",
+    "brands": "Brands"
   },
   "auth": {
     "title": "Authorization",

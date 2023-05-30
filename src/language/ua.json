@@ -1,4 +1,30 @@
 {
+  "brand": {
+    "brands": "Бренди",
+    "add": "Додати",
+    "edit": "Змінити",
+    "brand": "Бренд",
+    "name": "Назва",
+    "title": "Заголовок",
+    "titleUa": "Заголовок Ua",
+    "desc": "Опис",
+    "descUa": "Опис Ua",
+    "close": "Закрити"
+  },
+  "showcase": {
+    "products": "Продукти",
+    "add": "Додати",
+    "edit": "Змінити",
+    "item": "товар",
+    "name": "Назва",
+    "brand": "Бренд",
+    "title": "Заголовок",
+    "titleUa": "Заголовок Ua",
+    "desc": "Опис",
+    "descUa": "Опис Ua",
+    "close": "Закрити"
+
+  },
   "report": {
     "title": "Звіт",
     "table": "Table",
@@ -108,7 +134,10 @@
     "itemsEditor": "Склад",
     "productsEditor": "Каталог",
     "newSales": "Новий продаж",
-    "report": "Звіт"
+    "report": "Звіт",
+    "site": "Сайт",
+    "siteProducts": "Продукти",
+    "brands": "Бренди"
   },
   "auth": {
     "title": "Авторизація",

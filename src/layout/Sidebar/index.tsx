@@ -133,16 +133,16 @@ const SidebarMenu = ({width, toggleOpenBar}: SidebarMenuProps) => {
                   color={colors.grey[200]}
                   sx={{m: '10px 0 5px 20px'}}
                 >
-                  Site
+                  {dict('site')}
                 </Typography>
                 <Item
-                  title='products'
+                  title={dict('siteProducts')}
                   to='/site-products'
                   icon={<ImageOutlinedIcon/>}
                   location={location.pathname}
                 />
                 <Item
-                  title='brands'
+                  title={dict('brands')}
                   to='/brands'
                   icon={<AppleIcon/>}
                   location={location.pathname}
