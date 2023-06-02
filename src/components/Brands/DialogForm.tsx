@@ -47,7 +47,7 @@ const DialogForm = ({open, onCloseDialog, selectedBrand}: DialogFormProps) => {
     }
   }
   const onClickDelete = async () => {
-    await deleteBrand(formData.id,)
+    await deleteBrand(formData.id)
     onCloseDialog()
     resetFormData()
   }

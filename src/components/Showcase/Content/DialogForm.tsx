@@ -5,7 +5,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogActions from "@mui/material/DialogActions";
 import CloseIcon from "@mui/icons-material/Close";
 import {useModalStyle} from "../style";
-import {SimpleAutocomplete, SimpleField, SimpleSelect} from "../../Form";
+import {SimpleField, SimpleSelect} from "../../Form";
 import {useAppSelector} from "../../../hooks/redux";
 import {Showcase, ShowcaseWithImages} from "../../../schemas/base";
 import DeleteButton from "../../Form/DeleteButton";
@@ -16,6 +16,8 @@ import {MuiFileInput} from "mui-file-input";
 import {useDictionaryTranslate, useIsLoadingDisplay} from "../../../hooks/pages";
 import LoadingCircular from "../../LoadingCircular";
 import DialogFormImages from "./DialogFormImages";
+import DialogFormColors from "./DialogFormColors";
+import DialogFormName from "./DialogFormName";
 
 interface DialogFormProps {
   open: boolean
@@ -24,7 +26,7 @@ interface DialogFormProps {
 }
 
 const DialogForm = ({open, onCloseDialog, selectedShowcaseItem}: DialogFormProps) => {
-  const {showcase, productsNames, brandNames, isLoading} = useAppSelector(state => state.showcaseSlice)
+  const {showcase, productsNames, brandNames, colors, isLoading} = useAppSelector(state => state.showcaseSlice)
   const d = useDictionaryTranslate('showcase')
   const showLoading = useIsLoadingDisplay(isLoading)
   const style = useModalStyle()
@@ -33,8 +35,8 @@ const DialogForm = ({open, onCloseDialog, selectedShowcaseItem}: DialogFormProps
     productsNames)
 
   const [
-    onNameFieldChange, onBrandFieldChange, onTitleFieldChange, onTitleUaFieldChange, onDescFieldChange,
-    onDescUaFieldChange, onUrlFieldChange, onActiveChange, onFileChange, checkForm
+    onNameFieldSelect, onColorFieldSelect, onBrandFieldChange, onTitleFieldChange, onTitleUaFieldChange,
+    onDescFieldChange, onDescUaFieldChange, onUrlFieldChange, onActiveChange, onFileChange, checkForm
   ] = useFormValidation(formData, setFormData, isAddMode, showcase, selectedShowcaseItem)
 
   const [submitAdd, submitEdit, deleteItem, deleteImage] = useFormSubmit()
@@ -63,11 +65,16 @@ const DialogForm = ({open, onCloseDialog, selectedShowcaseItem}: DialogFormProps
       </IconButton>
       <DialogContent className='form'>
         <Box className='flexFields'>
-          <SimpleAutocomplete
-            disabled={!isAddMode} freeSolo={false} name='color' label={d('name')} value={formData.name.value}
-            setValue={onNameFieldChange} items={itemsNames} setItem={onNameFieldChange} error={formData.name.error}
-            blurOnSelect focusText
+          <DialogFormName
+            names={itemsNames} selectedName={formData.name.value} onChangeName={onNameFieldSelect}
+            error={!!formData.name.error} disabled={!isAddMode}
           />
+
+          {(colors.length > 0) &&
+            <DialogFormColors colors={colors} selectedColor={formData.color} onChangeColor={onColorFieldSelect}
+                              disabled={!isAddMode}/>
+          }
+
           <SimpleSelect name='brand' label={d('brand')} value={formData.brand_id ? formData.brand_id : '-1'}
                         setValue={onBrandFieldChange}>
             <MenuItem value='-1'></MenuItem>

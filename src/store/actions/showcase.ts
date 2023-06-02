@@ -22,10 +22,7 @@ export const fetchItems = (access_token: string) => {
         const images = dir ? dir.images : []
         return {...item, images: images.sort()}
       })
-      const filteredItems = items.filter(item => {
-        return !(!!showcase.find(showcaseItem => showcaseItem.name === item.product.name)) && item.qty > 0
-      })
-      const productNames = filteredItems.map(item => item.product.name)
+      const productNames = items.map(item => item.product.name)
       const uniqProductNames = _.uniq(productNames)
       const orderedProductNames = _.orderBy(uniqProductNames, value => value.toLowerCase())
 
@@ -126,6 +123,23 @@ export const delImg = (access_token: string, delImgShowcase: DelImgShowcase) => 
       dispatch(showcaseSlice.actions.showcaseFetching())
       await secureApi.delete(`showcase/img`, {json: delImgShowcase})
       dispatch(showcaseSlice.actions.delImg(delImgShowcase))
+    } catch (err) {
+      const errors = err as Error;
+      const errorText = errors.message
+      if (errorText) {
+        dispatch(authSlice.actions.loginFail({errorText}))
+      }
+    }
+  }
+}
+
+export const fetchColors = (access_token: string, name: string) => {
+  const secureApi = secureApiCreate(access_token)
+  return async (dispatch: AppDispatch) => {
+    try {
+      dispatch(showcaseSlice.actions.showcaseFetching())
+      const colors: string[] = name ? await secureApi.get(`prod/colors_by_prod_name/${name}`).json() : []
+      dispatch(showcaseSlice.actions.getColors(colors))
     } catch (err) {
       const errors = err as Error;
       const errorText = errors.message

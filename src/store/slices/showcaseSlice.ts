@@ -8,6 +8,7 @@ import produce from "immer";
 interface ShowcaseState {
   showcase: ShowcaseWithImages[]
   productsNames: string[]
+  colors: string[]
   brandNames: BrandsNames[]
   isLoading: boolean
   error: string
@@ -16,6 +17,7 @@ interface ShowcaseState {
 const initialState: ShowcaseState = {
   showcase: [],
   productsNames: [],
+  colors: [],
   brandNames: [],
   isLoading: false,
   error: ''
@@ -89,6 +91,11 @@ export const showcaseSlice = createSlice({
             showcaseItem.images = showcaseItem.images.filter(image => image !== imgName)
         })
       })
+      state.error = ''
+    },
+    getColors(state, {payload: colors}: PayloadAction<string[]>) {
+      state.isLoading = false
+      state.colors = colors
       state.error = ''
     }
 

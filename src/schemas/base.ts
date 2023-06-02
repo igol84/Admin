@@ -66,6 +66,7 @@ export interface SaleLineItem {
 
 export interface Showcase {
   name: string
+  color: string
   brand_id: number | null
   title: string
   title_ua: string

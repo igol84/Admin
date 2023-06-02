@@ -4,6 +4,7 @@ import {CreateShowcase} from "../../../schemas/showcase";
 
 export interface FormData{
   name: Field<string>
+  color: string
   brand_id: number | null
   title: Field<string>
   titleUa: Field<string>
@@ -18,6 +19,7 @@ export const convertFromFormDataToShowcase = (formData: FormData) : CreateShowca
   return {
     showcaseItem: {
       name: formData.name.value,
+      color: formData.color,
       brand_id: formData.brand_id,
       title: formData.title.value,
       title_ua: formData.titleUa.value,

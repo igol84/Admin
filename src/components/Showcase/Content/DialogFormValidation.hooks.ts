@@ -14,7 +14,8 @@ interface UseFormValidation {
     showcaseItem: Showcase | null,
   ):
     [
-      onNameFieldChange: (title: string) => void,
+      onNameFieldSelect: (title: string) => void,
+      onColorFieldSelect: (color: string) => void,
       onBrandFieldChange: (brand: string) => void,
       onTitleFieldChange: (title: string) => void,
       onTitleUaFieldChange: (title: string) => void,
@@ -30,10 +31,16 @@ interface UseFormValidation {
 
 export const useFormValidation: UseFormValidation = (formData, setFormData, isAddMode, showcase, showcaseItem) => {
   const isShowcase = (showcaseItem: Showcase | null): showcaseItem is Showcase => !isAddMode
-  const onNameFieldChange = (name: string) => {
+  const onNameFieldSelect = (name: string) => {
     setFormData(produce(prevFormData => {
       prevFormData.name.value = name
+      prevFormData.color = ''
       prevFormData.name.error = fieldRequired(name)
+    }))
+  }
+  const onColorFieldSelect = (color: string) => {
+    setFormData(produce(prevFormData => {
+      prevFormData.color = color
     }))
   }
   const onBrandFieldChange = (brand: string) => {
@@ -109,7 +116,7 @@ export const useFormValidation: UseFormValidation = (formData, setFormData, isAd
 
 
   return [
-    onNameFieldChange, onBrandFieldChange, onTitleFieldChange, onTitleUaFieldChange, onDescFieldChange, onDescUaFieldChange,
-    onUrlFieldChange, onActiveChange, onFileChange, checkForm
+    onNameFieldSelect, onColorFieldSelect, onBrandFieldChange, onTitleFieldChange, onTitleUaFieldChange,
+    onDescFieldChange, onDescUaFieldChange, onUrlFieldChange, onActiveChange, onFileChange, checkForm
   ]
 }
