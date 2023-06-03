@@ -4,17 +4,14 @@ import {tokens} from "../../theme";
 export const useStyle = () => {
   // const theme = useTheme()
   // const colors = tokens(theme.palette.mode)
-  return {
-
-
-  }
+  return {}
 }
 
 export const useModalStyle = () => {
   const theme = useTheme()
   const colors = tokens(theme.palette.mode)
   return {
-    '.MuiDialog-paper':{
+    '.MuiDialog-paper': {
       maxWidth: '900px',
       width: '900px',
     },

@@ -16,6 +16,16 @@ export interface DelImgShowcase{
   imgName: string
 }
 
+export interface NameAndColors {
+  name: string
+  shoes: null | Shoes
+}
+
+export interface Shoes {
+  colors: string[]
+}
+
+
 export interface BrandsNames{
   id: number
   name: string

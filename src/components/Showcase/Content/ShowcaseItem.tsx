@@ -1,12 +1,12 @@
 import React from 'react'
 import {IconButton, ImageListItem, ImageListItemBar} from "@mui/material";
-import {ShowcaseWithImages} from "../../../schemas/base";
+import {ShowcaseIDs, ShowcaseWithImages} from "../../../schemas/base";
 import {generate_url, makeId} from "../../../utilite";
 import EditIcon from '@mui/icons-material/Edit';
 
 interface ShowcaseItemProps {
   showcaseItem: ShowcaseWithImages
-  onClickShowcaseName: (showcaseName: string) => void
+  onClickShowcaseName: (showcaseIDs: ShowcaseIDs) => void
 }
 
 const ShowcaseItem = ({showcaseItem, onClickShowcaseName}: ShowcaseItemProps) => {
@@ -19,7 +19,10 @@ const ShowcaseItem = ({showcaseItem, onClickShowcaseName}: ShowcaseItemProps) =>
 
   const imgUrl = showcaseItem.images.includes('02.jpg') ? imageUrlBig : imageUrlDef
   const imgUrlSmall = showcaseItem.images.includes('01.jpg') ? imageUrlSmall : imageUrlDef
-  const onClick = () => onClickShowcaseName(showcaseItem.name)
+  const onClick = () => {
+    const showcaseIDs: ShowcaseIDs = {name: showcaseItem.name, color: showcaseItem.color}
+    onClickShowcaseName(showcaseIDs)
+  }
   return (
     <ImageListItem>
       <img

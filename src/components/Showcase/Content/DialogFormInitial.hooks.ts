@@ -1,45 +1,41 @@
 import {FormData} from "./types";
 import React, {useLayoutEffect, useState} from "react";
 import {Showcase} from "../../../schemas/base";
-import _ from "lodash";
-import {useFetchAccess} from "../../../hooks/pages";
-import {fetchColors} from "../../../store/actions/showcase";
+import {NameAndColors} from "../../../schemas/showcase";
+
 
 
 interface UseFormInitial {
   (
+    showcase: Showcase[],
+    namesAndColors: NameAndColors[],
     selectedShowcaseItem: Showcase | null,
-    isAddMode: boolean,
-    productsNames: string[]
   ):
     [
       formData: FormData,
       setFormData: React.Dispatch<React.SetStateAction<FormData>>,
       resetFormData: () => void,
-      itemsNames: string[]
+      itemsNames: string[],
+      itemsColors: string[]
     ]
 }
 
-export const useFormInitial: UseFormInitial = (selectedShowcaseItem, isAddMode, productsNames) => {
-
+export const useFormInitial: UseFormInitial = (showcase, namesAndColors, selectedShowcaseItem) => {
+  const isAddMode = selectedShowcaseItem === null
   const isShowcase = (showcaseItem: Showcase | null): showcaseItem is Showcase => !isAddMode
   const initialFormData: FormData = {
-    name: {value: '', error: ''}, color: '', brand_id: null, title: {value: '', error: ''}, titleUa: {value: '', error: ''},
-    desc: '', descUa: '', active: true, url: {value: '', error: ''},  files: undefined
+    name: {value: '', error: ''}, color: {value: '', error: ''}, brand_id: null, title: {value: '', error: ''},
+    titleUa: {value: '', error: ''}, desc: '', descUa: '', active: true, url: {value: '', error: ''}, files: undefined
   }
 
   const [formData, setFormData] = useState<FormData>(initialFormData)
   const resetFormData = () => {
     setFormData(initialFormData)
   }
-  const fetchColorsAccess = useFetchAccess(fetchColors)
-  useLayoutEffect(() => {
-    fetchColorsAccess(formData.name.value)
-  }, [formData.name.value])
   useLayoutEffect(() => {
     const changedFormData: FormData = !isShowcase(selectedShowcaseItem) ? initialFormData : {
       name: {value: selectedShowcaseItem.name, error: ''},
-      color: selectedShowcaseItem.color,
+      color: {value: selectedShowcaseItem.color, error: ''},
       brand_id: selectedShowcaseItem.brand_id,
       title: {value: selectedShowcaseItem.title, error: ''},
       titleUa: {value: selectedShowcaseItem.title_ua, error: ''},
@@ -51,8 +47,39 @@ export const useFormInitial: UseFormInitial = (selectedShowcaseItem, isAddMode, 
     }
     setFormData(changedFormData)
   }, [selectedShowcaseItem])
-  const itemsNames = isShowcase(selectedShowcaseItem)
-    ? ["", selectedShowcaseItem.name, ...productsNames]
-    : _.orderBy(_.uniq([formData.name.value, ...productsNames]), value => value.toLowerCase())
-  return [formData, setFormData, resetFormData, itemsNames]
+
+  const itemsColors: string[] = []
+  const itemsNames: string[] = ['']
+  if (isAddMode) {
+    namesAndColors.forEach(nameAndColors => {
+      if (nameAndColors.shoes) {
+        let colors = [...nameAndColors.shoes.colors]
+        showcase.forEach(item => {
+          if (item.name === nameAndColors.name && colors.includes(item.color)) {
+            colors = colors.filter(color => color !== item.color)
+          }
+        })
+        if (colors.length > 0) {
+          itemsNames.push(nameAndColors.name)
+          if (formData.name.value === nameAndColors.name) {
+            itemsColors.unshift(...colors)
+
+          }
+        }
+      } else {
+        if (!showcase.find(item => item.name === nameAndColors.name)) {
+          itemsNames.push(nameAndColors.name)
+        }
+      }
+    })
+  } else {
+    const foundNameAndColors = namesAndColors.find(nameAndColors => nameAndColors.name === selectedShowcaseItem.name)
+    if (foundNameAndColors && foundNameAndColors.shoes) {
+      itemsColors.unshift(...foundNameAndColors.shoes.colors)
+    }
+    itemsNames.push(selectedShowcaseItem.name)
+    itemsColors.push(selectedShowcaseItem.color)
+
+  }
+  return [formData, setFormData, resetFormData, itemsNames, itemsColors]
 }

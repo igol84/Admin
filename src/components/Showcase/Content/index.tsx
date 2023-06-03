@@ -7,6 +7,7 @@ import LoadingCircular from "../../LoadingCircular";
 import DialogForm from "./DialogForm";
 import ShowcaseItem from "./ShowcaseItem";
 import {ShowcaseFilters} from "../index";
+import {ShowcaseIDs} from "../../../schemas/base";
 
 interface ContentProps {
   showcaseFilters: ShowcaseFilters
@@ -22,7 +23,7 @@ const Content = ({showcaseFilters}: ContentProps) => {
     : filteredByBrandShowcase
   const showLoading = useIsLoadingDisplay(isLoading)
   const [open, setOpen] = useState(false)
-  const [selectedShowcaseName, setSelectedShowcaseName] = useState<string | null>(null)
+  const [selectedShowcaseName, setSelectedShowcaseName] = useState<ShowcaseIDs | null>(null)
   const onCloseDialog = () => {
     setOpen(false)
     setSelectedShowcaseName(null)
@@ -31,18 +32,21 @@ const Content = ({showcaseFilters}: ContentProps) => {
     setOpen(true)
     setSelectedShowcaseName(null)
   }
-  const onClickShowcase = (showcaseName: string) => {
+  const onClickShowcase = (showcaseIDs: ShowcaseIDs) => {
     setOpen(true)
-    setSelectedShowcaseName(showcaseName)
+    setSelectedShowcaseName(showcaseIDs)
   }
-  const selectedShowcase = filteredByNameShowcase.find(item => item.name === selectedShowcaseName)
+  const selectedShowcase = filteredByNameShowcase.find(item =>
+    item.name === selectedShowcaseName?.name && item.color === selectedShowcaseName?.color
+  )
   return (
     <Box>
       <AddNew onOpenDialog={onClickAddShowcase}/>
       <ImageList cols={6} gap={8}>
-        {filteredByNameShowcase.map((showcaseItem) => (
-          <ShowcaseItem key={showcaseItem.name} showcaseItem={showcaseItem} onClickShowcaseName={onClickShowcase}/>
-        ))}
+        {filteredByNameShowcase.map((showcaseItem) => {
+          const key=`${showcaseItem.name}-${showcaseItem.color}`
+          return <ShowcaseItem key={key} showcaseItem={showcaseItem} onClickShowcaseName={onClickShowcase}/>
+        })}
       </ImageList>
 
       <DialogForm open={open} onCloseDialog={onCloseDialog}

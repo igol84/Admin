@@ -34,13 +34,14 @@ export const useFormValidation: UseFormValidation = (formData, setFormData, isAd
   const onNameFieldSelect = (name: string) => {
     setFormData(produce(prevFormData => {
       prevFormData.name.value = name
-      prevFormData.color = ''
+      prevFormData.color.value = ''
       prevFormData.name.error = fieldRequired(name)
     }))
   }
   const onColorFieldSelect = (color: string) => {
     setFormData(produce(prevFormData => {
-      prevFormData.color = color
+      prevFormData.color.value = color
+      prevFormData.color.error = fieldRequired(color)
     }))
   }
   const onBrandFieldChange = (brand: string) => {
@@ -96,10 +97,11 @@ export const useFormValidation: UseFormValidation = (formData, setFormData, isAd
   const urlExist = (url: string) => showcaseWithoutSelf.find(item => item.url === url.trim())
 
   const checkForm = () => {
-    if (fieldRequired(formData.name.value) || fieldRequired(formData.title.value)
+    if (fieldRequired(formData.name.value) || fieldRequired(formData.color.value) || fieldRequired(formData.title.value)
       || fieldRequired(formData.titleUa.value) || fieldRequired(formData.url.value)) {
       setFormData(produce(prevFormData => {
         prevFormData.name.error = fieldRequired(formData.name.value)
+        prevFormData.color.error = fieldRequired(formData.color.value)
         prevFormData.title.error = fieldRequired(formData.title.value)
         prevFormData.titleUa.error = fieldRequired(formData.titleUa.value)
         prevFormData.url.error = fieldRequired(formData.url.value)

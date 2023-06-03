@@ -5,6 +5,7 @@ import {useDictionaryTranslate, useIsLoadingDisplay} from "../../hooks/pages";
 import LoadingCircular from "../LoadingCircular";
 import {SimpleAutocomplete, SimpleSelect} from "../Form";
 import {ShowcaseFilters} from "./index";
+import _ from "lodash";
 
 interface FiltersProps {
   showcaseFilters: ShowcaseFilters
@@ -17,7 +18,7 @@ const Filters = ({showcaseFilters, setShowcaseFilters}: FiltersProps) => {
   const filteredShowcase = showcaseFilters.brandId !== null
     ? showcase.filter(item => item.brand_id === showcaseFilters.brandId)
     : showcase
-  let filteredNames = filteredShowcase.map(item => item.name)
+  let filteredNames = _.uniq(filteredShowcase.map(item => item.name)).sort()
   const showLoading = useIsLoadingDisplay(isLoading)
   const d = useDictionaryTranslate('showcase')
   const brandValue = showcaseFilters.brandId ? showcaseFilters.brandId.toString() : '-1'

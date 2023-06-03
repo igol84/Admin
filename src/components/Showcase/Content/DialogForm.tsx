@@ -19,6 +19,7 @@ import DialogFormImages from "./DialogFormImages";
 import DialogFormColors from "./DialogFormColors";
 import DialogFormName from "./DialogFormName";
 
+
 interface DialogFormProps {
   open: boolean
   onCloseDialog: () => void
@@ -26,20 +27,20 @@ interface DialogFormProps {
 }
 
 const DialogForm = ({open, onCloseDialog, selectedShowcaseItem}: DialogFormProps) => {
-  const {showcase, productsNames, brandNames, colors, isLoading} = useAppSelector(state => state.showcaseSlice)
+  const {showcase, namesAndColors, brandNames, isLoading} = useAppSelector(state => state.showcaseSlice)
   const d = useDictionaryTranslate('showcase')
   const showLoading = useIsLoadingDisplay(isLoading)
   const style = useModalStyle()
   const isAddMode = selectedShowcaseItem === null
-  const [formData, setFormData, resetFormData, itemsNames] = useFormInitial(selectedShowcaseItem, isAddMode,
-    productsNames)
-
+  const [
+    formData, setFormData, resetFormData, itemsNames, itemsColors
+  ] = useFormInitial(showcase, namesAndColors, selectedShowcaseItem)
   const [
     onNameFieldSelect, onColorFieldSelect, onBrandFieldChange, onTitleFieldChange, onTitleUaFieldChange,
     onDescFieldChange, onDescUaFieldChange, onUrlFieldChange, onActiveChange, onFileChange, checkForm
   ] = useFormValidation(formData, setFormData, isAddMode, showcase, selectedShowcaseItem)
 
-  const [submitAdd, submitEdit, deleteItem, deleteImage] = useFormSubmit()
+  const [submitAdd, submitEdit, deleteItem, deleteImage] = useFormSubmit(resetFormData)
   const isShowcase = (showcaseItem: Showcase | null): showcaseItem is Showcase => !isAddMode
   const submitForm = async () => {
     if (checkForm()) {
@@ -52,15 +53,18 @@ const DialogForm = ({open, onCloseDialog, selectedShowcaseItem}: DialogFormProps
     }
   }
   const onClickDelete = async () => {
-    await deleteItem(formData.name.value)
+    await deleteItem(formData.name.value, formData.color.value)
     onCloseDialog()
     resetFormData()
   }
-
+  const onClose = () => {
+    onCloseDialog()
+    resetFormData()
+  }
   return (
-    <Dialog open={open} onClose={onCloseDialog} sx={style} className='myDialog'>
+    <Dialog open={open} onClose={onClose} sx={style} className='myDialog'>
       <DialogTitle className='title'>{isAddMode ? d('add') : d('edit')} {d('item')}</DialogTitle>
-      <IconButton aria-label="close" onClick={onCloseDialog} className='dialog-x'>
+      <IconButton aria-label="close" onClick={onClose} className='dialog-x'>
         <CloseIcon/>
       </IconButton>
       <DialogContent className='form'>
@@ -70,9 +74,10 @@ const DialogForm = ({open, onCloseDialog, selectedShowcaseItem}: DialogFormProps
             error={!!formData.name.error} disabled={!isAddMode}
           />
 
-          {(colors.length > 0) &&
-            <DialogFormColors colors={colors} selectedColor={formData.color} onChangeColor={onColorFieldSelect}
-                              disabled={!isAddMode}/>
+          {(itemsColors.length > 0) &&
+            <DialogFormColors colors={itemsColors} selectedColor={formData.color.value}
+                              onChangeColor={onColorFieldSelect}
+                              disabled={!isAddMode} error={formData.color.error}/>
           }
 
           <SimpleSelect name='brand' label={d('brand')} value={formData.brand_id ? formData.brand_id : '-1'}
@@ -112,7 +117,7 @@ const DialogForm = ({open, onCloseDialog, selectedShowcaseItem}: DialogFormProps
 
       </DialogContent>
       <DialogActions>
-        <Button variant='contained' onClick={onCloseDialog}>{d('close')}</Button>
+        <Button variant='contained' onClick={onClose}>{d('close')}</Button>
         <Button variant='contained' color='secondary' onClick={submitForm} disabled={isLoading}>
           {isAddMode ? d('add') : d('edit')}
         </Button>

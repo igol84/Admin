@@ -77,6 +77,11 @@ export interface Showcase {
   active: boolean
 }
 
+export interface ShowcaseIDs {
+  name: string
+  color: string
+}
+
 export interface ShowcaseDirs {
   name: string
   images: string[]

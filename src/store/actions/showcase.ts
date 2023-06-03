@@ -2,8 +2,8 @@ import {AppDispatch} from "../index";
 import {secureApiCreate} from "../../ky";
 import {authSlice} from "../slices/authSlice";
 import {showcaseSlice} from "../slices/showcaseSlice";
-import {CreateShowcase, DelImgShowcase, UpdateShowcase} from "../../schemas/showcase";
-import {Brand, Item, Showcase, ShowcaseDirs, ShowcaseWithImages} from "../../schemas/base";
+import {CreateShowcase, DelImgShowcase, NameAndColors, UpdateShowcase} from "../../schemas/showcase";
+import {Brand, Item, Showcase, ShowcaseDirs, ShowcaseIDs, ShowcaseWithImages} from "../../schemas/base";
 import _ from "lodash";
 import {generate_url} from "../../utilite";
 
@@ -22,13 +22,29 @@ export const fetchItems = (access_token: string) => {
         const images = dir ? dir.images : []
         return {...item, images: images.sort()}
       })
-      const productNames = items.map(item => item.product.name)
-      const uniqProductNames = _.uniq(productNames)
-      const orderedProductNames = _.orderBy(uniqProductNames, value => value.toLowerCase())
+      const namesAndColors: NameAndColors[] = []
+      items.forEach(item => {
+        const find = namesAndColors.find(name => name.name === item.product.name)
+        if (item.product.shoes) {
+          if (!find) {
+            const nameAndColors: NameAndColors = {name: item.product.name, shoes: {colors: [item.product.shoes.color]}}
+            namesAndColors.push(nameAndColors)
+          } else {
+            if (find.shoes && !find.shoes.colors.includes(item.product.shoes.color))
+              find.shoes.colors.push(item.product.shoes.color)
+          }
+        } else {
+          if (!find ) {
+            const nameAndColors: NameAndColors = {name: item.product.name, shoes:null}
+            namesAndColors.push(nameAndColors)
+          }
+        }
+      })
+      const orderedNamesAndColors = _.orderBy(namesAndColors, value => value.name.toLowerCase())
 
       dispatch(showcaseSlice.actions.showcaseFetchingSuccess({
         showcase: showcaseWithImages,
-        productsNames: orderedProductNames,
+        namesAndColors: orderedNamesAndColors,
         brandNames: brands.map(brand => ({id: brand.id, name: brand.name}))
       }))
     } catch (err) {
@@ -97,15 +113,15 @@ export const updateShowcase = (access_token: string, data: UpdateShowcase) => {
   }
 }
 
-export const delShowcase = (access_token: string, name: string) => {
+export const delShowcase = (access_token: string, showcaseIDs: ShowcaseIDs) => {
   const secureApi = secureApiCreate(access_token)
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(showcaseSlice.actions.showcaseFetching())
-      await secureApi.delete(`showcase/${name}`)
-      const dirName = generate_url(name)
+      await secureApi.delete(`showcase/name=${showcaseIDs.name}/color=${showcaseIDs.color}`)
+      const dirName = generate_url(`${showcaseIDs.name}`)
       await secureApi.delete(`showcase/dir/${dirName}`)
-      dispatch(showcaseSlice.actions.delItem(name))
+      dispatch(showcaseSlice.actions.delItem(showcaseIDs))
     } catch (err) {
       const errors = err as Error;
       const errorText = errors.message
@@ -123,23 +139,6 @@ export const delImg = (access_token: string, delImgShowcase: DelImgShowcase) => 
       dispatch(showcaseSlice.actions.showcaseFetching())
       await secureApi.delete(`showcase/img`, {json: delImgShowcase})
       dispatch(showcaseSlice.actions.delImg(delImgShowcase))
-    } catch (err) {
-      const errors = err as Error;
-      const errorText = errors.message
-      if (errorText) {
-        dispatch(authSlice.actions.loginFail({errorText}))
-      }
-    }
-  }
-}
-
-export const fetchColors = (access_token: string, name: string) => {
-  const secureApi = secureApiCreate(access_token)
-  return async (dispatch: AppDispatch) => {
-    try {
-      dispatch(showcaseSlice.actions.showcaseFetching())
-      const colors: string[] = name ? await secureApi.get(`prod/colors_by_prod_name/${name}`).json() : []
-      dispatch(showcaseSlice.actions.getColors(colors))
     } catch (err) {
       const errors = err as Error;
       const errorText = errors.message

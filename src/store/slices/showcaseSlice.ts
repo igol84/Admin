@@ -1,14 +1,13 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {Showcase, ShowcaseWithImages} from "../../schemas/base";
+import {Showcase, ShowcaseIDs, ShowcaseWithImages} from "../../schemas/base";
 import _ from "lodash";
-import {BrandsNames, DelImgShowcase} from "../../schemas/showcase";
+import {BrandsNames, DelImgShowcase, NameAndColors} from "../../schemas/showcase";
 import produce from "immer";
 
 
 interface ShowcaseState {
   showcase: ShowcaseWithImages[]
-  productsNames: string[]
-  colors: string[]
+  namesAndColors: NameAndColors[]
   brandNames: BrandsNames[]
   isLoading: boolean
   error: string
@@ -16,8 +15,7 @@ interface ShowcaseState {
 
 const initialState: ShowcaseState = {
   showcase: [],
-  productsNames: [],
-  colors: [],
+  namesAndColors: [],
   brandNames: [],
   isLoading: false,
   error: ''
@@ -25,7 +23,7 @@ const initialState: ShowcaseState = {
 
 export interface ItemsPayload {
   showcase: ShowcaseWithImages[]
-  productsNames: string[]
+  namesAndColors: NameAndColors[]
   brandNames: BrandsNames[]
 }
 
@@ -47,7 +45,7 @@ export const showcaseSlice = createSlice({
     },
     showcaseFetchingSuccess(state, action: PayloadAction<ItemsPayload>) {
       state.showcase = action.payload.showcase
-      state.productsNames = action.payload.productsNames
+      state.namesAndColors = action.payload.namesAndColors
       state.brandNames = action.payload.brandNames
       state.isLoading = false
       state.error = ''
@@ -58,9 +56,9 @@ export const showcaseSlice = createSlice({
     },
     addNewItem(state, {payload: {newShowcaseItem}}: PayloadAction<NewItemPayload>) {
       state.isLoading = false
-      state.productsNames = state.productsNames.filter(name => {
-        return name !== newShowcaseItem.name
-      })
+      // state.productsNames = state.productsNames.filter(name => {
+      //   return name !== newShowcaseItem.name
+      // })
       state.showcase.unshift(newShowcaseItem)
       state.error = ''
     },
@@ -70,17 +68,17 @@ export const showcaseSlice = createSlice({
       state.showcase = state.showcase.map(item => {
         const itemImages = fileNames ? _.uniq([...fileNames, ...item.images]).sort() : item.images
         const showcaseWithImages: ShowcaseWithImages = {...changedItem, images: itemImages}
-        return item.name == changedItem.name ? showcaseWithImages : item
+        return item.name == changedItem.name && item.color === changedItem.color ? showcaseWithImages : item
       })
       state.error = ''
     },
-    delItem(state, {payload: delName}: PayloadAction<string>) {
+    delItem(state, {payload: {name, color}}: PayloadAction<ShowcaseIDs>) {
       state.isLoading = false
       state.showcase = state.showcase.filter(item => {
-        return item.name !== delName
+        return !(item.name === name && item.color === color)
       })
-      state.productsNames.push(delName)
-      state.productsNames = _.orderBy(state.productsNames, value => value.toLowerCase())
+      // state.productsNames.push(delName)
+      // state.productsNames = _.orderBy(state.productsNames, value => value.toLowerCase())
       state.error = ''
     },
     delImg(state, {payload: {nameItem, imgName}}: PayloadAction<DelImgShowcase>) {
@@ -93,11 +91,6 @@ export const showcaseSlice = createSlice({
       })
       state.error = ''
     },
-    getColors(state, {payload: colors}: PayloadAction<string[]>) {
-      state.isLoading = false
-      state.colors = colors
-      state.error = ''
-    }
 
   }
 })

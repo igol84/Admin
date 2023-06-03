@@ -7,14 +7,15 @@ interface DialogFormColorsProps {
   selectedColor: string
   onChangeColor: (color: string) => void
   disabled: boolean
+  error: string
 }
 
-const DialogFormColors = ({colors, selectedColor, onChangeColor, disabled}: DialogFormColorsProps) => {
-  const isOne = colors.length === 1
-  const selected = isOne ? colors[0] : selectedColor
+const DialogFormColors = ({colors, selectedColor, onChangeColor, disabled, error}: DialogFormColorsProps) => {
+
   return (
-    <SimpleSelect name='colors' label='colors' value={selected ? selected : colors[0]} disabled={disabled || isOne}
-                  setValue={onChangeColor}>
+    <SimpleSelect name='colors' label='colors' value={selectedColor} disabled={disabled}
+                  setValue={onChangeColor} error={error}>
+      <MenuItem value='' ></MenuItem>
       {colors.map((color) => (
         <MenuItem key={color} value={color} >{color}</MenuItem>
       ))}
