@@ -97,11 +97,10 @@ export const useFormValidation: UseFormValidation = (formData, setFormData, isAd
   const urlExist = (url: string) => showcaseWithoutSelf.find(item => item.url === url.trim())
 
   const checkForm = () => {
-    if (fieldRequired(formData.name.value) || fieldRequired(formData.color.value) || fieldRequired(formData.title.value)
+    if (fieldRequired(formData.name.value) || fieldRequired(formData.title.value)
       || fieldRequired(formData.titleUa.value) || fieldRequired(formData.url.value)) {
       setFormData(produce(prevFormData => {
         prevFormData.name.error = fieldRequired(formData.name.value)
-        prevFormData.color.error = fieldRequired(formData.color.value)
         prevFormData.title.error = fieldRequired(formData.title.value)
         prevFormData.titleUa.error = fieldRequired(formData.titleUa.value)
         prevFormData.url.error = fieldRequired(formData.url.value)

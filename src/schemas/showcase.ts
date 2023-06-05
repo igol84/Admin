@@ -12,6 +12,12 @@ export interface UpdateShowcase{
 
 export interface DelImgShowcase{
   nameItem: string
+  colorItem: string
+  dirName: string
+  imgName: string
+}
+
+export interface FetchDelImgShowcase{
   dirName: string
   imgName: string
 }

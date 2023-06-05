@@ -39,7 +39,6 @@ const DialogForm = ({open, onCloseDialog, selectedShowcaseItem}: DialogFormProps
     onNameFieldSelect, onColorFieldSelect, onBrandFieldChange, onTitleFieldChange, onTitleUaFieldChange,
     onDescFieldChange, onDescUaFieldChange, onUrlFieldChange, onActiveChange, onFileChange, checkForm
   ] = useFormValidation(formData, setFormData, isAddMode, showcase, selectedShowcaseItem)
-
   const [submitAdd, submitEdit, deleteItem, deleteImage] = useFormSubmit(resetFormData)
   const isShowcase = (showcaseItem: Showcase | null): showcaseItem is Showcase => !isAddMode
   const submitForm = async () => {

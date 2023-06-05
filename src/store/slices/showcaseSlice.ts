@@ -56,9 +56,6 @@ export const showcaseSlice = createSlice({
     },
     addNewItem(state, {payload: {newShowcaseItem}}: PayloadAction<NewItemPayload>) {
       state.isLoading = false
-      // state.productsNames = state.productsNames.filter(name => {
-      //   return name !== newShowcaseItem.name
-      // })
       state.showcase.unshift(newShowcaseItem)
       state.error = ''
     },
@@ -77,15 +74,13 @@ export const showcaseSlice = createSlice({
       state.showcase = state.showcase.filter(item => {
         return !(item.name === name && item.color === color)
       })
-      // state.productsNames.push(delName)
-      // state.productsNames = _.orderBy(state.productsNames, value => value.toLowerCase())
       state.error = ''
     },
-    delImg(state, {payload: {nameItem, imgName}}: PayloadAction<DelImgShowcase>) {
+    delImg(state, {payload: {nameItem, colorItem, imgName}}: PayloadAction<DelImgShowcase>) {
       state.isLoading = false
       state.showcase = produce(state.showcase, draftData => {
         draftData.map(showcaseItem => {
-          if (showcaseItem.name === nameItem)
+          if (showcaseItem.name === nameItem && showcaseItem.color === colorItem)
             showcaseItem.images = showcaseItem.images.filter(image => image !== imgName)
         })
       })

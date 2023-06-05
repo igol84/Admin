@@ -15,9 +15,15 @@ const DialogFormImages = ({selectedShowcaseItem, onClickDelImg}: DialogFormImage
     <ImageList cols={9} gap={8}>
       {selectedShowcaseItem.images.map(imgName => {
         const hostPictures = import.meta.env.VITE_PICTURES_URL
-        const dirName = generate_url(selectedShowcaseItem.name)
+        const dirNameProps = [selectedShowcaseItem.name]
+        if (selectedShowcaseItem.color) {
+          dirNameProps.push(selectedShowcaseItem.color)
+        }
+        const dirName = generate_url(dirNameProps.join('-'))
         const fullImgUrl = `${hostPictures}/${dirName}/${imgName}?${makeId(5)}`
-        const delImgShowcase: DelImgShowcase = {nameItem: selectedShowcaseItem.name, dirName, imgName}
+        const delImgShowcase: DelImgShowcase = {
+          nameItem: selectedShowcaseItem.name, colorItem: selectedShowcaseItem.color, dirName, imgName
+        }
         return (
           <ImageListItem key={imgName}>
             <img src={fullImgUrl} alt={selectedShowcaseItem.title}/>

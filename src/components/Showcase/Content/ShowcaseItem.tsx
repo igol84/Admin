@@ -11,8 +11,11 @@ interface ShowcaseItemProps {
 
 const ShowcaseItem = ({showcaseItem, onClickShowcaseName}: ShowcaseItemProps) => {
   const hostPictures = import.meta.env.VITE_PICTURES_URL
-  const dirName = generate_url(showcaseItem.name)
-
+  const dirNameProps = [showcaseItem.name]
+  if (showcaseItem.color) {
+    dirNameProps.push(showcaseItem.color)
+  }
+  const dirName = generate_url(dirNameProps.join('-'))
   const imageUrlSmall = `${hostPictures}/${dirName}/01.jpg`
   const imageUrlBig = `${hostPictures}/${dirName}/02.jpg?t=${makeId(5)}`
   const imageUrlDef = `${hostPictures}/def.jpg`

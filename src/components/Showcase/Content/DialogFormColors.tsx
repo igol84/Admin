@@ -15,7 +15,6 @@ const DialogFormColors = ({colors, selectedColor, onChangeColor, disabled, error
   return (
     <SimpleSelect name='colors' label='colors' value={selectedColor} disabled={disabled}
                   setValue={onChangeColor} error={error}>
-      <MenuItem value='' ></MenuItem>
       {colors.map((color) => (
         <MenuItem key={color} value={color} >{color}</MenuItem>
       ))}

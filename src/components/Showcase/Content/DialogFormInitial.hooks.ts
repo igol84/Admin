@@ -2,6 +2,7 @@ import {FormData} from "./types";
 import React, {useLayoutEffect, useState} from "react";
 import {Showcase} from "../../../schemas/base";
 import {NameAndColors} from "../../../schemas/showcase";
+import produce from "immer";
 
 
 
@@ -48,6 +49,8 @@ export const useFormInitial: UseFormInitial = (showcase, namesAndColors, selecte
     setFormData(changedFormData)
   }, [selectedShowcaseItem])
 
+
+
   const itemsColors: string[] = []
   const itemsNames: string[] = ['']
   if (isAddMode) {
@@ -81,5 +84,11 @@ export const useFormInitial: UseFormInitial = (showcase, namesAndColors, selecte
     itemsColors.push(selectedShowcaseItem.color)
 
   }
+  useLayoutEffect(() => {
+    if(isAddMode && itemsColors.length)
+      setFormData(produce(formData, draftData => {
+        draftData.color.value = itemsColors[0]
+        }))
+  }, [formData.name.value])
   return [formData, setFormData, resetFormData, itemsNames, itemsColors]
 }

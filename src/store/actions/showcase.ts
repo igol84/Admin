@@ -2,7 +2,13 @@ import {AppDispatch} from "../index";
 import {secureApiCreate} from "../../ky";
 import {authSlice} from "../slices/authSlice";
 import {showcaseSlice} from "../slices/showcaseSlice";
-import {CreateShowcase, DelImgShowcase, NameAndColors, UpdateShowcase} from "../../schemas/showcase";
+import {
+  CreateShowcase,
+  DelImgShowcase,
+  FetchDelImgShowcase,
+  NameAndColors,
+  UpdateShowcase
+} from "../../schemas/showcase";
 import {Brand, Item, Showcase, ShowcaseDirs, ShowcaseIDs, ShowcaseWithImages} from "../../schemas/base";
 import _ from "lodash";
 import {generate_url} from "../../utilite";
@@ -18,7 +24,12 @@ export const fetchItems = (access_token: string) => {
       const dirs: ShowcaseDirs[] = await secureApi.get('showcase/dir').json()
       const brands: Brand[] = await secureApi.get(`brand`).json()
       const showcaseWithImages: ShowcaseWithImages[] = showcase.map(item => {
-        const dir = dirs.find(dir => dir.name === generate_url(item.name))
+        const dirNameProps = [item.name]
+        if (item.color) {
+          dirNameProps.push(item.color)
+        }
+        const dirName = generate_url(dirNameProps.join('-'))
+        const dir = dirs.find(dir => dir.name === dirName)
         const images = dir ? dir.images : []
         return {...item, images: images.sort()}
       })
@@ -34,18 +45,20 @@ export const fetchItems = (access_token: string) => {
               find.shoes.colors.push(item.product.shoes.color)
           }
         } else {
-          if (!find ) {
-            const nameAndColors: NameAndColors = {name: item.product.name, shoes:null}
+          if (!find) {
+            const nameAndColors: NameAndColors = {name: item.product.name, shoes: null}
             namesAndColors.push(nameAndColors)
           }
         }
       })
       const orderedNamesAndColors = _.orderBy(namesAndColors, value => value.name.toLowerCase())
+      const brandNames = brands.map(brand => ({id: brand.id, name: brand.name}))
+      const orderedBrandNames = _.orderBy(brandNames, value => value.name.toLowerCase())
 
       dispatch(showcaseSlice.actions.showcaseFetchingSuccess({
         showcase: showcaseWithImages,
         namesAndColors: orderedNamesAndColors,
-        brandNames: brands.map(brand => ({id: brand.id, name: brand.name}))
+        brandNames: orderedBrandNames
       }))
     } catch (err) {
       dispatch(showcaseSlice.actions.showcaseFetchingError(err as Error))
@@ -65,7 +78,11 @@ export const addNewItem = (access_token: string, data: CreateShowcase) => {
         files.forEach(file => {
           formData.append('files', file)
         })
-        const dirName = generate_url(showcaseItem.name)
+        const dirNameProps = [showcaseItem.name]
+        if (showcaseItem.color) {
+          dirNameProps.push(showcaseItem.color)
+        }
+        const dirName = generate_url(dirNameProps.join('-'))
         await secureApi.post(`showcase/files/${dirName}`, {body: formData}).json()
       }
       const fileNames = files ? files.map(file => file.name) : []
@@ -97,7 +114,11 @@ export const updateShowcase = (access_token: string, data: UpdateShowcase) => {
         files.forEach(file => {
           formData.append('files', file)
         })
-        const dirName = generate_url(showcaseItem.name)
+        const dirNameProps = [showcaseItem.name]
+        if (showcaseItem.color) {
+          dirNameProps.push(showcaseItem.color)
+        }
+        const dirName = generate_url(dirNameProps.join('-'))
         await secureApi.post(`showcase/files/${dirName}`, {body: formData}).json()
       }
       const fileNames = files ? files.map(file => file.name) : null
@@ -118,8 +139,12 @@ export const delShowcase = (access_token: string, showcaseIDs: ShowcaseIDs) => {
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(showcaseSlice.actions.showcaseFetching())
-      await secureApi.delete(`showcase/name=${showcaseIDs.name}/color=${showcaseIDs.color}`)
-      const dirName = generate_url(`${showcaseIDs.name}`)
+      await secureApi.post('showcase/delete_showcase', {json: showcaseIDs})
+      const dirNameProps = [showcaseIDs.name]
+      if (showcaseIDs.color) {
+        dirNameProps.push(showcaseIDs.color)
+      }
+      const dirName = generate_url(dirNameProps.join('-'))
       await secureApi.delete(`showcase/dir/${dirName}`)
       dispatch(showcaseSlice.actions.delItem(showcaseIDs))
     } catch (err) {
@@ -137,7 +162,8 @@ export const delImg = (access_token: string, delImgShowcase: DelImgShowcase) => 
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(showcaseSlice.actions.showcaseFetching())
-      await secureApi.delete(`showcase/img`, {json: delImgShowcase})
+      const data: FetchDelImgShowcase = {imgName: delImgShowcase.imgName, dirName: delImgShowcase.dirName}
+      await secureApi.delete(`showcase/img`, {json: data})
       dispatch(showcaseSlice.actions.delImg(delImgShowcase))
     } catch (err) {
       const errors = err as Error;
