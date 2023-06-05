@@ -17,6 +17,8 @@ const getRowsForm: GetRowsForm = (items) => {
       const shoesProps = []
       const shoesName = item.product.name
       shoesProps.push(shoesName)
+      if (item.product.shoes.color)
+        shoesProps.push(item.product.shoes.color)
       const width = item.product.shoes.width ? item.product.shoes.width : 'Medium'
       if (width !== 'Medium')
         shoesProps.push(width)
