@@ -21,6 +21,7 @@ interface UseFormValidation {
       onTitleUaFieldChange: (title: string) => void,
       onDescFieldChange: (desc: string) => void,
       onDescUaFieldChange: (desc: string) => void,
+      onYoutubeFieldChange: (youtube: string) => void,
       onUrlFieldChange: (url: string) => void,
       onActiveChange: (active: boolean) => void,
       onFileChange: (files: File[]) => void,
@@ -74,6 +75,11 @@ export const useFormValidation: UseFormValidation = (formData, setFormData, isAd
       prevFormData.descUa = desc
     }))
   }
+  const onYoutubeFieldChange = (youtube: string) => {
+    setFormData(produce(prevFormData => {
+      prevFormData.youtube.value = youtube
+    }))
+  }
   const onUrlFieldChange = (url: string) => {
     setFormData(produce(prevFormData => {
       prevFormData.url.value = generate_url(url)
@@ -118,6 +124,7 @@ export const useFormValidation: UseFormValidation = (formData, setFormData, isAd
 
   return [
     onNameFieldSelect, onColorFieldSelect, onBrandFieldChange, onTitleFieldChange, onTitleUaFieldChange,
-    onDescFieldChange, onDescUaFieldChange, onUrlFieldChange, onActiveChange, onFileChange, checkForm
+    onDescFieldChange, onDescUaFieldChange, onUrlFieldChange, onYoutubeFieldChange, onActiveChange, onFileChange,
+    checkForm
   ]
 }

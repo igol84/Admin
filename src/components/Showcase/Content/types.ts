@@ -11,6 +11,7 @@ export interface FormData{
   desc: string
   descUa: string
   url: Field<string>
+  youtube: Field<string>
   active: boolean
   files: File[] | undefined
 }
@@ -27,7 +28,7 @@ export const convertFromFormDataToShowcase = (formData: FormData) : CreateShowca
       desc_ua: formData.descUa,
       url: formData.url.value,
       active: formData.active,
-      youtube: '',
+      youtube: formData.youtube.value,
     },
     files: formData.files
   }

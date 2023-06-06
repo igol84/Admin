@@ -37,7 +37,8 @@ const DialogForm = ({open, onCloseDialog, selectedShowcaseItem}: DialogFormProps
   ] = useFormInitial(showcase, namesAndColors, selectedShowcaseItem)
   const [
     onNameFieldSelect, onColorFieldSelect, onBrandFieldChange, onTitleFieldChange, onTitleUaFieldChange,
-    onDescFieldChange, onDescUaFieldChange, onUrlFieldChange, onActiveChange, onFileChange, checkForm
+    onDescFieldChange, onDescUaFieldChange, onUrlFieldChange, onYoutubeFieldChange, onActiveChange, onFileChange,
+    checkForm
   ] = useFormValidation(formData, setFormData, isAddMode, showcase, selectedShowcaseItem)
   const [submitAdd, submitEdit, deleteItem, deleteImage] = useFormSubmit(resetFormData)
   const isShowcase = (showcaseItem: Showcase | null): showcaseItem is Showcase => !isAddMode
@@ -107,6 +108,11 @@ const DialogForm = ({open, onCloseDialog, selectedShowcaseItem}: DialogFormProps
         <Box className='flexFields'>
           <SimpleField name='url' label='url' value={formData.url.value} error={formData.url.error}
                        setValue={onUrlFieldChange}/>
+          <Box sx={{width: '80'}}>
+            <SimpleField name='youtube' label='youtube' value={formData.youtube.value} error={formData.youtube.error}
+                            setValue={onYoutubeFieldChange}/>
+          </Box>
+
           <MuiFileInput size='small' multiple value={formData.files} onChange={onFileChange} hideSizeText
                         color='secondary'/>
         </Box>
