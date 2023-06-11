@@ -10,18 +10,6 @@ export interface UpdateShowcase{
   files: File[] | undefined
 }
 
-export interface DelImgShowcase{
-  nameItem: string
-  colorItem: string
-  dirName: string
-  imgName: string
-}
-
-export interface FetchDelImgShowcase{
-  dirName: string
-  imgName: string
-}
-
 export interface NameAndColors {
   name: string
   shoes: null | Shoes

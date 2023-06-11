@@ -7,7 +7,7 @@ import LoadingCircular from "../../LoadingCircular";
 import DialogForm from "./DialogForm";
 import ShowcaseItem from "./ShowcaseItem";
 import {ShowcaseFilters} from "../index";
-import {ShowcaseIDs} from "../../../schemas/base";
+
 
 interface ContentProps {
   showcaseFilters: ShowcaseFilters
@@ -16,35 +16,35 @@ interface ContentProps {
 const Content = ({showcaseFilters}: ContentProps) => {
   const {isLoading, showcase} = useAppSelector(state => state.showcaseSlice)
   const filteredByBrandShowcase = showcaseFilters.brandId !== null
-    ? showcase.filter(item=>item.brand_id===showcaseFilters.brandId)
+    ? showcase.filter(item => item.brand_id === showcaseFilters.brandId)
     : showcase
   const filteredByNameShowcase = showcaseFilters.name !== null
-    ? showcase.filter(item=>item.name===showcaseFilters.name)
+    ? showcase.filter(item => item.name === showcaseFilters.name)
     : filteredByBrandShowcase
   const showLoading = useIsLoadingDisplay(isLoading)
   const [open, setOpen] = useState(false)
-  const [selectedShowcaseName, setSelectedShowcaseName] = useState<ShowcaseIDs | null>(null)
+  const [selectedShowcaseKey, setSelectedShowcaseKey] = useState<string | null>(null)
   const onCloseDialog = () => {
     setOpen(false)
-    setSelectedShowcaseName(null)
+    setSelectedShowcaseKey(null)
   }
   const onClickAddShowcase = () => {
     setOpen(true)
-    setSelectedShowcaseName(null)
+    setSelectedShowcaseKey(null)
   }
-  const onClickShowcase = (showcaseIDs: ShowcaseIDs) => {
+  const onClickShowcase = (key: string) => {
     setOpen(true)
-    setSelectedShowcaseName(showcaseIDs)
+    setSelectedShowcaseKey(key)
   }
   const selectedShowcase = filteredByNameShowcase.find(item =>
-    item.name === selectedShowcaseName?.name && item.color === selectedShowcaseName?.color
+    item.key === selectedShowcaseKey
   )
   return (
     <Box>
       <AddNew onOpenDialog={onClickAddShowcase}/>
       <ImageList cols={6} gap={8}>
         {filteredByNameShowcase.map((showcaseItem) => {
-          const key=`${showcaseItem.name}-${showcaseItem.color}`
+          const key = showcaseItem.key
           return <ShowcaseItem key={key} showcaseItem={showcaseItem} onClickShowcaseName={onClickShowcase}/>
         })}
       </ImageList>

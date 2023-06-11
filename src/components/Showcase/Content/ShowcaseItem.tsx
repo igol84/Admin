@@ -1,30 +1,25 @@
 import React from 'react'
 import {IconButton, ImageListItem, ImageListItemBar} from "@mui/material";
-import {ShowcaseIDs, ShowcaseWithImages} from "../../../schemas/base";
-import {generate_url, makeId} from "../../../utilite";
+import {Showcase} from "../../../schemas/base";
+import {makeId} from "../../../utilite";
 import EditIcon from '@mui/icons-material/Edit';
 
 interface ShowcaseItemProps {
-  showcaseItem: ShowcaseWithImages
-  onClickShowcaseName: (showcaseIDs: ShowcaseIDs) => void
+  showcaseItem: Showcase
+  onClickShowcaseName: (key: string) => void
 }
 
 const ShowcaseItem = ({showcaseItem, onClickShowcaseName}: ShowcaseItemProps) => {
   const hostPictures = import.meta.env.VITE_PICTURES_URL
-  const dirNameProps = [showcaseItem.name]
-  if (showcaseItem.color) {
-    dirNameProps.push(showcaseItem.color)
-  }
-  const dirName = generate_url(dirNameProps.join('-'))
+  const dirName = showcaseItem.key
   const imageUrlSmall = `${hostPictures}/${dirName}/01.jpg`
   const imageUrlBig = `${hostPictures}/${dirName}/02.jpg?t=${makeId(5)}`
   const imageUrlDef = `${hostPictures}/def.jpg`
 
-  const imgUrl = showcaseItem.images.includes('02.jpg') ? imageUrlBig : imageUrlDef
-  const imgUrlSmall = showcaseItem.images.includes('01.jpg') ? imageUrlSmall : imageUrlDef
+  const imgUrl = showcaseItem.images.find(dir => dir.image === '02.jpg') ? imageUrlBig : imageUrlDef
+  const imgUrlSmall = showcaseItem.images.find(dir => dir.image === '01.jpg') ? imageUrlSmall : imageUrlDef
   const onClick = () => {
-    const showcaseIDs: ShowcaseIDs = {name: showcaseItem.name, color: showcaseItem.color}
-    onClickShowcaseName(showcaseIDs)
+    onClickShowcaseName(showcaseItem.key)
   }
   return (
     <ImageListItem>

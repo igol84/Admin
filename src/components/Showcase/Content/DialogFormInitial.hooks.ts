@@ -26,7 +26,7 @@ export const useFormInitial: UseFormInitial = (showcase, namesAndColors, selecte
   const isShowcase = (showcaseItem: Showcase | null): showcaseItem is Showcase => !isAddMode
   const initialFormData: FormData = {
     name: {value: '', error: ''}, color: {value: '', error: ''}, brand_id: null, title: {value: '', error: ''},
-    titleUa: {value: '', error: ''}, desc: '', descUa: '', active: true, url: {value: '', error: ''},
+    titleUa: {value: '', error: ''}, desc: '', descUa: '', active: true, promActive: true, url: {value: '', error: ''},
     youtube: {value: '', error: ''}, files: undefined
   }
 
@@ -46,6 +46,7 @@ export const useFormInitial: UseFormInitial = (showcase, namesAndColors, selecte
       url: {value: selectedShowcaseItem.url, error: ''},
       youtube: {value: selectedShowcaseItem.youtube, error: ''},
       active: selectedShowcaseItem.active,
+      promActive: selectedShowcaseItem.prom_active,
       files: undefined,
     }
     setFormData(changedFormData)

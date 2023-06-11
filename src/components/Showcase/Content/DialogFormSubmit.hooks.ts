@@ -1,21 +1,22 @@
 import {convertFromFormDataToShowcase, FormData} from "./types";
-import {DelImgShowcase} from "../../../schemas/showcase";
 import {useFetchAccess} from "../../../hooks/pages";
 import {addNewItem, delImg, delShowcase, updateShowcase} from "../../../store/actions/showcase";
-import {ShowcaseIDs} from "../../../schemas/base";
+import {ShowcaseImage} from "../../../schemas/base";
 
 
 interface UseFormSubmit {
-  (resetFormData: () => void):
+  ( selectedShowcaseItemKey: string,
+    resetFormData: () => void
+  ):
     [
       submitAdd: (formData: FormData) => Promise<void>,
       submitEdit: (formData: FormData) => Promise<void>,
-      deleteItem: (name: string, color: string) => Promise<void>,
-      deleteImage: (delImgShowcase: DelImgShowcase) => Promise<void>
+      deleteItem: (key: string) => Promise<void>,
+      deleteImage: (showcaseImage: ShowcaseImage) => Promise<void>
     ]
 }
 
-export const useFormSubmit: UseFormSubmit = (resetFormData) => {
+export const useFormSubmit: UseFormSubmit = (selectedShowcaseItemKey, resetFormData) => {
   const addItemAccess = useFetchAccess(addNewItem)
   const editItemAccess = useFetchAccess(updateShowcase)
   const deleteItemAccess = useFetchAccess(delShowcase)
@@ -28,18 +29,17 @@ export const useFormSubmit: UseFormSubmit = (resetFormData) => {
   }
 
   const submitEdit = async (formData: FormData) => {
-    const data = convertFromFormDataToShowcase(formData)
+    const data = convertFromFormDataToShowcase(formData, selectedShowcaseItemKey)
     resetFormData()
     await editItemAccess(data)
   }
 
-  const deleteItem = async (name: string, color: string) => {
-    const id: ShowcaseIDs = {name, color}
-    await deleteItemAccess(id)
+  const deleteItem = async (dir: string) => {
+    await deleteItemAccess(dir)
   }
 
-  const deleteImage = async (delImgShowcase: DelImgShowcase) => {
-    await deleteImageAccess(delImgShowcase)
+  const deleteImage = async (showcaseImage: ShowcaseImage) => {
+    await deleteImageAccess(showcaseImage)
   }
 
   return [submitAdd, submitEdit, deleteItem, deleteImage]

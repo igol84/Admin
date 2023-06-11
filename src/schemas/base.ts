@@ -65,6 +65,7 @@ export interface SaleLineItem {
 }
 
 export interface Showcase {
+  key: string // dir name
   name: string
   color: string
   brand_id: number | null
@@ -75,20 +76,13 @@ export interface Showcase {
   url: string
   youtube: string
   active: boolean
+  prom_active: boolean
+  images: ShowcaseImage[]
 }
 
-export interface ShowcaseIDs {
-  name: string
-  color: string
-}
-
-export interface ShowcaseDirs {
-  name: string
-  images: string[]
-}
-
-export interface ShowcaseWithImages extends Showcase {
-  images: string[]
+export interface ShowcaseImage {
+  dir: string
+  image: string
 }
 
 export interface Brand {

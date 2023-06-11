@@ -1,5 +1,5 @@
 import React from 'react'
-import {Box, Button, DialogContent, IconButton, MenuItem, Switch} from "@mui/material"
+import {Box, Button, DialogContent, FormControlLabel, IconButton, MenuItem, Switch} from "@mui/material"
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogActions from "@mui/material/DialogActions";
@@ -7,7 +7,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import {useModalStyle} from "../style";
 import {SimpleField, SimpleSelect} from "../../Form";
 import {useAppSelector} from "../../../hooks/redux";
-import {Showcase, ShowcaseWithImages} from "../../../schemas/base";
+import {Showcase} from "../../../schemas/base";
 import DeleteButton from "../../Form/DeleteButton";
 import {useFormValidation} from "./DialogFormValidation.hooks";
 import {useFormSubmit} from "./DialogFormSubmit.hooks";
@@ -23,7 +23,7 @@ import DialogFormName from "./DialogFormName";
 interface DialogFormProps {
   open: boolean
   onCloseDialog: () => void
-  selectedShowcaseItem: ShowcaseWithImages | null
+  selectedShowcaseItem: Showcase | null
 }
 
 const DialogForm = ({open, onCloseDialog, selectedShowcaseItem}: DialogFormProps) => {
@@ -32,15 +32,16 @@ const DialogForm = ({open, onCloseDialog, selectedShowcaseItem}: DialogFormProps
   const showLoading = useIsLoadingDisplay(isLoading)
   const style = useModalStyle()
   const isAddMode = selectedShowcaseItem === null
+  const selectedShowcaseItemKey = isAddMode ? '' : selectedShowcaseItem.key
   const [
     formData, setFormData, resetFormData, itemsNames, itemsColors
   ] = useFormInitial(showcase, namesAndColors, selectedShowcaseItem)
   const [
     onNameFieldSelect, onColorFieldSelect, onBrandFieldChange, onTitleFieldChange, onTitleUaFieldChange,
-    onDescFieldChange, onDescUaFieldChange, onUrlFieldChange, onYoutubeFieldChange, onActiveChange, onFileChange,
-    checkForm
+    onDescFieldChange, onDescUaFieldChange, onUrlFieldChange, onYoutubeFieldChange, onActiveChange, onPromActiveChange,
+    onFileChange, checkForm
   ] = useFormValidation(formData, setFormData, isAddMode, showcase, selectedShowcaseItem)
-  const [submitAdd, submitEdit, deleteItem, deleteImage] = useFormSubmit(resetFormData)
+  const [submitAdd, submitEdit, deleteItem, deleteImage] = useFormSubmit(selectedShowcaseItemKey, resetFormData)
   const isShowcase = (showcaseItem: Showcase | null): showcaseItem is Showcase => !isAddMode
   const submitForm = async () => {
     if (checkForm()) {
@@ -53,9 +54,12 @@ const DialogForm = ({open, onCloseDialog, selectedShowcaseItem}: DialogFormProps
     }
   }
   const onClickDelete = async () => {
-    await deleteItem(formData.name.value, formData.color.value)
-    onCloseDialog()
-    resetFormData()
+    if(!isAddMode){
+      await deleteItem(selectedShowcaseItem.key)
+      onCloseDialog()
+      resetFormData()
+    }
+
   }
   const onClose = () => {
     onCloseDialog()
@@ -87,8 +91,14 @@ const DialogForm = ({open, onCloseDialog, selectedShowcaseItem}: DialogFormProps
               <MenuItem key={brand.id} value={brand.id}>{brand.name}</MenuItem>
             ))}
           </SimpleSelect>
-          <Switch color='secondary' checked={formData.active}
-                  onChange={(event) => onActiveChange(event.target.checked)}/>
+          <FormControlLabel sx={{whiteSpace: 'nowrap'}} label='prom active' control={
+            <Switch color='secondary' checked={formData.promActive}
+                    onChange={(event) => onPromActiveChange(event.target.checked)}/>
+          }/>
+          <FormControlLabel label='active' control={
+            <Switch color='secondary' checked={formData.active}
+                    onChange={(event) => onActiveChange(event.target.checked)}/>
+          }/>
           {!isAddMode &&
             <Box><DeleteButton deletable={true} onRemove={onClickDelete}/></Box>
           }
@@ -108,9 +118,9 @@ const DialogForm = ({open, onCloseDialog, selectedShowcaseItem}: DialogFormProps
         <Box className='flexFields'>
           <SimpleField name='url' label='url' value={formData.url.value} error={formData.url.error}
                        setValue={onUrlFieldChange}/>
-          <Box sx={{width: '80'}}>
+          <Box sx={{width: '88'}}>
             <SimpleField name='youtube' label='youtube' value={formData.youtube.value} error={formData.youtube.error}
-                            setValue={onYoutubeFieldChange}/>
+                         setValue={onYoutubeFieldChange}/>
           </Box>
 
           <MuiFileInput size='small' multiple value={formData.files} onChange={onFileChange} hideSizeText

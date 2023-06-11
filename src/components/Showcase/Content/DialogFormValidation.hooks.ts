@@ -24,6 +24,7 @@ interface UseFormValidation {
       onYoutubeFieldChange: (youtube: string) => void,
       onUrlFieldChange: (url: string) => void,
       onActiveChange: (active: boolean) => void,
+      onPromActiveChange: (active: boolean) => void,
       onFileChange: (files: File[]) => void,
       checkForm: () => boolean
     ]
@@ -56,20 +57,17 @@ export const useFormValidation: UseFormValidation = (formData, setFormData, isAd
       prevFormData.title.error = fieldRequired(title)
     }))
   }
-
   const onTitleUaFieldChange = (title: string) => {
     setFormData(produce(prevFormData => {
       prevFormData.titleUa.value = title
       prevFormData.titleUa.error = fieldRequired(title)
     }))
   }
-
   const onDescFieldChange = (desc: string) => {
     setFormData(produce(prevFormData => {
       prevFormData.desc = desc
     }))
   }
-
   const onDescUaFieldChange = (desc: string) => {
     setFormData(produce(prevFormData => {
       prevFormData.descUa = desc
@@ -89,6 +87,11 @@ export const useFormValidation: UseFormValidation = (formData, setFormData, isAd
   const onActiveChange = (active: boolean) => {
     setFormData(produce(prevFormData => {
       prevFormData.active = active
+    }))
+  }
+  const onPromActiveChange = (promActive: boolean) => {
+    setFormData(produce(prevFormData => {
+      prevFormData.promActive = promActive
     }))
   }
   const onFileChange = (files: File[]) => {
@@ -124,7 +127,7 @@ export const useFormValidation: UseFormValidation = (formData, setFormData, isAd
 
   return [
     onNameFieldSelect, onColorFieldSelect, onBrandFieldChange, onTitleFieldChange, onTitleUaFieldChange,
-    onDescFieldChange, onDescUaFieldChange, onUrlFieldChange, onYoutubeFieldChange, onActiveChange, onFileChange,
-    checkForm
+    onDescFieldChange, onDescUaFieldChange, onUrlFieldChange, onYoutubeFieldChange, onActiveChange, onPromActiveChange,
+    onFileChange, checkForm
   ]
 }

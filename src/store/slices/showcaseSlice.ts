@@ -1,12 +1,12 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {Showcase, ShowcaseIDs, ShowcaseWithImages} from "../../schemas/base";
+import {Showcase, ShowcaseImage} from "../../schemas/base";
 import _ from "lodash";
-import {BrandsNames, DelImgShowcase, NameAndColors} from "../../schemas/showcase";
+import {BrandsNames, NameAndColors} from "../../schemas/showcase";
 import produce from "immer";
 
 
 interface ShowcaseState {
-  showcase: ShowcaseWithImages[]
+  showcase: Showcase[]
   namesAndColors: NameAndColors[]
   brandNames: BrandsNames[]
   isLoading: boolean
@@ -22,13 +22,13 @@ const initialState: ShowcaseState = {
 }
 
 export interface ItemsPayload {
-  showcase: ShowcaseWithImages[]
+  showcase: Showcase[]
   namesAndColors: NameAndColors[]
   brandNames: BrandsNames[]
 }
 
 interface NewItemPayload {
-  newShowcaseItem: ShowcaseWithImages
+  newShowcaseItem: Showcase
 }
 
 interface ChangedItemPayload {
@@ -63,25 +63,27 @@ export const showcaseSlice = createSlice({
       state.isLoading = false
 
       state.showcase = state.showcase.map(item => {
-        const itemImages = fileNames ? _.uniq([...fileNames, ...item.images]).sort() : item.images
-        const showcaseWithImages: ShowcaseWithImages = {...changedItem, images: itemImages}
-        return item.name == changedItem.name && item.color === changedItem.color ? showcaseWithImages : item
+        const oldImageNames = item.images.map(row=> row.image)
+        const itemImages = fileNames ? _.uniq([...fileNames, ...oldImageNames]).sort() : oldImageNames
+        const images: ShowcaseImage[] = itemImages.map(image => ({dir: changedItem.key, image: image}))
+        const showcaseWithImages: Showcase = {...changedItem, images}
+        return item.key === changedItem.key ? showcaseWithImages : item
       })
       state.error = ''
     },
-    delItem(state, {payload: {name, color}}: PayloadAction<ShowcaseIDs>) {
+    delItem(state, {payload: dir}: PayloadAction<string>) {
       state.isLoading = false
       state.showcase = state.showcase.filter(item => {
-        return !(item.name === name && item.color === color)
+        return !(item.key === dir)
       })
       state.error = ''
     },
-    delImg(state, {payload: {nameItem, colorItem, imgName}}: PayloadAction<DelImgShowcase>) {
+    delImg(state, {payload: {dir, image}}: PayloadAction<ShowcaseImage>) {
       state.isLoading = false
       state.showcase = produce(state.showcase, draftData => {
         draftData.map(showcaseItem => {
-          if (showcaseItem.name === nameItem && showcaseItem.color === colorItem)
-            showcaseItem.images = showcaseItem.images.filter(image => image !== imgName)
+          if (showcaseItem.key === dir)
+            showcaseItem.images = showcaseItem.images.filter(row => row.image !== image)
         })
       })
       state.error = ''
