@@ -19,17 +19,17 @@ const SizeRowSelected = (props: SizeRowSelectedProps) => {
   const sizeField =
     <SimpleField
       type='number' name='size' value={formSizeData.size.value.toString()} setValue={onSizeFieldChange}
-      error={useError('size')} fullWidth={false} variant={'standard'}
+      error={useError('size')} fullWidth={false} variant={'standard'} focusText
     />
   const lengthField =
     <SimpleField
       type='number' name='length' value={formSizeData.length.value.toString()} setValue={onLengthFieldChange}
-      error={useError('length')} fullWidth={false} variant={'standard'} inputProps={{step: 0.5}}
+      error={useError('length')} fullWidth={false} variant={'standard'} inputProps={{step: 0.5}} focusText
     />
   const priceField =
     <SimpleField
       type='number' name='price' value={formSizeData.price.value.toString()} setValue={onPriceFieldChange}
-      error={useError('price')} fullWidth={false} variant={'standard'}
+      error={useError('price')} fullWidth={false} variant={'standard'} focusText
     />
   const buttonsCell =
     <Box sx={{display: 'flex', justifyContent: 'space-around', alignItems: 'center'}}>

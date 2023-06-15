@@ -39,7 +39,7 @@ const initialRangeSizes: RangeSizesType = {from: 36, to: 41}
 
 const sizesArray = _.range(initialRangeSizes.from, initialRangeSizes.to + 1)
 const initialDataSizes: SizeField[] = sizesArray.map(size => (
-  {size, qty: '0', length: ''}
+  {size, qty: '0', length: getDefaultSeizesLength(size)}
 ))
 
 const initialFormFields: FormFields = {
@@ -155,7 +155,9 @@ const AddNewProductForm = () => {
       prevFormData.priceSell.value = '0'
       prevFormData.color.value = ''
       prevFormData.color.selected = ''
+      prevFormData.sizes = initialDataSizes
     }))
+    setRangeSizes(initialRangeSizes)
   }
   const [validateDate, createData] = useSubmit()
 
