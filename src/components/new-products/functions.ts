@@ -2,9 +2,9 @@ import {NewProducts} from "../../schemas/new-products";
 import {ProductType} from "./types";
 import _ from "lodash";
 
-export const getProductNames = (products: NewProducts[], selectedType: keyof typeof ProductType) => {
+export const getProductNamesByType = (products: NewProducts[], productType: keyof typeof ProductType) => {
   return _.chain(products)
-    .filter(product => product.type === selectedType)
+    .filter(product => product.type === productType)
     .map(product => product.name)
     .sort((a, b) => a.localeCompare(b))
     .uniq()

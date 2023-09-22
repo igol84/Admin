@@ -32,7 +32,7 @@ import {useSubmit} from "./AddNewProductFormOnSubmit";
 import {NewProducts} from "../../schemas/new-products";
 import {useAppSelector} from "../../hooks/redux";
 import LoadingCircular from "../LoadingCircular";
-import {getProductColors, getProductData, getProductNames} from "./functions";
+import {getProductColors, getProductData, getProductNamesByType} from "./functions";
 
 
 const initialRangeSizes: RangeSizesType = {from: 36, to: 41}
@@ -101,9 +101,9 @@ const AddNewProductForm = () => {
   }, [rangeSizes])
 
   useLayoutEffect(() => {
-    const prod = getProductNames(products, selectedType)
+    const productNames = getProductNamesByType(products, selectedType)
     setFormData(produce(prevFormData => {
-      prevFormData.name.items = prod
+      prevFormData.name.items = productNames
     }))
   }, [selectedType, products])
 

@@ -38,7 +38,7 @@ interface DefaultSeizesLength {
   [key: number]: number
 }
 
-export const defaultSeizesLength: DefaultSeizesLength = {
+export const defaultSizesLength: DefaultSeizesLength = {
   35: 23,
   36: 23.5,
   37: 24,
@@ -57,12 +57,12 @@ export const defaultSeizesLength: DefaultSeizesLength = {
 
 
 export const getDefaultSeizesLength = (selectedSize: number) => {
-  let retValue = ''
-  for (let size in defaultSeizesLength) {
+  let sizeLength = ''
+  for (let size in defaultSizesLength) {
     if (size == selectedSize.toString()) {
-      retValue = defaultSeizesLength[size].toString()
+      sizeLength = defaultSizesLength[size].toString()
       break
     }
   }
-  return retValue
+  return sizeLength
 }

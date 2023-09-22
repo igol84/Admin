@@ -129,7 +129,7 @@ interface UseSuccessSnackbar {
 }
 
 export const useSuccessSnackbar: UseSuccessSnackbar = () => {
-  const [openSuccessSnackbar, setOpenSuccessSnackbar] = React.useState(false)
+  const [openSuccessSnackbar, setOpenSuccessSnackbar] = useState(false)
   const handleCloseAlertSnackbarCreator = (setOpenState: (value: boolean) => void) =>
     (event?: React.SyntheticEvent | Event, reason?: string) => {
       if (reason === 'clickaway') {

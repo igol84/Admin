@@ -33,3 +33,28 @@ export function makeId(length: number) {
   }
   return result;
 }
+
+interface Name {
+  name: string
+  newName: string
+}
+
+export const renameName = (value: string) => {
+  const images: Name[] = [
+    {name: 'main.jpg', newName: '02.jpg'}, {name: 'main_b.jpg', newName: '03.jpg'},
+    {name: 'main_s.jpg', newName: '01.jpg'}, {name: 'bottom.jpg', newName: '12.jpg'},
+    {name: 'bottom_b.jpg', newName: '13.jpg'}, {name: 'bottom_s.jpg', newName: '11.jpg'},
+    {name: 'front.jpg', newName: '22.jpg'}, {name: 'front_b.jpg', newName: '23.jpg'},
+    {name: 'front_s.jpg', newName: '21.jpg'}, {name: 'back.jpg', newName: '32.jpg'},
+    {name: 'back_b.jpg', newName: '33.jpg'}, {name: 'back_s.jpg', newName: '31.jpg'},
+    {name: 'smal.jpg', newName: '4.jpg'}, {name: 'my.jpg', newName: '5.jpg'}
+  ]
+  let newName = value
+  images.forEach(image => {
+    if (value.endsWith(image.name)) {
+      newName = image.newName
+    }
+  })
+  return newName
+}
+

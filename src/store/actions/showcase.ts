@@ -5,6 +5,7 @@ import {showcaseSlice} from "../slices/showcaseSlice";
 import {CreateShowcase, NameAndColors, UpdateShowcase} from "../../schemas/showcase";
 import {Brand, Item, Showcase, ShowcaseImage} from "../../schemas/base";
 import _ from "lodash";
+import {renameName} from "../../utilite";
 
 
 export const fetchItems = (access_token: string) => {
@@ -64,7 +65,7 @@ export const addNewItem = (access_token: string, data: CreateShowcase) => {
         await secureApi.post(`showcase/files/${showcaseItem.key}`, {body: formData}).json()
       }
       const showcaseImages = files ? files.map(file => {
-        const showcaseImage: ShowcaseImage = {dir: showcaseItem.key, image: file.name}
+        const showcaseImage: ShowcaseImage = {dir: showcaseItem.key, image: renameName(file.name)}
         return showcaseImage
       }) : []
       const showcaseWithImage: Showcase = {
