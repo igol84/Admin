@@ -1,9 +1,8 @@
 import {Item, Product} from "./base";
 
 export interface OutputItems {
-  products?: NewProducts[]
+  products?: Product[]
   items: Item[]
 }
 
-export type NewProducts = Omit<Product, 'id'>
 

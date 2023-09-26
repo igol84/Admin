@@ -1,8 +1,8 @@
-import {NewProducts} from "../../schemas/new-products";
-import {ProductType} from "./types";
+import {ProductType} from "./newProduct";
 import _ from "lodash";
+import {Product} from "../../schemas/base";
 
-export const getProductNamesByType = (products: NewProducts[], productType: keyof typeof ProductType) => {
+export const getProductNamesByType = (products: Product[], productType: keyof typeof ProductType): string[] => {
   return _.chain(products)
     .filter(product => product.type === productType)
     .map(product => product.name)
@@ -10,14 +10,21 @@ export const getProductNamesByType = (products: NewProducts[], productType: keyo
     .uniq()
     .value()
 }
-export const getProductData = (products: NewProducts[], name: string) => {
-  return _.chain(products)
+type ProductData = {
+  price: string
+  type: ProductType
+}
+export const getProductData = (products: Product[], name: string): ProductData => {
+  const product = _.chain(products)
     .filter(product => product.name === name)
     .last()
     .value()
+  const price = product.price.toString()
+  const type = product.type
+  return ({price, type})
 }
 
-export const getProductColors = (products: NewProducts[], name: string) => {
+export const getProductColors = (products: Product[], name: string): string[] => {
   return _.chain(products)
     .filter(product => product.name.toLowerCase() === name.toLowerCase())
     .map(product => _.toString(product.shoes?.color))

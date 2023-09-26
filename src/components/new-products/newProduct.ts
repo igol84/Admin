@@ -1,4 +1,6 @@
-export interface Types {
+import {defaultSizesLength} from "./data";
+
+export interface NewProduct {
   id?: number
   store_id: number
   type: ProductType
@@ -33,28 +35,6 @@ export enum WidthType {
   medium = 'Medium',
   wide = 'Wide'
 }
-
-interface DefaultSeizesLength {
-  [key: number]: number
-}
-
-export const defaultSizesLength: DefaultSeizesLength = {
-  35: 23,
-  36: 23.5,
-  37: 24,
-  38: 24.5,
-  39: 25,
-  40: 25.5,
-  41: 26.5,
-  42: 27,
-  43: 27.5,
-  44: 28,
-  45: 28.5,
-  46: 29,
-  48: 29.5,
-  49: 30,
-}
-
 
 export const getDefaultSeizesLength = (selectedSize: number) => {
   let sizeLength = ''

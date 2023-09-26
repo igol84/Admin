@@ -2,7 +2,7 @@ import {FieldNames, FormFields} from "./AddNewProductFormTypes";
 import {Dispatch, SetStateAction, useCallback} from "react";
 import produce from "immer";
 import {fieldPositive, fieldPositiveNotNull, fieldRequired} from "../Form";
-import {Types, ProductType} from "./types";
+import {NewProduct, ProductType} from "./newProduct";
 import {useStoreId} from "../../hooks/redux";
 
 
@@ -52,7 +52,7 @@ export const useSubmit = () => {
 
   const createData = useCallback((formData: FormFields) => {
     if (storeId !== null) {
-      const data: Types = {
+      const data: NewProduct = {
         store_id: storeId,
         type: formData.productType.value,
         name: formData.name.value,

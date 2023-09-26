@@ -1,3 +1,5 @@
+import {ProductType} from "../components/new-products/newProduct";
+
 export interface Item {
   id: number
   prod_id: number
@@ -10,7 +12,7 @@ export interface Item {
 
 export interface Product {
   id: number,
-  type: string,
+  type: ProductType,
   name: string,
   price: number,
   qty: number,

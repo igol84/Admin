@@ -1,9 +1,9 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {NewProducts} from "../../schemas/new-products";
+import {Product} from "../../schemas/base";
 
 
 interface NewProductState {
-  products: NewProducts[]
+  products: Product[]
   isLoading: boolean
   error: string
 }
@@ -15,11 +15,11 @@ const initialState: NewProductState = {
 }
 
 export interface ProductsPayload {
-  products: NewProducts[]
+  products: Product[]
 }
 
 export interface NewProductPayload {
-  products: NewProducts[]
+  products: Product[]
 }
 
 export const newProductsSlice = createSlice({
@@ -42,7 +42,7 @@ export const newProductsSlice = createSlice({
       state.isLoading = true
     },
     NewProductsFetchingSuccess(state, action: PayloadAction<NewProductPayload>) {
-      const newProducts: NewProducts[] = action.payload.products
+      const newProducts: Product[] = action.payload.products
       state.products.unshift(...newProducts)
       state.isLoading = false
       state.error = ''

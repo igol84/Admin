@@ -1,4 +1,4 @@
-import {ProductType, WidthType} from "./types";
+import {ProductType, WidthType} from "./newProduct";
 import {Field, FieldAutocomplete, FieldSelect} from "../Form/types";
 
 
@@ -24,6 +24,7 @@ export type FieldNames = keyof Omit<FormFields, 'sizes'>
 export interface RangeSizesType {
   from: number
   to: number
+  half: boolean
 }
 
 export interface SetterFieldCreator {

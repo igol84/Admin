@@ -1,5 +1,5 @@
 import React, {Dispatch, SetStateAction} from "react";
-import {Box, TextField} from "@mui/material";
+import {Box, Checkbox, FormControlLabel, TextField} from "@mui/material";
 import {RangeSizesType} from "./AddNewProductFormTypes";
 import {useDictionary} from "../../hooks/pages";
 
@@ -17,12 +17,19 @@ const SizesRange = (props: SizesRangeProps) => {
   const {rangeSizes, setRangeSizes} = props
   const d = useDictionary('newProducts')
 
-  const onChange = (value: number, field: 'from' | 'to') => {
+  const onChangeRange = (value: number, field: 'from' | 'to') => {
     if (value >= MIN_SIZE && value <= MAX_SIZE)
       setRangeSizes(prefRangeSizes => {
           return {...prefRangeSizes, [field]: value}
         }
       )
+  }
+
+  const onChangeHalf = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const half = event.target.checked
+    setRangeSizes(prefRangeSizes => {
+      return {...prefRangeSizes, half}
+    })
   }
 
   return (
@@ -37,7 +44,7 @@ const SizesRange = (props: SizesRangeProps) => {
         value={rangeSizes.from}
         onFocus={(event) => event.target.select()}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          onChange(Number(event.target.value), "from")
+          onChangeRange(Number(event.target.value), "from")
         }}
       />
 
@@ -50,8 +57,15 @@ const SizesRange = (props: SizesRangeProps) => {
         value={rangeSizes.to}
         onFocus={(event) => event.target.select()}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          onChange(Number(event.target.value), "to")
+          onChangeRange(Number(event.target.value), "to")
         }}
+      />
+      <FormControlLabel
+        control={
+          <Checkbox checked={rangeSizes.half} color="secondary" onChange={onChangeHalf}/>
+        }
+        label="Half"
+        labelPlacement="start"
       />
     </Box>
   );
