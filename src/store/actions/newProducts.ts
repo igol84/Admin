@@ -1,7 +1,7 @@
 import {AppDispatch} from "../index";
 import {secureApiCreate} from "../../ky";
 import {newProductsSlice} from "../slices/newProductsSlice";
-import {NewProduct} from "../../components/new-products/newProduct";
+import {Types} from "../../components/new-products/types";
 import {authSlice} from "../slices/authSlice";
 import {OutputItems} from "../../schemas/new-product";
 import {Product} from "../../schemas/base";
@@ -20,7 +20,7 @@ export const requestProducts = (access_token: string) => {
   }
 }
 
-export const addNewProducts = (access_token: string, newProducts: NewProduct) => {
+export const addNewProducts = (access_token: string, newProducts: Types) => {
   const secureApi = secureApiCreate(access_token)
   return async (dispatch: AppDispatch) => {
     try {

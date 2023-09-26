@@ -1,6 +1,6 @@
 import {defaultSizesLength} from "./data";
 
-export interface NewProduct {
+export interface Types {
   id?: number
   store_id: number
   type: ProductType
@@ -25,7 +25,7 @@ export interface Shoes {
   sizes: Size[]
 }
 
-interface Size {
+export interface Size {
   size: number
   length: number
   qty: number

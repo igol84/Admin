@@ -11,7 +11,7 @@ import {
 import produce from "immer";
 import TableSizes from "./TableSizes";
 import _ from "lodash";
-import {getDefaultSeizesLength, ProductType, WidthType} from "./newProduct";
+import {getDefaultSeizesLength, ProductType, WidthType} from "./types";
 import {addNewProducts, requestProducts} from "../../store/actions/newProducts";
 import {
   useDictionary,
@@ -31,7 +31,7 @@ import {
 import {useSubmit} from "./hooks";
 import {useAppSelector} from "../../hooks/redux";
 import LoadingCircular from "../LoadingCircular";
-import {getProductColors, getProductData, getProductNamesByType} from "./functions";
+import {getProductColors, getProductData, getProductNamesByType, rangeSizes} from "./functions";
 import SizesRange from "./TableSizesSizeRange";
 
 const initialRangeSizes: RangeSizesType = {from: 36, to: 41, half: false}
@@ -54,7 +54,7 @@ const initialFormFields: FormFields = {
 
 const AddNewProductForm = () => {
   const [formData, setFormData] = useState<FormFields>(initialFormFields)
-  const [rangeSizes, setRangeSizes] = useState<RangeSizesType>(initialRangeSizes)
+  const [rangeSizesData, setRangeSizesData] = useState<RangeSizesType>(initialRangeSizes)
   const [openSuccessSnackbar, setOpenSuccessSnackbar, handleSuccessSnackbar] = useSuccessSnackbar()
   const d = useDictionary('newProducts')
   useLoaderAccess(requestProducts)
@@ -69,7 +69,6 @@ const AddNewProductForm = () => {
   useLayoutEffect(() => {
     if (selectedName) {
       const productData = getProductData(products, selectedName)
-      console.log(productData)
       setFormData(produce(prevFormData => {
         prevFormData.priceSell.value = productData.price
       }))
@@ -77,6 +76,13 @@ const AddNewProductForm = () => {
         setFormData(produce(prevFormData => {
           prevFormData.color.items = getProductColors(products, selectedName)
         }))
+        if (productData.sizes) {
+          const dataSizes = rangeSizes(rangeSizesData.from, rangeSizesData.to, rangeSizesData.half, productData.sizes)
+          setFormData(produce(prevFormData => {
+            prevFormData.sizes = dataSizes
+          }))
+        }
+
       }
     } else {
       setFormData(produce(prevFormData => {
@@ -90,15 +96,12 @@ const AddNewProductForm = () => {
   }, [selectedName])
 
   useLayoutEffect(() => {
-    const step = rangeSizes.half ? 0.5 : 1
-    const sizesArray = _.range(rangeSizes.from, rangeSizes.to + 1, step)
-    const dataSizes: SizeField[] = sizesArray.map(size => {
-      return {size, qty: '0', length: getDefaultSeizesLength(size)}
-    })
+    const productDataSizes = selectedName ? getProductData(products, selectedName).sizes : null
+    const dataSizes = rangeSizes(rangeSizesData.from, rangeSizesData.to, rangeSizesData.half, productDataSizes)
     setFormData(produce(prevFormData => {
       prevFormData.sizes = dataSizes
     }))
-  }, [rangeSizes])
+  }, [rangeSizesData])
 
   useLayoutEffect(() => {
     const productNames = getProductNamesByType(products, selectedType)
@@ -157,7 +160,7 @@ const AddNewProductForm = () => {
       prevFormData.color.selected = ''
       prevFormData.sizes = initialDataSizes
     }))
-    setRangeSizes(initialRangeSizes)
+    setRangeSizesData(initialRangeSizes)
   }
   const [validateDate, createData] = useSubmit()
 
@@ -292,7 +295,7 @@ const AddNewProductForm = () => {
             </SimpleSelect>
           </Box>
           <Box>
-            <SizesRange rangeSizes={rangeSizes} setRangeSizes={setRangeSizes}/>
+            <SizesRange rangeSizes={rangeSizesData} setRangeSizes={setRangeSizesData}/>
           </Box>
         </Box>
         <Box sx={{

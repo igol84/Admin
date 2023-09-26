@@ -1,4 +1,4 @@
-import {ProductType, WidthType} from "./newProduct";
+import {ProductType, WidthType} from "./types";
 import {Field, FieldAutocomplete, FieldSelect} from "../Form/types";
 
 

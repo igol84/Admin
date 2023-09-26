@@ -1,4 +1,4 @@
-import {ProductType} from "../components/new-products/newProduct";
+import {ProductType} from "../components/new-products/types";
 
 export interface Item {
   id: number
