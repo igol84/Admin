@@ -56,9 +56,9 @@ const TableSizes = (props: TableSizesType) => {
                         value={field.length.toString()}
                         setValue={(value: string) => onLengthChange({size: field.size, length: value})}
                         focusText
+                        disabled={field.disable}
                       />
                     </Box>
-
                   ))}
                 </Box>
               </TableCell>

@@ -6,6 +6,7 @@ export interface SizeField {
   size: number
   qty: string
   length: string
+  disable: boolean
 }
 
 export type FormFields = {

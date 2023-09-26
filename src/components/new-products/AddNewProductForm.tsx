@@ -38,7 +38,7 @@ const initialRangeSizes: RangeSizesType = {from: 36, to: 41, half: false}
 
 const sizesArray: number[] = _.range(initialRangeSizes.from, initialRangeSizes.to + 1)
 const initialDataSizes: SizeField[] = sizesArray.map(size => (
-  {size, qty: '0', length: getDefaultSeizesLength(size)}
+  {size, qty: '0', length: getDefaultSeizesLength(size), disable: false}
 ))
 
 const initialFormFields: FormFields = {
@@ -82,7 +82,6 @@ const AddNewProductForm = () => {
             prevFormData.sizes = dataSizes
           }))
         }
-
       }
     } else {
       setFormData(produce(prevFormData => {
@@ -101,6 +100,7 @@ const AddNewProductForm = () => {
     setFormData(produce(prevFormData => {
       prevFormData.sizes = dataSizes
     }))
+    console.log(dataSizes)
   }, [rangeSizesData])
 
   useLayoutEffect(() => {

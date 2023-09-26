@@ -22,9 +22,9 @@ export const getProductData = (products: Product[], name: string): ProductData =
     .filter(product => product.name === name)
     .value()
   const price = filteredProducts[filteredProducts.length - 1].price.toString()
-  const type = filteredProducts[filteredProducts.length - 1].type
+  const productType = filteredProducts[filteredProducts.length - 1].type as ProductType
   let sizes: null | Size[] = null
-  if (type === 'shoes') {
+  if (productType === 'shoes') {
     const sizesMap: Map<number, Size> = new Map()
     filteredProducts.forEach(product => {
       const sizeNum = product.shoes ? product.shoes.size : 36
@@ -35,7 +35,7 @@ export const getProductData = (products: Product[], name: string): ProductData =
     const sizesNumbers: number[] = [...sizesMap.keys()].sort()
     sizes = sizesNumbers.map(sizeNumber => sizesMap.get(sizeNumber) as Size)
   }
-  return ({price, type, sizes})
+  return ({price, type: productType, sizes})
 }
 
 export const getProductColors = (products: Product[], name: string): string[] => {
@@ -48,23 +48,22 @@ export const getProductColors = (products: Product[], name: string): string[] =>
 }
 
 export const rangeSizes = (from: number, to: number, half: boolean, productSizes: null | Size[]): SizeField[] => {
-  const mapSizes = new Map()
+  const mapSizes: Map<number, SizeField> = new Map()
   const step = half ? 0.5 : 1
   const sizesArray = _.range(from, to + 1, step)
   const filteredSizes = sizesArray.filter(size => size >= from && size <= to)
   const rangeData = filteredSizes.map(size => {
-    return {size, qty: '0', length: getDefaultSeizesLength(size)}
+    return {size, qty: '0', length: getDefaultSeizesLength(size), disable: false}
   })
   rangeData.forEach(sizeDate => mapSizes.set(sizeDate.size, sizeDate))
   if (productSizes) {
     productSizes.forEach(sizeData => {
       if (sizeData.size >= from && sizeData.size <= to) {
         mapSizes.set(sizeData.size, {
-          size: sizeData.size, qty: sizeData.qty.toString(), length: sizeData.length.toString()
+          size: sizeData.size, qty: sizeData.qty.toString(), length: sizeData.length.toString(), disable: true
         })
       }
     })
   }
   return _.orderBy([...mapSizes.values()], 'size')
-
 }

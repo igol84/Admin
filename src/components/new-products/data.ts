@@ -3,6 +3,8 @@ interface DefaultSeizesLength {
 }
 
 export const defaultSizesLength: DefaultSeizesLength = {
+  34: 22.5,
+  34.5: 22.7,
   35: 23,
   35.5: 23.2,
   36: 23.5,

@@ -3,7 +3,7 @@ import {defaultSizesLength} from "./data";
 export interface Types {
   id?: number
   store_id: number
-  type: ProductType
+  type: string
   name: string
   price_sell: number
   price_buy: number
