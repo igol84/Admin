@@ -88,13 +88,14 @@
     "sizesRange": "Размеры",
     "fromSize": "от",
     "toSize": "до",
+    "half": "Половинки",
     "SuccessfulAdded": "Успешно добавлено"
   },
   "expense": {
     "title": "Издержки",
     "place_id": "Точка",
     "desc": "Описание",
-    "date_cost": "Дата продажи",
+    "date_cost": "Дата",
     "cost": "Расходы"
   },
   "places": {

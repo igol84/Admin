@@ -1,7 +1,7 @@
 import React, {Dispatch, SetStateAction} from "react";
 import {Box, Checkbox, FormControlLabel, TextField} from "@mui/material";
 import {RangeSizesType} from "./AddNewProductFormTypes";
-import {useDictionary} from "../../hooks/pages";
+import {useDictionaryTranslate} from "../../hooks/pages";
 
 
 interface SizesRangeProps {
@@ -15,7 +15,7 @@ const MAX_SIZE = 56
 
 const SizesRange = (props: SizesRangeProps) => {
   const {rangeSizes, setRangeSizes} = props
-  const d = useDictionary('newProducts')
+  const d = useDictionaryTranslate('newProducts')
 
   const onChangeRange = (value: number, field: 'from' | 'to') => {
     if (value >= MIN_SIZE && value <= MAX_SIZE)
@@ -34,11 +34,11 @@ const SizesRange = (props: SizesRangeProps) => {
 
   return (
     <Box display='flex' gap={1} alignItems='center'>
-      {d['sizesRange']}:
+      {d('sizesRange')}:
       <TextField
         sx={{width: '80px'}}
         type='number'
-        label={d['fromSize']}
+        label={d('fromSize')}
         color="secondary"
         size="small"
         value={rangeSizes.from}
@@ -51,7 +51,7 @@ const SizesRange = (props: SizesRangeProps) => {
       <TextField
         sx={{width: '80px'}}
         type='number'
-        label={d['toSize']}
+        label={d('toSize')}
         color="secondary"
         size="small"
         value={rangeSizes.to}
@@ -64,7 +64,7 @@ const SizesRange = (props: SizesRangeProps) => {
         control={
           <Checkbox checked={rangeSizes.half} color="secondary" onChange={onChangeHalf}/>
         }
-        label="Half"
+        label={d('half')}
         labelPlacement="start"
       />
     </Box>

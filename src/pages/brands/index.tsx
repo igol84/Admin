@@ -10,7 +10,7 @@ const BrandsPage = () => {
   return (
     <Box m={1}>
       <Box display='flex' justifyContent='space-around' alignItems='center'>
-        <Header title={d('products')}/>
+        <Header title={d('brands')}/>
       </Box>
       <Brands/>
     </Box>

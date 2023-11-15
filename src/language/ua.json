@@ -88,13 +88,14 @@
     "sizesRange": "Розміри",
     "fromSize": "від",
     "toSize": "до",
+    "half": "Половинки",
     "SuccessfulAdded": "Успішно додано"
   },
   "expense": {
     "title": "Витрати",
     "place_id": "Місце",
     "desc": "Опис",
-    "date_cost": "Дата продажу",
+    "date_cost": "Дата",
     "cost": "Вартість"
   },
   "places": {
