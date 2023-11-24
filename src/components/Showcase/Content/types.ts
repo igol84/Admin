@@ -1,6 +1,7 @@
 import {Field} from "../../Form/types";
 import {CreateShowcase} from "../../../schemas/showcase";
 import {generate_url} from "../../../utilite";
+import {formatISO} from "date-fns";
 
 
 export interface FormData {
@@ -16,6 +17,8 @@ export interface FormData {
   active: boolean
   promActive: boolean
   files: File[] | undefined
+  date: string
+  isNew: boolean
 }
 
 export const convertFromFormDataToShowcase = (formData: FormData, key: string | null = null): CreateShowcase => {
@@ -25,7 +28,7 @@ export const convertFromFormDataToShowcase = (formData: FormData, key: string | 
   }
   const dirName = generate_url(dirNameProps.join('-'))
   const dir = key ? key : dirName
-
+  const today = formatISO(new Date(), {representation: 'date'})
   return {
     showcaseItem: {
       key: dir,
@@ -40,7 +43,8 @@ export const convertFromFormDataToShowcase = (formData: FormData, key: string | 
       active: formData.active,
       prom_active: formData.promActive,
       youtube: formData.youtube.value,
-      images: []
+      images: [],
+      date: formData.isNew ? today : formData.date
     },
     files: formData.files
   }

@@ -5,7 +5,6 @@ import {NameAndColors} from "../../../schemas/showcase";
 import produce from "immer";
 
 
-
 interface UseFormInitial {
   (
     showcase: Showcase[],
@@ -27,7 +26,7 @@ export const useFormInitial: UseFormInitial = (showcase, namesAndColors, selecte
   const initialFormData: FormData = {
     name: {value: '', error: ''}, color: {value: '', error: ''}, brand_id: null, title: {value: '', error: ''},
     titleUa: {value: '', error: ''}, desc: '', descUa: '', active: true, promActive: true, url: {value: '', error: ''},
-    youtube: {value: '', error: ''}, files: undefined
+    youtube: {value: '', error: ''}, files: undefined, date: '', isNew: true
   }
 
   const [formData, setFormData] = useState<FormData>(initialFormData)
@@ -48,10 +47,11 @@ export const useFormInitial: UseFormInitial = (showcase, namesAndColors, selecte
       active: selectedShowcaseItem.active,
       promActive: selectedShowcaseItem.prom_active,
       files: undefined,
+      date: selectedShowcaseItem.date,
+      isNew: false
     }
     setFormData(changedFormData)
   }, [selectedShowcaseItem])
-
 
 
   const itemsColors: string[] = []
@@ -69,7 +69,6 @@ export const useFormInitial: UseFormInitial = (showcase, namesAndColors, selecte
           itemsNames.push(nameAndColors.name)
           if (formData.name.value === nameAndColors.name) {
             itemsColors.unshift(...colors)
-
           }
         }
       } else {
@@ -88,10 +87,10 @@ export const useFormInitial: UseFormInitial = (showcase, namesAndColors, selecte
 
   }
   useLayoutEffect(() => {
-    if(isAddMode && itemsColors.length)
+    if (isAddMode && itemsColors.length)
       setFormData(produce(formData, draftData => {
         draftData.color.value = itemsColors[0]
-        }))
+      }))
   }, [formData.name.value])
   return [formData, setFormData, resetFormData, itemsNames, itemsColors]
 }

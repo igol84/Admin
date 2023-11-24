@@ -24,6 +24,7 @@ interface UseFormValidation {
       onYoutubeFieldChange: (youtube: string) => void,
       onUrlFieldChange: (url: string) => void,
       onActiveChange: (active: boolean) => void,
+      onNewChange: (active: boolean) => void,
       onPromActiveChange: (active: boolean) => void,
       onFileChange: (files: File[]) => void,
       checkForm: () => boolean
@@ -89,6 +90,11 @@ export const useFormValidation: UseFormValidation = (formData, setFormData, isAd
       prevFormData.active = active
     }))
   }
+  const onNewChange = (active: boolean) => {
+    setFormData(produce(prevFormData => {
+      prevFormData.isNew = active
+    }))
+  }
   const onPromActiveChange = (promActive: boolean) => {
     setFormData(produce(prevFormData => {
       prevFormData.promActive = promActive
@@ -127,7 +133,7 @@ export const useFormValidation: UseFormValidation = (formData, setFormData, isAd
 
   return [
     onNameFieldSelect, onColorFieldSelect, onBrandFieldChange, onTitleFieldChange, onTitleUaFieldChange,
-    onDescFieldChange, onDescUaFieldChange, onUrlFieldChange, onYoutubeFieldChange, onActiveChange, onPromActiveChange,
-    onFileChange, checkForm
+    onDescFieldChange, onDescUaFieldChange, onUrlFieldChange, onYoutubeFieldChange, onActiveChange, onNewChange,
+    onPromActiveChange, onFileChange, checkForm
   ]
 }

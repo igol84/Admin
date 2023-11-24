@@ -38,8 +38,8 @@ const DialogForm = ({open, onCloseDialog, selectedShowcaseItem}: DialogFormProps
   ] = useFormInitial(showcase, namesAndColors, selectedShowcaseItem)
   const [
     onNameFieldSelect, onColorFieldSelect, onBrandFieldChange, onTitleFieldChange, onTitleUaFieldChange,
-    onDescFieldChange, onDescUaFieldChange, onUrlFieldChange, onYoutubeFieldChange, onActiveChange, onPromActiveChange,
-    onFileChange, checkForm
+    onDescFieldChange, onDescUaFieldChange, onUrlFieldChange, onYoutubeFieldChange, onActiveChange, onNewChange,
+    onPromActiveChange, onFileChange, checkForm
   ] = useFormValidation(formData, setFormData, isAddMode, showcase, selectedShowcaseItem)
   const [submitAdd, submitEdit, deleteItem, deleteImage] = useFormSubmit(selectedShowcaseItemKey, resetFormData)
   const isShowcase = (showcaseItem: Showcase | null): showcaseItem is Showcase => !isAddMode
@@ -100,7 +100,13 @@ const DialogForm = ({open, onCloseDialog, selectedShowcaseItem}: DialogFormProps
                     onChange={(event) => onActiveChange(event.target.checked)}/>
           }/>
           {!isAddMode &&
-            <Box><DeleteButton deletable={true} onRemove={onClickDelete}/></Box>
+            <Box className='flexFields'>
+              <FormControlLabel label='new' control={
+                <Switch color='secondary' checked={formData.isNew}
+                        onChange={(event) => onNewChange(event.target.checked)}/>
+              }/>
+              <DeleteButton deletable={true} onRemove={onClickDelete}/>
+            </Box>
           }
         </Box>
         <Box className='flexFields'>
