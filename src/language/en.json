@@ -4,7 +4,9 @@
     "search": "search",
     "searchUa": "search Ua",
     "desc": "desc",
-    "descUa": "desc Ua"
+    "descUa": "desc Ua",
+    "text": "text",
+    "textUa": "text Ua"
   },
   "brand": {
     "brands": "brands",

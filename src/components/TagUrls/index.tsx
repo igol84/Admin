@@ -61,6 +61,8 @@ const TagUrls = () => {
     {field: 'search_ua', headerName: d('searchUa'), minWidth: 100, flex: 1, editable: true},
     {field: 'desc', headerName: d('desc'), minWidth: 120, flex: 1, editable: true},
     {field: 'desc_ua', headerName: d('descUa'), minWidth: 100, flex: 1, editable: true},
+    {field: 'text', headerName: d('text'), minWidth: 120, flex: 1, editable: true},
+    {field: 'text_ua', headerName: d('textUa'), minWidth: 100, flex: 1, editable: true},
     {
       field: 'buttons',
       headerName: df('delete'),

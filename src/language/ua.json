@@ -4,7 +4,9 @@
     "search": "пошук",
     "searchUa": "пошук Ua",
     "desc": "опис",
-    "descUa": "опис Ua"
+    "descUa": "опис Ua",
+    "text": "текст",
+    "textUa": "текст Ua"
   },
   "brand": {
     "brands": "Бренди",

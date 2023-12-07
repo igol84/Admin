@@ -17,6 +17,8 @@ const AddNewTagUrlForm = () => {
     search_ua: string
     desc: string
     desc_ua: string
+    text: string
+    text_ua: string
   }
 
   const initialValues: initialValuesType = {
@@ -25,6 +27,8 @@ const AddNewTagUrlForm = () => {
     search_ua: '',
     desc: '',
     desc_ua: '',
+    text: '',
+    text_ua: '',
   }
 
   const onSubmit = async (data: initialValuesType, actions: FormikHelpers<initialValuesType>) => {
@@ -42,6 +46,8 @@ const AddNewTagUrlForm = () => {
           search_ua: yup.string(),
           desc: yup.string(),
           desc_ua: yup.string(),
+          text: yup.string(),
+          text_ua: yup.string(),
         })}
         onSubmit={onSubmit}
       >
@@ -78,6 +84,18 @@ const AddNewTagUrlForm = () => {
               <FormTextInput
                 name='desc_ua'
                 label={d['descUa']}
+                textLabel=''
+                withOutBlur
+              />
+              <FormTextInput
+                name='text'
+                label={d['text']}
+                textLabel=''
+                withOutBlur
+              />
+              <FormTextInput
+                name='text_ua'
+                label={d['textUa']}
                 textLabel=''
                 withOutBlur
               />

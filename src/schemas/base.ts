@@ -107,4 +107,6 @@ export interface TagUrl {
   search_ua: string
   desc: string
   desc_ua: string
+  text: string
+  text_ua: string
 }
