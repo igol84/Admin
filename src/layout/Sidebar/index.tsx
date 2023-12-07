@@ -12,7 +12,6 @@ import PointOfSaleOutlinedIcon from '@mui/icons-material/PointOfSaleOutlined';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
 import AppleIcon from '@mui/icons-material/Apple';
-import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import {tokens} from "../../theme";
 import {menuItemStyles} from "./Sidebar.theme";
 import {useLocation} from "react-router-dom";
@@ -146,12 +145,6 @@ const SidebarMenu = ({width, toggleOpenBar}: SidebarMenuProps) => {
                   title={dict('brands')}
                   to='/brands'
                   icon={<AppleIcon/>}
-                  location={location.pathname}
-                />
-                <Item
-                  title={dict('tagUrl')}
-                  to='/tag-urls'
-                  icon={<NoteAddIcon/>}
                   location={location.pathname}
                 />
               </>

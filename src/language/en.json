@@ -1,11 +1,4 @@
 {
-  "tagUrl": {
-    "tagUrl": "Tags page",
-    "search": "search",
-    "searchUa": "search Ua",
-    "desc": "desc",
-    "descUa": "desc Ua"
-  },
   "brand": {
     "brands": "brands",
     "add": "Add",
@@ -146,8 +139,7 @@
     "report": "Report",
     "site": "Site",
     "siteProducts": "Products",
-    "brands": "Brands",
-    "tagUrl": "Pages"
+    "brands": "Brands"
   },
   "auth": {
     "title": "Authorization",

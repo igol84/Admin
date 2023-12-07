@@ -14,9 +14,9 @@ interface DeleteButtonType {
 const DeleteButton = (props: DeleteButtonType) => {
   const d = useDictionary('form')
   const {expenseID, hidden=false, deletable=true} = props
-  const deleteAccess = useFetchAccess(delExpense)
+  const deleteExpenseAccess = useFetchAccess(delExpense)
   const onClick = async () => {
-    await deleteAccess(expenseID)
+    await deleteExpenseAccess(expenseID)
   }
   return (
     <Box hidden={hidden}>
