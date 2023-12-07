@@ -16,6 +16,7 @@ import NewSale from "./pages/new-sales";
 import ReportPage from "./pages/report";
 import ShowcasePage from "./pages/showcase";
 import BrandsPage from "./pages/brands";
+import TagUrlPage from "./pages/tag-urls";
 
 function App() {
   const [openBar, setOpenBar] = useState(true)
@@ -45,6 +46,7 @@ function App() {
             <Route path='/report' element={<ReportPage/>}/>
             <Route path='/site-products' element={<ShowcasePage/>}/>
             <Route path='/brands' element={<BrandsPage/>}/>
+            <Route path='/tag-urls' element={<TagUrlPage/>}/>
           </Routes>
         </motion.div>
       </main>

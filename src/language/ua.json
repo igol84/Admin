@@ -1,4 +1,11 @@
 {
+  "tagUrl": {
+    "tagUrl": "Сторінка з тегами",
+    "search": "пошук",
+    "searchUa": "пошук Ua",
+    "desc": "опис",
+    "descUa": "опис Ua"
+  },
   "brand": {
     "brands": "Бренди",
     "add": "Додати",
@@ -139,7 +146,8 @@
     "report": "Звіт",
     "site": "Сайт",
     "siteProducts": "Продукти",
-    "brands": "Бренди"
+    "brands": "Бренди",
+    "tagUrl": "Сторінки"
   },
   "auth": {
     "title": "Авторизація",

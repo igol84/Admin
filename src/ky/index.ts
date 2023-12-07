@@ -4,7 +4,7 @@ export const api = ky.create({
   prefixUrl: import.meta.env.VITE_BASE_URL
 })
 
-export const secureApiCreate = (bearer: string) =>  {
+export const secureApiCreate = (bearer: string = '') =>  {
   return api.extend({
     headers: {
       'accept': 'application/json',
@@ -12,4 +12,6 @@ export const secureApiCreate = (bearer: string) =>  {
     }
   })
 }
+
+
 
