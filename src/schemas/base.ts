@@ -100,3 +100,11 @@ export interface Brand {
 export interface BrandWithImage extends Brand {
   image: string | undefined
 }
+
+export interface TagUrl {
+  url: string
+  search: string
+  search_ua: string
+  desc: string
+  desc_ua: string
+}
