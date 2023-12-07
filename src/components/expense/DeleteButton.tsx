@@ -18,6 +18,7 @@ const DeleteButton = (props: DeleteButtonType) => {
   const onClick = async () => {
     await deleteExpenseAccess(expenseID)
   }
+
   return (
     <Box hidden={hidden}>
       <GridActionsCellItem
