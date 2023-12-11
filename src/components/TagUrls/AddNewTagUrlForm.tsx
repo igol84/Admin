@@ -6,15 +6,14 @@ import {useDictionaryTranslate, useFetchAccess} from "../../hooks/pages";
 import {addNewTagUrl} from "../../store/actions/tag_url";
 import {tagUrlSchema} from "./schemas";
 import {useAppSelector} from "../../hooks/redux";
-import _ from "lodash";
-import {CreateTagUrl} from "../../schemas/tagUrl";
+import {CreateTagUrl, getParents} from "../../schemas/tagUrl";
 
 const AddNewTagUrlForm = () => {
   const d = useDictionaryTranslate('tagUrl')
   const df = useDictionaryTranslate('form')
   const addExpenseAccess = useFetchAccess(addNewTagUrl)
   const {tagUrls} = useAppSelector(state => state.tagUrlsReducer)
-  const parents = _.uniq(tagUrls.map(tag => tag.url))
+  const parents = getParents(tagUrls)
 
   interface initialValuesType {
     url: string

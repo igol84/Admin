@@ -2,12 +2,12 @@ import {useAppSelector} from "../../hooks/redux";
 import {GridColDef, GridRenderCellParams, useGridApiContext} from "@mui/x-data-grid";
 import {MenuItem, Select, SelectChangeEvent} from "@mui/material";
 import React from "react";
-import _ from "lodash";
+import {getParents} from "../../schemas/tagUrl";
 
 const PlaceSelectEditInputCell = (props: GridRenderCellParams) => {
   const {id, value, field} = props;
   const {tagUrls} = useAppSelector(state => state.tagUrlsReducer)
-  const parents = _.uniq(tagUrls.map(tag => tag.url))
+  const parents = getParents(tagUrls)
   const apiRef = useGridApiContext();
 
   const handleChange = async (event: SelectChangeEvent) => {
