@@ -100,7 +100,7 @@ const ItemsEdit = () => {
                   /> : row.buy_price
 
                 const buttons = isItemSelected &&
-                  <Box display={'flex'} justifyContent={'space-between'}>
+                  <Box display='flex' alignItems='center' justifyContent='space-between'>
                     <SaveButton
                       disabled={!formWasEdited(row.qty, row.buy_price)}
                       id={row.id}
@@ -109,8 +109,9 @@ const ItemsEdit = () => {
                       resetFormData={resetFormData}
                     />
                     <DeleteButton deletable={!isItemWithSales} itemID={row.id}/>
-                    <IconButton aria-label='close' onClick={resetFormData} color="inherit">
-                      <CloseIcon/>
+                    <IconButton aria-label='close' onClick={resetFormData} color="inherit"
+                                sx={{height: '25px', width: '25px'}}>
+                      <CloseIcon sx={{height: '20px', width: '20px'}}/>
                     </IconButton>
                   </Box>
                 const variants = {

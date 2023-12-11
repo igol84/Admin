@@ -23,8 +23,9 @@ const DeleteButton = (props: DeleteButtonType) => {
   }
   return (
     <>
-      <IconButton aria-label={dict('delete')} onClick={onClick} color="inherit" disabled={!deletable}>
-        <DeleteIcon/>
+      <IconButton aria-label={dict('delete')} onClick={onClick} color="inherit" disabled={!deletable}
+                  sx={{height: '25px', width: '25px'}}>
+        <DeleteIcon sx={{height: '20px', width: '20px'}}/>
       </IconButton>
       <DeleteDialog isOpen={dialogOpen} handleClose={() => setDialogOpen(false)} handleConfirm={handleConfirm}/>
     </>

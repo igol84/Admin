@@ -23,8 +23,9 @@ const SaveButton = (props: SaveButtonType) => {
     resetFormData()
   }
   return (
-    <IconButton aria-label={dict('save')} onClick={onClick} color="inherit" disabled={disabled}>
-      <SaveRoundedIcon/>
+    <IconButton aria-label={dict('save')} onClick={onClick} color="inherit" disabled={disabled}
+                sx={{height: '25px', width: '25px'}}>
+      <SaveRoundedIcon sx={{height: '20px', width: '20px'}}/>
     </IconButton>
   )
 }
