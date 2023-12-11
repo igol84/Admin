@@ -75,7 +75,6 @@ const TableExpense = () => {
       field: 'place_id', headerName: d['place_id'], minWidth: 120, flex: 1, editable: true,
       renderEditCell: renderSelectEditInputPlaceCell,
       renderCell: renderCellPlace
-
     },
     {field: 'desc', headerName: d['desc'], minWidth: 120, flex: 1, editable: true,},
     {field: 'cost', headerName: d['cost'], minWidth: 100, flex: 1, editable: true, type: 'number'},

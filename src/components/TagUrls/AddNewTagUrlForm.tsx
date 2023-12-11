@@ -1,18 +1,25 @@
 import React from 'react';
-import {Box, Button} from "@mui/material";
+import {Box, Button, MenuItem} from "@mui/material";
 import {Formik, FormikHelpers} from "formik";
-import * as yup from "yup";
-import {FormTextInput} from "../Form";
-import {useDictionary, useFetchAccess} from "../../hooks/pages";
+import {FormSelect, FormTextInput} from "../Form";
+import {useDictionaryTranslate, useFetchAccess} from "../../hooks/pages";
 import {addNewTagUrl} from "../../store/actions/tag_url";
+import {tagUrlSchema} from "./schemas";
+import {useAppSelector} from "../../hooks/redux";
+import _ from "lodash";
+import {CreateTagUrl} from "../../schemas/tagUrl";
 
 const AddNewTagUrlForm = () => {
-  const d = useDictionary('tagUrl')
-  const df = useDictionary('form')
+  const d = useDictionaryTranslate('tagUrl')
+  const df = useDictionaryTranslate('form')
   const addExpenseAccess = useFetchAccess(addNewTagUrl)
+  const {tagUrls} = useAppSelector(state => state.tagUrlsReducer)
+  const parents = _.uniq(tagUrls.map(tag => tag.url))
 
   interface initialValuesType {
     url: string
+    parent: string
+    order_number: number
     search: string
     search_ua: string
     desc: string
@@ -23,6 +30,8 @@ const AddNewTagUrlForm = () => {
 
   const initialValues: initialValuesType = {
     url: '',
+    parent: '-1',
+    order_number: 0,
     search: '',
     search_ua: '',
     desc: '',
@@ -32,7 +41,8 @@ const AddNewTagUrlForm = () => {
   }
 
   const onSubmit = async (data: initialValuesType, actions: FormikHelpers<initialValuesType>) => {
-    await addExpenseAccess(data)
+    const fixedData: CreateTagUrl = {...data, parent: data.parent === '-1' ? '' : data.parent}
+    await addExpenseAccess(fixedData)
     actions.setSubmitting(false)
     actions.resetForm()
   }
@@ -40,15 +50,7 @@ const AddNewTagUrlForm = () => {
     <Box sx={{my: 1}}>
       <Formik
         initialValues={initialValues}
-        validationSchema={yup.object({
-          url: yup.string().required(),
-          search: yup.string(),
-          search_ua: yup.string(),
-          desc: yup.string(),
-          desc_ua: yup.string(),
-          text: yup.string(),
-          text_ua: yup.string(),
-        })}
+        validationSchema={tagUrlSchema}
         onSubmit={onSubmit}
       >
         {({handleSubmit, isSubmitting}) => (
@@ -63,39 +65,57 @@ const AddNewTagUrlForm = () => {
                 textLabel=''
                 withOutBlur
               />
+              <FormSelect
+                name='parent'
+                label={d('parent')}
+              >
+                <MenuItem value='-1'>&nbsp;</MenuItem>
+                {parents.map(parent => (
+                  <MenuItem key={parent} value={parent}>{parent}</MenuItem>
+                ))}
+              </FormSelect>
+
+              <FormTextInput
+                type='number'
+                name='order_number'
+                label={d('order_number')}
+                textLabel=''
+                withOutBlur
+                focusText
+              />
               <FormTextInput
                 name='search'
-                label={d['search']}
+                label={d('search')}
                 textLabel=''
                 withOutBlur
               />
               <FormTextInput
                 name='search_ua'
-                label={d['searchUa']}
+                label={d('searchUa')}
                 textLabel=''
                 withOutBlur
               />
               <FormTextInput
                 name='desc'
-                label={d['desc']}
+                label={d('desc')}
                 textLabel=''
                 withOutBlur
               />
               <FormTextInput
                 name='desc_ua'
-                label={d['descUa']}
+                label={d('descUa')}
                 textLabel=''
                 withOutBlur
               />
               <FormTextInput
                 name='text'
-                label={d['text']}
+                label={d('text')}
                 textLabel=''
                 withOutBlur
               />
               <FormTextInput
                 name='text_ua'
-                label={d['textUa']}
+                label={d('textUa')}
                 textLabel=''
                 withOutBlur
               />
@@ -107,7 +127,7 @@ const AddNewTagUrlForm = () => {
                 sx={{ml: 1, px: 5, height: '43px'}}
                 disabled={isSubmitting}
               >
-                {df['add_button']}
+                {df('add_button')}
               </Button>
             </Box>
           </form>

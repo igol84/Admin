@@ -20,6 +20,7 @@ import {useHandlerUpdate} from "./updateHandler";
 import {TagUrl} from "../../schemas/base";
 import AddNewTagUrlForm from "./AddNewTagUrlForm";
 import DeleteButton from "../Form/DeleteButton";
+import {renderSelectEditInputTagUrlCell} from "./ParentCell";
 
 const SORT_MODEL = 'tag-sort-model'
 
@@ -57,6 +58,11 @@ const TagUrls = () => {
 
   const columns: GridColumns = [
     {field: 'url', headerName: 'url', minWidth: 120, flex: 1, editable: false},
+    {
+      field: 'parent', headerName: d('parent'), minWidth: 120, flex: 1, editable: true,
+      renderEditCell: renderSelectEditInputTagUrlCell,
+    },
+    {field: 'order_number', headerName: d('orderNumber'), flex: 1, editable: true, type: 'number'},
     {field: 'search', headerName: d('search'), minWidth: 120, flex: 1, editable: true},
     {field: 'search_ua', headerName: d('searchUa'), minWidth: 100, flex: 1, editable: true},
     {field: 'desc', headerName: d('desc'), minWidth: 120, flex: 1, editable: true},

@@ -1,12 +1,14 @@
 {
   "tagUrl": {
     "tagUrl": "Сторінка з тегами",
-    "search": "пошук",
-    "searchUa": "пошук Ua",
-    "desc": "опис",
-    "descUa": "опис Ua",
-    "text": "текст",
-    "textUa": "текст Ua"
+    "parent": "Вкладений у",
+    "orderNumber": "Номер",
+    "search": "Пошук",
+    "searchUa": "Пошук Ua",
+    "desc": "Опис",
+    "descUa": "Опис Ua",
+    "text": "Текст",
+    "textUa": "Текст Ua"
   },
   "brand": {
     "brands": "Бренди",

@@ -103,6 +103,8 @@ export interface BrandWithImage extends Brand {
 
 export interface TagUrl {
   url: string
+  parent: string
+  order_number: number
   search: string
   search_ua: string
   desc: string

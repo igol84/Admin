@@ -1,21 +1,13 @@
-import * as yup from "yup";
-
 import {toTrimTheRow} from "../../hooks/form-data";
 import equal from "fast-deep-equal";
 import React from "react";
 import {useFetchAccess} from "../../hooks/pages";
 import {TagUrl} from "../../schemas/base";
 import {updateTagUrl} from "../../store/actions/tag_url";
+import {tagUrlSchema} from "./schemas";
 
 export const useHandlerUpdate = () => {
   const editTagUrlAccess = useFetchAccess(updateTagUrl)
-  const tagUrlSchema = yup.object({
-    url: yup.string().required(),
-    search: yup.string(),
-    search_ua: yup.string(),
-    desc: yup.string(),
-    desc_ua: yup.string(),
-  })
 
   function computeMutation(newRow: TagUrl, oldRow: TagUrl) {
     const trimmedRow = toTrimTheRow('desc')(newRow)

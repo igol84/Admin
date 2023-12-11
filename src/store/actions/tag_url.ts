@@ -37,6 +37,7 @@ export const addNewTagUrl = (access_token: string, tagUrl: CreateTagUrl) => {
 }
 
 export const updateTagUrl = (access_token: string, updateTagUrl: TagUrl) => {
+  console.log(updateTagUrl)
   const secureApi = secureApiCreate(access_token)
   return async (dispatch: AppDispatch) => {
     try {
