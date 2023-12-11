@@ -1,10 +1,9 @@
 import {ViewSimpleProduct} from "./types";
 import {useForm} from "./SimpleProductSelected.hooks";
 import {SimpleField} from "../../../../Form";
-import {Box} from "@mui/material";
+import {Box, IconButton} from "@mui/material";
 import CheckIcon from '@mui/icons-material/Check';
 import CloseButton from "../../../../Form/CloseButton";
-import {GridActionsCellItem} from "@mui/x-data-grid";
 import React from "react";
 import {useDictionaryTranslate} from "../../../../../hooks/pages";
 
@@ -31,7 +30,9 @@ const SimpleProductSelected = (props: Product) => {
       error={useError('price')} fullWidth={false} variant={'standard'} autoFocus focusText onKeyDown={onKeyDown}/>
   const buttonsCell =
     <>
-      <GridActionsCellItem icon={<CheckIcon/>} label={'Check'} onClick={onConfirm}/>
+      <IconButton aria-label='Check' onClick={onConfirm}>
+        <CheckIcon/>
+      </IconButton>
       <CloseButton onClick={resetSelectedRow}/>
     </>
 

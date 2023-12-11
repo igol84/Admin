@@ -1,9 +1,9 @@
 import {useDictionaryTranslate, useFetchAccess} from "../../hooks/pages";
-import {GridActionsCellItem} from "@mui/x-data-grid";
 import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
 import React from "react";
 import {updateItem} from "../../store/actions/itemsEditor";
 import {UpdatedItem} from "../../schemas/items-editor";
+import {IconButton} from "@mui/material";
 
 interface SaveButtonType {
   id: number
@@ -23,13 +23,9 @@ const SaveButton = (props: SaveButtonType) => {
     resetFormData()
   }
   return (
-    <GridActionsCellItem
-      icon={<SaveRoundedIcon/>}
-      label={dict('save')}
-      onClick={onClick}
-      color="inherit"
-      disabled={disabled}
-    />
+    <IconButton aria-label={dict('save')} onClick={onClick} color="inherit" disabled={disabled}>
+      <SaveRoundedIcon/>
+    </IconButton>
   )
 }
 

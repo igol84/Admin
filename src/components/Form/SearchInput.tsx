@@ -1,8 +1,7 @@
 import React from 'react';
-import {Box, InputAdornment, TextField} from "@mui/material";
+import {Box, IconButton, InputAdornment, TextField} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
-import {GridActionsCellItem} from "@mui/x-data-grid";
 import {useDictionaryTranslate} from "../../hooks/pages";
 
 interface SearchInputProps {
@@ -39,11 +38,11 @@ const SearchInput = (props: SearchInputProps) => {
         endAdornment: (
           <InputAdornment position="end">
             <Box hidden={resetButtonIsHidden}>
-              <GridActionsCellItem icon={<CloseIcon/>} label={dict('close').toLowerCase()}
-                                   onClick={onClickResetButton} color="inherit"/>
+              <IconButton aria-label={dict('close').toLowerCase()} onClick={onClickResetButton} color="inherit">
+                <CloseIcon/>
+              </IconButton>
             </Box>
           </InputAdornment>
-
         ),
       }}
     />

@@ -1,7 +1,6 @@
 import {useDictionary, useFetchAccess} from "../../hooks/pages";
 import {delSeller} from "../../store/actions/sellers";
-import {Box} from "@mui/material";
-import {GridActionsCellItem} from "@mui/x-data-grid";
+import {Box, IconButton} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import React from "react";
 
@@ -20,13 +19,9 @@ const DeleteButton = (props: DeleteButtonType) => {
   }
   return (
     <Box hidden={hidden}>
-      <GridActionsCellItem
-        disabled={!deletable}
-        icon={<DeleteIcon/>}
-        label={d['delete']}
-        onClick={onClick}
-        color="inherit"
-      />
+      <IconButton aria-label={d['delete']} onClick={onClick} disabled={!deletable} color="inherit">
+        <DeleteIcon/>
+      </IconButton>
     </Box>
   )
 }

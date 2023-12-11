@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {Box, Table, TableBody, TableCell, TableContainer, TablePagination, TableRow} from "@mui/material"
+import {Box, IconButton, Table, TableBody, TableCell, TableContainer, TablePagination, TableRow} from "@mui/material"
 import {useDictionaryTranslate, useIsLoadingDisplay, useLoaderAccess} from "../../hooks/pages"
 import {AnimatePresence, motion} from "framer-motion"
 import {useAppSelector, useStoreId} from "../../hooks/redux"
@@ -14,7 +14,6 @@ import LoadingCircular from "../LoadingCircular";
 import {SimpleField} from "../Form";
 import SaveButton from "./SaveButton";
 import CloseIcon from "@mui/icons-material/Close";
-import {GridActionsCellItem} from "@mui/x-data-grid";
 import SalesItemsTable from "./SalesItemsTable";
 
 const ItemsEdit = () => {
@@ -110,12 +109,9 @@ const ItemsEdit = () => {
                       resetFormData={resetFormData}
                     />
                     <DeleteButton deletable={!isItemWithSales} itemID={row.id}/>
-                    <GridActionsCellItem
-                      icon={<CloseIcon/>}
-                      label={'close'}
-                      onClick={resetFormData}
-                      color="inherit"
-                    />
+                    <IconButton aria-label='close' onClick={resetFormData} color="inherit">
+                      <CloseIcon/>
+                    </IconButton>
                   </Box>
                 const variants = {
                   hidden: {height: 0, opacity: 0},

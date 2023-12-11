@@ -1,9 +1,8 @@
 import React, {useContext} from 'react';
-import {Box, useTheme} from "@mui/material";
+import {Box, IconButton, useTheme} from "@mui/material";
 import {AnimatePresence, motion} from "framer-motion";
 import {useForm} from "./SaleLineItemRow.hooks";
 import {formatter, SimpleField} from "../../../Form";
-import {GridActionsCellItem} from "@mui/x-data-grid";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseButton from "../../../Form/CloseButton";
 import {ViewSaleLineItem} from "../types";
@@ -37,7 +36,9 @@ const SaleLineItemRow = (props: SaleLineItemRowSelectedProps) => {
   const buttonsCell = selected &&
     <motion.div className='buttons' initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
       <Box>
-        <GridActionsCellItem icon={<CheckIcon/>} label={'Check'} onClick={onConfirm}/>
+        <IconButton aria-label='Check' onClick={onConfirm}>
+          <CheckIcon/>
+        </IconButton>
         <DeleteButton deletable={true} onRemove={onRemove}/>
       </Box>
       <CloseButton onClick={resetSelectedRow}/>

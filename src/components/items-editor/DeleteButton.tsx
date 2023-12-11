@@ -1,9 +1,9 @@
 import {useDictionaryTranslate, useFetchAccess} from "../../hooks/pages";
-import {GridActionsCellItem} from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import React, {useState} from "react";
 import {delItem} from "../../store/actions/itemsEditor";
 import DeleteDialog from "../Form/Dialog";
+import {IconButton} from "@mui/material";
 
 interface DeleteButtonType {
   itemID: number
@@ -23,13 +23,9 @@ const DeleteButton = (props: DeleteButtonType) => {
   }
   return (
     <>
-      <GridActionsCellItem
-        disabled={!deletable}
-        icon={<DeleteIcon/>}
-        label={dict('delete')}
-        onClick={onClick}
-        color="inherit"
-      />
+      <IconButton aria-label={dict('delete')} onClick={onClick} color="inherit" disabled={!deletable}>
+        <DeleteIcon/>
+      </IconButton>
       <DeleteDialog isOpen={dialogOpen} handleClose={() => setDialogOpen(false)} handleConfirm={handleConfirm}/>
     </>
   )

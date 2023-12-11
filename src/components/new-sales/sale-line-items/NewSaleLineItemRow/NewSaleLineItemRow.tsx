@@ -1,10 +1,9 @@
 import React, {useContext} from 'react';
 import {AnimatePresence, motion} from "framer-motion";
-import {Box, useTheme} from "@mui/material";
+import {Box, IconButton, useTheme} from "@mui/material";
 import {ViewNewSaleLineItem} from "../types";
 import {useForm} from "./NewSaleLineItemRow.hooks";
 import {formatter, SimpleField} from "../../../Form";
-import {GridActionsCellItem} from "@mui/x-data-grid";
 import CheckIcon from "@mui/icons-material/Check";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import CloseIcon from "@mui/icons-material/Close";
@@ -36,11 +35,17 @@ const NewSaleLineItemRowSelected = (props: NewSaleLineItemRow) => {
   const buttonsCell = selected &&
     <motion.div className='buttons' initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
       <Box>
-        <GridActionsCellItem icon={<CheckIcon/>} label={'Check'} onClick={onConfirm}/>
-        <GridActionsCellItem icon={<DeleteIcon/>} label={'Remove'} onClick={onRemove}/>
+        <IconButton aria-label='Check' onClick={onConfirm}>
+          <CheckIcon/>
+        </IconButton>
+        <IconButton aria-label='Remove' onClick={onRemove}>
+          <DeleteIcon/>
+        </IconButton>
       </Box>
-      <GridActionsCellItem icon={<CloseIcon/>} label={'Remove'} onClick={resetSelectedRow}/>
-    </motion.div >
+      <IconButton aria-label='Remove' onClick={resetSelectedRow}>
+        <CloseIcon/>
+      </IconButton>
+    </motion.div>
   const variantsColors = {
     initial: {height: 0, opacity: 0},
     default: {height: 'auto', opacity: 1, x: 0, backgroundColor: colors.blueAccent[700]},
