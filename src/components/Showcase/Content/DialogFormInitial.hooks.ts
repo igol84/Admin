@@ -26,7 +26,7 @@ export const useFormInitial: UseFormInitial = (showcase, namesAndColors, selecte
   const initialFormData: FormData = {
     name: {value: '', error: ''}, color: {value: '', error: ''}, brand_id: null, title: {value: '', error: ''},
     titleUa: {value: '', error: ''}, desc: '', descUa: '', active: true, promActive: true, url: {value: '', error: ''},
-    youtube: {value: '', error: ''}, files: undefined, date: '', isNew: true
+    youtube: {value: '', error: ''}, files: undefined, date: '', isNew: true, tags: ''
   }
 
   const [formData, setFormData] = useState<FormData>(initialFormData)
@@ -48,7 +48,8 @@ export const useFormInitial: UseFormInitial = (showcase, namesAndColors, selecte
       promActive: selectedShowcaseItem.prom_active,
       files: undefined,
       date: selectedShowcaseItem.date,
-      isNew: false
+      isNew: false,
+      tags: selectedShowcaseItem.tags
     }
     setFormData(changedFormData)
   }, [selectedShowcaseItem])

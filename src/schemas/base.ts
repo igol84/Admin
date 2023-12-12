@@ -79,6 +79,7 @@ export interface Showcase {
   prom_active: boolean
   images: ShowcaseImage[]
   date: string
+  tags: string
 }
 
 export interface ShowcaseImage {

@@ -39,7 +39,7 @@ const DialogForm = ({open, onCloseDialog, selectedShowcaseItem}: DialogFormProps
   const [
     onNameFieldSelect, onColorFieldSelect, onBrandFieldChange, onTitleFieldChange, onTitleUaFieldChange,
     onDescFieldChange, onDescUaFieldChange, onUrlFieldChange, onYoutubeFieldChange, onActiveChange, onNewChange,
-    onPromActiveChange, onFileChange, checkForm
+    onPromActiveChange, onFileChange, checkForm, onTagsFieldChange
   ] = useFormValidation(formData, setFormData, isAddMode, showcase, selectedShowcaseItem)
   const [submitAdd, submitEdit, deleteItem, deleteImage] = useFormSubmit(selectedShowcaseItemKey, resetFormData)
   const isShowcase = (showcaseItem: Showcase | null): showcaseItem is Showcase => !isAddMode
@@ -124,6 +124,7 @@ const DialogForm = ({open, onCloseDialog, selectedShowcaseItem}: DialogFormProps
         <Box className='flexFields'>
           <SimpleField name='url' label='url' value={formData.url.value} error={formData.url.error}
                        setValue={onUrlFieldChange}/>
+          <SimpleField name='tags' label='tags' value={formData.tags} setValue={onTagsFieldChange}/>
           <Box sx={{width: '88'}}>
             <SimpleField name='youtube' label='youtube' value={formData.youtube.value} error={formData.youtube.error}
                          setValue={onYoutubeFieldChange}/>

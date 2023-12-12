@@ -19,6 +19,7 @@ export interface FormData {
   files: File[] | undefined
   date: string
   isNew: boolean
+  tags: string
 }
 
 export const convertFromFormDataToShowcase = (formData: FormData, key: string | null = null): CreateShowcase => {
@@ -44,7 +45,8 @@ export const convertFromFormDataToShowcase = (formData: FormData, key: string | 
       prom_active: formData.promActive,
       youtube: formData.youtube.value,
       images: [],
-      date: formData.isNew ? today : formData.date
+      date: formData.isNew ? today : formData.date,
+      tags: formData.tags
     },
     files: formData.files
   }

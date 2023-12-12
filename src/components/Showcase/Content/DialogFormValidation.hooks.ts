@@ -27,7 +27,8 @@ interface UseFormValidation {
       onNewChange: (active: boolean) => void,
       onPromActiveChange: (active: boolean) => void,
       onFileChange: (files: File[]) => void,
-      checkForm: () => boolean
+      checkForm: () => boolean,
+      onTagsFieldChange: (tags: string) => void
     ]
 }
 
@@ -85,6 +86,11 @@ export const useFormValidation: UseFormValidation = (formData, setFormData, isAd
       prevFormData.url.error = fieldRequired(url)
     }))
   }
+  const onTagsFieldChange = (tags: string) => {
+    setFormData(produce(prevFormData => {
+      prevFormData.tags = tags
+    }))
+  }
   const onActiveChange = (active: boolean) => {
     setFormData(produce(prevFormData => {
       prevFormData.active = active
@@ -134,6 +140,6 @@ export const useFormValidation: UseFormValidation = (formData, setFormData, isAd
   return [
     onNameFieldSelect, onColorFieldSelect, onBrandFieldChange, onTitleFieldChange, onTitleUaFieldChange,
     onDescFieldChange, onDescUaFieldChange, onUrlFieldChange, onYoutubeFieldChange, onActiveChange, onNewChange,
-    onPromActiveChange, onFileChange, checkForm
+    onPromActiveChange, onFileChange, checkForm, onTagsFieldChange
   ]
 }
