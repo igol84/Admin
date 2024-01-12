@@ -1,7 +1,7 @@
 import React, {useCallback, useState} from "react";
 import {FieldNames, FormFields, ItemForm} from "./types";
 import {Order, UseOrder} from "../../hooks/form-data";
-import produce from "immer";
+import {produce} from "immer";
 import {useFetchAccess} from "../../hooks/pages";
 import {fetchSalesByItem} from "../../store/actions/itemsEditor";
 

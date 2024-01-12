@@ -1,6 +1,6 @@
 import {FieldNames, FormFields} from "./AddNewProductFormTypes";
 import {Dispatch, SetStateAction, useCallback} from "react";
-import produce from "immer";
+import {produce} from "immer";
 import {fieldPositive, fieldPositiveNotNull, fieldRequired} from "../Form";
 import {ProductType, Types} from "./types";
 import {useStoreId} from "../../hooks/redux";

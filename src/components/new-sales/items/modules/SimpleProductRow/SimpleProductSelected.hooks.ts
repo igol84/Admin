@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import produce from "immer";
+import {produce} from "immer";
 import {FieldNames, FormFields, ViewSimpleProduct} from "./types";
 import {PutOnSale} from "../../../../../schemas/new-sale";
 import {putOnSale} from "../../../../../store/actions/new-sales";

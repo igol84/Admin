@@ -1,6 +1,6 @@
 import {FieldNames, FormFields} from "./ColorRowSelected.types";
 import {useState} from "react";
-import produce from "immer";
+import {produce} from "immer";
 import {useFetchAccess} from "../../../../hooks/pages";
 import {updateColor} from "../../../../store/actions/productsEditor";
 import {EditColor} from "../../../../schemas/products-editor";

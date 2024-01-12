@@ -1,7 +1,7 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {isShoes, isSimpleProduct, ViewProduct} from "../../components/products-editor/types";
 import {EditColor, EditShoes, EditSimpleProduct, EditSize} from "../../schemas/products-editor";
-import produce from "immer";
+import {produce} from "immer";
 
 
 interface ProductsEditor {

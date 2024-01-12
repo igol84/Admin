@@ -2,7 +2,7 @@ import {FormData} from "./types";
 import React, {useLayoutEffect, useState} from "react";
 import {Showcase} from "../../../schemas/base";
 import {NameAndColors} from "../../../schemas/showcase";
-import produce from "immer";
+import {produce} from "immer";
 
 
 interface UseFormInitial {

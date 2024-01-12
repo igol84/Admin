@@ -1,5 +1,5 @@
 import {useState} from "react";
-import produce from "immer";
+import {produce} from "immer";
 import {FieldNames, FormFields} from "./SaleLineItemRow.types";
 import {ViewSaleLineItem} from "../types";
 import {useFetchAccess} from "../../../../hooks/pages";

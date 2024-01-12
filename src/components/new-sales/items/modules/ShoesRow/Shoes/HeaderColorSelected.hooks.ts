@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import produce from "immer";
+import {produce} from "immer";
 import {Field} from "../../../../../Form/types";
 import {SelectedSize} from "./index";
 import {useAppDispatch} from "../../../../../../hooks/redux";

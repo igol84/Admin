@@ -1,6 +1,6 @@
 import {FieldNames, FormFields} from "./types";
 import {useEffect, useState} from "react";
-import produce from "immer";
+import {produce} from "immer";
 import {ViewSimpleProduct} from "../../types";
 import {useFetchAccess} from "../../../../hooks/pages";
 import {updateSimpleProduct} from "../../../../store/actions/productsEditor";
