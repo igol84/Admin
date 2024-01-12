@@ -100,7 +100,6 @@ const AddNewProductForm = () => {
     setFormData(produce(prevFormData => {
       prevFormData.sizes = dataSizes
     }))
-    console.log(dataSizes)
   }, [rangeSizesData])
 
   useLayoutEffect(() => {
