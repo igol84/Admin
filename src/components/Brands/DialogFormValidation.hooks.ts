@@ -1,4 +1,4 @@
-import produce from "immer";
+import {produce} from "immer";
 import {fieldRequired} from "../Form";
 import {FormData} from "./types";
 import React from "react";

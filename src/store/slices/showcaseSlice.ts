@@ -2,7 +2,7 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {Showcase, ShowcaseImage} from "../../schemas/base";
 import _ from "lodash";
 import {BrandsNames, NameAndColors} from "../../schemas/showcase";
-import produce from "immer";
+import {produce} from "immer";
 
 
 interface ShowcaseState {

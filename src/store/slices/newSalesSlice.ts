@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {Item, Place, Sale, Seller} from "../../schemas/base";
-import produce from "immer";
+import {produce} from "immer";
 import {
   EditSLIPrice,
   NewSaleLineItem,

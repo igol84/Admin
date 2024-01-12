@@ -1,7 +1,7 @@
 import {ViewSize} from "../../types";
 import {SizeFieldNames, SizeFormFields} from "./SizeRowSelected.types";
 import {useState} from "react";
-import produce from "immer";
+import {produce} from "immer";
 import {useDictionaryTranslate, useFetchAccess} from "../../../../hooks/pages";
 import {updateSize} from "../../../../store/actions/productsEditor";
 import {EditSize} from "../../../../schemas/products-editor";

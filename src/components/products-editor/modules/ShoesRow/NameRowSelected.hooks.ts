@@ -1,6 +1,6 @@
 import {FieldNames, FormFields} from "./NameRowSelected.types";
 import {useState} from "react";
-import produce from "immer";
+import {produce} from "immer";
 import {useDictionaryTranslate, useFetchAccess} from "../../../../hooks/pages";
 import {ViewShoes,} from "../../types";
 import {updateShoes} from "../../../../store/actions/productsEditor";

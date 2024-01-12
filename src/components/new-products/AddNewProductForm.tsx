@@ -8,7 +8,7 @@ import {
   SimpleSelect,
   SnackBarSuccess
 } from "../Form";
-import produce from "immer";
+import {produce} from "immer";
 import TableSizes from "./TableSizes";
 import _ from "lodash";
 import {getDefaultSeizesLength, ProductType, WidthType} from "./types";

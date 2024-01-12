@@ -15,9 +15,8 @@ const CloseButton = (props: CloseButtonProps) => {
     event.stopPropagation()
   }
   return (
-    <IconButton aria-label={dict('close').toLowerCase()} color="inherit" onClick={onClickHandler}
-                sx={{height: '30px', width: '30px'}}>
-      <CloseIcon sx={{height: '25px', width: '25px'}}/>
+    <IconButton aria-label={dict('close').toLowerCase()} color="inherit" onClick={onClickHandler}>
+      <CloseIcon/>
     </IconButton>
   )
 }
