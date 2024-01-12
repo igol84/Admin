@@ -94,7 +94,6 @@ const AddNewProductForm = () => {
     }))
   }, [selectedName])
 
-
   useLayoutEffect(() => {
     const productDataSizes = selectedName ? getProductData(products, selectedName).sizes : null
     const dataSizes = rangeSizes(rangeSizesData.from, rangeSizesData.to, rangeSizesData.half, productDataSizes)
