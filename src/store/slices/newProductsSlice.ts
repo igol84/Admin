@@ -26,28 +26,28 @@ export const newProductsSlice = createSlice({
   name: 'NewProducts',
   initialState,
   reducers: {
-    RequestProducts(state) {
+    requestProducts(state) {
       state.isLoading = true
     },
-    RequestProductsSuccess(state, action: PayloadAction<ProductsPayload>) {
+    requestProductsSuccess(state, action: PayloadAction<ProductsPayload>) {
       state.products = action.payload.products
       state.isLoading = false
       state.error = ''
     },
-    RequestProductsError(state, action: PayloadAction<Error>) {
+    requestProductsError(state, action: PayloadAction<Error>) {
       state.isLoading = false
       state.error = action.payload.message
     },
-    NewProductsFetching(state) {
+    newProductsFetching(state) {
       state.isLoading = true
     },
-    NewProductsFetchingSuccess(state, action: PayloadAction<NewProductPayload>) {
+    newProductsFetchingSuccess(state, action: PayloadAction<NewProductPayload>) {
       const newProducts: Product[] = action.payload.products
       state.products.unshift(...newProducts)
       state.isLoading = false
       state.error = ''
     },
-    NewProductsFetchingError(state, action: PayloadAction<Error>) {
+    newProductsFetchingError(state, action: PayloadAction<Error>) {
       state.isLoading = false
       state.error = action.payload.message
     },

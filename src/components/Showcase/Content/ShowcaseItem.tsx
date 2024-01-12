@@ -24,7 +24,7 @@ const ShowcaseItem = ({showcaseItem, onClickShowcaseName}: ShowcaseItemProps) =>
   return (
     <ImageListItem>
       <img
-        title='asddas'
+        title={showcaseItem.title}
         src={imgUrlSmall}
         srcSet={imgUrl}
         alt={showcaseItem.title}

@@ -21,7 +21,7 @@ export interface ItemsEditorPayload {
   itemsEditor: ItemForm[]
 }
 
-export interface SalesByItemFetchingPayload {
+export interface salesByItemFetchingPayload {
   itemSales: itemSale[]
 }
 
@@ -34,27 +34,27 @@ export const itemsEditorSlice = createSlice({
   name: 'ItemsEditor',
   initialState,
   reducers: {
-    ItemsEditorFetching(state) {
+    itemsEditorFetching(state) {
       state.isLoading = true
     },
-    ItemsEditorFetchingSuccess(state, action: PayloadAction<ItemsEditorPayload>) {
+    itemsEditorFetchingSuccess(state, action: PayloadAction<ItemsEditorPayload>) {
       state.itemsEditor = action.payload.itemsEditor
       state.isLoading = false
       state.error = ''
     },
-    ItemsEditorFetchingError(state, action: PayloadAction<Error>) {
+    itemsEditorFetchingError(state, action: PayloadAction<Error>) {
       state.isLoading = false
       state.error = action.payload.message
     },
-    SalesByItemFetching(state) {
+    salesByItemFetching(state) {
       state.isLoading = true
     },
-    SalesByItemFetchingSuccess(state, action: PayloadAction<SalesByItemFetchingPayload>) {
+    salesByItemFetchingSuccess(state, action: PayloadAction<salesByItemFetchingPayload>) {
       state.itemSales = action.payload.itemSales
       state.isLoading = false
       state.error = ''
     },
-    SalesByItemFetchingError(state, action: PayloadAction<Error>) {
+    salesByItemFetchingError(state, action: PayloadAction<Error>) {
       state.isLoading = false
       state.error = action.payload.message
     },

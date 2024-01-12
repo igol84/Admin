@@ -41,15 +41,15 @@ export const productsEditorSlice = createSlice({
   name: 'ProductsEditor',
   initialState,
   reducers: {
-    ProductsEditorFetching(state) {
+    productsEditorFetching(state) {
       state.isLoading = true
     },
-    ProductsEditorFetchingSuccess(state, action: PayloadAction<ProductsEditorPayload>) {
+    productsEditorFetchingSuccess(state, action: PayloadAction<ProductsEditorPayload>) {
       state.productsData = action.payload.productsEditor
       state.isLoading = false
       state.error = ''
     },
-    ProductsEditorFetchingError(state, action: PayloadAction<Error>) {
+    productsEditorFetchingError(state, action: PayloadAction<Error>) {
       state.isLoading = false
       state.error = action.payload.message
     },

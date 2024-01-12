@@ -39,12 +39,12 @@ export const fetchItemsEditor = (access_token: string, {storeId}: any = null) =>
   const secureApi = secureApiCreate(access_token)
   return async (dispatch: AppDispatch) => {
     try {
-      dispatch(itemsEditorSlice.actions.ItemsEditorFetching())
+      dispatch(itemsEditorSlice.actions.itemsEditorFetching())
       const items: Item[] = await secureApi.get(`item?store_id=${storeId}`).json()
       const itemsEditor = getRowsForm(items)
-      dispatch(itemsEditorSlice.actions.ItemsEditorFetchingSuccess({itemsEditor}))
+      dispatch(itemsEditorSlice.actions.itemsEditorFetchingSuccess({itemsEditor}))
     } catch (err) {
-      dispatch(itemsEditorSlice.actions.ItemsEditorFetchingError(err as Error))
+      dispatch(itemsEditorSlice.actions.itemsEditorFetchingError(err as Error))
     }
   }
 }
@@ -57,11 +57,11 @@ export const fetchSalesByItem = (access_token: string, {itemId}: FetchSalesByIte
   const secureApi = secureApiCreate(access_token)
   return async (dispatch: AppDispatch) => {
     try {
-      dispatch(itemsEditorSlice.actions.SalesByItemFetching())
+      dispatch(itemsEditorSlice.actions.salesByItemFetching())
       const itemSales: itemSale[] = await secureApi.get(`handler_items_editor/get_item_sales/${itemId}`).json()
-      dispatch(itemsEditorSlice.actions.SalesByItemFetchingSuccess({itemSales}))
+      dispatch(itemsEditorSlice.actions.salesByItemFetchingSuccess({itemSales}))
     } catch (err) {
-      dispatch(itemsEditorSlice.actions.SalesByItemFetchingError(err as Error))
+      dispatch(itemsEditorSlice.actions.salesByItemFetchingError(err as Error))
     }
   }
 }
@@ -70,7 +70,7 @@ export const updateItem = (access_token: string, itemData: UpdatedItem) => {
   const secureApi = secureApiCreate(access_token)
   return async (dispatch: AppDispatch) => {
     try {
-      dispatch(itemsEditorSlice.actions.SalesByItemFetching())
+      dispatch(itemsEditorSlice.actions.salesByItemFetching())
       const updatedItem: UpdatedItem = await secureApi.put('handler_items_editor/edit_item', {json: itemData}).json()
       dispatch(itemsEditorSlice.actions.updateItem({changedItem: updatedItem}))
     } catch (err) {
@@ -87,7 +87,7 @@ export const delItem = (access_token: string, itemId: number) => {
   const secureApi = secureApiCreate(access_token)
   return async (dispatch: AppDispatch) => {
     try {
-      dispatch(itemsEditorSlice.actions.SalesByItemFetching())
+      dispatch(itemsEditorSlice.actions.salesByItemFetching())
       await secureApi.delete(`handler_items_editor/del_item/${itemId}`)
       dispatch(itemsEditorSlice.actions.delItem(itemId))
     } catch (err) {

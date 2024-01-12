@@ -11,12 +11,12 @@ export const fetchProductsEditor = (access_token: string, {storeId}: any = null)
   const secureApi = secureApiCreate(access_token)
   return async (dispatch: AppDispatch) => {
     try {
-      dispatch(productsEditorSlice.actions.ProductsEditorFetching())
+      dispatch(productsEditorSlice.actions.productsEditorFetching())
       const items: Item[] = await secureApi.get(`item/by_store_id/${storeId}`).json()
       const productsEditor = getRowsForm(items)
-      dispatch(productsEditorSlice.actions.ProductsEditorFetchingSuccess({productsEditor}))
+      dispatch(productsEditorSlice.actions.productsEditorFetchingSuccess({productsEditor}))
     } catch (err) {
-      dispatch(productsEditorSlice.actions.ProductsEditorFetchingError(err as Error))
+      dispatch(productsEditorSlice.actions.productsEditorFetchingError(err as Error))
     }
   }
 }
