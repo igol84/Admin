@@ -29,6 +29,19 @@ export const useLoaderAccess = (fetchFn: any, arg: any = null) => {
   }, [errorText])
 }
 
+export const useAccess = () => {
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+  const errorText = useAppSelector(state => state.authReducer.errorText)
+  const isAuthenticated = useAppSelector(state => state.authReducer.isAuthenticated)
+  useEffect(() => {
+    if (errorText || !isAuthenticated) {
+      dispatch(authSlice.actions.logout())
+      navigate('/auth')
+    }
+  }, [errorText])
+}
+
 export const useIsLoadingDisplay = (loading: Boolean) => {
   const [showLoading, setShowLoading] = useState(false)
   useEffect(() => {

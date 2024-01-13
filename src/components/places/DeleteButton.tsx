@@ -1,21 +1,25 @@
-import {useDictionary, useFetchAccess} from "../../hooks/pages";
-import {delPlace} from "../../store/actions/places";
+import {useDictionary} from "../../hooks/pages";
 import {Box, IconButton} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import React from "react";
+import {useAppDispatch} from "../../hooks/redux";
+import {createApi} from "../../ky";
+import {delPlace} from "../../store/slices/placesSlice";
 
 interface DeleteButtonType {
-  placeID: number
+  placeId: number
   hidden: boolean
   deletable: boolean
 }
 
 const DeleteButton = (props: DeleteButtonType) => {
+  const {placeId, hidden, deletable} = props
   const d = useDictionary('places')
-  const {placeID, hidden, deletable} = props
-  const deletePlaceAccess = useFetchAccess(delPlace)
+  const dispatch = useAppDispatch()
+  const api = createApi()
+  const deletePlaceAccess = async () => dispatch(delPlace({placeId, api}))
   const onClick = async () => {
-    await deletePlaceAccess(placeID)
+    await deletePlaceAccess()
   }
   return (
     <Box hidden={hidden}>

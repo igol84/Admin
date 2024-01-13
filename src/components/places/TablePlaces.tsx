@@ -1,37 +1,49 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import * as yup from 'yup'
 import {DataGrid, GridColumns, GridRenderCellParams, GridRowId, GridSortModel} from "@mui/x-data-grid";
 import {Alert, AlertProps, Box, Snackbar} from "@mui/material";
 import {useBoxGridTableStyle} from "../Form/style";
-import {fetchPlaces, updatePlace} from "../../store/actions/places";
 import {toTrimTheRow} from "../../hooks/form-data";
 import equal from "fast-deep-equal";
 import {
+  useAccess,
   useDictionary,
   useErrorMessage,
-  useFetchAccess,
   useIsLoadingDisplay,
-  useLoaderAccess,
   useMuiLanguage,
   useSortModel
 } from "../../hooks/pages";
 import DeleteButton from "./DeleteButton";
 import EditToolbar from "./EditToolbar";
 import PlaceDetail from "./PlaceDetail";
-import {useAppSelector, useStoreId} from "../../hooks/redux";
+import {useAppDispatch, useAppSelector, useStoreId} from "../../hooks/redux";
 import LoadingCircular from "../LoadingCircular";
+import {fetchPlaces, updatePlace} from "../../store/slices/placesSlice";
+import {createApi} from "../../ky";
+import {PlaceWithDetails} from "../../schemas/place";
 
 
 const SORT_MODEL = 'places-sort-model'
 
 const TablePlaces = () => {
+  useAccess()
   const d = useDictionary('places')
+  const dispatch = useAppDispatch()
   const storeId = useStoreId()
-  useLoaderAccess(fetchPlaces, {storeId})
+  const api = createApi()
+  useEffect(() => {
+    if (storeId)
+      dispatch(fetchPlaces({storeId, api}))
+  }, [storeId]);
+
 
   const {isLoading, places} = useAppSelector(state => state.placesReducer)
   const showLoading = useIsLoadingDisplay(isLoading)
-  const editPlaceAccess = useFetchAccess(updatePlace)
+
+  const editPlaceAccess = async (place: PlaceWithDetails) => {
+    dispatch(updatePlace({place, api}))
+    return place
+  }
   const muiLanguage = useMuiLanguage()
 
   const [selectedRow, setSelectedRow] = React.useState<GridRowId | null>(null)
@@ -58,7 +70,7 @@ const TablePlaces = () => {
     async (newRow: Place, oldRow: Place) => {
       const mutation = computeMutation(newRow, oldRow);
       if (mutation) {
-        const validRow = await placeSchema.validate(mutation)
+        const validRow = await placeSchema.validate(mutation) as PlaceWithDetails
         const fetchedRow = await editPlaceAccess(validRow)
         setSnackbar({children: d['placeSuccessfulSaved'], severity: 'success'});
         return fetchedRow
@@ -91,7 +103,7 @@ const TablePlaces = () => {
       disableColumnMenu: true,
       renderCell: (params: GridRenderCellParams) =>
         <DeleteButton
-          placeID={params.row.id}
+          placeId={params.row.id}
           hidden={selectedRow != params.row.id}
           deletable={!(params.row.sales || params.row.expenses)}
         />

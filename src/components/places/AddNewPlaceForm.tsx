@@ -3,14 +3,17 @@ import {Box, Button} from "@mui/material";
 import {Formik, FormikHelpers} from "formik";
 import * as Yup from "yup";
 import {FormTextInput} from "../Form";
-import {addNewPlace} from "../../store/actions/places";
-import {useStoreId} from "../../hooks/redux";
-import {useDictionary, useFetchAccess} from "../../hooks/pages";
+import {useAppDispatch, useStoreId} from "../../hooks/redux";
+import {useDictionary} from "../../hooks/pages";
 import {CreatePlace} from "../../schemas/place";
+import {createApi} from "../../ky";
+import {addNewPlace} from "../../store/slices/placesSlice";
 
 const AddNewPlaceForm = () => {
   const d = useDictionary('places')
-  const addPlaceAccess = useFetchAccess(addNewPlace)
+  const dispatch = useAppDispatch()
+  const api = createApi()
+  const addPlaceAccess = (place: CreatePlace) => dispatch(addNewPlace({place, api}))
   const storeId = useStoreId()
 
   interface initialValuesType {
